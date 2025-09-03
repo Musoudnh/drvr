@@ -1,0 +1,603 @@
+import React, { useState } from 'react';
+import { Users, UserPlus, Plus, DollarSign, Calendar, Target, BarChart3, TrendingUp, Building, X, Trash2, MoreHorizontal } from 'lucide-react';
+import Card from '../../components/UI/Card';
+import Button from '../../components/UI/Button';
+
+const HiringRunway: React.FC = () => {
+  const [currentHeadcount] = useState(24);
+  const [averageSalary] = useState(85000);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [hiringPlans, setHiringPlans] = useState([
+    { id: 1, role: 'Senior Software Engineer', department: 'Engineering', salary: 120000, startMonth: 'Feb 2025', endMonth: 'Dec 2025', active: true },
+    { id: 2, role: 'Sales Manager', department: 'Sales', salary: 95000, startMonth: 'Mar 2025', endMonth: 'Dec 2025', active: true },
+    { id: 3, role: 'Marketing Specialist', department: 'Marketing', salary: 70000, startMonth: 'Apr 2025', endMonth: 'Dec 2025', active: false },
+    { id: 4, role: 'Financial Analyst', department: 'Finance', salary: 75000, startMonth: 'May 2025', endMonth: 'Dec 2025', active: true }
+  ]);
+  const [newHire, setNewHire] = useState({
+    role: '',
+    department: 'Engineering',
+    salary: '',
+    startMonth: 'Jan 2025',
+    endMonth: 'Dec 2025',
+    customDepartment: ''
+  });
+
+  const months = [
+    'Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025',
+    'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'
+  ];
+
+  const hiringDrivers = [
+    { id: 1, name: 'Engineering Team Expansion', hires: 3, startMonth: 'Feb 2025', active: true, department: 'Engineering', avgSalary: 95000 },
+    { id: 2, name: 'Sales Team Growth', hires: 2, startMonth: 'Mar 2025', active: true, department: 'Sales', avgSalary: 75000 },
+    { id: 3, name: 'Customer Success Hire', hires: 1, startMonth: 'May 2025', active: false, department: 'Customer Success', avgSalary: 70000 },
+    { id: 4, name: 'Finance Team Addition', hires: 1, startMonth: 'Jun 2025', active: true, department: 'Finance', avgSalary: 80000 }
+  ];
+
+  const handleAddHire = () => {
+    if (newHire.role.trim() && newHire.salary) {
+      const finalDepartment = newHire.department === 'Custom' ? newHire.customDepartment : newHire.department;
+      const hire = {
+        id: Math.max(...hiringPlans.map(h => h.id)) + 1,
+        role: newHire.role,
+        department: finalDepartment,
+        salary: parseInt(newHire.salary),
+        startMonth: newHire.startMonth,
+        endMonth: newHire.endMonth,
+        active: true
+      };
+      setHiringPlans(prev => [...prev, hire]);
+      setNewHire({ role: '', department: 'Engineering', salary: '', startMonth: 'Jan 2025', endMonth: 'Dec 2025', customDepartment: '' });
+      setShowAddModal(false);
+    }
+  };
+
+  const handleDeleteHire = (id: number) => {
+    setHiringPlans(prev => prev.filter(h => h.id !== id));
+  };
+
+  const getMonthIndex = (month: string) => {
+    return months.indexOf(month);
+  };
+
+  const getDepartmentColor = (department: string) => {
+    return '#9CA3AF'; // Light grey for all departments
+  };
+
+  const calculateHiringProjection = () => {
+    return months.map((month, index) => {
+      let headcount = currentHeadcount;
+      let monthlyCost = currentHeadcount * (averageSalary / 12);
+      
+      // Apply active hiring drivers
+      hiringDrivers.forEach(driver => {
+        if (driver.active) {
+          const driverStartIndex = months.indexOf(driver.startMonth);
+          if (index >= driverStartIndex) {
+            headcount += driver.hires;
+            monthlyCost += driver.hires * (driver.avgSalary / 12);
+          }
+        }
+      });
+
+      // Apply hiring plans
+      hiringPlans.forEach(plan => {
+        if (plan.active) {
+          const planStartIndex = getMonthIndex(plan.startMonth);
+          const planEndIndex = getMonthIndex(plan.endMonth);
+          if (index >= planStartIndex && index <= planEndIndex) {
+            headcount += 1;
+            monthlyCost += plan.salary / 12;
+          }
+        }
+      });
+      return {
+        month,
+        headcount,
+        monthlyCost,
+        annualizedCost: monthlyCost * 12,
+        newHires: index === 0 ? 0 : headcount - currentHeadcount
+      };
+    });
+  };
+
+  const projectionData = calculateHiringProjection();
+  const totalNewHires = Math.max(...projectionData.map(m => m.newHires));
+  const finalHeadcount = projectionData[projectionData.length - 1]?.headcount || currentHeadcount;
+  const totalAnnualCost = projectionData[projectionData.length - 1]?.annualizedCost || 0;
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[#1E2A38]">Hiring Runway Planning</h2>
+        <p className="text-gray-600 mt-1">Plan team growth and manage hiring costs</p>
+      </div>
+
+      {/* Hiring Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Current Team</p>
+              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{currentHeadcount}</p>
+              <p className="text-sm text-gray-600 mt-1">Total employees</p>
+            </div>
+            <Users className="w-8 h-8 text-[#3AB7BF]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Planned Hires</p>
+              <p className="text-2xl font-bold text-[#4ADE80] mt-1">+{totalNewHires}</p>
+              <p className="text-sm text-gray-600 mt-1">New positions</p>
+            </div>
+            <UserPlus className="w-8 h-8 text-[#4ADE80]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Final Headcount</p>
+              <p className="text-2xl font-bold text-[#F59E0B] mt-1">{finalHeadcount}</p>
+              <p className="text-sm text-[#4ADE80] mt-1">+{((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% growth</p>
+            </div>
+            <Target className="w-8 h-8 text-[#F59E0B]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Annual Cost</p>
+              <p className="text-2xl font-bold text-[#8B5CF6] mt-1">${(totalAnnualCost / 1000000).toFixed(1)}M</p>
+              <p className="text-sm text-gray-600 mt-1">Total compensation</p>
+            </div>
+            <DollarSign className="w-8 h-8 text-[#8B5CF6]" />
+          </div>
+        </Card>
+      </div>
+
+      {/* Hiring Plans Management */}
+      <Card title="Hiring Plans">
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-sm text-gray-600">Manage individual hiring plans and payroll timeline</p>
+          <Button 
+            variant="primary" 
+            size="sm"
+            onClick={() => setShowAddModal(true)}
+            className="bg-[#8B5CF6] hover:bg-[#7C3AED] focus:ring-[#8B5CF6]"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Hiring Plan
+          </Button>
+        </div>
+
+        <div className="space-y-4 mb-8">
+          {hiringPlans.map(plan => (
+            <div key={plan.id} className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-[#4ADE80] transition-all duration-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center">
+                  <div 
+                    className="w-4 h-4 rounded-full mr-4"
+                    style={{ backgroundColor: plan.active ? '#4ADE80' : '#9CA3AF' }}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-[#1E2A38] text-lg">{plan.role}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{plan.department} • ${plan.salary.toLocaleString()}/year</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                    plan.active ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    {plan.active ? 'Active' : 'Planned'}
+                  </span>
+                  <button
+                    onClick={() => handleDeleteHire(plan.id)}
+                    className="p-2 hover:bg-red-100 rounded-lg text-red-500 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div className="text-sm text-gray-600">
+                  <span className="font-medium">Timeline:</span> {plan.startMonth} - {plan.endMonth}
+                </div>
+                <div className="text-sm font-semibold" style={{ color: getDepartmentColor(plan.department) }}>
+                  ${(plan.salary * 1.3).toLocaleString()}/year fully loaded
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Hiring Timeline Gantt Chart */}
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+          <h3 className="font-semibold text-[#1E2A38] mb-6 text-lg">Hiring Timeline</h3>
+          <div className="overflow-x-auto">
+            <div className="min-w-[800px]">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b-2 border-gray-300">
+                    <th className="text-left py-4 px-4 font-bold text-gray-800 w-48">Role</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Department</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Level</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Start</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">FTE</th>
+                    <th className="text-right py-4 px-4 font-bold text-gray-800 w-24">Base Salary</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Fully Loaded</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Location</th>
+                    <th className="text-center py-4 px-4 font-bold text-gray-800 w-20">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hiringPlans.map((plan, planIndex) => (
+                    <tr key={plan.id} className="border-b border-gray-200 hover:bg-white/80 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="flex items-center">
+                          <div 
+                            className="w-4 h-4 rounded-full mr-4"
+                            style={{ backgroundColor: getDepartmentColor(plan.department) }}
+                          />
+                          <span className="font-semibold text-[#1E2A38]">{plan.role}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{plan.department}</td>
+                      <td className="py-3 px-4 text-center text-sm text-gray-600">Mid</td>
+                      <td className="py-3 px-4 text-center text-sm text-gray-600">{plan.startMonth.split(' ')[0]}</td>
+                      <td className="py-3 px-4 text-center text-sm text-gray-600">1</td>
+                      <td className="py-3 px-4 text-right text-sm font-bold" style={{ color: getDepartmentColor(plan.department) }}>${plan.salary.toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-sm font-semibold text-gray-700">${(plan.salary * 1.3).toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-sm text-gray-600">Remote</td>
+                      <td className="py-3 px-4 text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            plan.active ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-200 text-gray-600'
+                          }`}>
+                            {plan.active ? 'Active' : 'Planned'}
+                          </span>
+                          <div className="relative group">
+                            <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                              <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                            </button>
+                            <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 min-w-[120px]">
+                              <button
+                                onClick={() => setHiringPlans(prev => prev.map(p => p.id === plan.id ? {...p, active: !p.active} : p))}
+                                className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                              >
+                                {plan.active ? 'Deactivate' : 'Activate'}
+                              </button>
+                              <button
+                                onClick={() => handleDeleteHire(plan.id)}
+                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          {/* Timeline Chart */}
+          <div className="bg-white rounded-xl p-6 mt-6 border border-gray-200 shadow-sm">
+            <h4 className="font-bold text-[#1E2A38] mb-6 text-lg">Hiring Timeline</h4>
+            <div className="overflow-x-auto">
+              <div className="min-w-[1200px]">
+                {/* Timeline Header */}
+                <div className="flex mb-4">
+                  <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Role</div>
+                  <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
+                    {months.map((month, index) => (
+                      <div key={index} className="text-xs font-bold text-gray-700 text-center">
+                        {month.split(' ')[0]}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Timeline Rows */}
+                {hiringPlans.map(plan => (
+                  <div key={plan.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                    <div className="w-48 text-sm font-medium text-[#1E2A38] p-2 truncate">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-3 h-3 rounded-full mr-3"
+                          style={{ backgroundColor: plan.active ? '#4ADE80' : '#9CA3AF' }}
+                        />
+                        {plan.role}
+                      </div>
+                    </div>
+                    <div className="flex-1 grid grid-cols-12 gap-1">
+                      {months.map((month, index) => {
+                        const startIndex = getMonthIndex(plan.startMonth);
+                        const endIndex = getMonthIndex(plan.endMonth);
+                        const isActive = index >= startIndex && index <= endIndex && plan.active;
+                        
+                        return (
+                          <div
+                            key={index}
+                            className={`h-8 rounded-lg mx-1`}
+                            style={{ 
+                              backgroundColor: isActive ? '#4ADE80' : 'transparent'
+                            }}
+                            title={isActive ? `${plan.role}: $${plan.salary.toLocaleString()}/year` : ''}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Legend */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Hiring Drivers */}
+      <Card title="Hiring Plans">
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-sm text-gray-600">Manage team expansion plans and hiring timeline</p>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowAddModal(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Driver
+            </Button>
+            <Button 
+              variant="primary" 
+              size="sm"
+              onClick={() => setShowAddModal(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Hire
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {hiringDrivers.map(driver => (
+            <div key={driver.id} className={`p-6 rounded-xl border-2 transition-all duration-200 shadow-sm hover:shadow-md ${
+              driver.active ? 'border-[#4ADE80] bg-[#4ADE80]/5' : 'border-gray-200 bg-gray-50'
+            }`}>
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="font-bold text-[#1E2A38] text-lg">{driver.name}</h3>
+                  <p className="text-sm text-gray-600 mt-1">Department: {driver.department}</p>
+                </div>
+                <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
+                  driver.active ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-200 text-gray-600'
+                }`}>
+                  {driver.active ? 'Active' : 'Planned'}
+                </span>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">New Hires:</span>
+                  <span className="font-bold text-[#4ADE80]">{driver.hires} people</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Avg Salary:</span>
+                  <span className="font-semibold text-[#1E2A38]">${driver.avgSalary.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Start Date:</span>
+                  <span className="font-semibold text-[#1E2A38]">{driver.startMonth}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Hiring Projection Table */}
+      <Card title="12-Month Hiring Projection">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 px-4 font-semibold text-gray-700">Month</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">Headcount</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">New Hires</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">Monthly Cost</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">Annual Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projectionData.map((monthData, index) => (
+                <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                  <td className="py-3 px-4 font-medium text-[#1E2A38]">{monthData.month}</td>
+                  <td className="py-3 px-4 text-right font-bold text-[#3AB7BF]">{monthData.headcount}</td>
+                  <td className="py-3 px-4 text-right font-medium text-[#4ADE80]">
+                    {monthData.newHires > 0 ? `+${monthData.newHires}` : '-'}
+                  </td>
+                  <td className="py-3 px-4 text-right font-medium text-[#F87171]">${monthData.monthlyCost.toLocaleString()}</td>
+                  <td className="py-3 px-4 text-right font-bold text-[#8B5CF6]">${monthData.annualizedCost.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
+      {/* Hiring Insights */}
+      <Card title="Team Growth Insights">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
+            <TrendingUp className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
+            <h3 className="font-semibold text-[#1E2A38] mb-2">Growth Rate</h3>
+            <p className="text-sm text-gray-600">Team will grow by {((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% over 12 months</p>
+          </div>
+          
+          <div className="text-center p-4 bg-[#3AB7BF]/10 rounded-lg">
+            <Building className="w-8 h-8 text-[#3AB7BF] mx-auto mb-3" />
+            <h3 className="font-semibold text-[#1E2A38] mb-2">Department Focus</h3>
+            <p className="text-sm text-gray-600">Engineering and Sales are primary growth areas</p>
+          </div>
+          
+          <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
+            <Calendar className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
+            <h3 className="font-semibold text-[#1E2A38] mb-2">Hiring Timeline</h3>
+            <p className="text-sm text-gray-600">Peak hiring in Q2 with 4 new team members</p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Summary boxes at bottom of page */}
+      <div className="grid grid-cols-3 gap-4 text-center mt-8">
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <p className="text-2xl font-bold text-[#3B82F6]">{currentHeadcount}</p>
+          <p className="text-sm text-gray-500">Base Headcount</p>
+          <p className="text-xs text-gray-600">(Current)</p>
+          <p className="text-xs text-[#3B82F6]">Starting team size</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <p className="text-2xl font-bold text-[#4ADE80]">{finalHeadcount}</p>
+          <p className="text-sm text-gray-500">Total Scenario</p>
+          <p className="text-xs text-gray-600">(12M)</p>
+          <p className="text-xs text-[#4ADE80]">With all active hires</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+          <p className="text-2xl font-bold text-[#F59E0B]">+{totalNewHires}</p>
+          <p className="text-sm text-gray-500">Hiring Impact</p>
+          <p className="text-xs text-gray-600">(12M)</p>
+          <p className="text-xs text-[#4ADE80]">New team members</p>
+        </div>
+      </div>
+
+      {/* Add Hiring Plan Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Hiring Plan</h3>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Role Title</label>
+                <input
+                  type="text"
+                  value={newHire.role}
+                  onChange={(e) => setNewHire({...newHire, role: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                  placeholder="e.g., Senior Software Engineer"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                  <select
+                    value={newHire.department}
+                    onChange={(e) => setNewHire({...newHire, department: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                  >
+                    <option value="Engineering">Engineering</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Operations">Operations</option>
+                    <option value="Customer Success">Customer Success</option>
+                    <option value="Custom">Custom (Enter your own)</option>
+                  </select>
+                </div>
+                
+                {newHire.department === 'Custom' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Custom Department Name</label>
+                    <input
+                      type="text"
+                      value={newHire.customDepartment}
+                      onChange={(e) => setNewHire({...newHire, customDepartment: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                      placeholder="Enter custom department name"
+                    />
+                  </div>
+                )}
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Annual Salary ($)</label>
+                  <input
+                    type="number"
+                    value={newHire.salary}
+                    onChange={(e) => setNewHire({...newHire, salary: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                    placeholder="85000"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <select
+                    value={newHire.startMonth}
+                    onChange={(e) => setNewHire({...newHire, startMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <select
+                    value={newHire.endMonth}
+                    onChange={(e) => setNewHire({...newHire, endMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddHire}
+                disabled={!newHire.role.trim() || !newHire.salary || (newHire.department === 'Custom' && !newHire.customDepartment.trim())}
+                className="px-4 py-2 bg-[#4ADE80] text-white rounded-lg hover:bg-[#3BC66F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Add Hire
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default HiringRunway;
