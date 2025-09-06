@@ -242,15 +242,6 @@ const Analytics: React.FC = () => {
     }
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
-      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* Enhanced Controls */}
