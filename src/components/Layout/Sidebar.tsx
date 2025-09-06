@@ -106,9 +106,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
-    { path: '/workspace/finance', label: 'Finance', icon: BarChart3 },
-    { path: '/workspace/operations', label: 'Operations', icon: Users },
-    { path: '/workspace/ai', label: 'AI Copilot', icon: Brain },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
     { path: '/commissions', label: 'Sales Commissions', icon: DollarSign },
     { 

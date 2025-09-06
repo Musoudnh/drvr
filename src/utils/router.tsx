@@ -41,11 +41,6 @@ import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import { Database, GitBranch, Brain, Users, Calculator, DollarSign } from 'lucide-react';
 import Commissions from '../pages/Commissions/Commissions';
-import WorkspaceLayout from '../components/Layout/WorkspaceLayout';
-import FinanceWorkspace from '../pages/Workspaces/FinanceWorkspace';
-import OperationsWorkspace from '../pages/Workspaces/OperationsWorkspace';
-import AdminWorkspace from '../pages/Workspaces/AdminWorkspace';
-import AIWorkspace from '../pages/Workspaces/AIWorkspace';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
@@ -95,32 +90,6 @@ export const router = createBrowserRouter([
         <CompanyDashboard />
       </ProtectedRoute>
     )
-  },
-  {
-    path: "/workspace",
-    element: (
-      <ProtectedRoute title="Workspace">
-        <WorkspaceLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "finance",
-        element: <FinanceWorkspace />
-      },
-      {
-        path: "operations", 
-        element: <OperationsWorkspace />
-      },
-      {
-        path: "admin",
-        element: <AdminWorkspace />
-      },
-      {
-        path: "ai",
-        element: <AIWorkspace />
-      }
-    ]
   },
   {
     path: "/chat",
