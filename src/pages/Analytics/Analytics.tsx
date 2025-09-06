@@ -133,63 +133,6 @@ const Analytics: React.FC = () => {
     { segment: 'Small Business', revenue: 125000, growth: 8.7, retention: 78, ltv: 1200, cac: 95, trend: 'stable' },
     { segment: 'Startup', revenue: 65000, growth: 35.8, retention: 65, ltv: 850, cac: 125, trend: 'up' }
   ]);
-  const [showPrescriptiveModal, setShowPrescriptiveModal] = useState(false);
-  const [showCustomerSegments, setShowCustomerSegments] = useState(false);
-
-  const [prescriptiveActions, setPrescriptiveActions] = useState<PrescriptiveAction[]>([
-    {
-      metric: 'Revenue Growth',
-      currentValue: '15.4%',
-      targetValue: '20%',
-      actions: [
-        'Increase marketing spend in high-ROI channels by 25%',
-        'Implement upselling program for existing customers',
-        'Launch referral incentive program',
-        'Optimize pricing for premium products'
-      ],
-      expectedImpact: '+$125K monthly revenue',
-      confidence: 78,
-      priority: 'high',
-      timeframe: '3-6 months'
-    },
-    {
-      metric: 'Customer Acquisition Cost',
-      currentValue: '$145',
-      targetValue: '$120',
-      actions: [
-        'Optimize ad targeting to reduce cost per click',
-        'Improve landing page conversion rates',
-        'Focus on organic acquisition channels',
-        'Implement customer referral program'
-      ],
-      expectedImpact: 'Save $25K monthly on acquisition',
-      confidence: 85,
-      priority: 'high',
-      timeframe: '2-4 months'
-    },
-    {
-      metric: 'Customer Lifetime Value',
-      currentValue: '$2,450',
-      targetValue: '$3,000',
-      actions: [
-        'Implement customer success program',
-        'Develop upselling strategies',
-        'Improve product stickiness',
-        'Reduce churn through better onboarding'
-      ],
-      expectedImpact: '+$550 per customer LTV',
-      confidence: 72,
-      priority: 'medium',
-      timeframe: '6-12 months'
-    }
-  ]);
-
-  const [customerSegments, setCustomerSegments] = useState<CustomerSegment[]>([
-    { segment: 'Enterprise', revenue: 485000, growth: 28.5, retention: 95, ltv: 4500, cac: 180, trend: 'up' },
-    { segment: 'Mid-Market', revenue: 245000, growth: 15.2, retention: 87, ltv: 2800, cac: 145, trend: 'up' },
-    { segment: 'Small Business', revenue: 125000, growth: 8.7, retention: 78, ltv: 1200, cac: 95, trend: 'stable' },
-    { segment: 'Startup', revenue: 65000, growth: 35.8, retention: 65, ltv: 850, cac: 125, trend: 'up' }
-  ]);
 
   const [correlations] = useState<CorrelationAnalysis[]>([
     {

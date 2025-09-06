@@ -71,28 +71,6 @@ const AccountProfile: React.FC = () => {
     { type: 'sms', name: 'SMS Backup', enabled: true, primary: false },
     { type: 'hardware', name: 'Hardware Key', enabled: false, primary: false }
   ]);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
-  const [showSecurityModal, setShowSecurityModal] = useState(false);
-  const [showMfaModal, setShowMfaModal] = useState(false);
-  const [notificationPreferences, setNotificationPreferences] = useState<NotificationPreference[]>([
-    { id: '1', category: 'Financial Alerts', email: true, inApp: true, sms: false, push: true },
-    { id: '2', category: 'System Updates', email: true, inApp: true, sms: false, push: false },
-    { id: '3', category: 'Team Activity', email: false, inApp: true, sms: false, push: true },
-    { id: '4', category: 'Security Alerts', email: true, inApp: true, sms: true, push: true },
-    { id: '5', category: 'Marketing', email: false, inApp: false, sms: false, push: false }
-  ]);
-  const [securitySettings, setSecuritySettings] = useState<SecuritySetting[]>([
-    { id: '1', name: 'Two-Factor Authentication', description: 'Add an extra layer of security', enabled: true, required: false },
-    { id: '2', name: 'Login Notifications', description: 'Get notified of new login attempts', enabled: true, required: false },
-    { id: '3', name: 'Session Timeout', description: 'Auto-logout after inactivity', enabled: true, required: true },
-    { id: '4', name: 'IP Restrictions', description: 'Limit access to specific IP addresses', enabled: false, required: false }
-  ]);
-  const [mfaEnabled, setMfaEnabled] = useState(true);
-  const [mfaMethods, setMfaMethods] = useState([
-    { type: 'authenticator', name: 'Authenticator App', enabled: true, primary: true },
-    { type: 'sms', name: 'SMS Backup', enabled: true, primary: false },
-    { type: 'hardware', name: 'Hardware Key', enabled: false, primary: false }
-  ]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -104,18 +82,6 @@ const AccountProfile: React.FC = () => {
     e.preventDefault();
     // Handle profile update
     console.log('Profile updated:', formData);
-  };
-
-  const toggleNotificationPreference = (id: string, type: 'email' | 'inApp' | 'sms' | 'push') => {
-    setNotificationPreferences(prev => prev.map(pref =>
-      pref.id === id ? { ...pref, [type]: !pref[type] } : pref
-    ));
-  };
-
-  const toggleSecuritySetting = (id: string) => {
-    setSecuritySettings(prev => prev.map(setting =>
-      setting.id === id && !setting.required ? { ...setting, enabled: !setting.enabled } : setting
-    ));
   };
 
   const toggleNotificationPreference = (id: string, type: 'email' | 'inApp' | 'sms' | 'push') => {
