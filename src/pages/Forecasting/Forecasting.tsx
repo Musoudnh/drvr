@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, TrendingUp, BarChart3, Brain, Calendar, Settings, Play, Pause, RefreshCw, Download, Eye, Plus, X } from 'lucide-react';
+import { Target, TrendingUp, BarChart3, Brain, Calendar, Settings, Play, Pause, RefreshCw, Download, Eye, Plus, X, Database } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
