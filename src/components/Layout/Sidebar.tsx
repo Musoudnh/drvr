@@ -107,7 +107,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/commissions', label: 'Sales Commissions', icon: DollarSign },
     { 
       path: '/forecasting', 
       label: 'Forecasting', 

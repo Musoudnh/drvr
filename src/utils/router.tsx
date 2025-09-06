@@ -40,7 +40,6 @@ import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
 import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import { Database, GitBranch, Brain, Users, Calculator, DollarSign } from 'lucide-react';
-import Commissions from '../pages/Commissions/Commissions';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
@@ -288,14 +287,6 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Referrals">
         <ReferralProgram />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/commissions",
-    element: (
-      <ProtectedRoute title="Sales Commissions">
-        <Commissions />
       </ProtectedRoute>
     )
   },
