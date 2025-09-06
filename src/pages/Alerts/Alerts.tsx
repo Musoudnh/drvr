@@ -91,7 +91,7 @@ const Alerts: React.FC = () => {
     if (alert?.autoRemediationAvailable) {
       // Simulate auto-remediation
       console.log(`Auto-remediation triggered for: ${alert.title}`);
-      window.alert('Auto-remediation workflow initiated. You will receive updates on progress.');
+      alert('Auto-remediation workflow initiated. You will receive updates on progress.');
     }
   };
 

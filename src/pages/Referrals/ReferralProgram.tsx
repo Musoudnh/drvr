@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Gift, Users, Mail, Link, Copy, Check, DollarSign, Share2, Send, Star, TrendingUp, Award, X as CloseIcon, Crown, Target, Zap, Trophy, Calendar, CreditCard, Plus, Eye, CheckCircle } from 'lucide-react';
+import { Gift, Users, Mail, Link, Copy, Check, DollarSign, Share2, Send, Star, TrendingUp, Award, X as CloseIcon, Crown, Target, Zap, Trophy, Calendar, CreditCard, Plus, Eye } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
