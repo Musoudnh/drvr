@@ -1,41 +1,12 @@
 import React, { useState } from 'react';
-import { TrendingUp, DollarSign, Plus, Target, BarChart3, Calendar, Building, X, Trash2, MoreHorizontal, Sliders, Eye, RefreshCw, Zap, Brain } from 'lucide-react';
+import { TrendingUp, DollarSign, Plus, Target, BarChart3, Calendar, Building, X, Trash2, MoreHorizontal } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
-
-interface RunwayScenario {
-  id: string;
-  name: string;
-  revenueGrowth: number;
-  newStreams: number;
-  isActive: boolean;
-}
-
-interface CashFlowImpact {
-  month: string;
-  revenue: number;
-  cashFlow: number;
-  burnRate: number;
-  runway: number;
-}
 
 const RevenueRunway: React.FC = () => {
   const [startingRevenue] = useState(425000);
   const [revenueGrowthRate] = useState(8.5);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showScenarioModal, setShowScenarioModal] = useState(false);
-  const [showCashFlowModal, setShowCashFlowModal] = useState(false);
-  const [runwayScenarios, setRunwayScenarios] = useState<RunwayScenario[]>([
-    { id: '1', name: 'Conservative Growth', revenueGrowth: 5.2, newStreams: 1, isActive: false },
-    { id: '2', name: 'Current Plan', revenueGrowth: 8.5, newStreams: 2, isActive: true },
-    { id: '3', name: 'Aggressive Growth', revenueGrowth: 15.8, newStreams: 4, isActive: false }
-  ]);
-  const [cashFlowImpacts, setCashFlowImpacts] = useState<CashFlowImpact[]>([
-    { month: 'Jan 2025', revenue: 425000, cashFlow: 125000, burnRate: 285000, runway: 8.2 },
-    { month: 'Feb 2025', revenue: 445000, cashFlow: 145000, burnRate: 295000, runway: 8.8 },
-    { month: 'Mar 2025', revenue: 465000, cashFlow: 165000, burnRate: 305000, runway: 9.4 },
-    { month: 'Apr 2025', revenue: 485000, cashFlow: 185000, burnRate: 315000, runway: 10.1 }
-  ]);
   const [revenueStreams, setRevenueStreams] = useState([
     { id: 1, name: 'Product Sales', amount: 285000, startMonth: 'Jan 2025', endMonth: 'Dec 2025', category: 'Product', active: true },
     { id: 2, name: 'Service Revenue', amount: 95000, startMonth: 'Jan 2025', endMonth: 'Dec 2025', category: 'Service', active: true },
@@ -205,252 +176,19 @@ const RevenueRunway: React.FC = () => {
         </div>
       </div>
 
-      {/* Interactive Runway Scenarios */}
-      <Card title="Interactive Runway Scenarios">
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-600">Use sliders to adjust parameters and see immediate impact</p>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowScenarioModal(true)}
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                Compare Scenarios
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowCashFlowModal(true)}
-              >
-                <Zap className="w-4 h-4 mr-2" />
-                Cash Flow Impact
-              </Button>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {runwayScenarios.map(scenario => (
-              <div 
-                key={scenario.id} 
-                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  scenario.isActive ? 'border-[#4ADE80] bg-[#4ADE80]/5' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setRunwayScenarios(prev => prev.map(s => ({ ...s, isActive: s.id === scenario.id })))}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-semibold text-[#1E2A38]">{scenario.name}</h4>
-                  <div className={`w-3 h-3 rounded-full ${scenario.isActive ? 'bg-[#4ADE80]' : 'bg-gray-300'}`} />
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Growth Rate:</span>
-                    <span className="font-medium">{scenario.revenueGrowth}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">New Streams:</span>
-                    <span className="font-medium">{scenario.newStreams}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-medium text-[#1E2A38] mb-4">Adjust Parameters</h4>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Revenue Growth Rate: {revenueGrowthRate}%
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="25"
-                  step="0.5"
-                  value={revenueGrowthRate}
-                  className="w-full slider"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Active Revenue Streams: {revenueStreams.filter(s => s.active).length}
-                </label>
-                <input
-                  type="range"
-                  min="1"
-                  max="8"
-                  step="1"
-                  value={revenueStreams.filter(s => s.active).length}
-                  className="w-full slider"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Scenario Comparison Modal */}
-      {showScenarioModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Comparison</h3>
-              <button
-                onClick={() => setShowScenarioModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {runwayScenarios.map(scenario => (
-                  <div key={scenario.id} className="p-4 bg-gray-50 rounded-lg text-center">
-                    <h4 className="font-semibold text-[#1E2A38] mb-2">{scenario.name}</h4>
-                    <div className="space-y-2 text-sm">
-                      <div>
-                        <p className="text-gray-600">12M Revenue</p>
-                        <p className="font-bold text-[#4ADE80]">
-                          ${((startingRevenue * 12) * (1 + scenario.revenueGrowth / 100) / 1000000).toFixed(1)}M
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Growth Rate</p>
-                        <p className="font-bold text-[#3AB7BF]">{scenario.revenueGrowth}%</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">New Streams</p>
-                        <p className="font-bold text-[#F59E0B]">{scenario.newStreams}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-2">Scenario Insights</h4>
-                <ul className="space-y-1 text-sm text-gray-700">
-                  <li>• Conservative scenario provides 95% confidence with lower risk</li>
-                  <li>• Current plan balances growth with operational capacity</li>
-                  <li>• Aggressive scenario requires additional team scaling</li>
-                </ul>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowScenarioModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Cash Flow Impact Modal */}
-      {showCashFlowModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Cash Flow Impact Analysis</h3>
-              <button
-                onClick={() => setShowCashFlowModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Month</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Revenue</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Cash Flow</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Burn Rate</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Runway</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cashFlowImpacts.map((impact, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-4 font-medium text-[#1E2A38]">{impact.month}</td>
-                        <td className="py-3 px-4 text-right font-medium text-[#4ADE80]">
-                          ${impact.revenue.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
-                          ${impact.cashFlow.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium text-[#F87171]">
-                          ${impact.burnRate.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-bold text-[#8B5CF6]">
-                          {impact.runway} months
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#4ADE80]">$185K</p>
-                  <p className="text-sm text-gray-600">Avg Monthly Cash Flow</p>
-                </div>
-                <div className="p-4 bg-[#F87171]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#F87171]">$305K</p>
-                  <p className="text-sm text-gray-600">Avg Burn Rate</p>
-                </div>
-                <div className="p-4 bg-[#8B5CF6]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#8B5CF6]">9.1 months</p>
-                  <p className="text-sm text-gray-600">Projected Runway</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowCashFlowModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Revenue Streams Management */}
       <Card title="Revenue Streams">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage revenue streams with interactive scenario modeling</p>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setShowScenarioModal(true)}
-            >
-              <Sliders className="w-4 h-4 mr-2" />
-              Scenarios
-            </Button>
-            <Button 
-              variant="primary" 
-              size="sm"
-              onClick={() => setShowAddModal(true)}
-              className="!bg-[#1E2A38] !hover:bg-[#2A3441] !focus:ring-[#1E2A38] !text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Stream
-            </Button>
-          </div>
+          <p className="text-sm text-gray-600">Manage your revenue streams and income timeline</p>
+          <Button 
+            variant="primary" 
+            size="sm"
+            onClick={() => setShowAddModal(true)}
+            className="!bg-[#1E2A38] !hover:bg-[#2A3441] !focus:ring-[#1E2A38] !text-white"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Revenue Stream
+          </Button>
         </div>
 
         <div className="space-y-4 mb-8">
@@ -492,57 +230,6 @@ const RevenueRunway: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
-      </Card>
-
-      {/* Integrated Financial Model */}
-      <Card title="Integrated Financial Model">
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-[#1E2A38]">Holistic Financial Impact</h3>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Brain className="w-4 h-4 mr-2" />
-                AI Optimization
-              </Button>
-              <Button variant="outline" size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Recalculate
-              </Button>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-[#4ADE80]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#4ADE80]">${(totalProjectedRevenue / 1000000).toFixed(1)}M</p>
-              <p className="text-sm text-gray-600">Revenue Impact</p>
-              <p className="text-xs text-gray-500">12-month projection</p>
-            </div>
-            <div className="p-4 bg-[#F87171]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#F87171]">$3.2M</p>
-              <p className="text-sm text-gray-600">OpEx Impact</p>
-              <p className="text-xs text-gray-500">Estimated costs</p>
-            </div>
-            <div className="p-4 bg-[#8B5CF6]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#8B5CF6]">+12</p>
-              <p className="text-sm text-gray-600">Hiring Impact</p>
-              <p className="text-xs text-gray-500">New team members</p>
-            </div>
-            <div className="p-4 bg-[#3AB7BF]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#3AB7BF]">9.8 months</p>
-              <p className="text-sm text-gray-600">Net Runway</p>
-              <p className="text-xs text-gray-500">Combined impact</p>
-            </div>
-          </div>
-          
-          <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
-            <h4 className="font-medium text-[#1E2A38] mb-2">AI Recommendations</h4>
-            <ul className="space-y-1 text-sm text-gray-700">
-              <li>• Delay hiring by 2 months to extend runway to 12+ months</li>
-              <li>• Focus on enterprise revenue streams for higher margins</li>
-              <li>• Consider reducing marketing spend by 15% to optimize burn rate</li>
-            </ul>
-          </div>
         </div>
       </Card>
 

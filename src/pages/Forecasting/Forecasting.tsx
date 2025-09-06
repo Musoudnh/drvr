@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, TrendingUp, BarChart3, Brain, Calendar, Settings, Play, Pause, RefreshCw, Download, Eye, Plus, X, Database } from 'lucide-react';
+import { Target, TrendingUp, BarChart3, Brain, Calendar, Settings, Play, Pause, RefreshCw, Download, Eye, Plus, X } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
@@ -95,19 +95,6 @@ const Forecasting: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<ForecastModel | null>(forecastModels[0]);
   const [showModelConfig, setShowModelConfig] = useState(false);
   const [isRetraining, setIsRetraining] = useState(false);
-  const [selfLearningEnabled, setSelfLearningEnabled] = useState(true);
-  const [externalDataSources, setExternalDataSources] = useState([
-    { id: '1', name: 'Economic Indicators API', status: 'connected', lastSync: new Date() },
-    { id: '2', name: 'Industry Trends Data', status: 'connected', lastSync: new Date() },
-    { id: '3', name: 'Competitor Analysis Feed', status: 'disconnected', lastSync: null }
-  ]);
-  const [forecastReconciliation, setForecastReconciliation] = useState({
-    topDown: 12500000,
-    bottomUp: 11800000,
-    variance: 700000,
-    variancePercent: 5.6,
-    recommendation: 'Review sales pipeline assumptions and market expansion timeline'
-  });
 
   const getModelTypeColor = (type: string) => {
     switch (type) {
@@ -416,167 +403,12 @@ const Forecasting: React.FC = () => {
         </Card>
       )}
 
-      {/* Self-Learning Models */}
-      <Card title="Self-Learning AI Models">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-[#1E2A38]">Continuous Learning</h3>
-              <p className="text-sm text-gray-600">Models automatically improve accuracy based on new data and feedback</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={selfLearningEnabled}
-                onChange={() => setSelfLearningEnabled(!selfLearningEnabled)}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#8B5CF6]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8B5CF6]"></div>
-            </label>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {forecastModels.map(model => (
-              <div key={model.id} className="p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium text-[#1E2A38]">{model.name}</h4>
-                  <span className="text-sm font-bold text-[#8B5CF6]">{model.accuracy}%</span>
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Learning Rate:</span>
-                    <span className="text-[#4ADE80]">+2.3% this month</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Data Points:</span>
-                    <span className="text-gray-700">24.5K</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Last Update:</span>
-                    <span className="text-gray-700">{model.lastTrained.toLocaleDateString()}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      {/* External Data Integration */}
-      <Card title="External Data Sources">
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-600">Enhance forecasting with external economic and industry data</p>
-            <Button variant="outline" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Data Source
-            </Button>
-          </div>
-          
-          <div className="space-y-3">
-            {externalDataSources.map(source => (
-              <div key={source.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-3 ${
-                    source.status === 'connected' ? 'bg-[#4ADE80]' : 'bg-[#F87171]'
-                  }`} />
-                  <div>
-                    <p className="font-medium text-[#1E2A38]">{source.name}</p>
-                    <p className="text-sm text-gray-600">
-                      {source.status === 'connected' 
-                        ? `Last sync: ${source.lastSync?.toLocaleString()}`
-                        : 'Not connected'
-                      }
-                    </p>
-                  </div>
-                </div>
-                <Button variant="outline" size="sm">
-                  {source.status === 'connected' ? 'Configure' : 'Connect'}
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      {/* Forecast Reconciliation */}
-      <Card title="Automated Forecast Reconciliation">
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-              <h4 className="font-semibold text-[#1E2A38] mb-2">Top-Down Forecast</h4>
-              <p className="text-2xl font-bold text-[#3AB7BF]">${(forecastReconciliation.topDown / 1000000).toFixed(1)}M</p>
-              <p className="text-sm text-gray-600">Strategic planning perspective</p>
-            </div>
-            
-            <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-              <h4 className="font-semibold text-[#1E2A38] mb-2">Bottom-Up Forecast</h4>
-              <p className="text-2xl font-bold text-[#4ADE80]">${(forecastReconciliation.bottomUp / 1000000).toFixed(1)}M</p>
-              <p className="text-sm text-gray-600">Operational planning perspective</p>
-            </div>
-          </div>
-          
-          <div className="p-4 bg-[#F59E0B]/10 rounded-lg border border-[#F59E0B]/20">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-semibold text-[#1E2A38]">Variance Analysis</h4>
-              <span className="text-lg font-bold text-[#F59E0B]">
-                ${(forecastReconciliation.variance / 1000000).toFixed(1)}M ({forecastReconciliation.variancePercent}%)
-              </span>
-            </div>
-            <p className="text-sm text-gray-700 mb-3">{forecastReconciliation.recommendation}</p>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">Adjust Top-Down</Button>
-              <Button variant="outline" size="sm">Adjust Bottom-Up</Button>
-              <Button variant="primary" size="sm">Auto-Reconcile</Button>
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Model Performance Trends */}
-      <Card title="Model Performance & Learning Trends">
-        <div className="space-y-4">
-          <div className="relative h-32">
-            <svg className="w-full h-full">
-              <polyline
-                fill="none"
-                stroke="#8B5CF6"
-                strokeWidth="3"
-                points="30,100 90,95 150,92 210,89 270,87 330,85 390,87 450,89"
-              />
-              {[100, 95, 92, 89, 87, 85, 87, 89].map((y, index) => (
-                <circle key={index} cx={30 + index * 60} cy={y} r="4" fill="#8B5CF6" />
-              ))}
-            </svg>
-          </div>
-          
-          <div className="grid grid-cols-4 gap-4 text-center text-sm">
-            <div>
-              <p className="font-bold text-[#8B5CF6]">89.1%</p>
-              <p className="text-gray-600">Current Accuracy</p>
-            </div>
-            <div>
-              <p className="font-bold text-[#4ADE80]">+4.1%</p>
-              <p className="text-gray-600">Improvement (3M)</p>
-            </div>
-            <div>
-              <p className="font-bold text-[#3AB7BF]">24.5K</p>
-              <p className="text-gray-600">Training Points</p>
-            </div>
-            <div>
-              <p className="font-bold text-[#F59E0B]">92%</p>
-              <p className="text-gray-600">Target Accuracy</p>
-            </div>
-          </div>
-        </div>
-      </Card>
-
       {/* Seasonal Analysis */}
-      <Card title="Enhanced Seasonal Pattern Analysis">
+      <Card title="Seasonal Pattern Analysis">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">AI-Enhanced Seasonal Factors</span>
-            <span className="text-sm text-[#8B5CF6] font-medium">Based on 5-year historical data + external factors</span>
+            <span className="text-sm font-medium text-gray-600">Monthly Seasonal Factors</span>
+            <span className="text-sm text-[#8B5CF6] font-medium">Based on 3-year historical data</span>
           </div>
           
           <div className="grid grid-cols-12 gap-2">
@@ -585,8 +417,8 @@ const Forecasting: React.FC = () => {
                 <div 
                   className="w-full rounded-lg mb-2 flex items-end justify-center text-white text-xs font-medium"
                   style={{ 
-                    height: `${40 + Math.abs(pattern.factor - 1) * 80}px`,
-                    backgroundColor: pattern.factor > 1 ? '#4ADE80' : pattern.factor < 0.95 ? '#F87171' : '#F59E0B'
+                    height: `${40 + pattern.factor * 60}px`,
+                    backgroundColor: pattern.factor > 1 ? '#4ADE80' : '#F87171'
                   }}
                 >
                   {(pattern.factor * 100).toFixed(0)}%
@@ -605,23 +437,70 @@ const Forecasting: React.FC = () => {
               <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
               <span className="text-sm text-gray-600">Below Average</span>
             </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#F59E0B] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Neutral</span>
-            </div>
-          </div>
-          
-          <div className="mt-4 p-4 bg-[#8B5CF6]/10 rounded-lg">
-            <h4 className="font-medium text-[#1E2A38] mb-2">AI Seasonal Insights</h4>
-            <ul className="space-y-1 text-sm text-gray-700">
-              <li>• Q2 typically shows 8% revenue dip due to budget cycles</li>
-              <li>• Q3 surge correlates with back-to-school enterprise spending</li>
-              <li>• Holiday season (Nov-Dec) shows consistent 12% decline</li>
-              <li>• External factors: Economic indicators suggest 15% boost in Q2 2025</li>
-            </ul>
           </div>
         </div>
       </Card>
+
+      {/* Model Performance Metrics */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card title="Model Performance">
+          <div className="space-y-4">
+            {forecastModels.map(model => (
+              <div key={model.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center">
+                  <div 
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
+                    style={{ backgroundColor: `${getModelTypeColor(model.type)}20` }}
+                  >
+                    <Brain className="w-4 h-4" style={{ color: getModelTypeColor(model.type) }} />
+                  </div>
+                  <div>
+                    <p className="font-medium text-[#1E2A38]">{model.name}</p>
+                    <p className="text-sm text-gray-600">{getAlgorithmName(model.algorithm)}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-[#8B5CF6]">{model.accuracy}%</p>
+                  <p className="text-xs text-gray-500">accuracy</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card title="Forecast Accuracy Trends">
+          <div className="space-y-4">
+            <div className="relative h-32">
+              <svg className="w-full h-full">
+                <polyline
+                  fill="none"
+                  stroke="#8B5CF6"
+                  strokeWidth="3"
+                  points="30,100 90,95 150,92 210,89 270,87 330,85 390,87 450,89"
+                />
+                {[100, 95, 92, 89, 87, 85, 87, 89].map((y, index) => (
+                  <circle key={index} cx={30 + index * 60} cy={y} r="4" fill="#8B5CF6" />
+                ))}
+              </svg>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4 text-center text-sm">
+              <div>
+                <p className="font-bold text-[#8B5CF6]">87.3%</p>
+                <p className="text-gray-600">Current</p>
+              </div>
+              <div>
+                <p className="font-bold text-[#4ADE80]">+2.1%</p>
+                <p className="text-gray-600">vs Last Month</p>
+              </div>
+              <div>
+                <p className="font-bold text-[#3AB7BF]">89.1%</p>
+                <p className="text-gray-600">Target</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
 
       {/* Model Configuration Modal */}
       {showModelConfig && (
