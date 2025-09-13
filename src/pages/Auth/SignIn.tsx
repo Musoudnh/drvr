@@ -50,13 +50,6 @@ const SignIn: React.FC = () => {
       <div className="relative w-full max-w-md">
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-8 transform transition-all duration-300 hover:shadow-3xl">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-              <Building2 className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-[#1E2A38] mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in to your FinanceFlow account</p>
-          </div>
 
           {/* Error Message */}
           {error && (
