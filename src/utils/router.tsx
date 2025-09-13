@@ -40,6 +40,7 @@ import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
 import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import { Database, GitBranch, Brain } from 'lucide-react';
+import SignIn from '../pages/Auth/SignIn';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
@@ -88,6 +89,14 @@ export const router = createBrowserRouter([
       <ProtectedRoute title="Dashboard">
         <CompanyDashboard />
       </ProtectedRoute>
+    )
+  },
+  {
+    path: "/signin",
+    element: (
+      <PublicRoute>
+        <SignIn />
+      </PublicRoute>
     )
   },
   {
