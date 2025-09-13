@@ -100,6 +100,14 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <SignIn />
+      </PublicRoute>
+    )
+  },
+  {
     path: "/chat",
     element: (
       <ProtectedRoute title="AI Chat">
