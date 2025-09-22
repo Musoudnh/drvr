@@ -863,175 +863,24 @@ const Forecasting: React.FC = () => {
                     </td>
                     {months.map((month, index) => (
                       <td key={index} className="py-3 px-2 text-center">
-                      {/* Headcount Section */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Headcount</label>
-                        <input
-                          type="number"
-                          value={payrollInputs.headcount}
-                          onChange={(e) => setPayrollInputs({...payrollInputs, headcount: parseInt(e.target.value) || 0})}
-                          className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                          placeholder="Number of employees"
-                        />
-                      </div>
-
-                      {/* Salary & Compensation Section */}
-                      <div className="space-y-4">
-                        <h4 className="text-md font-medium text-gray-300">Salary & Compensation</h4>
+                        <div className="space-y-1">
                           <div className="text-[#4ADE80] font-bold">
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Annual Salary</label>
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'revenue').toLocaleString()}
                           </div>
                           <div className="text-[#F87171] font-bold">
-                            value={payrollInputs.avgSalary}
-                            onChange={(e) => setPayrollInputs({...payrollInputs, avgSalary: parseInt(e.target.value) || 0})}
-                          <div className={`font-bold ${getNetProfit(`${month} ${selectedYear}`) >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
-                            placeholder="Average annual salary"
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'expense').toLocaleString()}
                           </div>
-                          {payrollInputs.avgSalary > 0 && (
-                            <p className="text-xs text-gray-400 mt-1">
-                              Monthly: ${(payrollInputs.avgSalary / 12).toLocaleString()}
-                            </p>
-                          )}
+                          <div className={`font-bold ${getNetProfit(`${month} ${selectedYear}`) >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
+                            ${getNetProfit(`${month} ${selectedYear}`).toLocaleString()}
+                          </div>
                         </div>
-                      </div>
-
-                      {/* Benefits & Taxes Section */}
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Payroll Tax Rate (%)</label>
-                        <h4 className="text-md font-medium text-gray-300">Benefits & Taxes</h4>
                       </td>
+                    ))}
+                    <td className="py-3 px-4 text-right">
                       <div className="space-y-1">
-                            placeholder="15.3"
+                        <div className="text-[#4ADE80] font-bold">Revenue</div>
                         <div className="text-[#F87171] font-bold">Expenses</div>
                         <div className="text-[#3AB7BF] font-bold">Net Profit</div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Benefits Rate (%)</label>
-                              step="0.1"
-                              value={payrollInputs.payrollTaxRate}
-                              onChange={(e) => setPayrollInputs({...payrollInputs, payrollTaxRate: parseFloat(e.target.value) || 0})}
-                          <input
-                            type="number"
-                            step="0.1"
-                            value={payrollInputs.benefitsRate}
-                            onChange={(e) => setPayrollInputs({...payrollInputs, benefitsRate: parseFloat(e.target.value) || 0})}
-                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                            placeholder="25.0"
-                          />
-                        </div>
-                        
-                        {/* Total Rate Display */}
-                        <div className="p-3 bg-gray-800 rounded-lg">
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-400">Total Rate:</span>
-                            <span className="text-white font-medium">{(payrollInputs.payrollTaxRate + payrollInputs.benefitsRate).toFixed(1)}%</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* One-Time Bonus Pay Section */}
-                      <div className="space-y-4">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Number of Business Trips</label>
-                          <input
-                            type="number"
-                            value={payrollInputs.bonusAmount}
-                            onChange={(e) => setPayrollInputs({...payrollInputs, bonusAmount: parseInt(e.target.value) || 0})}
-                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                            placeholder="Total trips planned"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Bonus Month</label>
-                          <select
-                            value={payrollInputs.bonusMonth}
-                            onChange={(e) => setPayrollInputs({...payrollInputs, bonusMonth: e.target.value})}
-                            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                          >
-                            <option value="">Select bonus month</option>
-                            {months.map(month => (
-                              <option key={month} value={month}>{month}</option>
-                            ))}
-                          </select>
-                        </div>
-                        
-                        {/* Travel Breakdown */}
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Travel Components</label>
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-xs text-gray-400 mb-1">Airfare per trip</label>
-                              <input
-                                type="number"
-                                value={travelInputs.airfare}
-                                onChange={(e) => setTravelInputs({...travelInputs, airfare: parseInt(e.target.value) || 0})}
-                                className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-1 focus:ring-[#3AB7BF]"
-                                placeholder="Airfare"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-gray-400 mb-1">Hotel per night</label>
-                              <input
-                                type="number"
-                                value={travelInputs.hotel}
-                                onChange={(e) => setTravelInputs({...travelInputs, hotel: parseInt(e.target.value) || 0})}
-                                className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-1 focus:ring-[#3AB7BF]"
-                                placeholder="Hotel"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-gray-400 mb-1">Meals per day</label>
-                              <input
-                                type="number"
-                                value={travelInputs.meals}
-                                onChange={(e) => setTravelInputs({...travelInputs, meals: parseInt(e.target.value) || 0})}
-                                className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-1 focus:ring-[#3AB7BF]"
-                                placeholder="Meals"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs text-gray-400 mb-1">Days per trip</label>
-                              <input
-                                type="number"
-                                value={travelInputs.days}
-                                onChange={(e) => setTravelInputs({...travelInputs, days: parseInt(e.target.value) || 0})}
-                                className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-sm focus:ring-1 focus:ring-[#3AB7BF]"
-                                placeholder="Days"
-                              />
-                            </div>
-                          </div>
-                          
-                          {/* Auto-calculate average trip cost */}
-                          {travelInputs.airfare > 0 && travelInputs.hotel > 0 && travelInputs.meals > 0 && travelInputs.days > 0 && (
-                            <div className="mt-3 p-3 bg-gray-800 rounded-lg">
-                              <div className="text-sm space-y-1">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-400">Calculated Trip Cost:</span>
-                                  <span className="text-white font-medium">
-                                    ${(travelInputs.airfare + (travelInputs.hotel * travelInputs.days) + (travelInputs.meals * travelInputs.days)).toLocaleString()}
-                                  </span>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    const calculatedCost = travelInputs.airfare + (travelInputs.hotel * travelInputs.days) + (travelInputs.meals * travelInputs.days);
-                                    setTravelInputs({...travelInputs, avgCost: calculatedCost});
-                                  }}
-                                  className="text-xs text-[#3AB7BF] hover:underline"
-                                >
-                                  Use calculated cost
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        
-                        {payrollInputs.bonusAmount > 0 && payrollInputs.headcount > 0 && (
-                          <div className="p-3 bg-gray-800 rounded-lg">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-400">Total Bonus Cost:</span>
-                              <span className="text-white font-medium">${(payrollInputs.bonusAmount * payrollInputs.headcount).toLocaleString()}</span>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </td>
                   </tr>
@@ -1243,37 +1092,37 @@ const Forecasting: React.FC = () => {
             
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200">
               <div className="flex justify-end gap-3">
-              <button
-                onClick={() => {
-                  setShowGLScenarioModal(false);
-                  setSelectedGLCode(null);
-                  setGLScenarioForm({
-                    name: '',
-                    startMonth: 'Jan',
-                    endMonth: 'Dec',
-                    headcount: 0,
-                    averageSalary: 0,
-                    payrollTaxRate: 15.3,
-                    benefitsRate: 25,
-                    numberOfTrips: 0,
-                    averageTripCost: 0,
-                    campaignBudget: 0,
-                    numberOfCampaigns: 0,
-                    squareFootage: 0,
-                    pricePerSqFt: 0,
-                    numberOfLicenses: 0,
-                    costPerLicense: 0,
-                    adjustmentType: 'percentage',
-                    adjustmentValue: 0,
-                    description: ''
-                  });
-                }}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
+                <button
+                  onClick={() => {
+                    setShowGLScenarioModal(false);
+                    setSelectedGLCode(null);
+                    setGLScenarioForm({
+                      name: '',
+                      startMonth: 'Jan',
+                      endMonth: 'Dec',
+                      headcount: 0,
+                      averageSalary: 0,
+                      payrollTaxRate: 15.3,
+                      benefitsRate: 25,
+                      numberOfTrips: 0,
+                      averageTripCost: 0,
+                      campaignBudget: 0,
+                      numberOfCampaigns: 0,
+                      squareFootage: 0,
+                      pricePerSqFt: 0,
+                      numberOfLicenses: 0,
+                      costPerLicense: 0,
+                      adjustmentType: 'percentage',
+                      adjustmentValue: 0,
+                      description: ''
+                    });
+                  }}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
                     // Apply the scenario to the forecast data
                     const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
                     const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
@@ -1337,11 +1186,11 @@ const Forecasting: React.FC = () => {
                       description: ''
                     });
                   }}
-                disabled={!glScenarioForm.name.trim() || !isScenarioValid()}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Apply Scenario
-              </button>
+                  disabled={!glScenarioForm.name.trim() || !isScenarioValid()}
+                  className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Apply Scenario
+                </button>
               </div>
             </div>
           </div>
