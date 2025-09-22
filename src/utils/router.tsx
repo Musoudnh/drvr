@@ -111,28 +111,10 @@ export const router = createBrowserRouter([
   {
     path: "/chat",
     element: (
-      <ProtectedRoute title="AI Chat">
-        <ChatLayout />
+      <ProtectedRoute title="Chat">
+        <ChatMain />
       </ProtectedRoute>
-    ),
-    children: [
-      {
-        index: true,
-        element: <ChatMain />
-      },
-      {
-        path: "direct",
-        element: <ChatMain />
-      },
-      {
-        path: "mentions",
-        element: <ChatMain />
-      },
-      {
-        path: "settings",
-        element: <ChatSettings />
-      }
-    ]
+    )
   },
   {
     path: "/admin",
