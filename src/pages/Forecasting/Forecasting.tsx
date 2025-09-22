@@ -661,6 +661,7 @@ const Forecasting: React.FC = () => {
                       </th>
                     ))}
                     <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
+                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -797,6 +798,13 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-right text-sm font-medium">
                                 ${forecastData
                                   .filter(item => item.glCode === glCode.code)
+                                  .slice(0, new Date().getMonth() + 1)
+                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                  .toLocaleString()}
+                              </td>
+                              <td className="py-3 px-4 text-right text-sm font-medium">
+                                ${forecastData
+                                  .filter(item => item.glCode === glCode.code)
                                   .reduce((sum, item) => sum + item.forecastedAmount, 0)
                                   .toLocaleString()}
                               </td>
@@ -805,7 +813,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={months.length + 3} className="py-0">
+                                <td colSpan={months.length + 4} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
                                     <h5 className="font-medium text-[#1E2A38] mb-3">Applied Scenarios for {glCode.name}</h5>
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
