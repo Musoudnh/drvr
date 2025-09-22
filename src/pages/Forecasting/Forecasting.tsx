@@ -160,57 +160,6 @@ const Forecasting: React.FC = () => {
         </div>
       </div>
 
-      {/* Model Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Active Models</p>
-              <p className="text-2xl font-bold text-[#4ADE80] mt-1">{forecastModels.filter(m => m.isActive).length}</p>
-              <p className="text-sm text-gray-600 mt-1">Running forecasts</p>
-            </div>
-            <Brain className="w-8 h-8 text-[#4ADE80]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Avg Accuracy</p>
-              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">
-                {(forecastModels.reduce((sum, m) => sum + m.accuracy, 0) / forecastModels.length).toFixed(1)}%
-              </p>
-              <p className="text-sm text-gray-600 mt-1">Model performance</p>
-            </div>
-            <Target className="w-8 h-8 text-[#3AB7BF]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Predictions</p>
-              <p className="text-2xl font-bold text-[#F59E0B] mt-1">
-                {forecastModels.reduce((sum, m) => sum + m.predictions.length, 0)}
-              </p>
-              <p className="text-sm text-gray-600 mt-1">Generated forecasts</p>
-            </div>
-            <BarChart3 className="w-8 h-8 text-[#F59E0B]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Data Points</p>
-              <p className="text-2xl font-bold text-[#8B5CF6] mt-1">24.5K</p>
-              <p className="text-sm text-gray-600 mt-1">Training data</p>
-            </div>
-            <Database className="w-8 h-8 text-[#8B5CF6]" />
-          </div>
-        </Card>
-      </div>
-
       {/* Forecast Models */}
       <Card title="Forecast Models">
         <div className="space-y-4">
