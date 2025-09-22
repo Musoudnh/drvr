@@ -783,7 +783,8 @@ const Forecasting: React.FC = () => {
                                           )}
                                           className="w-full px-2 py-1 border border-gray-300 rounded text-center text-xs focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
                                         />
-                                      ) : (
+                      {/* Basic Payroll Info */}
+                      <div className="grid grid-cols-1 gap-4">
                                         <span className="font-medium text-[#1E2A38]">
                                           ${monthData.forecastedAmount.toLocaleString()}
                                         </span>
@@ -873,6 +874,189 @@ const Forecasting: React.FC = () => {
                             ${getNetProfit(`${month} ${selectedYear}`).toLocaleString()}
                           </div>
                         </div>
+                      </div>
+                      
+                      {/* Salary Section */}
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <h5 className="font-medium text-[#1E2A38] mb-3">Salary & Compensation</h5>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Bonus Month</label>
+                            <select
+                              value={scenarioForm.payrollDetails.bonusMonth}
+                              onChange={(e) => setScenarioForm({
+                                ...scenarioForm,
+                                payrollDetails: { ...scenarioForm.payrollDetails, bonusMonth: e.target.value }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                            >
+                              <option value="">Select month</option>
+                              {months.map(month => (
+                                <option key={month} value={month}>{month}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                        {scenarioForm.payrollDetails.bonusAmount > 0 && scenarioForm.payrollDetails.bonusMonth && (
+                          <div className="mt-3 p-3 bg-white rounded border border-yellow-300">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-600">Total Bonus Cost:</span>
+                              <span className="font-bold text-yellow-700">
+                                ${((scenarioForm.payrollDetails.bonusAmount || 0) * (scenarioForm.payrollDetails.headcount || 0)).toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="flex justify-between text-xs text-gray-500 mt-1">
+                              <span>Applied to {scenarioForm.payrollDetails.bonusMonth}</span>
+                              <span>{scenarioForm.payrollDetails.headcount} employees</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Travel GL Codes (6500) */}
+                  {selectedGLCode === 6500 && (
+                    <div className="space-y-4">
+                      <h4 className="font-semibold text-[#1E2A38]">Travel & Entertainment Details</h4>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Number of Trips</label>
+                          <input
+                            type="number"
+                            value={scenarioForm.travelDetails.trips}
+                            onChange={(e) => setScenarioForm({
+                              ...scenarioForm,
+                              travelDetails: { ...scenarioForm.travelDetails, trips: parseInt(e.target.value) || 0 }
+                            })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                            placeholder="12"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Average Cost per Trip</label>
+                            <input
+                              type="number"
+                              value={scenarioForm.travelDetails.avgCost}
+                              onChange={(e) => setScenarioForm({
+                                ...scenarioForm,
+                                travelDetails: { ...scenarioForm.travelDetails, avgCost: parseInt(e.target.value) || 0 }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                              placeholder="2500"
+                            />
+                          </div>
+                          <div>
+                      
+                      <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Monthly Travel Cost:</span>
+                          <span className="font-bold text-blue-700">
+                            ${Math.round(((scenarioForm.travelDetails.trips || 0) * (scenarioForm.travelDetails.avgCost || 0)) / 12).toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Salary</label>
+                            <input
+                              type="text"
+                              value={`$${Math.round((scenarioForm.payrollDetails.avgSalary || 0) / 12).toLocaleString()}`}
+                              readOnly
+                              className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Benefits Section */}
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <h5 className="font-medium text-[#1E2A38] mb-3">Benefits & Taxes</h5>
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Payroll Tax Rate (%)</label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                value={scenarioForm.payrollDetails.payrollTaxRate}
+                                onChange={(e) => setScenarioForm({
+                                  ...scenarioForm,
+                                  payrollDetails: { ...scenarioForm.payrollDetails, payrollTaxRate: parseFloat(e.target.value) || 0 }
+                                })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                                placeholder="15.3"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Benefits Rate (%)</label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                value={scenarioForm.payrollDetails.benefitsRate}
+                                onChange={(e) => setScenarioForm({
+                                  ...scenarioForm,
+                                  payrollDetails: { ...scenarioForm.payrollDetails, benefitsRate: parseFloat(e.target.value) || 0 }
+                                })}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                                placeholder="25.0"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Total Rate (%)</label>
+                              <input
+                                type="text"
+                                value={`${(scenarioForm.payrollDetails.payrollTaxRate + scenarioForm.payrollDetails.benefitsRate).toFixed(1)}%`}
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-600"
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* Rate Breakdown */}
+                          <div className="bg-white rounded-lg p-3 border border-gray-200">
+                            <h6 className="text-sm font-medium text-gray-700 mb-2">Monthly Cost Breakdown</h6>
+                            <div className="space-y-1 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Base Salary:</span>
+                                <span className="font-medium">${Math.round(((scenarioForm.payrollDetails.avgSalary || 0) / 12) * (scenarioForm.payrollDetails.headcount || 0)).toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Payroll Taxes ({scenarioForm.payrollDetails.payrollTaxRate}%):</span>
+                                <span className="font-medium">${Math.round(((scenarioForm.payrollDetails.avgSalary || 0) / 12) * (scenarioForm.payrollDetails.headcount || 0) * (scenarioForm.payrollDetails.payrollTaxRate / 100)).toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-600">Benefits ({scenarioForm.payrollDetails.benefitsRate}%):</span>
+                                <span className="font-medium">${Math.round(((scenarioForm.payrollDetails.avgSalary || 0) / 12) * (scenarioForm.payrollDetails.headcount || 0) * (scenarioForm.payrollDetails.benefitsRate / 100)).toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between pt-2 border-t border-gray-200">
+                                <span className="font-medium text-gray-700">Total Monthly:</span>
+                                <span className="font-bold text-[#8B5CF6]">${Math.round(((scenarioForm.payrollDetails.avgSalary || 0) / 12) * (scenarioForm.payrollDetails.headcount || 0) * (1 + (scenarioForm.payrollDetails.payrollTaxRate + scenarioForm.payrollDetails.benefitsRate) / 100)).toLocaleString()}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* One-Time Bonus Section */}
+                      <div className="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                        <h5 className="font-medium text-[#1E2A38] mb-3 flex items-center">
+                          <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                          One-Time Bonus Pay
+                        </h5>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Bonus Amount per Employee</label>
+                            <input
+                              type="number"
+                              value={scenarioForm.payrollDetails.bonusAmount}
+                              onChange={(e) => setScenarioForm({
+                                ...scenarioForm,
+                                payrollDetails: { ...scenarioForm.payrollDetails, bonusAmount: parseInt(e.target.value) || 0 }
+                              })}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
+                              placeholder="5000"
+                            />
+                          </div>
                       </td>
                     ))}
                     <td className="py-3 px-4 text-right">
