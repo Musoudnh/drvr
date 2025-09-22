@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Hash, Users, Sparkles, MessageSquare, Send, Paperclip, Smile, Settings, Search, Lock } from 'lucide-react';
+import { X, Plus, Hash, Users, Sparkles, MessageSquare, Send, Paperclip, Smile, Settings, Search, Lock, FileText } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
 import Button from '../UI/Button';
 
