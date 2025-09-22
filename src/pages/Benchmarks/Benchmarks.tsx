@@ -1207,39 +1207,6 @@ const Benchmarks: React.FC = () => {
                 >
                   Cancel
                 </button>
-                <Button
-                  variant="primary"
-                  onClick={handleSetupNext}
-                  className="flex items-center"
-                >
-                  {setupStep < 1 ? (
-                    <>
-                      Next
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </>
-                  ) : (
-                    'Complete Setup'
-                  )}
-                </Button>
-                <button
-                  onClick={handleSetupNext}
-                  className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200 flex items-center"
-                  style={{
-                    backgroundColor: '#212B36',
-                    borderRadius: '12px',
-                    fontSize: '14px',
-                    fontWeight: '500'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#1a2028';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#212B36';
-                  }}
-                >
-                  {setupStep < 1 ? (
-                    <>
-                      Next
                       <ChevronRight className="w-4 h-4 ml-2" />
                     </>
                   ) : (
