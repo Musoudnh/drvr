@@ -518,18 +518,6 @@ const TasksProjects: React.FC = () => {
               <Grid3X3 className="w-4 h-4 mr-2" />
               Native Task Board
             </button>
-            <button
-              onClick={() => setActiveTab('monday')}
-              disabled={isDraggingTask}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'monday'
-                  ? 'border-[#FF6B6B] text-[#FF6B6B]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <div className="w-4 h-4 bg-[#FF6B6B] rounded mr-2" />
-              Monday.com Board
-            </button>
             {connectedBoards.map(board => (
               <button
                 key={board.id}
@@ -612,7 +600,6 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'monday' && renderIntegrationTab('monday')}
           {connectedBoards.map(board => (
             activeTab === board.id && (
               <div key={board.id}>
