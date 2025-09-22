@@ -518,6 +518,18 @@ const TasksProjects: React.FC = () => {
       {/* Tab Navigation */}
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
         <button
+          onClick={() => setActiveTab('native')}
+          disabled={isDraggingTask}
+          className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
+            activeTab === 'native'
+              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              : 'text-gray-600 hover:text-gray-900'
+          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          <Grid3X3 className="w-4 h-4 mr-2" />
+          Native Task Board
+        </button>
+        <button
           onClick={() => setActiveTab('clickup')}
           disabled={isDraggingTask}
           className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
@@ -540,18 +552,6 @@ const TasksProjects: React.FC = () => {
         >
           <div className="w-4 h-4 bg-[#FF6B6B] rounded mr-2" />
           Monday.com Board
-        </button>
-        <button
-          onClick={() => setActiveTab('native')}
-          disabled={isDraggingTask}
-          className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
-            activeTab === 'native'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
-          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          <Grid3X3 className="w-4 h-4 mr-2" />
-          Native Task Board
         </button>
       </div>
 
