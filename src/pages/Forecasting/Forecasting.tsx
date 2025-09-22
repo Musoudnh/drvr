@@ -887,6 +887,7 @@ const Forecasting: React.FC = () => {
               </table>
             </div>
           </Card>
+        </div>
 
       {/* GL Code Scenario Modal */}
       {showGLScenarioModal && selectedGLCode && (
