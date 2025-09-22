@@ -29,433 +29,490 @@ import {
   Target,
   Zap,
   RefreshCw,
-  X
+  X,
+  Plus
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
-interface ReportData {
-  summaryCards: {
-    revenue: { value: string; change: string; trend: 'up' | 'down' | 'stable' };
-    grossMargin: { value: string; change: string; trend: 'up' | 'down' | 'stable' };
-    ebitda: { value: string; change: string; trend: 'up' | 'down' | 'stable' };
-    netIncome: { value: string; change: string; trend: 'up' | 'down' | 'stable' };
-  };
-  chartData: any[];
-  tableData: any[];
-  insights: string[];
+interface ReportItem {
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ElementType;
+  category: string;
+  lastGenerated?: string;
+  size?: string;
 }
 
-interface AIInsight {
+interface ReportCategory {
   id: string;
-  type: 'trend' | 'risk' | 'opportunity' | 'recommendation';
-  title: string;
-  description: string;
-  impact: 'high' | 'medium' | 'low';
-  metrics: string[];
+  name: string;
+  icon: React.ElementType;
+  reports: ReportItem[];
+  expanded: boolean;
+}
+
+interface ExportSettings {
+  format: 'pdf' | 'excel' | 'csv';
+  showAccountNumbers: boolean;
+  showDecimals: boolean;
+  collapseSubaccounts: boolean;
+  includeAIInsights: boolean;
+  dateRange: string;
+  entity: string;
 }
 
 const Reports: React.FC = () => {
-  const [selectedReport, setSelectedReport] = useState('profit-loss');
-  const [dateRange, setDateRange] = useState('current-year');
-  const [selectedEntity, setSelectedEntity] = useState('all');
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const [showFilters, setShowFilters] = useState(false);
-  const [showShareModal, setShowShareModal] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<ReportItem | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(['business-overview']);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
-  const [expandedRows, setExpandedRows] = useState<string[]>([]);
-  const [savedViews, setSavedViews] = useState([
-    { id: '1', name: 'Board Report Q4', filters: { dateRange: 'q4-2024', entity: 'all' } },
-    { id: '2', name: 'Monthly Executive Summary', filters: { dateRange: 'current-month', entity: 'all' } }
+  const [dateRange, setDateRange] = useState('current-month');
+  const [accountingMethod, setAccountingMethod] = useState('accrual');
+  const [selectedEntity, setSelectedEntity] = useState('all');
+  const [exportSettings, setExportSettings] = useState<ExportSettings>({
+    format: 'pdf',
+    showAccountNumbers: true,
+    showDecimals: true,
+    collapseSubaccounts: false,
+    includeAIInsights: true,
+    dateRange: 'current-month',
+    entity: 'all'
+  });
+
+  const [reportCategories, setReportCategories] = useState<ReportCategory[]>([
+    {
+      id: 'business-overview',
+      name: 'Business Overview',
+      icon: BarChart3,
+      expanded: true,
+      reports: [
+        {
+          id: 'profit-loss',
+          name: 'Profit & Loss',
+          description: 'Income statement showing revenue, expenses, and net income',
+          icon: TrendingUp,
+          category: 'business-overview',
+          lastGenerated: '2 hours ago',
+          size: '2.4 MB'
+        },
+        {
+          id: 'balance-sheet',
+          name: 'Balance Sheet',
+          description: 'Assets, liabilities, and equity at a point in time',
+          icon: BarChart3,
+          category: 'business-overview',
+          lastGenerated: '2 hours ago',
+          size: '1.8 MB'
+        },
+        {
+          id: 'cash-flow',
+          name: 'Cash Flow Statement',
+          description: 'Cash inflows and outflows from operations, investing, and financing',
+          icon: DollarSign,
+          category: 'business-overview',
+          lastGenerated: '3 hours ago',
+          size: '1.5 MB'
+        }
+      ]
+    },
+    {
+      id: 'sales',
+      name: 'Sales',
+      icon: TrendingUp,
+      expanded: false,
+      reports: [
+        {
+          id: 'revenue-by-product',
+          name: 'Revenue by Product',
+          description: 'Revenue breakdown by product lines and services',
+          icon: PieChart,
+          category: 'sales',
+          lastGenerated: '4 hours ago',
+          size: '1.2 MB'
+        },
+        {
+          id: 'ar-aging',
+          name: 'Accounts Receivable Aging',
+          description: 'Outstanding customer invoices by age',
+          icon: Clock,
+          category: 'sales',
+          lastGenerated: '6 hours ago',
+          size: '890 KB'
+        },
+        {
+          id: 'customer-analysis',
+          name: 'Customer Analysis',
+          description: 'Customer profitability and lifetime value analysis',
+          icon: Users,
+          category: 'sales',
+          lastGenerated: '1 day ago',
+          size: '1.7 MB'
+        }
+      ]
+    },
+    {
+      id: 'expenses',
+      name: 'Expenses',
+      icon: DollarSign,
+      expanded: false,
+      reports: [
+        {
+          id: 'ap-aging',
+          name: 'Accounts Payable Aging',
+          description: 'Outstanding vendor bills by age',
+          icon: Clock,
+          category: 'expenses',
+          lastGenerated: '5 hours ago',
+          size: '750 KB'
+        },
+        {
+          id: 'expenses-by-vendor',
+          name: 'Expenses by Vendor',
+          description: 'Expense breakdown by vendor and category',
+          icon: Building,
+          category: 'expenses',
+          lastGenerated: '8 hours ago',
+          size: '1.1 MB'
+        },
+        {
+          id: 'expense-trends',
+          name: 'Expense Trends',
+          description: 'Monthly expense trends and variance analysis',
+          icon: BarChart3,
+          category: 'expenses',
+          lastGenerated: '1 day ago',
+          size: '1.3 MB'
+        }
+      ]
+    },
+    {
+      id: 'forecasting',
+      name: 'Forecasting',
+      icon: Target,
+      expanded: false,
+      reports: [
+        {
+          id: 'forecast-vs-actual',
+          name: 'Forecast vs. Actual',
+          description: 'Budget variance analysis and performance tracking',
+          icon: Target,
+          category: 'forecasting',
+          lastGenerated: '3 hours ago',
+          size: '2.1 MB'
+        },
+        {
+          id: 'scenario-analysis',
+          name: 'Scenario Analysis',
+          description: 'Multiple scenario comparisons and projections',
+          icon: BarChart3,
+          category: 'forecasting',
+          lastGenerated: '1 day ago',
+          size: '1.9 MB'
+        },
+        {
+          id: 'cash-flow-forecast',
+          name: 'Cash Flow Forecast',
+          description: '13-week rolling cash flow projections',
+          icon: DollarSign,
+          category: 'forecasting',
+          lastGenerated: '6 hours ago',
+          size: '1.4 MB'
+        }
+      ]
+    },
+    {
+      id: 'kpis-ratios',
+      name: 'KPIs & Ratios',
+      icon: PieChart,
+      expanded: false,
+      reports: [
+        {
+          id: 'financial-ratios',
+          name: 'Financial Ratios',
+          description: 'Liquidity, profitability, and efficiency ratios',
+          icon: PieChart,
+          category: 'kpis-ratios',
+          lastGenerated: '4 hours ago',
+          size: '1.6 MB'
+        },
+        {
+          id: 'customer-metrics',
+          name: 'Customer Metrics',
+          description: 'CAC, LTV, ARPU, churn rate, and retention analysis',
+          icon: Users,
+          category: 'kpis-ratios',
+          lastGenerated: '2 hours ago',
+          size: '1.8 MB'
+        },
+        {
+          id: 'operational-kpis',
+          name: 'Operational KPIs',
+          description: 'Revenue per employee, margin trends, and efficiency metrics',
+          icon: BarChart3,
+          category: 'kpis-ratios',
+          lastGenerated: '5 hours ago',
+          size: '1.3 MB'
+        }
+      ]
+    }
   ]);
 
-  const reportTypes = [
-    { id: 'profit-loss', name: 'Profit & Loss', icon: TrendingUp, description: 'Income statement and profitability analysis' },
-    { id: 'balance-sheet', name: 'Balance Sheet', icon: BarChart3, description: 'Assets, liabilities, and equity overview' },
-    { id: 'cash-flow', name: 'Cash Flow', icon: DollarSign, description: 'Cash inflows and outflows analysis' },
-    { id: 'forecast-actual', name: 'Forecast vs. Actuals', icon: Target, description: 'Budget variance and performance tracking' },
-    { id: 'kpis-ratios', name: 'KPIs & Ratios', icon: PieChart, description: 'Key performance indicators and financial ratios' },
-    { id: 'custom', name: 'Custom Reports', icon: Settings, description: 'User-generated report templates' }
-  ];
-
-  const dateRanges = [
-    { value: 'current-month', label: 'Current Month' },
-    { value: 'current-quarter', label: 'Current Quarter' },
-    { value: 'current-year', label: 'Current Year' },
-    { value: 'last-month', label: 'Last Month' },
-    { value: 'last-quarter', label: 'Last Quarter' },
-    { value: 'last-year', label: 'Last Year' },
-    { value: 'ytd', label: 'Year to Date' },
-    { value: 'custom', label: 'Custom Range' }
-  ];
-
-  const entities = [
-    { value: 'all', label: 'All Entities' },
-    { value: 'parent', label: 'Parent Company' },
-    { value: 'subsidiary-1', label: 'Subsidiary 1' },
-    { value: 'subsidiary-2', label: 'Subsidiary 2' }
-  ];
-
-  const currencies = [
-    { value: 'USD', label: 'USD ($)' },
-    { value: 'EUR', label: 'EUR (€)' },
-    { value: 'GBP', label: 'GBP (£)' },
-    { value: 'CAD', label: 'CAD (C$)' }
-  ];
-
-  const [aiInsights] = useState<AIInsight[]>([
-    {
-      id: '1',
-      type: 'trend',
-      title: 'Revenue Growth Acceleration',
-      description: 'Revenue growth has accelerated to 15.4% YoY, outpacing industry average of 12.1%. This trend is driven by strong performance in enterprise sales.',
-      impact: 'high',
-      metrics: ['revenue', 'growth-rate']
-    },
-    {
-      id: '2',
-      type: 'risk',
-      title: 'Operating Expense Increase',
-      description: 'Operating expenses have increased 18% QoQ, primarily due to headcount expansion. Monitor burn rate closely.',
-      impact: 'medium',
-      metrics: ['opex', 'burn-rate']
-    },
-    {
-      id: '3',
-      type: 'opportunity',
-      title: 'Margin Expansion Potential',
-      description: 'Gross margins improved to 62.1%. Consider strategic pricing adjustments to capture additional value.',
-      impact: 'medium',
-      metrics: ['gross-margin', 'pricing']
-    },
-    {
-      id: '4',
-      type: 'recommendation',
-      title: 'Cash Flow Optimization',
-      description: 'Implement automated invoicing to reduce DSO from 45 to 35 days, improving cash flow by $245K.',
-      impact: 'high',
-      metrics: ['dso', 'cash-flow']
-    }
-  ]);
-
-  const getReportData = (reportType: string): ReportData => {
-    switch (reportType) {
-      case 'profit-loss':
-        return {
-          summaryCards: {
-            revenue: { value: '$6,595,000', change: '+15.4%', trend: 'up' },
-            grossMargin: { value: '62.1%', change: '+3.2%', trend: 'up' },
-            ebitda: { value: '$1,847,500', change: '+22.8%', trend: 'up' },
-            netIncome: { value: '$975,000', change: '+28.4%', trend: 'up' }
-          },
-          chartData: [],
-          tableData: [
-            { category: 'Revenue', subcategories: [
-              { name: 'Product Sales', amount: 5076000, percentage: 77.0 },
-              { name: 'Service Revenue', amount: 1124500, percentage: 17.0 },
-              { name: 'Other Income', amount: 394500, percentage: 6.0 }
-            ]},
-            { category: 'Cost of Goods Sold', subcategories: [
-              { name: 'Materials & Supplies', amount: -1690400, percentage: 55.0 },
-              { name: 'Direct Labor', amount: -913600, percentage: 29.7 },
-              { name: 'Manufacturing Overhead', amount: -469000, percentage: 15.3 }
-            ]},
-            { category: 'Operating Expenses', subcategories: [
-              { name: 'Salaries & Benefits', amount: -970400, percentage: 48.0 },
-              { name: 'Marketing & Advertising', amount: -313600, percentage: 15.5 },
-              { name: 'Rent & Utilities', amount: -249000, percentage: 12.3 }
-            ]}
-          ],
-          insights: [
-            'Revenue growth accelerated to 15.4% YoY',
-            'Gross margin improved by 3.2 percentage points',
-            'Operating leverage driving EBITDA expansion'
-          ]
-        };
-      case 'balance-sheet':
-        return {
-          summaryCards: {
-            revenue: { value: '$2,847,500', change: '+8.3%', trend: 'up' },
-            grossMargin: { value: '$1,245,800', change: '+2.1%', trend: 'up' },
-            ebitda: { value: '$1,601,700', change: '+12.7%', trend: 'up' },
-            netIncome: { value: '2.19', change: '+0.15', trend: 'up' }
-          },
-          chartData: [],
-          tableData: [
-            { category: 'Current Assets', subcategories: [
-              { name: 'Cash & Cash Equivalents', amount: 485200, percentage: 48.1 },
-              { name: 'Accounts Receivable', amount: 324800, percentage: 32.2 },
-              { name: 'Inventory', amount: 156300, percentage: 15.5 }
-            ]},
-            { category: 'Non-Current Assets', subcategories: [
-              { name: 'Property, Plant & Equipment', amount: 1245600, percentage: 67.7 },
-              { name: 'Intangible Assets', amount: 425800, percentage: 23.2 },
-              { name: 'Investments', amount: 167700, percentage: 9.1 }
-            ]}
-          ],
-          insights: [
-            'Strong liquidity position with current ratio of 2.19',
-            'Asset base growing to support expansion',
-            'Healthy balance sheet structure'
-          ]
-        };
-      case 'cash-flow':
-        return {
-          summaryCards: {
-            revenue: { value: '$847,500', change: '+12.5%', trend: 'up' },
-            grossMargin: { value: '$623,200', change: '+8.3%', trend: 'up' },
-            ebitda: { value: '$224,300', change: '+18.7%', trend: 'up' },
-            netIncome: { value: '8.2', change: '+1.2', trend: 'up' }
-          },
-          chartData: [],
-          tableData: [
-            { category: 'Operating Activities', subcategories: [
-              { name: 'Net Income', amount: 224300, percentage: 71.0 },
-              { name: 'Depreciation', amount: 45600, percentage: 14.4 },
-              { name: 'Working Capital Changes', amount: 45990, percentage: 14.6 }
-            ]},
-            { category: 'Investing Activities', subcategories: [
-              { name: 'Capital Expenditures', amount: -285400, percentage: 63.3 },
-              { name: 'Asset Purchases', amount: -165325, percentage: 36.7 }
-            ]}
-          ],
-          insights: [
-            'Strong operating cash flow generation',
-            'Heavy investment in growth initiatives',
-            'Healthy cash runway of 8.2 months'
-          ]
-        };
-      default:
-        return {
-          summaryCards: {
-            revenue: { value: '$0', change: '0%', trend: 'stable' },
-            grossMargin: { value: '0%', change: '0%', trend: 'stable' },
-            ebitda: { value: '$0', change: '0%', trend: 'stable' },
-            netIncome: { value: '$0', change: '0%', trend: 'stable' }
-          },
-          chartData: [],
-          tableData: [],
-          insights: []
-        };
-    }
-  };
-
-  const currentReportData = getReportData(selectedReport);
-
-  const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case 'up': return ArrowUp;
-      case 'down': return ArrowDown;
-      default: return Minus;
-    }
-  };
-
-  const getTrendColor = (trend: string) => {
-    switch (trend) {
-      case 'up': return '#4ADE80';
-      case 'down': return '#F87171';
-      default: return '#F59E0B';
-    }
-  };
-
-  const getInsightIcon = (type: string) => {
-    switch (type) {
-      case 'trend': return TrendingUp;
-      case 'risk': return AlertTriangle;
-      case 'opportunity': return Target;
-      default: return Info;
-    }
-  };
-
-  const getInsightColor = (type: string) => {
-    switch (type) {
-      case 'trend': return '#3AB7BF';
-      case 'risk': return '#F87171';
-      case 'opportunity': return '#4ADE80';
-      default: return '#8B5CF6';
-    }
-  };
-
-  const toggleRowExpansion = (rowId: string) => {
-    setExpandedRows(prev =>
-      prev.includes(rowId)
-        ? prev.filter(id => id !== rowId)
-        : [...prev, rowId]
+  const toggleCategory = (categoryId: string) => {
+    setReportCategories(prev => prev.map(category =>
+      category.id === categoryId
+        ? { ...category, expanded: !category.expanded }
+        : category
+    ));
+    setExpandedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
     );
   };
 
-  const handleSaveView = () => {
-    const viewName = prompt('Enter a name for this view:');
-    if (viewName) {
-      const newView = {
-        id: Date.now().toString(),
-        name: viewName,
-        filters: { dateRange, entity: selectedEntity, currency: selectedCurrency, report: selectedReport }
-      };
-      setSavedViews(prev => [...prev, newView]);
-    }
+  const handleReportSelect = (report: ReportItem) => {
+    setSelectedReport(report);
   };
 
-  const renderSummaryCards = () => {
-    const cards = [
-      { label: 'Revenue', data: currentReportData.summaryCards.revenue, icon: DollarSign },
-      { label: 'Gross Margin', data: currentReportData.summaryCards.grossMargin, icon: TrendingUp },
-      { label: 'EBITDA', data: currentReportData.summaryCards.ebitda, icon: BarChart3 },
-      { label: 'Net Income', data: currentReportData.summaryCards.netIncome, icon: PieChart }
-    ];
+  const handleExport = () => {
+    console.log('Exporting report with settings:', exportSettings);
+    // Simulate export process
+    setTimeout(() => {
+      alert(`Report exported as ${exportSettings.format.toUpperCase()}`);
+      setShowExportModal(false);
+    }, 1000);
+  };
+
+  const renderReportContent = () => {
+    if (!selectedReport) {
+      return (
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-500 mb-2">Select a Report</h3>
+            <p className="text-gray-400">Choose a report from the sidebar to view its content</p>
+          </div>
+        </div>
+      );
+    }
+
+    // Mock data based on selected report
+    const getMockData = () => {
+      switch (selectedReport.id) {
+        case 'profit-loss':
+          return {
+            summaryCards: [
+              { label: 'Total Revenue', value: '$6,595,000', change: '+15.4%', trend: 'up' },
+              { label: 'Gross Margin', value: '62.1%', change: '+3.2%', trend: 'up' },
+              { label: 'EBITDA', value: '$1,847,500', change: '+22.8%', trend: 'up' },
+              { label: 'Net Income', value: '$975,000', change: '+28.4%', trend: 'up' }
+            ],
+            tableData: [
+              { category: 'Revenue', amount: 6595000, variance: 15.4, subcategories: [
+                { name: 'Product Sales', amount: 5076000, variance: 12.8 },
+                { name: 'Service Revenue', amount: 1124500, variance: 23.1 },
+                { name: 'Other Income', amount: 394500, variance: 8.7 }
+              ]},
+              { category: 'Cost of Goods Sold', amount: -3073000, variance: 8.2, subcategories: [
+                { name: 'Materials', amount: -1690400, variance: 6.5 },
+                { name: 'Labor', amount: -913600, variance: 12.3 },
+                { name: 'Overhead', amount: -469000, variance: 4.8 }
+              ]},
+              { category: 'Operating Expenses', amount: -2021400, variance: 11.7, subcategories: [
+                { name: 'Salaries & Benefits', amount: -970400, variance: 8.9 },
+                { name: 'Marketing', amount: -313600, variance: 23.5 },
+                { name: 'Rent & Utilities', amount: -249000, variance: 3.2 }
+              ]}
+            ]
+          };
+        case 'balance-sheet':
+          return {
+            summaryCards: [
+              { label: 'Total Assets', value: '$2,847,500', change: '+8.3%', trend: 'up' },
+              { label: 'Total Liabilities', value: '$1,245,800', change: '+2.1%', trend: 'up' },
+              { label: 'Shareholders Equity', value: '$1,601,700', change: '+12.7%', trend: 'up' },
+              { label: 'Current Ratio', value: '2.19', change: '+0.15', trend: 'up' }
+            ],
+            tableData: [
+              { category: 'Current Assets', amount: 1008400, variance: 12.5, subcategories: [
+                { name: 'Cash & Equivalents', amount: 485200, variance: 18.3 },
+                { name: 'Accounts Receivable', amount: 324800, variance: 8.7 },
+                { name: 'Inventory', amount: 156300, variance: 5.2 }
+              ]},
+              { category: 'Non-Current Assets', amount: 1839100, variance: 6.8, subcategories: [
+                { name: 'Property & Equipment', amount: 1245600, variance: 4.2 },
+                { name: 'Intangible Assets', amount: 425800, variance: 12.8 },
+                { name: 'Investments', amount: 167700, variance: 8.9 }
+              ]}
+            ]
+          };
+        default:
+          return {
+            summaryCards: [
+              { label: 'Key Metric 1', value: '$0', change: '0%', trend: 'stable' },
+              { label: 'Key Metric 2', value: '$0', change: '0%', trend: 'stable' },
+              { label: 'Key Metric 3', value: '$0', change: '0%', trend: 'stable' },
+              { label: 'Key Metric 4', value: '$0', change: '0%', trend: 'stable' }
+            ],
+            tableData: []
+          };
+      }
+    };
+
+    const reportData = getMockData();
 
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {cards.map((card, index) => {
-          const TrendIcon = getTrendIcon(card.data.trend);
-          const trendColor = getTrendColor(card.data.trend);
-          
-          return (
-            <Card key={index}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 mb-2">{card.label}</p>
-                  <p className="text-2xl font-bold text-[#1E2A38]">{card.data.value}</p>
-                  <div className="flex items-center mt-2">
-                    <TrendIcon className="w-4 h-4 mr-1" style={{ color: trendColor }} />
-                    <span className="text-sm font-medium" style={{ color: trendColor }}>
-                      {card.data.change}
-                    </span>
+      <div className="space-y-6">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {reportData.summaryCards.map((card, index) => {
+            const getTrendIcon = (trend: string) => {
+              switch (trend) {
+                case 'up': return ArrowUp;
+                case 'down': return ArrowDown;
+                default: return Minus;
+              }
+            };
+            
+            const getTrendColor = (trend: string) => {
+              switch (trend) {
+                case 'up': return '#4ADE80';
+                case 'down': return '#F87171';
+                default: return '#F59E0B';
+              }
+            };
+            
+            const TrendIcon = getTrendIcon(card.trend);
+            const trendColor = getTrendColor(card.trend);
+            
+            return (
+              <Card key={index}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-2">{card.label}</p>
+                    <p className="text-2xl font-bold text-[#1E2A38]">{card.value}</p>
+                    <div className="flex items-center mt-2">
+                      <TrendIcon className="w-4 h-4 mr-1" style={{ color: trendColor }} />
+                      <span className="text-sm font-medium" style={{ color: trendColor }}>
+                        {card.change}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="w-12 h-12 bg-[#3AB7BF]/10 rounded-lg flex items-center justify-center">
-                  <card.icon className="w-6 h-6 text-[#3AB7BF]" />
-                </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Interactive Chart */}
+        <Card title="Performance Trend">
+          <div className="relative h-64">
+            <svg className="w-full h-full">
+              {/* Actual data line */}
+              <polyline
+                fill="none"
+                stroke="#3AB7BF"
+                strokeWidth="3"
+                points="50,180 150,160 250,140 350,120 450,100 550,80 650,60"
+              />
+              {/* Data points */}
+              {[180, 160, 140, 120, 100, 80, 60].map((y, index) => (
+                <circle key={index} cx={50 + index * 100} cy={y} r="4" fill="#3AB7BF" />
+              ))}
+              
+              {/* Forecast line (dashed) */}
+              <polyline
+                fill="none"
+                stroke="#8B5CF6"
+                strokeWidth="3"
+                strokeDasharray="5,5"
+                points="650,60 750,45 850,30"
+              />
+              {[45, 30].map((y, index) => (
+                <circle key={index} cx={750 + index * 100} cy={y} r="4" fill="#8B5CF6" />
+              ))}
+            </svg>
+            
+            {/* Chart labels */}
+            <div className="flex justify-between mt-4 text-xs text-gray-500">
+              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'].map((month, index) => (
+                <span key={index}>{month}</span>
+              ))}
+            </div>
+          </div>
+          
+          {/* Legend */}
+          <div className="flex justify-center gap-6 mt-4">
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
+              <span className="text-sm text-gray-600">Actual</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-0.5 bg-[#8B5CF6] mr-2" style={{ borderTop: '3px dashed #8B5CF6' }}></div>
+              <span className="text-sm text-gray-600">Forecast</span>
+            </div>
+          </div>
+        </Card>
+
+        {/* Detailed Data Table */}
+        <Card title="Detailed Breakdown">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Account</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Amount</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">% of Total</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Variance</th>
+                  <th className="text-center py-3 px-4 font-semibold text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reportData.tableData.map((row, index) => (
+                  <React.Fragment key={index}>
+                    <tr className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4">
+                        <button
+                          className="flex items-center font-semibold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                        >
+                          <ChevronRight className="w-4 h-4 mr-2" />
+                          {row.category}
+                        </button>
+                      </td>
+                      <td className="py-3 px-4 text-right font-bold text-[#1E2A38]">
+                        ${Math.abs(row.amount).toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-right text-gray-600">
+                        {((Math.abs(row.amount) / 6595000) * 100).toFixed(1)}%
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <span className={`font-medium ${row.variance > 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
+                          {row.variance > 0 ? '+' : ''}{row.variance.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <Button variant="outline" size="sm">
+                          <Eye className="w-3 h-3 mr-1" />
+                          Details
+                        </Button>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       </div>
     );
   };
-
-  const renderChart = () => (
-    <Card title="Performance Trend" className="mb-8">
-      <div className="relative h-64">
-        <svg className="w-full h-full">
-          {/* Revenue trend line */}
-          <polyline
-            fill="none"
-            stroke="#3AB7BF"
-            strokeWidth="3"
-            points="50,180 150,160 250,140 350,120 450,100 550,80 650,60"
-          />
-          {/* Data points */}
-          {[180, 160, 140, 120, 100, 80, 60].map((y, index) => (
-            <circle key={index} cx={50 + index * 100} cy={y} r="4" fill="#3AB7BF" />
-          ))}
-          
-          {/* Forecast line (dashed) */}
-          <polyline
-            fill="none"
-            stroke="#8B5CF6"
-            strokeWidth="3"
-            strokeDasharray="5,5"
-            points="650,60 750,45 850,30"
-          />
-          {[45, 30].map((y, index) => (
-            <circle key={index} cx={750 + index * 100} cy={y} r="4" fill="#8B5CF6" />
-          ))}
-        </svg>
-        
-        {/* Chart labels */}
-        <div className="flex justify-between mt-4 text-xs text-gray-500">
-          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'].map((month, index) => (
-            <span key={index}>{month}</span>
-          ))}
-        </div>
-      </div>
-      
-      {/* Legend */}
-      <div className="flex justify-center gap-6 mt-4">
-        <div className="flex items-center">
-          <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-          <span className="text-sm text-gray-600">Actual</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-4 h-0.5 bg-[#8B5CF6] mr-2" style={{ borderTop: '3px dashed #8B5CF6' }}></div>
-          <span className="text-sm text-gray-600">Forecast</span>
-        </div>
-      </div>
-    </Card>
-  );
-
-  const renderDetailedTable = () => (
-    <Card title="Detailed Breakdown" className="mb-8">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Category</th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-700">Amount</th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-700">% of Total</th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-700">vs Prior Period</th>
-              <th className="text-center py-3 px-4 font-semibold text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentReportData.tableData.map((row, index) => (
-              <React.Fragment key={index}>
-                <tr className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4">
-                    <button
-                      onClick={() => toggleRowExpansion(row.category)}
-                      className="flex items-center font-semibold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
-                    >
-                      {expandedRows.includes(row.category) ? (
-                        <ChevronDown className="w-4 h-4 mr-2" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 mr-2" />
-                      )}
-                      {row.category}
-                    </button>
-                  </td>
-                  <td className="py-3 px-4 text-right font-bold text-[#1E2A38]">
-                    ${Math.abs(row.subcategories.reduce((sum: number, sub: any) => sum + sub.amount, 0)).toLocaleString()}
-                  </td>
-                  <td className="py-3 px-4 text-right text-gray-600">
-                    {row.subcategories.reduce((sum: number, sub: any) => sum + sub.percentage, 0).toFixed(1)}%
-                  </td>
-                  <td className="py-3 px-4 text-right">
-                    <span className="text-[#4ADE80] font-medium">+12.5%</span>
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <Button variant="outline" size="sm">
-                      <Eye className="w-3 h-3 mr-1" />
-                      Details
-                    </Button>
-                  </td>
-                </tr>
-                
-                {/* Expanded subcategories */}
-                {expandedRows.includes(row.category) && row.subcategories.map((sub: any, subIndex: number) => (
-                  <tr key={`${index}-${subIndex}`} className="bg-gray-50 border-b border-gray-100">
-                    <td className="py-2 px-4 pl-12 text-sm text-gray-700">{sub.name}</td>
-                    <td className="py-2 px-4 text-right text-sm font-medium">
-                      ${Math.abs(sub.amount).toLocaleString()}
-                    </td>
-                    <td className="py-2 px-4 text-right text-sm text-gray-600">{sub.percentage}%</td>
-                    <td className="py-2 px-4 text-right text-sm text-[#4ADE80]">+8.2%</td>
-                    <td className="py-2 px-4"></td>
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </Card>
-  );
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex h-screen">
-        {/* Report Selector Sidebar */}
+        {/* Left Sidebar - Report Categories */}
         <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
           {/* Sidebar Header */}
           <div className="p-6 border-b border-gray-200">
@@ -463,41 +520,53 @@ const Reports: React.FC = () => {
             <p className="text-sm text-gray-600">View, export, and analyze your financial performance</p>
           </div>
 
-          {/* Report Types */}
+          {/* Report Categories */}
           <div className="flex-1 overflow-y-auto p-4">
             <div className="space-y-2">
-              {reportTypes.map(report => (
-                <button
-                  key={report.id}
-                  onClick={() => setSelectedReport(report.id)}
-                  className={`w-full p-4 rounded-lg text-left transition-all duration-200 ${
-                    selectedReport === report.id
-                      ? 'bg-[#3AB7BF]/10 border border-[#3AB7BF]/20 text-[#3AB7BF]'
-                      : 'hover:bg-gray-50 border border-transparent'
-                  }`}
-                >
-                  <div className="flex items-center mb-2">
-                    <report.icon className="w-5 h-5 mr-3" />
-                    <span className="font-semibold">{report.name}</span>
-                  </div>
-                  <p className="text-xs text-gray-600">{report.description}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Saved Views */}
-          <div className="p-4 border-t border-gray-200">
-            <h3 className="font-semibold text-[#1E2A38] mb-3">Saved Views</h3>
-            <div className="space-y-2">
-              {savedViews.map(view => (
-                <button
-                  key={view.id}
-                  className="w-full p-2 text-left hover:bg-gray-50 rounded text-sm text-gray-700"
-                >
-                  <Save className="w-3 h-3 mr-2 inline" />
-                  {view.name}
-                </button>
+              {reportCategories.map(category => (
+                <div key={category.id} className="mb-4">
+                  <button
+                    onClick={() => toggleCategory(category.id)}
+                    className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center">
+                      <category.icon className="w-5 h-5 text-[#3AB7BF] mr-3" />
+                      <span className="font-semibold text-[#1E2A38]">{category.name}</span>
+                    </div>
+                    {category.expanded ? (
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4 text-gray-400" />
+                    )}
+                  </button>
+                  
+                  {category.expanded && (
+                    <div className="ml-8 mt-2 space-y-1">
+                      {category.reports.map(report => (
+                        <button
+                          key={report.id}
+                          onClick={() => handleReportSelect(report)}
+                          className={`w-full text-left p-3 rounded-lg transition-colors ${
+                            selectedReport?.id === report.id
+                              ? 'bg-[#3AB7BF]/10 border border-[#3AB7BF]/20 text-[#3AB7BF]'
+                              : 'hover:bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-start">
+                            <report.icon className="w-4 h-4 mr-3 mt-0.5 text-gray-400" />
+                            <div className="flex-1">
+                              <h4 className="font-medium text-[#1E2A38] text-sm">{report.name}</h4>
+                              <p className="text-xs text-gray-600 mt-1">{report.description}</p>
+                              {report.lastGenerated && (
+                                <p className="text-xs text-gray-500 mt-1">Updated: {report.lastGenerated}</p>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
@@ -510,10 +579,10 @@ const Reports: React.FC = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="text-2xl font-bold text-[#1E2A38]">
-                  {reportTypes.find(r => r.id === selectedReport)?.name || 'Reports'}
+                  {selectedReport?.name || 'Reports'}
                 </h1>
                 <p className="text-gray-600 mt-1">
-                  {reportTypes.find(r => r.id === selectedReport)?.description}
+                  {selectedReport?.description || 'Select a report to view financial data and insights'}
                 </p>
               </div>
               
@@ -524,9 +593,22 @@ const Reports: React.FC = () => {
                   onChange={(e) => setDateRange(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
-                  {dateRanges.map(range => (
-                    <option key={range.value} value={range.value}>{range.label}</option>
-                  ))}
+                  <option value="current-month">Current Month</option>
+                  <option value="last-month">Last Month</option>
+                  <option value="current-quarter">Current Quarter</option>
+                  <option value="last-quarter">Last Quarter</option>
+                  <option value="current-year">Current Year</option>
+                  <option value="last-year">Last Year</option>
+                  <option value="custom">Custom Range</option>
+                </select>
+                
+                <select
+                  value={accountingMethod}
+                  onChange={(e) => setAccountingMethod(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="accrual">Accrual</option>
+                  <option value="cash">Cash</option>
                 </select>
                 
                 <select
@@ -534,39 +616,25 @@ const Reports: React.FC = () => {
                   onChange={(e) => setSelectedEntity(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
-                  {entities.map(entity => (
-                    <option key={entity.value} value={entity.value}>{entity.label}</option>
-                  ))}
+                  <option value="all">All Entities</option>
+                  <option value="parent">Parent Company</option>
+                  <option value="subsidiary-1">Subsidiary 1</option>
+                  <option value="subsidiary-2">Subsidiary 2</option>
                 </select>
                 
-                <select
-                  value={selectedCurrency}
-                  onChange={(e) => setSelectedCurrency(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                >
-                  {currencies.map(currency => (
-                    <option key={currency.value} value={currency.value}>{currency.label}</option>
-                  ))}
-                </select>
-                
-                <Button variant="outline" onClick={() => setShowFilters(!showFilters)}>
-                  <Filter className="w-4 h-4 mr-2" />
-                  Filters
+                <Button variant="outline" onClick={() => setShowExportModal(true)}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
                 </Button>
                 
-                <Button variant="outline" onClick={handleSaveView}>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save View
-                </Button>
-                
-                <Button variant="outline" onClick={() => setShowShareModal(true)}>
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
+                <Button variant="outline" onClick={() => setShowScheduleModal(true)}>
+                  <Clock className="w-4 h-4 mr-2" />
+                  Schedule
                 </Button>
                 
                 <Button variant="primary">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
                 </Button>
               </div>
             </div>
@@ -576,9 +644,7 @@ const Reports: React.FC = () => {
           <div className="flex-1 flex overflow-hidden">
             {/* Report Display Area */}
             <div className="flex-1 overflow-y-auto p-6">
-              {renderSummaryCards()}
-              {renderChart()}
-              {renderDetailedTable()}
+              {renderReportContent()}
             </div>
 
             {/* AI Insights Panel */}
@@ -597,12 +663,50 @@ const Reports: React.FC = () => {
               </div>
               
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {aiInsights.map(insight => {
+                {[
+                  {
+                    type: 'opportunity',
+                    title: 'Revenue Growth Acceleration',
+                    description: 'Revenue growth has accelerated to 15.4% YoY, outpacing industry average of 12.1%. This trend is driven by strong performance in enterprise sales.',
+                    impact: 'high',
+                    metrics: ['revenue', 'growth-rate']
+                  },
+                  {
+                    type: 'risk',
+                    title: 'Operating Expense Increase',
+                    description: 'Operating expenses have increased 18% QoQ, primarily due to headcount expansion. Monitor burn rate closely.',
+                    impact: 'medium',
+                    metrics: ['opex', 'burn-rate']
+                  },
+                  {
+                    type: 'recommendation',
+                    title: 'Margin Expansion Potential',
+                    description: 'Gross margins improved to 62.1%. Consider strategic pricing adjustments to capture additional value.',
+                    impact: 'medium',
+                    metrics: ['gross-margin', 'pricing']
+                  }
+                ].map((insight, index) => {
+                  const getInsightIcon = (type: string) => {
+                    switch (type) {
+                      case 'opportunity': return TrendingUp;
+                      case 'risk': return AlertTriangle;
+                      default: return Info;
+                    }
+                  };
+                  
+                  const getInsightColor = (type: string) => {
+                    switch (type) {
+                      case 'opportunity': return '#4ADE80';
+                      case 'risk': return '#F87171';
+                      default: return '#3AB7BF';
+                    }
+                  };
+                  
                   const InsightIcon = getInsightIcon(insight.type);
                   const insightColor = getInsightColor(insight.type);
                   
                   return (
-                    <div key={insight.id} className="p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-all">
+                    <div key={index} className="p-4 border border-gray-200 rounded-lg hover:shadow-sm transition-all">
                       <div className="flex items-start mb-3">
                         <div 
                           className="w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0"
@@ -628,8 +732,8 @@ const Reports: React.FC = () => {
                       {insight.metrics.length > 0 && (
                         <div className="mt-3">
                           <div className="flex flex-wrap gap-1">
-                            {insight.metrics.map((metric, index) => (
-                              <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                            {insight.metrics.map((metric, metricIndex) => (
+                              <span key={metricIndex} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
                                 {metric}
                               </span>
                             ))}
@@ -653,7 +757,7 @@ const Reports: React.FC = () => {
                       Set Targets
                     </Button>
                     <Button variant="outline" size="sm" className="w-full justify-start">
-                      <Bell className="w-3 h-3 mr-2" />
+                      <AlertTriangle className="w-3 h-3 mr-2" />
                       Create Alert
                     </Button>
                   </div>
@@ -664,58 +768,115 @@ const Reports: React.FC = () => {
         </div>
       </div>
 
-      {/* Share Modal */}
-      {showShareModal && (
+      {/* Export Modal */}
+      {showExportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Share Report</h3>
+              <h3 className="text-xl font-semibold text-[#1E2A38]">Export Report</h3>
               <button
-                onClick={() => setShowShareModal(false)}
+                onClick={() => setShowExportModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
               >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
+              {/* Export Format */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Share via Email</label>
-                <input
-                  type="email"
-                  placeholder="Enter email addresses (comma separated)"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-3">Export Format</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { value: 'pdf', label: 'PDF', icon: FileText },
+                    { value: 'excel', label: 'Excel', icon: BarChart3 },
+                    { value: 'csv', label: 'CSV', icon: FileText }
+                  ].map(format => (
+                    <button
+                      key={format.value}
+                      onClick={() => setExportSettings({...exportSettings, format: format.value as any})}
+                      className={`p-4 border-2 rounded-lg transition-all ${
+                        exportSettings.format === format.value
+                          ? 'border-[#3AB7BF] bg-[#3AB7BF]/10'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <format.icon className="w-6 h-6 mx-auto mb-2 text-[#3AB7BF]" />
+                      <p className="font-medium text-[#1E2A38]">{format.label}</p>
+                    </button>
+                  ))}
+                </div>
               </div>
-              
+
+              {/* Export Settings */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Message (Optional)</label>
-                <textarea
-                  placeholder="Add a message..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  rows={3}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm text-gray-700">Generate shareable link</span>
-                <Button variant="outline" size="sm">
-                  <LinkIcon className="w-4 h-4 mr-2" />
-                  Copy Link
-                </Button>
+                <label className="block text-sm font-medium text-gray-700 mb-3">Export Settings</label>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Show Account Numbers</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={exportSettings.showAccountNumbers}
+                        onChange={(e) => setExportSettings({...exportSettings, showAccountNumbers: e.target.checked})}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Show Decimals</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={exportSettings.showDecimals}
+                        onChange={(e) => setExportSettings({...exportSettings, showDecimals: e.target.checked})}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Collapse Subaccounts</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={exportSettings.collapseSubaccounts}
+                        onChange={(e) => setExportSettings({...exportSettings, collapseSubaccounts: e.target.checked})}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Include AI Insights</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        className="sr-only peer" 
+                        checked={exportSettings.includeAIInsights}
+                        onChange={(e) => setExportSettings({...exportSettings, includeAIInsights: e.target.checked})}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
             
             <div className="flex justify-end gap-3 mt-6">
               <button
-                onClick={() => setShowShareModal(false)}
+                onClick={() => setShowExportModal(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
                 Cancel
               </button>
-              <Button variant="primary">
-                <Mail className="w-4 h-4 mr-2" />
-                Send Report
+              <Button variant="primary" onClick={handleExport}>
+                <Download className="w-4 h-4 mr-2" />
+                Export Now
               </Button>
             </div>
           </div>
