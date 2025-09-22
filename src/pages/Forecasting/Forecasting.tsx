@@ -340,6 +340,149 @@ const Forecasting: React.FC = () => {
               </select>
             </div>
             
+            {/* Date Range Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">Date Range</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Button 1: Date Range Selector */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Toggle date range picker visibility
+                    const isCurrentlyFromThisMonth = glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                                                   glScenarioForm.startYear === new Date().getFullYear() && 
+                                                   glScenarioForm.endMonth === 'Dec' && 
+                                                   glScenarioForm.endYear === selectedYear;
+                    
+                    if (isCurrentlyFromThisMonth) {
+                      // Reset to custom range
+                      setGLScenarioForm({
+                        ...glScenarioForm,
+                        startMonth: 'Jan',
+                        endMonth: 'Dec',
+                        startYear: selectedYear,
+                        endYear: selectedYear
+                      });
+                    }
+                  }}
+                  className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
+                    !(glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                      glScenarioForm.startYear === new Date().getFullYear() && 
+                      glScenarioForm.endMonth === 'Dec' && 
+                      glScenarioForm.endYear === selectedYear)
+                      ? 'border-[#3AB7BF] bg-[#3AB7BF]/5 text-[#3AB7BF]'
+                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
+                  }`}
+                >
+                  <div className="font-medium text-sm">Select Month Range</div>
+                  <div className="text-xs mt-1">
+                    {!(glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                      glScenarioForm.startYear === new Date().getFullYear() && 
+                      glScenarioForm.endMonth === 'Dec' && 
+                      glScenarioForm.endYear === selectedYear)
+                      ? `From ${glScenarioForm.startMonth} ${glScenarioForm.startYear} to ${glScenarioForm.endMonth} ${glScenarioForm.endYear}`
+                      : 'Click to select custom range'
+                    }
+                  </div>
+                </button>
+
+                {/* Button 2: Forward Date Selector */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currentMonth = months[new Date().getMonth()];
+                    const currentYear = new Date().getFullYear();
+                    setGLScenarioForm({
+                      ...glScenarioForm,
+                      startMonth: currentMonth,
+                      endMonth: 'Dec',
+                      startYear: currentYear,
+                      endYear: selectedYear
+                    });
+                  }}
+                  className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
+                    glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                    glScenarioForm.startYear === new Date().getFullYear() && 
+                    glScenarioForm.endMonth === 'Dec' && 
+                    glScenarioForm.endYear === selectedYear
+                      ? 'border-[#4ADE80] bg-[#4ADE80]/5 text-[#4ADE80]'
+                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
+                  }`}
+                >
+                  <div className="font-medium text-sm">From This Month Forward</div>
+                  <div className="text-xs mt-1">
+                    {glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                     glScenarioForm.startYear === new Date().getFullYear() && 
+                     glScenarioForm.endMonth === 'Dec' && 
+                     glScenarioForm.endYear === selectedYear
+                      ? `From ${months[new Date().getMonth()]} ${new Date().getFullYear()} - Ongoing`
+                      : 'Click to select from current month'
+                    }
+                  </div>
+                </button>
+              </div>
+              
+              {/* Custom Date Range Inputs - Show when Button 1 is selected */}
+              {!(glScenarioForm.startMonth === months[new Date().getMonth()] && 
+                glScenarioForm.startYear === new Date().getFullYear() && 
+                glScenarioForm.endMonth === 'Dec' && 
+                glScenarioForm.endYear === selectedYear) && (
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <h5 className="font-medium text-[#1E2A38] mb-3">Custom Date Range</h5>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <select
+                          value={glScenarioForm.startMonth}
+                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                        >
+                          {months.map(month => (
+                            <option key={month} value={month}>{month}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={glScenarioForm.startYear}
+                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                        >
+                          <option value={2024}>2024</option>
+                          <option value={2025}>2025</option>
+                          <option value={2026}>2026</option>
+                          <option value={2027}>2027</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <select
+                          value={glScenarioForm.endMonth}
+                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                        >
+                          {months.map(month => (
+                            <option key={month} value={month}>{month}</option>
+                          ))}
+                        </select>
+                        <select
+                          value={glScenarioForm.endYear}
+                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                        >
+                          <option value={2024}>2024</option>
+                          <option value={2025}>2025</option>
+                          <option value={2026}>2026</option>
+                          <option value={2027}>2027</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {glScenarioForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}
