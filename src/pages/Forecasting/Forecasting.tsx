@@ -39,6 +39,25 @@ const Forecasting: React.FC = () => {
   const [expandedCategories, setExpandedCategories] = useState<string[]>(['Revenue', 'OPEX']);
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
 
+  // Helper functions - moved before useState to avoid initialization errors
+  const getBaseAmount = (glCode: string): number => {
+    const baseAmounts: { [key: string]: number } = {
+      '4000': 285000, '4100': 95000, '4200': 35000, '4300': 15000,
+      '5000': 125000, '5100': 45000, '5200': 35000,
+      '6000': 128000, '6100': 35000, '6200': 25000, '6300': 18500, '6400': 12000, '6500': 8000,
+      '7000': 5000, '7100': 15000
+    };
+    return baseAmounts[glCode] || 10000;
+  };
+
+  const getSeasonalFactor = (month: string): number => {
+    const factors: { [key: string]: number } = {
+      'Jan': 0.95, 'Feb': 0.98, 'Mar': 1.05, 'Apr': 1.08, 'May': 1.12, 'Jun': 1.15,
+      'Jul': 1.18, 'Aug': 1.10, 'Sep': 1.06, 'Oct': 1.02, 'Nov': 0.92, 'Dec': 0.88
+    };
+    return factors[month] || 1.0;
+  };
+
   const glCodes: GLCode[] = [
     { code: '4000', name: 'Product Sales', category: 'Revenue', type: 'revenue' },
     { code: '4100', name: 'Service Revenue', category: 'Revenue', type: 'revenue' },
@@ -116,24 +135,6 @@ const Forecasting: React.FC = () => {
     
     return data;
   });
-
-  const getBaseAmount = (glCode: string): number => {
-    const baseAmounts: { [key: string]: number } = {
-      '4000': 285000, '4100': 95000, '4200': 35000, '4300': 15000,
-      '5000': 125000, '5100': 45000, '5200': 35000,
-      '6000': 128000, '6100': 35000, '6200': 25000, '6300': 18500, '6400': 12000, '6500': 8000,
-      '7000': 5000, '7100': 15000
-    };
-    return baseAmounts[glCode] || 10000;
-  };
-
-  const getSeasonalFactor = (month: string): number => {
-    const factors: { [key: string]: number } = {
-      'Jan': 0.95, 'Feb': 0.98, 'Mar': 1.05, 'Apr': 1.08, 'May': 1.12, 'Jun': 1.15,
-      'Jul': 1.18, 'Aug': 1.10, 'Sep': 1.06, 'Oct': 1.02, 'Nov': 0.92, 'Dec': 0.88
-    };
-    return factors[month] || 1.0;
-  };
 
   const updateForecastAmount = (glCode: string, month: string, newAmount: number) => {
     setForecastData(prev => prev.map(item => 
