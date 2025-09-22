@@ -326,5 +326,13 @@ export const router = createBrowserRouter([
         <PlaceholderPage title="Add Accounting Firms" description="Manage your accounting firm partnerships" />
       </ProtectedRoute>
     )
+  },
+  {
+    path: "/tasks",
+    element: (
+      <ProtectedRoute title="Tasks & Projects">
+        <TasksProjects />
+      </ProtectedRoute>
+    )
   }
 ]);

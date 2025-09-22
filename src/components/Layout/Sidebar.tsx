@@ -35,7 +35,8 @@ import {
   Calculator,
   Database,
   GitBranch,
-  Brain
+  Brain,
+  CheckCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -122,6 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     },
     { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
+    { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/tax', label: 'Reports', icon: Receipt },
     { path: '/chat', label: 'Chat', icon: MessageSquare },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle }
