@@ -108,7 +108,11 @@ const Benchmarks: React.FC = () => {
       industryAverage: 12.1,
       topQuartile: 18.7,
       unit: '%',
-      trend: 'up',
+     
+    }
+  ]
+  )
+} trend: 'up',
       performance: 'outperforming',
       description: 'Year-over-year revenue growth rate',
       category: 'revenue'
@@ -193,11 +197,7 @@ const Benchmarks: React.FC = () => {
       topQuartile: 220000,
       unit: '$',
       trend: 'up',
-      performance: 'outperfo
-    }
-  ]
-  )
-}rming',
+      performance: 'outperforming',
       description: 'Annual revenue divided by total employee count',
       category: 'productivity'
     }
