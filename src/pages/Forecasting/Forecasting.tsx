@@ -38,6 +38,16 @@ const Forecasting: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [expandedCategories, setExpandedCategories] = useState<string[]>(['Revenue', 'OPEX']);
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
+  const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
+  const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
+  const [glScenarioForm, setGLScenarioForm] = useState({
+    name: '',
+    startMonth: 'Jan',
+    endMonth: 'Dec',
+    adjustmentType: 'percentage' as 'percentage' | 'fixed',
+    adjustmentValue: 0,
+    description: ''
+  });
 
   // Helper functions - moved before useState to avoid initialization errors
   const getBaseAmount = (glCode: string): number => {
@@ -568,7 +578,7 @@ const Forecasting: React.FC = () => {
                         
                         {/* GL Code Rows */}
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
-                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50">
+                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50 group">
                             <td className="py-2 px-4 font-medium text-[#1E2A38] sticky left-0 bg-white">
                               <div className="flex items-center justify-between">
                                 <span>{glCode.code}</span>
@@ -762,18 +772,8 @@ const Forecasting: React.FC = () => {
                   Export to Excel
                 </Button>
               </div>
-                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50 group">@@ .. @@
+            </Card>
           </div>
-  const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
-  const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
-  const [glScenarioForm, setGLScenarioForm] = useState({
-    name: '',
-    startMonth: 'Jan',
-    endMonth: 'Dec',
-    adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0,
-    description: ''
-  });@@ .. @@
         )}
       </div>
 
