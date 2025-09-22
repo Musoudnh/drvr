@@ -110,11 +110,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/chat",
-    element: (
-      <ProtectedRoute title="Chat">
-        <ChatMain />
-      </ProtectedRoute>
-    )
+    element: <Navigate to="/dashboard" replace />
   },
   {
     path: "/admin",
