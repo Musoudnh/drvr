@@ -893,45 +893,6 @@ const Forecasting: React.FC = () => {
         {/* Scenario Panel */}
         {showScenarioPanel && (
           <div className="w-80 space-y-4">
-            <Card title="Scenario Assumptions">
-              <div className="space-y-4">
-                {scenarioAssumptions.map((assumption, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <label className="text-sm font-medium text-gray-700">{assumption.name}</label>
-                      <span className="text-sm font-bold text-[#3AB7BF]">
-                        {assumption.value.toFixed(1)}{assumption.unit}
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min={assumption.min}
-                      max={assumption.max}
-                      step={assumption.step}
-                      value={assumption.value}
-                      onChange={(e) => updateScenarioAssumption(assumption.name, parseFloat(e.target.value))}
-                      className="w-full slider"
-                    />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>{assumption.min}{assumption.unit}</span>
-                      <span>{assumption.max}{assumption.unit}</span>
-                    </div>
-                  </div>
-                ))}
-                
-                <div className="pt-4 border-t border-gray-200">
-                  <Button variant="outline" size="sm" className="w-full mb-2">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Assumption
-                  </Button>
-                  <Button variant="primary" size="sm" className="w-full">
-                    <Save className="w-4 h-4 mr-2" />
-                    Save Scenario
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
             <Card title="Impact Summary">
               <div className="space-y-3">
                 <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
