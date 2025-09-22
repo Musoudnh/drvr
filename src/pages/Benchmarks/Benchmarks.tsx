@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe
+}, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import {
   BarChart3, 
   TrendingUp, 
