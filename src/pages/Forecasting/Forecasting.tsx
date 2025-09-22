@@ -53,6 +53,7 @@ const Forecasting: React.FC = () => {
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
   const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
+  const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [glScenarioForm, setGLScenarioForm] = useState({
@@ -327,9 +328,9 @@ const Forecasting: React.FC = () => {
       default:
         return (
           <div className="space-y-4">
-            <div>
+          <div className="bg-white rounded-lg p-6 w-[900px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
               <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-              <select
+              <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Setup - {selectedGLCode.name}</h3>
                 value={glScenarioForm.adjustmentType}
                 onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
@@ -467,191 +468,120 @@ const Forecasting: React.FC = () => {
             </Button>
           </div>
         </div>
+              {/* Core Info Section */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-[#1E2A38] text-lg border-b border-gray-200 pb-2">Scenario Setup – Core Info</h4>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Title</label>
+                  <input
+                    type="text"
+                    value={glScenarioForm.title}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="e.g., Base Case 2026 or High-Growth Expansion"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description/Notes</label>
+                  <textarea
+                    value={glScenarioForm.description}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    rows={3}
+                    placeholder="e.g., Assumes 20% YoY revenue growth and opening 2 new offices"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Owner/Created By</label>
+                    <input
+                      type="text"
+                      value={glScenarioForm.owner}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, owner: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Type</label>
+                    <select
+                      value={glScenarioForm.scenarioType}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, scenarioType: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value="base_case">Base Case</option>
+                      <option value="best_case">Best Case</option>
+                      <option value="worst_case">Worst Case</option>
+                      <option value="custom">Custom</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-4 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                    <select
+                      value={glScenarioForm.startMonth}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      {months.map(month => (
+                        <option key={month} value={month}>{month}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Start Year</label>
+                    <select
+                      value={glScenarioForm.startYear}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value={2024}>2024</option>
+                      <option value={2025}>2025</option>
+                      <option value={2026}>2026</option>
+                      <option value={2027}>2027</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                    <select
+                      value={glScenarioForm.endMonth}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      {months.map(month => (
+                        <option key={month} value={month}>{month}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">End Year</label>
+                    <select
+                      value={glScenarioForm.endYear}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value={2024}>2024</option>
+                      <option value={2025}>2025</option>
+                      <option value={2026}>2026</option>
+                      <option value={2027}>2027</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
       </Card>
-
-      {/* Budget vs Prior Year and Actuals vs Budget */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Budget vs Prior Year">
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-gray-600">Annual Comparison ({selectedYear} vs {selectedYear - 1})</span>
-              <span className="text-sm text-[#4ADE80] font-medium">+12.8% vs Prior Year</span>
-            </div>
-            <div className="relative h-48">
-              <svg className="w-full h-full">
-                {/* Prior Year bars */}
-                {months.slice(0, 6).map((month, index) => {
-                  const x = 40 + index * 80;
-                  const priorYearRevenue = getMonthlyTotal(`${month} ${selectedYear - 1}`, 'revenue') * 0.85;
-                  const currentYearRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
-                  const maxRevenue = Math.max(priorYearRevenue, currentYearRevenue);
-                  const priorHeight = (priorYearRevenue / maxRevenue) * 120;
-                  const currentHeight = (currentYearRevenue / maxRevenue) * 120;
-                  
-                  return (
-                    <g key={index}>
-                      {/* Prior year bar */}
-                      <rect
-                        x={x - 15}
-                        y={140 - priorHeight}
-                        width="12"
-                        height={priorHeight}
-                        fill="#94A3B8"
-                        rx="2"
-                      />
-                      {/* Current year bar */}
-                      <rect
-                        x={x + 3}
-                        y={140 - currentHeight}
-                        width="12"
-                        height={currentHeight}
-                        fill="#3AB7BF"
-                        rx="2"
-                      />
-                      {/* Month label */}
-                      <text x={x} y={160} textAnchor="middle" className="text-xs fill-gray-500">
-                        {month}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-            
-            <div className="flex justify-center gap-6">
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#94A3B8] rounded mr-2"></div>
-                <span className="text-sm text-gray-600">{selectedYear - 1}</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-                <span className="text-sm text-gray-600">{selectedYear}</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <p className="text-lg font-bold text-[#3AB7BF]">
-                  ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-500">{selectedYear} Revenue</p>
-              </div>
-              <div>
-                <p className="text-lg font-bold text-[#94A3B8]">
-                  ${Math.round(months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0) * 0.85).toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-500">{selectedYear - 1} Revenue</p>
-              </div>
-              <div>
-                <p className="text-lg font-bold text-[#4ADE80]">+12.8%</p>
-                <p className="text-xs text-gray-500">YoY Growth</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <Card title="Actuals vs Budget">
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-gray-600">YTD Performance vs Budget</span>
-              <span className="text-sm text-[#4ADE80] font-medium">+8.4% vs Budget</span>
-            </div>
-            <div className="relative h-48">
-              <svg className="w-full h-full">
-                {/* Budget vs Actual comparison */}
-                {months.slice(0, 6).map((month, index) => {
-                  const x = 40 + index * 80;
-                  const budgetRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue') * 0.92;
-                  const actualRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
-                  const maxRevenue = Math.max(budgetRevenue, actualRevenue);
-                  const budgetHeight = (budgetRevenue / maxRevenue) * 120;
-                  const actualHeight = (actualRevenue / maxRevenue) * 120;
-                  
-                  return (
-                    <g key={index}>
-                      {/* Budget bar */}
-                      <rect
-                        x={x - 15}
-                        y={140 - budgetHeight}
-                        width="12"
-                        height={budgetHeight}
-                        fill="#F59E0B"
-                        rx="2"
-                      />
-                      {/* Actual bar */}
-                      <rect
-                        x={x + 3}
-                        y={140 - actualHeight}
-                        width="12"
-                        height={actualHeight}
-                        fill="#4ADE80"
-                        rx="2"
-                      />
-                      {/* Month label */}
-                      <text x={x} y={160} textAnchor="middle" className="text-xs fill-gray-500">
-                        {month}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-            
-            <div className="flex justify-center gap-6">
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#F59E0B] rounded mr-2"></div>
-                <span className="text-sm text-gray-600">Budget</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
-                <span className="text-sm text-gray-600">Actuals</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <p className="text-lg font-bold text-[#4ADE80]">
-                  ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-500">Actual Revenue</p>
-              </div>
-              <div>
-                <p className="text-lg font-bold text-[#F59E0B]">
-                  ${Math.round(months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0) * 0.92).toLocaleString()}
-                </p>
-                <p className="text-xs text-gray-500">Budget Revenue</p>
-              </div>
-              <div>
-                <p className="text-lg font-bold text-[#4ADE80]">+8.4%</p>
-                <p className="text-xs text-gray-500">vs Budget</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Performance Analysis */}
-      <Card title="Performance Analysis">
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-[#1E2A38] mb-4">Budget vs Actuals (YTD)</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Revenue</span>
-                  <div className="text-right">
-                    <p className="font-bold text-[#4ADE80]">+8.4%</p>
-                    <p className="text-xs text-gray-500">vs budget</p>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">Operating Expenses</span>
-                  <div className="text-right">
+              {/* Industry Assumptions - Key Drivers */}
+              {renderScenarioAssumptions(getGLAssumptionType(selectedGLCode))}
                     <p className="font-bold text-[#4ADE80]">-3.2%</p>
+              {/* Impact Preview */}
                     <p className="text-xs text-gray-500">vs budget</p>
                   </div>
                 </div>
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            </div>
                   <span className="text-sm font-medium text-gray-700">Net Profit</span>
                   <div className="text-right">
                     <p className="font-bold text-[#4ADE80]">+28.7%</p>
@@ -661,10 +591,7 @@ const Forecasting: React.FC = () => {
               </div>
             </div>
             
-            <div>
-              <h3 className="font-semibold text-[#1E2A38] mb-4">Prior Year Comparison</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                onClick={handleApplyScenario}
                   <span className="text-sm font-medium text-gray-700">Revenue Growth</span>
                   <div className="text-right">
                     <p className="font-bold text-[#4ADE80]">+12.8%</p>
@@ -790,6 +717,54 @@ const Forecasting: React.FC = () => {
                                   .toLocaleString()}
                               </td>
                             </tr>
+                            
+                            {/* Expanded GL Code Scenarios */}
+                            {expandedGLCodes.includes(glCode.code) && (
+                              <tr>
+                                <td colSpan={months.length + 3} className="py-0">
+                                  <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
+                                    <h5 className="font-medium text-[#1E2A38] mb-3">Applied Scenarios for {glCode.name}</h5>
+                                    {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
+                                      <p className="text-sm text-gray-600 italic">No scenarios applied to this GL code yet.</p>
+                                    ) : (
+                                      <div className="space-y-2">
+                                        {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
+                                          <div key={scenario.id} className="p-3 bg-white rounded border border-gray-200">
+                                            <div className="flex items-center justify-between">
+                                              <div>
+                                                <h6 className="font-medium text-[#1E2A38]">{scenario.name}</h6>
+                                                <p className="text-sm text-gray-600">{scenario.description}</p>
+                                                <p className="text-xs text-gray-500">
+                                                  {scenario.startMonth} - {scenario.endMonth} • 
+                                                  {scenario.adjustmentType === 'percentage' ? 
+                                                    ` ${scenario.adjustmentValue}% change` : 
+                                                    ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
+                                                  }
+                                                </p>
+                                              </div>
+                                              <div className="flex items-center gap-2">
+                                                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">
+                                                  Active
+                                                </span>
+                                                <button
+                                                  onClick={() => {
+                                                    setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
+                                                  }}
+                                                  className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
+                                                  title="Remove scenario"
+                                                >
+                                                  <X className="w-3 h-3" />
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
                           </React.Fragment>
                         ))}
                       </React.Fragment>
