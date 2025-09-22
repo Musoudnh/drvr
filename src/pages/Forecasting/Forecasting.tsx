@@ -917,10 +917,29 @@ const Forecasting: React.FC = () => {
                 onClick={() => {
                   if (glScenarioForm.name.trim()) {
                     // Apply the scenario to the forecast data
-                    console.log('Applying scenario:', {
-                      glCode: selectedGLCode.code,
-                      scenario: glScenarioForm
-                    });
+                    const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
+                    const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
+                    
+                    setForecastData(prev => prev.map(item => {
+                      const glCode = glCodes.find(gl => gl.code === item.glCode);
+                      if (item.glCode === selectedGLCode.code) {
+                        const monthIndex = months.indexOf(item.month.split(' ')[0]);
+                        
+                        // Check if this month is within the scenario period
+                        if (monthIndex >= startMonthIndex && monthIndex <= endMonthIndex) {
+                          let adjustedAmount = item.forecastedAmount;
+                          
+                          if (glScenarioForm.adjustmentType === 'percentage') {
+                            adjustedAmount = item.forecastedAmount * (1 + glScenarioForm.adjustmentValue / 100);
+                          } else {
+                            adjustedAmount = item.forecastedAmount + glScenarioForm.adjustmentValue;
+                          }
+                          
+                          return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+                        }
+                      }
+                      return item;
+                    }));
                     
                     setShowGLScenarioModal(false);
                     setSelectedGLCode(null);
