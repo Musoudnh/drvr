@@ -41,6 +41,7 @@ interface AppliedScenario {
   adjustmentValue: number;
   appliedAt: Date;
 }
+
 const Forecasting: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [multiYearView, setMultiYearView] = useState(false);
@@ -57,24 +58,6 @@ const Forecasting: React.FC = () => {
     name: '',
     startMonth: 'Jan',
     endMonth: 'Dec',
-    // Payroll specific
-    headcount: 0,
-    averageSalary: 0,
-    payrollTaxRate: 15.3,
-    benefitsRate: 25,
-    // Travel specific
-    numberOfTrips: 0,
-    averageTripCost: 0,
-    // Marketing specific
-    campaignBudget: 0,
-    numberOfCampaigns: 0,
-    // Office/Rent specific
-    squareFootage: 0,
-    pricePerSqFt: 0,
-    // Technology specific
-    numberOfLicenses: 0,
-    costPerLicense: 0,
-    // General
     adjustmentType: 'percentage' as 'percentage' | 'fixed',
     adjustmentValue: 0,
     description: ''
@@ -243,6 +226,70 @@ const Forecasting: React.FC = () => {
     if (Math.abs(variance) < 5) return 'text-[#4ADE80]';
     if (Math.abs(variance) < 15) return 'text-[#F59E0B]';
     return 'text-[#F87171]';
+  };
+
+  const renderGLSpecificInputs = () => {
+    return (
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          <button
+            onClick={() => setGLScenarioForm({...glScenarioForm, adjustmentType: 'percentage'})}
+            className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
+              glScenarioForm.adjustmentType === 'percentage'
+                ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
+                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            Percentage
+          </button>
+          <button
+            onClick={() => setGLScenarioForm({...glScenarioForm, adjustmentType: 'fixed'})}
+            className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
+              glScenarioForm.adjustmentType === 'fixed'
+                ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
+                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+            }`}
+          >
+            Fixed Amount
+          </button>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Adjustment Value {glScenarioForm.adjustmentType === 'percentage' ? '(%)' : '($)'}
+          </label>
+          <input
+            type="number"
+            value={glScenarioForm.adjustmentValue}
+            onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+            placeholder={glScenarioForm.adjustmentType === 'percentage' ? 'e.g., 15' : 'e.g., 5000'}
+            step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '100'}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const getImpactPreview = () => {
+    if (!selectedGLCode || !glScenarioForm.adjustmentValue) {
+      return 'Enter adjustment value to see impact preview.';
+    }
+    
+    const baseAmount = getBaseAmount(selectedGLCode.code);
+    let adjustedAmount;
+    
+    if (glScenarioForm.adjustmentType === 'percentage') {
+      adjustedAmount = baseAmount * (1 + glScenarioForm.adjustmentValue / 100);
+    } else {
+      adjustedAmount = baseAmount + glScenarioForm.adjustmentValue;
+    }
+    
+    const difference = adjustedAmount - baseAmount;
+    const percentChange = ((difference / baseAmount) * 100).toFixed(1);
+    
+    return `Monthly impact: ${difference > 0 ? '+' : ''}$${Math.abs(difference).toLocaleString()} (${difference > 0 ? '+' : ''}${percentChange}%)`;
   };
 
   return (
@@ -896,18 +943,6 @@ const Forecasting: React.FC = () => {
                     name: '',
                     startMonth: 'Jan',
                     endMonth: 'Dec',
-                    headcount: 0,
-                    averageSalary: 0,
-                    payrollTaxRate: 15.3,
-                    benefitsRate: 25,
-                    numberOfTrips: 0,
-                    averageTripCost: 0,
-                    campaignBudget: 0,
-                    numberOfCampaigns: 0,
-                    squareFootage: 0,
-                    pricePerSqFt: 0,
-                    numberOfLicenses: 0,
-                    costPerLicense: 0,
                     adjustmentType: 'percentage',
                     adjustmentValue: 0,
                     description: ''
@@ -981,37 +1016,25 @@ const Forecasting: React.FC = () => {
             
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200">
               <div className="flex justify-end gap-3">
-              <button
-                onClick={() => {
-                  setShowGLScenarioModal(false);
-                  setSelectedGLCode(null);
-                  setGLScenarioForm({
-                    name: '',
-                    startMonth: 'Jan',
-                    endMonth: 'Dec',
-                    headcount: 0,
-                    averageSalary: 0,
-                    payrollTaxRate: 15.3,
-                    benefitsRate: 25,
-                    numberOfTrips: 0,
-                    averageTripCost: 0,
-                    campaignBudget: 0,
-                    numberOfCampaigns: 0,
-                    squareFootage: 0,
-                    pricePerSqFt: 0,
-                    numberOfLicenses: 0,
-                    costPerLicense: 0,
-                    adjustmentType: 'percentage',
-                    adjustmentValue: 0,
-                    description: ''
-                  });
-                }}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
+                <button
+                  onClick={() => {
+                    setShowGLScenarioModal(false);
+                    setSelectedGLCode(null);
+                    setGLScenarioForm({
+                      name: '',
+                      startMonth: 'Jan',
+                      endMonth: 'Dec',
+                      adjustmentType: 'percentage',
+                      adjustmentValue: 0,
+                      description: ''
+                    });
+                  }}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
                     // Apply the scenario to the forecast data
                     const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
                     const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
@@ -1058,29 +1081,16 @@ const Forecasting: React.FC = () => {
                       name: '',
                       startMonth: 'Jan',
                       endMonth: 'Dec',
-                      headcount: 0,
-                      averageSalary: 0,
-                      payrollTaxRate: 15.3,
-                      benefitsRate: 25,
-                      numberOfTrips: 0,
-                      averageTripCost: 0,
-                      campaignBudget: 0,
-                      numberOfCampaigns: 0,
-                      squareFootage: 0,
-                      pricePerSqFt: 0,
-                      numberOfLicenses: 0,
-                      costPerLicense: 0,
                       adjustmentType: 'percentage',
                       adjustmentValue: 0,
                       description: ''
                     });
-                  }
-                }}
-                disabled={!glScenarioForm.name.trim()}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Apply Scenario
-              </button>
+                  }}
+                  disabled={!glScenarioForm.name.trim()}
+                  className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Apply Scenario
+                </button>
               </div>
             </div>
           </div>
