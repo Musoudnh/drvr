@@ -76,21 +76,26 @@ const Benchmarks: React.FC = () => {
   const [showAIInsights, setShowAIInsights] = useState(true);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [profileForm, setProfileForm] = useState({
-    industry: companyProfile.industry,
-    revenueRange: companyProfile.revenueRange,
-    employeeCount: companyProfile.employeeCount.toString(),
-    region: companyProfile.region,
-    businessModel: companyProfile.businessModel
-  });
 
-  const [companyProfile] = useState<CompanyProfile>({
+  // Define initial company profile data as a constant
+  const initialCompanyProfile: CompanyProfile = {
     revenueRange: '$5-20M',
     employeeCount: 45,
     industry: 'SaaS',
     region: 'North America',
     businessModel: 'B2B Subscription'
+  };
+
+  const [companyProfile] = useState<CompanyProfile>(initialCompanyProfile);
+  
+  const [profileForm, setProfileForm] = useState({
+    industry: initialCompanyProfile.industry,
+    revenueRange: initialCompanyProfile.revenueRange,
+    employeeCount: initialCompanyProfile.employeeCount.toString(),
+    region: initialCompanyProfile.region,
+    businessModel: initialCompanyProfile.businessModel
   });
+
 
   const [benchmarkMetrics] = useState<BenchmarkMetric[]>([
     {
