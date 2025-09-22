@@ -30,6 +30,17 @@ interface ScenarioAssumption {
   step: number;
 }
 
+interface AppliedScenario {
+  id: string;
+  glCode: string;
+  name: string;
+  description: string;
+  startMonth: string;
+  endMonth: string;
+  adjustmentType: 'percentage' | 'fixed';
+  adjustmentValue: number;
+  appliedAt: Date;
+}
 const Forecasting: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [multiYearView, setMultiYearView] = useState(false);
@@ -40,6 +51,8 @@ const Forecasting: React.FC = () => {
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
   const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
+  const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
+  const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [glScenarioForm, setGLScenarioForm] = useState({
     name: '',
     startMonth: 'Jan',
@@ -578,25 +591,47 @@ const Forecasting: React.FC = () => {
                         
                         {/* GL Code Rows */}
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
-                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50 group">
-                            <td className="py-2 px-4 font-medium text-[#1E2A38] sticky left-0 bg-white">
-                              <div className="flex items-center justify-between">
-                                <span>{glCode.code}</span>
-                                <button
-                                  onClick={() => {
-                                    setSelectedGLCode(glCode);
-                                    setShowGLScenarioModal(true);
-                                  }}
-                                  className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors opacity-0 group-hover:opacity-100"
-                                  title="Add scenario assumption"
-                                >
-                                  <Plus className="w-3 h-3 text-[#3AB7BF]" />
-                                </button>
-                              </div>
-                            </td>
-                            <td className="py-2 px-4 text-gray-700 sticky left-32 bg-white">
-                              {glCode.name}
-                            </td>
+                          <React.Fragment key={glCode.code}>
+                            <tr className="border-b border-gray-100 hover:bg-gray-50 group">
+                              <td className="py-2 px-4 font-medium text-[#1E2A38] sticky left-0 bg-white">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center">
+                                    <span>{glCode.code}</span>
+                                    {appliedScenarios.filter(s => s.glCode === glCode.code).length > 0 && (
+                                      <button
+                                        onClick={() => {
+                                          setExpandedScenarios(prev =>
+                                            prev.includes(glCode.code)
+                                              ? prev.filter(code => code !== glCode.code)
+                                              : [...prev, glCode.code]
+                                          );
+                                        }}
+                                        className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors"
+                                        title="View applied scenarios"
+                                      >
+                                        {expandedScenarios.includes(glCode.code) ? (
+                                          <ChevronDown className="w-3 h-3 text-[#8B5CF6]" />
+                                        ) : (
+                                          <ChevronRight className="w-3 h-3 text-[#8B5CF6]" />
+                                        )}
+                                      </button>
+                                    )}
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      setSelectedGLCode(glCode);
+                                      setShowGLScenarioModal(true);
+                                    }}
+                                    className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                    title="Add scenario assumption"
+                                  >
+                                    <Plus className="w-3 h-3 text-[#3AB7BF]" />
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="py-2 px-4 text-gray-700 sticky left-32 bg-white">
+                                {glCode.name}
+                              </td>
                             {months.map((month, monthIndex) => {
                               const monthData = forecastData.find(
                                 item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
@@ -636,7 +671,57 @@ const Forecasting: React.FC = () => {
                                 .reduce((sum, item) => sum + item.forecastedAmount, 0)
                                 .toLocaleString()}
                             </td>
-                          </tr>
+                            </tr>
+                            
+                            {/* Applied Scenarios Dropdown */}
+                            {expandedScenarios.includes(glCode.code) && (
+                              <tr className="bg-[#8B5CF6]/5">
+                                <td colSpan={months.length + 3} className="py-2 px-4">
+                                  <div className="space-y-2">
+                                    <h5 className="text-xs font-semibold text-[#8B5CF6] uppercase tracking-wider">
+                                      Applied Scenarios ({appliedScenarios.filter(s => s.glCode === glCode.code).length})
+                                    </h5>
+                                    {appliedScenarios
+                                      .filter(scenario => scenario.glCode === glCode.code)
+                                      .map(scenario => (
+                                        <div key={scenario.id} className="flex items-center justify-between p-2 bg-white rounded border border-[#8B5CF6]/20">
+                                          <div className="flex-1">
+                                            <p className="text-sm font-medium text-[#1E2A38]">{scenario.name}</p>
+                                            <p className="text-xs text-gray-600">
+                                              {scenario.startMonth} - {scenario.endMonth} • 
+                                              {scenario.adjustmentType === 'percentage' 
+                                                ? ` ${scenario.adjustmentValue > 0 ? '+' : ''}${scenario.adjustmentValue}%`
+                                                : ` ${scenario.adjustmentValue > 0 ? '+' : ''}$${Math.abs(scenario.adjustmentValue).toLocaleString()}`
+                                              }
+                                            </p>
+                                            {scenario.description && (
+                                              <p className="text-xs text-gray-500 mt-1">{scenario.description}</p>
+                                            )}
+                                          </div>
+                                          <div className="flex items-center gap-2">
+                                            <span className="text-xs text-gray-500">
+                                              {scenario.appliedAt.toLocaleDateString()}
+                                            </span>
+                                            <button
+                                              onClick={() => {
+                                                if (window.confirm('Remove this scenario adjustment?')) {
+                                                  setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
+                                                  // Optionally recalculate forecast data without this scenario
+                                                }
+                                              }}
+                                              className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
+                                              title="Remove scenario"
+                                            >
+                                              <X className="w-3 h-3" />
+                                            </button>
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
                         ))}
                       </React.Fragment>
                     );
@@ -940,6 +1025,21 @@ const Forecasting: React.FC = () => {
                       }
                       return item;
                     }));
+                    
+                    // Add to applied scenarios
+                    const appliedScenario: AppliedScenario = {
+                      id: Date.now().toString(),
+                      glCode: selectedGLCode.code,
+                      name: glScenarioForm.name,
+                      description: glScenarioForm.description,
+                      startMonth: glScenarioForm.startMonth,
+                      endMonth: glScenarioForm.endMonth,
+                      adjustmentType: glScenarioForm.adjustmentType,
+                      adjustmentValue: glScenarioForm.adjustmentValue,
+                      appliedAt: new Date()
+                    };
+                    
+                    setAppliedScenarios(prev => [...prev, appliedScenario]);
                     
                     setShowGLScenarioModal(false);
                     setSelectedGLCode(null);
