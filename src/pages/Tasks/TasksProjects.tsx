@@ -66,7 +66,6 @@ const TasksProjects: React.FC = () => {
   const [showTaskDetail, setShowTaskDetail] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showNotesPanel, setShowNotesPanel] = useState(false);
   const [clickupConnected, setClickupConnected] = useState(false);
   const [mondayConnected, setMondayConnected] = useState(false);
   const [isDraggingTask, setIsDraggingTask] = useState(false);
@@ -470,11 +469,6 @@ const TasksProjects: React.FC = () => {
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
               Settings
-            </Button>
-            <Button variant="outline" size="sm">
-              <Maximize2 className="w-4 h-4 mr-2" />
-              Fullscreen
-            </Button>
           </div>
         </div>
         
@@ -612,44 +606,10 @@ const TasksProjects: React.FC = () => {
           </div>
 
           {/* Main Content */}
-          <div className={`grid ${showNotesPanel ? 'grid-cols-4' : 'grid-cols-1'} gap-6`}>
-            <div className={showNotesPanel ? 'col-span-3' : 'col-span-1'}>
+          <div className="grid grid-cols-1 gap-6">
+            <div className="col-span-1">
               {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
             </div>
-            
-            {/* Notes Panel */}
-            {showNotesPanel && (
-              <div className="col-span-1">
-                <Card title="Task Notes & Comments">
-                  <div className="space-y-4">
-                    {selectedTask ? (
-                      <div>
-                        <h4 className="font-semibold text-[#1E2A38] mb-2">{selectedTask.title}</h4>
-                        <div className="space-y-3">
-                          {selectedTask.comments.map(comment => (
-                            <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="font-medium text-[#1E2A38] text-sm">{comment.author}</span>
-                                <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
-                              </div>
-                              <p className="text-sm text-gray-700">{comment.content}</p>
-                            </div>
-                          ))}
-                          {selectedTask.comments.length === 0 && (
-                            <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center py-8">
-                        <MessageSquare className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                        <p className="text-sm text-gray-500">Select a task to view notes</p>
-                      </div>
-                    )}
-                  </div>
-                </Card>
-              </div>
-            )}
           </div>
         </div>
       )}
