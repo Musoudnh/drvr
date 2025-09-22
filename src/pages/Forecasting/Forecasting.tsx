@@ -750,7 +750,7 @@ const Forecasting: React.FC = () => {
                                       setSelectedGLCode(glCode);
                                       setShowGLScenarioModal(true);
                                     }}
-                                    className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                    className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors"
                                     title="Add scenario assumption"
                                   >
                                     <Plus className="w-3 h-3 text-[#3AB7BF]" />
