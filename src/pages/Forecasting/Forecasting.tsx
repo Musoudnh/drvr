@@ -47,6 +47,16 @@ interface AppliedScenario {
 const Forecasting: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [multiYearView, setMultiYearView] = useState(false);
+  const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
+  const [newGLScenario, setNewGLScenario] = useState({
+    name: '',
+    description: '',
+    glAccount: '',
+    adjustmentType: 'percentage' as 'percentage' | 'fixed',
+    adjustmentValue: '',
+    startMonth: 'Jan 2025',
+    endMonth: 'Dec 2025'
+  });
   const [yearRange, setYearRange] = useState([2025, 2026]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -162,6 +172,48 @@ const Forecasting: React.FC = () => {
     { name: 'Salary Inflation', value: 4.5, unit: '%', min: 0, max: 15, step: 0.1 },
     { name: 'Office Rent Increase', value: 3.0, unit: '%', min: 0, max: 10, step: 0.1 }
   ]);
+
+  const glAccounts = [
+    { code: '4000', name: 'Product Revenue', category: 'Revenue' },
+    { code: '4100', name: 'Service Revenue', category: 'Revenue' },
+    { code: '4200', name: 'Other Income', category: 'Revenue' },
+    { code: '5000', name: 'Cost of Goods Sold', category: 'COGS' },
+    { code: '6000', name: 'Salaries & Benefits', category: 'Operating Expenses' },
+    { code: '6100', name: 'Marketing Expenses', category: 'Operating Expenses' },
+    { code: '6200', name: 'Office Rent', category: 'Operating Expenses' },
+    { code: '6300', name: 'Technology & Software', category: 'Operating Expenses' },
+    { code: '7000', name: 'Interest Expense', category: 'Other Expenses' }
+  ];
+
+  const handleCreateGLScenario = () => {
+    if (newGLScenario.name.trim() && newGLScenario.adjustmentValue) {
+      const scenario = {
+        id: Date.now().toString(),
+        name: newGLScenario.name,
+        description: newGLScenario.description,
+        glAccount: newGLScenario.glAccount || null,
+        adjustmentType: newGLScenario.adjustmentType,
+        adjustmentValue: parseFloat(newGLScenario.adjustmentValue),
+        startMonth: newGLScenario.startMonth,
+        endMonth: newGLScenario.endMonth,
+        createdAt: new Date(),
+        createdBy: 'Current User',
+        isActive: true
+      };
+      
+      setScenarios(prev => [...prev, scenario]);
+      setNewGLScenario({
+        name: '',
+        description: '',
+        glAccount: '',
+        adjustmentType: 'percentage',
+        adjustmentValue: '',
+        startMonth: 'Jan 2025',
+        endMonth: 'Dec 2025'
+      });
+      setShowGLScenarioModal(false);
+    }
+  };
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   
