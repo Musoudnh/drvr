@@ -15,7 +15,8 @@ import {
   X, 
   Settings,
   Zap,
-  CheckCircle
+  CheckCircle,
+  FileText
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
