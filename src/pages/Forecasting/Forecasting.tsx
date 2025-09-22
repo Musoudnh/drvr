@@ -1527,6 +1527,7 @@ const Forecasting: React.FC = () => {
         </>
       )}
 
+      </div>
     </div>
   );
 };
