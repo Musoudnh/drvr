@@ -704,6 +704,15 @@ const Forecasting: React.FC = () => {
           <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
         </div>
         <div className="flex gap-3">
+          <Button variant="outline">
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+          <Button variant="primary" className="bg-[#3AB7BF] hover:bg-[#2A9BA3]">
+            <Save className="w-4 h-4 mr-2" />
+            Save Forecast
+          </Button>
+        </div>
       </div>
 
       {/* Controls */}
@@ -1527,7 +1536,6 @@ const Forecasting: React.FC = () => {
         </>
       )}
 
-      </div>
     </div>
   );
 };
