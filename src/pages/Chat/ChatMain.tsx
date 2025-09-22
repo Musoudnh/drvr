@@ -414,69 +414,6 @@ const ChatMain: React.FC = () => {
         <div className="border-b border-gray-200">
           <nav className="flex space-x-8 px-6" aria-label="Chat Navigation">
             <button
-              onClick={() => setActiveTab('native')}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'native'
-                  ? 'border-[#4F46E5] text-[#4F46E5]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Native Chat
-            </button>
-            
-            {connectedChats.map(chat => (
-              <button
-                key={chat.id}
-                onClick={() => setActiveTab(chat.id as any)}
-                className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === chat.id
-                    ? `border-[${chat.platform === 'slack' ? '#4A154B' : chat.platform === 'teams' ? '#6264A7' : '#34A853'}] text-[${chat.platform === 'slack' ? '#4A154B' : chat.platform === 'teams' ? '#6264A7' : '#34A853'}]`
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <div className={`w-4 h-4 rounded mr-2`} style={{ backgroundColor: chat.platform === 'slack' ? '#4A154B' : chat.platform === 'teams' ? '#6264A7' : '#34A853' }} />
-                {chat.name}
-              </button>
-            ))}
-            
-            <button
-              onClick={() => setActiveTab('slack')}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'slack'
-                  ? 'border-[#4A154B] text-[#4A154B]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <div className="w-4 h-4 bg-[#4A154B] rounded mr-2" />
-              Slack
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('teams')}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'teams'
-                  ? 'border-[#6264A7] text-[#6264A7]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <div className="w-4 h-4 bg-[#6264A7] rounded mr-2" />
-              Microsoft Teams
-            </button>
-            
-            <button
-              onClick={() => setActiveTab('google')}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'google'
-                  ? 'border-[#34A853] text-[#34A853]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <div className="w-4 h-4 bg-[#34A853] rounded mr-2" />
-              Google Chat
-            </button>
-            
-            <button
               onClick={() => setShowConnectModal(true)}
               className="flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             >
