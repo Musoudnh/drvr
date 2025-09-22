@@ -903,6 +903,50 @@ const TasksProjects: React.FC = () => {
                   </button>
                 </div>
               </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">View Type</label>
+                <div className="space-y-3">
+                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      name="viewType"
+                      value="embedded"
+                      defaultChecked
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                    />
+                    <div>
+                      <p className="font-medium text-[#1E2A38]">Connected as Embedded</p>
+                      <p className="text-sm text-gray-600">Display the board directly within FinanceFlow</p>
+                    </div>
+                  </label>
+                  
+                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="radio"
+                      name="viewType"
+                      value="link"
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                    />
+                    <div>
+                      <p className="font-medium text-[#1E2A38]">Connected as Link</p>
+                      <p className="text-sm text-gray-600">Open the board in a new tab/window</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Embed Code</label>
+                <textarea
+                  placeholder="Paste your embed code here (for embedded view type)"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent text-sm"
+                  rows={4}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  For embedded view: Paste the iframe embed code from your platform
+                </p>
+              </div>
             </div>
             
             <div className="flex justify-end gap-3 mt-6">
