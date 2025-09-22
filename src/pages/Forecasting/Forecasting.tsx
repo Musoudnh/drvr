@@ -451,20 +451,6 @@ const Forecasting: React.FC = () => {
                                         </span>
                                       )}
                                     </div>
-                                    
-                                    {/* Variance vs Actuals */}
-                                    {monthData.variance !== undefined && (
-                                      <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
-                                        {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
-                                      </div>
-                                    )}
-                                    
-                                    {/* Change vs Prior Month */}
-                                    {monthData.changeVsPrior !== undefined && (
-                                      <div className={`text-xs ${monthData.changeVsPrior >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
-                                        {monthData.changeVsPrior > 0 ? '+' : ''}{monthData.changeVsPrior.toFixed(1)}%
-                                      </div>
-                                    )}
                                   </div>
                                 </td>
                               );
