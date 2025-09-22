@@ -298,70 +298,281 @@ const Forecasting: React.FC = () => {
         </div>
       </Card>
 
-      {/* Chart Overview */}
-      <Card title="Forecast Overview">
-        <div className="space-y-4">
-          <div className="relative h-64 bg-gray-50 rounded-lg p-4">
-            <svg className="w-full h-full">
-              {/* Revenue line */}
-              <polyline
-                fill="none"
-                stroke="#4ADE80"
-                strokeWidth="3"
-                points={months.map((month, index) => {
-                  const revenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
-                  const x = 50 + index * 60;
-                  const y = 200 - (revenue / 10000);
-                  return `${x},${Math.max(20, Math.min(200, y))}`;
-                }).join(' ')}
-              />
-              
-              {/* Expense line */}
-              <polyline
-                fill="none"
-                stroke="#F87171"
-                strokeWidth="3"
-                points={months.map((month, index) => {
-                  const expenses = getMonthlyTotal(`${month} ${selectedYear}`, 'expense');
-                  const x = 50 + index * 60;
-                  const y = 200 - (expenses / 10000);
-                  return `${x},${Math.max(20, Math.min(200, y))}`;
-                }).join(' ')}
-              />
-              
-              {/* Net profit line */}
-              <polyline
-                fill="none"
-                stroke="#3AB7BF"
-                strokeWidth="3"
-                points={months.map((month, index) => {
-                  const netProfit = getNetProfit(`${month} ${selectedYear}`);
-                  const x = 50 + index * 60;
-                  const y = 200 - (netProfit / 5000);
-                  return `${x},${Math.max(20, Math.min(200, y))}`;
-                }).join(' ')}
-              />
-            </svg>
+      {/* Budget vs Prior Year and Actuals vs Budget */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card title="Budget vs Prior Year">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Annual Comparison ({selectedYear} vs {selectedYear - 1})</span>
+              <span className="text-sm text-[#4ADE80] font-medium">+12.8% vs Prior Year</span>
+            </div>
+            <div className="relative h-48">
+              <svg className="w-full h-full">
+                {/* Prior Year bars */}
+                {months.slice(0, 6).map((month, index) => {
+                  const x = 40 + index * 80;
+                  const priorYearRevenue = getMonthlyTotal(`${month} ${selectedYear - 1}`, 'revenue') * 0.85;
+                  const currentYearRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
+                  const maxRevenue = Math.max(priorYearRevenue, currentYearRevenue);
+                  const priorHeight = (priorYearRevenue / maxRevenue) * 120;
+                  const currentHeight = (currentYearRevenue / maxRevenue) * 120;
+                  
+                  return (
+                    <g key={index}>
+                      {/* Prior year bar */}
+                      <rect
+                        x={x - 15}
+                        y={140 - priorHeight}
+                        width="12"
+                        height={priorHeight}
+                        fill="#94A3B8"
+                        rx="2"
+                      />
+                      {/* Current year bar */}
+                      <rect
+                        x={x + 3}
+                        y={140 - currentHeight}
+                        width="12"
+                        height={currentHeight}
+                        fill="#3AB7BF"
+                        rx="2"
+                      />
+                      {/* Month label */}
+                      <text x={x} y={160} textAnchor="middle" className="text-xs fill-gray-500">
+                        {month}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
             
-            <div className="flex justify-between mt-2 text-xs text-gray-500">
-              {months.map((month, index) => (
-                <span key={index} className="flex-1 text-center">{month}</span>
-              ))}
+            <div className="flex justify-center gap-6">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#94A3B8] rounded mr-2"></div>
+                <span className="text-sm text-gray-600">{selectedYear - 1}</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
+                <span className="text-sm text-gray-600">{selectedYear}</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-lg font-bold text-[#3AB7BF]">
+                  ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">{selectedYear} Revenue</p>
+              </div>
+              <div>
+                <p className="text-lg font-bold text-[#94A3B8]">
+                  ${Math.round(months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0) * 0.85).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">{selectedYear - 1} Revenue</p>
+              </div>
+              <div>
+                <p className="text-lg font-bold text-[#4ADE80]">+12.8%</p>
+                <p className="text-xs text-gray-500">YoY Growth</p>
+              </div>
             </div>
           </div>
-          
-          <div className="flex justify-center gap-6">
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Revenue</span>
+        </Card>
+
+        <Card title="Actuals vs Budget">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">YTD Performance vs Budget</span>
+              <span className="text-sm text-[#4ADE80] font-medium">+8.4% vs Budget</span>
             </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Expenses</span>
+            <div className="relative h-48">
+              <svg className="w-full h-full">
+                {/* Budget vs Actual comparison */}
+                {months.slice(0, 6).map((month, index) => {
+                  const x = 40 + index * 80;
+                  const budgetRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue') * 0.92;
+                  const actualRevenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
+                  const maxRevenue = Math.max(budgetRevenue, actualRevenue);
+                  const budgetHeight = (budgetRevenue / maxRevenue) * 120;
+                  const actualHeight = (actualRevenue / maxRevenue) * 120;
+                  
+                  return (
+                    <g key={index}>
+                      {/* Budget bar */}
+                      <rect
+                        x={x - 15}
+                        y={140 - budgetHeight}
+                        width="12"
+                        height={budgetHeight}
+                        fill="#F59E0B"
+                        rx="2"
+                      />
+                      {/* Actual bar */}
+                      <rect
+                        x={x + 3}
+                        y={140 - actualHeight}
+                        width="12"
+                        height={actualHeight}
+                        fill="#4ADE80"
+                        rx="2"
+                      />
+                      {/* Month label */}
+                      <text x={x} y={160} textAnchor="middle" className="text-xs fill-gray-500">
+                        {month}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
             </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Net Profit</span>
+            
+            <div className="flex justify-center gap-6">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#F59E0B] rounded mr-2"></div>
+                <span className="text-sm text-gray-600">Budget</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
+                <span className="text-sm text-gray-600">Actuals</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-lg font-bold text-[#4ADE80]">
+                  ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">Actual Revenue</p>
+              </div>
+              <div>
+                <p className="text-lg font-bold text-[#F59E0B]">
+                  ${Math.round(months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0) * 0.92).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500">Budget Revenue</p>
+              </div>
+              <div>
+                <p className="text-lg font-bold text-[#4ADE80]">+8.4%</p>
+                <p className="text-xs text-gray-500">vs Budget</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Summary Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">YTD Revenue</p>
+              <p className="text-2xl font-bold text-[#4ADE80] mt-1">
+                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+              </p>
+              <p className="text-sm text-[#4ADE80] mt-1">+15.4% vs budget</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-[#4ADE80]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">YTD Expenses</p>
+              <p className="text-2xl font-bold text-[#F87171] mt-1">
+                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
+              </p>
+              <p className="text-sm text-[#4ADE80] mt-1">-3.2% vs budget</p>
+            </div>
+            <TrendingDown className="w-8 h-8 text-[#F87171]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">YTD Net Profit</p>
+              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">
+                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
+              </p>
+              <p className="text-sm text-[#4ADE80] mt-1">+28.7% vs budget</p>
+            </div>
+            <Target className="w-8 h-8 text-[#3AB7BF]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Profit Margin</p>
+              <p className="text-2xl font-bold text-[#F59E0B] mt-1">
+                {(
+                  (months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) /
+                  months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0)) * 100
+                ).toFixed(1)}%
+              </p>
+              <p className="text-sm text-[#4ADE80] mt-1">+2.1% vs budget</p>
+            </div>
+            <BarChart3 className="w-8 h-8 text-[#F59E0B]" />
+          </div>
+        </Card>
+      </div>
+
+      {/* Performance Analysis */}
+      <Card title="Performance Analysis">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-[#1E2A38] mb-4">Budget vs Actuals (YTD)</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Revenue</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#4ADE80]">+8.4%</p>
+                    <p className="text-xs text-gray-500">vs budget</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Operating Expenses</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#4ADE80]">-3.2%</p>
+                    <p className="text-xs text-gray-500">vs budget</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Net Profit</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#4ADE80]">+28.7%</p>
+                    <p className="text-xs text-gray-500">vs budget</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-[#1E2A38] mb-4">Prior Year Comparison</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Revenue Growth</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#4ADE80]">+12.8%</p>
+                    <p className="text-xs text-gray-500">vs {selectedYear - 1}</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Expense Growth</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#F59E0B]">+6.1%</p>
+                    <p className="text-xs text-gray-500">vs {selectedYear - 1}</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-sm font-medium text-gray-700">Profit Growth</span>
+                  <div className="text-right">
+                    <p className="font-bold text-[#4ADE80]">+24.3%</p>
+                    <p className="text-xs text-gray-500">vs {selectedYear - 1}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
