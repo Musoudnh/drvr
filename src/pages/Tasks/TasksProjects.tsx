@@ -613,7 +613,6 @@ const TasksProjects: React.FC = () => {
           )}
 
           {activeTab === 'clickup' && renderIntegrationTab('clickup')}
-          {activeTab === 'monday' && renderIntegrationTab('monday')}
 
           {connectedBoards.map(board => (
             activeTab === board.id && (
