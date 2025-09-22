@@ -739,4 +739,70 @@ const Forecasting: React.FC = () => {
                         {/* GL Code Rows */}
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
                           <React.Fragment key={glCode.code}>
-                            <tr className="border-b border-gray-100 hover:bg-gray-50 group"
+                            <tr className="border-b border-gray-100 hover:bg-gray-50 group">
+                              <td className="py-3 px-4 font-mono text-sm sticky left-0 bg-white group-hover:bg-gray-50">
+                                {glCode.code}
+                              </td>
+                              <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
+                                <div className="flex items-center justify-between">
+                                  <span>{glCode.name}</span>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      setSelectedGLCode(glCode);
+                                      setShowGLScenarioModal(true);
+                                    }}
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <Plus className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </td>
+                              {months.map((month, monthIndex) => {
+                                const monthData = forecastData.find(
+                                  item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
+                                );
+                                
+                                return (
+                                  <td key={monthIndex} className="py-3 px-2 text-center text-sm">
+                                    <div className="space-y-1">
+                                      <div className="font-medium">
+                                        ${monthData?.forecastedAmount.toLocaleString() || '0'}
+                                      </div>
+                                      {monthData?.actualAmount && (
+                                        <div className="text-xs text-gray-500">
+                                          Act: ${monthData.actualAmount.toLocaleString()}
+                                        </div>
+                                      )}
+                                      {monthData?.variance && (
+                                        <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
+                                          {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
+                                        </div>
+                                      )}
+                                    </div>
+                                  </td>
+                                );
+                              })}
+                              <td className="py-3 px-4 text-right text-sm font-medium">
+                                ${forecastData
+                                  .filter(item => item.glCode === glCode.code)
+                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                  .toLocaleString()}
+                              </td>
+                            </tr>
+                          </React.Fragment>
+                        ))}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+    </div>
+  );
+};
+
+export default Forecasting;
