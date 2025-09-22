@@ -29,7 +29,8 @@ import {
   Globe,
   Calendar,
   X,
-  Plus
+  Plus,
+  Bell
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
