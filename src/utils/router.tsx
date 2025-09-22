@@ -39,6 +39,7 @@ import DataIntegration from '../pages/Integrations/DataIntegration';
 import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
 import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
+import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
