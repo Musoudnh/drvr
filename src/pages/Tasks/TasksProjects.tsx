@@ -69,6 +69,7 @@ const TasksProjects: React.FC = () => {
   const [showNotesPanel, setShowNotesPanel] = useState(false);
   const [clickupConnected, setClickupConnected] = useState(false);
   const [mondayConnected, setMondayConnected] = useState(false);
+  const [isDraggingTask, setIsDraggingTask] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>([
     {
@@ -166,6 +167,8 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
+    setIsDraggingTask(false);
+    
     if (!result.destination) return;
 
     const { source, destination, draggableId } = result;
@@ -179,6 +182,10 @@ const TasksProjects: React.FC = () => {
         ? { ...task, status: newStatus, updatedAt: new Date() }
         : task
     ));
+  };
+
+  const handleDragStart = () => {
+    setIsDraggingTask(true);
   };
 
   const handleAddTask = () => {
@@ -297,7 +304,7 @@ const TasksProjects: React.FC = () => {
   );
 
   const renderKanbanBoard = () => (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
@@ -512,33 +519,36 @@ const TasksProjects: React.FC = () => {
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
         <button
           onClick={() => setActiveTab('clickup')}
+          disabled={isDraggingTask}
           className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
             activeTab === 'clickup'
               ? 'bg-white text-[#7B68EE] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
+          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <div className="w-4 h-4 bg-[#7B68EE] rounded mr-2" />
           ClickUp Board
         </button>
         <button
           onClick={() => setActiveTab('monday')}
+          disabled={isDraggingTask}
           className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
             activeTab === 'monday'
               ? 'bg-white text-[#FF6B6B] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
+          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <div className="w-4 h-4 bg-[#FF6B6B] rounded mr-2" />
           Monday.com Board
         </button>
         <button
           onClick={() => setActiveTab('native')}
+          disabled={isDraggingTask}
           className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center justify-center ${
             activeTab === 'native'
               ? 'bg-white text-[#3AB7BF] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
+          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <Grid3X3 className="w-4 h-4 mr-2" />
           Native Task Board
@@ -574,18 +584,20 @@ const TasksProjects: React.FC = () => {
               <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('board')}
+                  disabled={isDraggingTask}
                   className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                     viewMode === 'board' ? 'bg-white text-[#3AB7BF] shadow-sm' : 'text-gray-600'
-                  }`}
+                  } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <Grid3X3 className="w-4 h-4 mr-1 inline" />
                   Board
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
+                  disabled={isDraggingTask}
                   className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                     viewMode === 'list' ? 'bg-white text-[#3AB7BF] shadow-sm' : 'text-gray-600'
-                  }`}
+                  } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <List className="w-4 h-4 mr-1 inline" />
                   List
