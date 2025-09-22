@@ -512,7 +512,109 @@ const TasksProjects: React.FC = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8 px-6" aria-label="Task Navigation">
+            <button
+              onClick={() => setActiveTab('native')}
+              disabled={isDraggingTask}
+              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'native'
+                  ? 'border-[#4F46E5] text-[#4F46E5]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <Grid3X3 className="w-4 h-4 mr-2" />
+              Native Task Board
+            </button>
+            <button
+              onClick={() => setActiveTab('clickup')}
+              disabled={isDraggingTask}
+              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'clickup'
+                  ? 'border-[#7B68EE] text-[#7B68EE]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <div className="w-4 h-4 bg-[#7B68EE] rounded mr-2" />
+              ClickUp Board
+            </button>
+            <button
+              onClick={() => setActiveTab('monday')}
+              disabled={isDraggingTask}
+              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'monday'
+                  ? 'border-[#FF6B6B] text-[#FF6B6B]'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <div className="w-4 h-4 bg-[#FF6B6B] rounded mr-2" />
+              Monday.com Board
+            </button>
+          </nav>
+        </div>
+        
+        {/* Content Area */}
+        <div className="p-6">
+          {/* Tab Content */}
+          {activeTab === 'clickup' && renderIntegrationTab('clickup')}
+          {activeTab === 'monday' && renderIntegrationTab('monday')}
+          
+          {activeTab === 'native' && (
+            <div className="space-y-4">
+              {/* Controls */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search tasks..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Filter className="w-4 h-4 mr-2" />
+                    Filter
+                  </Button>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <div className="flex bg-gray-100 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode('board')}
+                      disabled={isDraggingTask}
+                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                        viewMode === 'board' ? 'bg-white text-[#3AB7BF] shadow-sm' : 'text-gray-600'
+                      } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <Grid3X3 className="w-4 h-4 mr-1 inline" />
+                      Board
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      disabled={isDraggingTask}
+                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                        viewMode === 'list' ? 'bg-white text-[#3AB7BF] shadow-sm' : 'text-gray-600'
+                      } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <List className="w-4 h-4 mr-1 inline" />
+                      List
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div>
+                {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
         <button
           onClick={() => setActiveTab('native')}
           disabled={isDraggingTask}
