@@ -193,7 +193,11 @@ const Benchmarks: React.FC = () => {
       topQuartile: 220000,
       unit: '$',
       trend: 'up',
-      performance: 'outperforming',
+      performance: 'outperfo
+    }
+  ]
+  )
+}rming',
       description: 'Annual revenue divided by total employee count',
       category: 'productivity'
     }
