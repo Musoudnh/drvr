@@ -851,4 +851,352 @@ const Forecasting: React.FC = () => {
                             )}
                           </React.Fragment>
                         ))}
-                      </React.
+                      </React.Fragment>
+                    );
+                  })}
+                  
+                  {/* Monthly Totals */}
+                  <tr className="border-t-2 border-gray-400 bg-gray-100 font-bold">
+                    <td colSpan={2} className="py-3 px-4 text-[#1E2A38] sticky left-0 bg-gray-100">
+                      MONTHLY TOTALS
+                    </td>
+                    {months.map((month, index) => (
+                      <td key={index} className="py-3 px-2 text-center">
+                        <div className="space-y-1">
+                          <div className="text-[#4ADE80] font-bold">
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'revenue').toLocaleString()}
+                          </div>
+                          <div className="text-[#F87171] font-bold">
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'expense').toLocaleString()}
+                          </div>
+                          <div className={`font-bold ${getNetProfit(`${month} ${selectedYear}`) >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
+                            ${getNetProfit(`${month} ${selectedYear}`).toLocaleString()}
+                          </div>
+                        </div>
+                      </td>
+                    ))}
+                    <td className="py-3 px-4 text-right">
+                      <div className="space-y-1">
+                        <div className="text-[#4ADE80] font-bold">Revenue</div>
+                        <div className="text-[#F87171] font-bold">Expenses</div>
+                        <div className="text-[#3AB7BF] font-bold">Net Profit</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+
+        {/* Scenario Panel */}
+        {showScenarioPanel && (
+          <div className="w-80 space-y-4">
+            <Card title="Scenario Assumptions">
+              <div className="space-y-4">
+                {scenarioAssumptions.map((assumption, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium text-gray-700">{assumption.name}</label>
+                      <span className="text-sm font-bold text-[#3AB7BF]">
+                        {assumption.value.toFixed(1)}{assumption.unit}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={assumption.min}
+                      max={assumption.max}
+                      step={assumption.step}
+                      value={assumption.value}
+                      onChange={(e) => updateScenarioAssumption(assumption.name, parseFloat(e.target.value))}
+                      className="w-full slider"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>{assumption.min}{assumption.unit}</span>
+                      <span>{assumption.max}{assumption.unit}</span>
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="pt-4 border-t border-gray-200">
+                  <Button variant="outline" size="sm" className="w-full mb-2">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Assumption
+                  </Button>
+                  <Button variant="primary" size="sm" className="w-full">
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Scenario
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Impact Summary">
+              <div className="space-y-3">
+                <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Revenue</p>
+                  <p className="text-lg font-bold text-[#4ADE80]">
+                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#F87171]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Expenses</p>
+                  <p className="text-lg font-bold text-[#F87171]">
+                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Net Profit</p>
+                  <p className="text-lg font-bold text-[#3AB7BF]">
+                    ${months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Profit Margin</p>
+                  <p className="text-lg font-bold text-[#F59E0B]">
+                    {(
+                      (months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) /
+                      months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0)) * 100
+                    ).toFixed(1)}%
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Quick Actions">
+              <div className="space-y-2">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Actuals vs Forecast
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  Generate Report
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Target className="w-4 h-4 mr-2" />
+                  Create Scenario
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export to Excel
+                </Button>
+              </div>
+            </Card>
+          </div>
+        )}
+      </div>
+
+      {/* GL Code Scenario Modal */}
+      {showGLScenarioModal && selectedGLCode && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
+          <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl border-l border-gray-200 overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 w-full">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">
+                Add Scenario for {selectedGLCode.code} - {selectedGLCode.name}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowGLScenarioModal(false);
+                  setSelectedGLCode(null);
+                  setGLScenarioForm({
+                    name: '',
+                    startMonth: 'Jan',
+                    endMonth: 'Dec',
+                    headcount: 0,
+                    averageSalary: 0,
+                    payrollTaxRate: 15.3,
+                    benefitsRate: 25,
+                    numberOfTrips: 0,
+                    averageTripCost: 0,
+                    campaignBudget: 0,
+                    numberOfCampaigns: 0,
+                    squareFootage: 0,
+                    pricePerSqFt: 0,
+                    numberOfLicenses: 0,
+                    costPerLicense: 0,
+                    adjustmentType: 'percentage',
+                    adjustmentValue: 0,
+                    description: ''
+                  });
+                }}
+                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                <input
+                  type="text"
+                  value={glScenarioForm.name}
+                  onChange={(e) => setGLScenarioForm({...glScenarioForm, name: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., Q2 Marketing Campaign"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea
+                  value={glScenarioForm.description}
+                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  rows={2}
+                  placeholder="Describe the scenario impact..."
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <select
+                    value={glScenarioForm.startMonth}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <select
+                    value={glScenarioForm.endMonth}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              {/* GL-Specific Input Fields */}
+              {renderGLSpecificInputs()}
+              
+              <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
+                <h4 className="font-medium text-[#1E2A38] mb-2">Impact Preview</h4>
+                <p className="text-sm text-gray-600">{getImpactPreview()}</p>
+              </div>
+            </div>
+            
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200">
+              <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowGLScenarioModal(false);
+                  setSelectedGLCode(null);
+                  setGLScenarioForm({
+                    name: '',
+                    startMonth: 'Jan',
+                    endMonth: 'Dec',
+                    headcount: 0,
+                    averageSalary: 0,
+                    payrollTaxRate: 15.3,
+                    benefitsRate: 25,
+                    numberOfTrips: 0,
+                    averageTripCost: 0,
+                    campaignBudget: 0,
+                    numberOfCampaigns: 0,
+                    squareFootage: 0,
+                    pricePerSqFt: 0,
+                    numberOfLicenses: 0,
+                    costPerLicense: 0,
+                    adjustmentType: 'percentage',
+                    adjustmentValue: 0,
+                    description: ''
+                  });
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                    // Apply the scenario to the forecast data
+                    const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
+                    const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
+                    
+                    setForecastData(prev => prev.map(item => {
+                      const glCode = glCodes.find(gl => gl.code === item.glCode);
+                      if (item.glCode === selectedGLCode.code) {
+                        const monthIndex = months.indexOf(item.month.split(' ')[0]);
+                        
+                        // Check if this month is within the scenario period
+                        if (monthIndex >= startMonthIndex && monthIndex <= endMonthIndex) {
+                          let adjustedAmount = item.forecastedAmount;
+                          
+                          if (glScenarioForm.adjustmentType === 'percentage') {
+                            adjustedAmount = item.forecastedAmount * (1 + glScenarioForm.adjustmentValue / 100);
+                          } else {
+                            adjustedAmount = item.forecastedAmount + glScenarioForm.adjustmentValue;
+                          }
+                          
+                          return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+                        }
+                      }
+                      return item;
+                    }));
+                    
+                    // Add to applied scenarios
+                    const appliedScenario: AppliedScenario = {
+                      id: Date.now().toString(),
+                      glCode: selectedGLCode.code,
+                      name: glScenarioForm.name,
+                      description: glScenarioForm.description,
+                      startMonth: glScenarioForm.startMonth,
+                      endMonth: glScenarioForm.endMonth,
+                      adjustmentType: glScenarioForm.adjustmentType,
+                      adjustmentValue: glScenarioForm.adjustmentValue,
+                      appliedAt: new Date()
+                    };
+                    
+                    setAppliedScenarios(prev => [...prev, appliedScenario]);
+                    
+                    setShowGLScenarioModal(false);
+                    setSelectedGLCode(null);
+                    setGLScenarioForm({
+                      name: '',
+                      startMonth: 'Jan',
+                      endMonth: 'Dec',
+                      headcount: 0,
+                      averageSalary: 0,
+                      payrollTaxRate: 15.3,
+                      benefitsRate: 25,
+                      numberOfTrips: 0,
+                      averageTripCost: 0,
+                      campaignBudget: 0,
+                      numberOfCampaigns: 0,
+                      squareFootage: 0,
+                      pricePerSqFt: 0,
+                      numberOfLicenses: 0,
+                      costPerLicense: 0,
+                      adjustmentType: 'percentage',
+                      adjustmentValue: 0,
+                      description: ''
+                    });
+                  }}
+                disabled={!glScenarioForm.name.trim() || !isScenarioValid()}
+                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Apply Scenario
+              </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Forecasting;
