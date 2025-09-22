@@ -1208,7 +1208,7 @@ const Benchmarks: React.FC = () => {
                   Cancel
                 </button>
                       <ChevronRight className="w-4 h-4 ml-2" />
-                    </>
+                    </div>
                   ) : (
                     'Complete Setup'
                   )}
