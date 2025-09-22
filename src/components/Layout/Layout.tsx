@@ -3,10 +3,8 @@ import Sidebar from './Sidebar';
 import TopNav from './TopNav';
 import Footer from './Footer';
 import SkipLink from '../UI/SkipLink';
-import ChatInterface from '../Chat/ChatInterface';
 import AIChatButton from '../AI/AIChatButton';
 import AIChat from '../AI/AIChat';
-import ChatButton from '../Chat/ChatButton';
 
 interface LayoutProps {
   title: string;
@@ -15,7 +13,6 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ title, children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [showChat, setShowChat] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
 
   return (
@@ -33,18 +30,10 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
         <Footer />
       </div>
       
-      {/* Floating Chat Buttons */}
-      <ChatButton 
-        onClick={() => setShowChat(true)} 
-        unreadCount={5} 
-      />
+      {/* Floating AI Chat Button */}
       <AIChatButton onClick={() => setShowAIChat(true)} />
       
-      {/* Chat Interfaces */}
-      <ChatInterface 
-        isOpen={showChat} 
-        onClose={() => setShowChat(false)} 
-      />
+      {/* AI Chat Interface */}
       <AIChat 
         isOpen={showAIChat} 
         onClose={() => setShowAIChat(false)} 
