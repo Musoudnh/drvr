@@ -41,6 +41,7 @@ interface AppliedScenario {
   adjustmentType: 'percentage' | 'fixed';
   adjustmentValue: number;
   appliedAt: Date;
+  createdBy: string;
 }
 
 const Forecasting: React.FC = () => {
@@ -817,6 +818,11 @@ const Forecasting: React.FC = () => {
                                               <div>
                                                 <h6 className="font-medium text-[#1E2A38]">{scenario.name}</h6>
                                                 <p className="text-sm text-gray-600">{scenario.description}</p>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                  <span className="text-xs text-gray-500">
+                                                    Added by {scenario.createdBy} • {scenario.appliedAt.toLocaleDateString()}
+                                                  </span>
+                                                </div>
                                                 <p className="text-xs text-gray-500">
                                                   {scenario.startMonth} - {scenario.endMonth} • 
                                                   {scenario.adjustmentType === 'percentage' ? 
@@ -931,7 +937,8 @@ const Forecasting: React.FC = () => {
                      endMonth: glScenarioForm.endMonth,
                      adjustmentType: glScenarioForm.adjustmentType,
                      adjustmentValue: glScenarioForm.adjustmentValue,
-                     appliedAt: new Date()
+                     appliedAt: new Date(),
+                     createdBy: 'Current User'
                    };
                    setAppliedScenarios(prev => [...prev, newScenario]);
                    
