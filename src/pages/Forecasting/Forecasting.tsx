@@ -57,8 +57,26 @@ const Forecasting: React.FC = () => {
     name: '',
     startMonth: 'Jan',
     endMonth: 'Dec',
+    // Payroll specific
+    headcount: 0,
+    averageSalary: 0,
+    payrollTaxRate: 15.3,
+    benefitsRate: 25,
+    // Travel specific
+    numberOfTrips: 0,
+    averageTripCost: 0,
+    // Marketing specific
+    campaignBudget: 0,
+    numberOfCampaigns: 0,
+    // Office/Rent specific
+    squareFootage: 0,
+    pricePerSqFt: 0,
+    // Technology specific
+    numberOfLicenses: 0,
+    costPerLicense: 0,
+    // General
     adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0,
+    adjustmentValue: 0
     description: ''
   });
 
@@ -863,10 +881,11 @@ const Forecasting: React.FC = () => {
       </div>
 
       {/* GL Code Scenario Modal */}
-      {showGLScenarioModal && selectedGLCode && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
+      {showScenarioModal && selectedGLCode && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
+          <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl border-l border-gray-200 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
+              <div className="p-6 border-b border-gray-200 w-full">
               <h3 className="text-xl font-semibold text-[#1E2A38]">
                 Add Scenario for {selectedGLCode.code} - {selectedGLCode.name}
               </h3>
@@ -883,13 +902,14 @@ const Forecasting: React.FC = () => {
                     description: ''
                   });
                 }}
-                className="p-1 hover:bg-gray-100 rounded"
+                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg"
               >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
+              </div>
             </div>
             
-            <div className="space-y-4">
+            <div className="p-6 space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
                 <input
@@ -940,47 +960,19 @@ const Forecasting: React.FC = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-                  <select
-                    value={glScenarioForm.adjustmentType}
-                    onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    <option value="percentage">Percentage Change</option>
-                    <option value="fixed">Fixed Amount</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {glScenarioForm.adjustmentType === 'percentage' ? 'Percentage (%)' : 'Amount ($)'}
-                  </label>
-                  <input
-                    type="number"
-                    step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '1000'}
-                    value={glScenarioForm.adjustmentValue}
-                    onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    placeholder={glScenarioForm.adjustmentType === 'percentage' ? '15.0' : '50000'}
-                  />
-                </div>
-              </div>
+              {/* GL-Specific Input Fields */}
+              {renderGLSpecificInputs()}
               
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
                 <h4 className="font-medium text-[#1E2A38] mb-2">Impact Preview</h4>
                 <p className="text-sm text-gray-700">
-                  This will {glScenarioForm.adjustmentValue >= 0 ? 'increase' : 'decrease'} {selectedGLCode.name} by{' '}
-                  {glScenarioForm.adjustmentType === 'percentage' 
-                    ? `${Math.abs(glScenarioForm.adjustmentValue)}%` 
-                    : `$${Math.abs(glScenarioForm.adjustmentValue).toLocaleString()}`
-                  } from {glScenarioForm.startMonth} to {glScenarioForm.endMonth}.
-                </p>
+                <p className="text-sm text-gray-600">{getImpactPreview()}</p>
               </div>
             </div>
+            </div>
             
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200">
+              <div className="flex justify-end gap-3">
               <button
                 onClick={() => {
                   setShowGLScenarioModal(false);
@@ -1000,7 +992,7 @@ const Forecasting: React.FC = () => {
               </button>
               <button
                 onClick={() => {
-                  if (glScenarioForm.name.trim()) {
+                disabled={!scenarioForm.name.trim() || !isScenarioValid()}
                     // Apply the scenario to the forecast data
                     const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
                     const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
@@ -1058,6 +1050,7 @@ const Forecasting: React.FC = () => {
               >
                 Apply Scenario
               </button>
+              </div>
             </div>
           </div>
         </div>
