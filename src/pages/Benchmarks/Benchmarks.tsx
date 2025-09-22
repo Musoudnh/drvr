@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { 
+import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
   BarChart3, 
   TrendingUp, 
   TrendingDown, 
@@ -76,6 +76,17 @@ const Benchmarks: React.FC = () => {
   const [showAIInsights, setShowAIInsights] = useState(true);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [setupStep, setSetupStep] = useState(1);
+  const [setupData, setSetupData] = useState({
+    // Step 1: Company Profile
+    industry: '',
+    businessModel: '',
+    annualRevenue: '',
+    revenueRange: '',
+    employeeCount: '',
+    region: '',
+    businessStage: ''
+  });
 
   // Define initial company profile data as a constant
   const initialCompanyProfile: CompanyProfile = {
@@ -347,6 +358,189 @@ const Benchmarks: React.FC = () => {
   };
 
   const headlineInsight = getHeadlineInsight();
+
+  const handleSetupNext = () => {
+    if (setupStep < 1) { // Only 1 step for now, can be expanded
+      setSetupStep(setupStep + 1);
+    } else {
+      handleSetupComplete();
+    }
+  };
+
+  const handleSetupPrevious = () => {
+    if (setupStep > 1) {
+      setSetupStep(setupStep - 1);
+    }
+  };
+
+  const handleSetupComplete = () => {
+    // Update company profile with setup data
+    setCompanyProfile(prev => ({
+      ...prev,
+      industry: setupData.industry,
+      businessModel: setupData.businessModel,
+      revenue: setupData.annualRevenue,
+      revenueRange: setupData.revenueRange,
+      employees: parseInt(setupData.employeeCount) || prev.employees,
+      region: setupData.region,
+      businessStage: setupData.businessStage
+    }));
+    
+    // Reset wizard
+    setSetupStep(1);
+    setSetupData({
+      industry: '',
+      businessModel: '',
+      annualRevenue: '',
+      revenueRange: '',
+      employeeCount: '',
+      region: '',
+      businessStage: ''
+    });
+    setShowProfileModal(false);
+  };
+
+  const renderSetupStep = () => {
+    switch (setupStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38] mb-2">Company Profile</h3>
+              <p className="text-gray-600">Tell us about your company to get personalized benchmarks</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                <select
+                  value={setupData.industry}
+                  onChange={(e) => setSetupData({...setupData, industry: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="">Select Industry</option>
+                  <option value="Software as a Service (SaaS)">Software as a Service (SaaS)</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Financial Services">Financial Services</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Professional Services">Professional Services</option>
+                  <option value="Real Estate">Real Estate</option>
+                  <option value="Education">Education</option>
+                  <option value="Media & Entertainment">Media & Entertainment</option>
+                  <option value="Transportation">Transportation</option>
+                  <option value="Energy">Energy</option>
+                  <option value="Agriculture">Agriculture</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Business Model</label>
+                <select
+                  value={setupData.businessModel}
+                  onChange={(e) => setSetupData({...setupData, businessModel: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="">Select Business Model</option>
+                  <option value="SaaS">Software as a Service (SaaS)</option>
+                  <option value="eCommerce">eCommerce</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Professional Services">Professional Services</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Marketplace">Marketplace</option>
+                  <option value="Subscription">Subscription</option>
+                  <option value="Freemium">Freemium</option>
+                  <option value="B2B">B2B</option>
+                  <option value="B2C">B2C</option>
+                  <option value="B2B2C">B2B2C</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Annual Revenue (USD)</label>
+                <input
+                  type="number"
+                  value={setupData.annualRevenue}
+                  onChange={(e) => setSetupData({...setupData, annualRevenue: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., 5000000"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
+                <select
+                  value={setupData.revenueRange}
+                  onChange={(e) => setSetupData({...setupData, revenueRange: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="">Select Revenue Range</option>
+                  <option value="Under $1M">Under $1M</option>
+                  <option value="$1M - $5M">$1M - $5M</option>
+                  <option value="$5M - $20M">$5M - $20M</option>
+                  <option value="$20M - $100M">$20M - $100M</option>
+                  <option value="Over $100M">Over $100M</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Employee Count</label>
+                <input
+                  type="number"
+                  value={setupData.employeeCount}
+                  onChange={(e) => setSetupData({...setupData, employeeCount: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., 45"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                <select
+                  value={setupData.region}
+                  onChange={(e) => setSetupData({...setupData, region: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="">Select Region</option>
+                  <option value="North America">North America</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Asia Pacific">Asia Pacific</option>
+                  <option value="Latin America">Latin America</option>
+                  <option value="Middle East & Africa">Middle East & Africa</option>
+                  <option value="Global">Global</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Stage of Business</label>
+              <select
+                value={setupData.businessStage}
+                onChange={(e) => setSetupData({...setupData, businessStage: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              >
+                <option value="">Select Business Stage</option>
+                <option value="Startup">Startup (0-2 years)</option>
+                <option value="Growth">Growth (3-7 years)</option>
+                <option value="Mature">Mature (8+ years)</option>
+                <option value="Pre-IPO">Pre-IPO</option>
+                <option value="Public">Public Company</option>
+              </select>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -975,117 +1169,19 @@ const Benchmarks: React.FC = () => {
 
       {/* Export Modal */}
       {showExportModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-[600px] max-w-[90vw] max-h-[90vh] overflow-hidden">
+            {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-[#1E2A38]">Export Benchmark Report</h3>
               <button
                 onClick={() => setShowExportModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Report Format</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent">
-                  <option value="pdf">PDF Report</option>
-                  <option value="excel">Excel Spreadsheet</option>
-                  <option value="powerpoint">PowerPoint Presentation</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Include Sections</label>
-                <div className="space-y-2">
-                  {['Executive Summary', 'Detailed Metrics', 'AI Insights', 'Action Items'].map(section => (
-                    <label key={section} className="flex items-center">
-                      <input type="checkbox" defaultChecked className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#3AB7BF] mr-3" />
-                      <span className="text-sm text-gray-700">{section}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowExportModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowExportModal(false);
-                  // Simulate export
-                  alert('Benchmark report exported successfully!');
-                }}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Export Report
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Company Profile Edit Modal */}
-      {showProfileModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Update Company Profile</h3>
-              <button
-                onClick={() => setShowProfileModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                <select
-                  value={profileForm.industry}
-                  onChange={(e) => setProfileForm({...profileForm, industry: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                >
-                  <option value="SaaS">Software as a Service (SaaS)</option>
-                  <option value="Retail">Retail & E-commerce</option>
-                  <option value="Healthcare">Healthcare & Medical</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Fintech">Financial Technology</option>
-                  <option value="Consulting">Professional Services</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
-                <select
-                  value={profileForm.revenueRange}
-                  onChange={(e) => setProfileForm({...profileForm, revenueRange: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                >
-                  <option value="Under $5M">Under $5M</option>
-                  <option value="$5-20M">$5M - $20M</option>
-                  <option value="$20-100M">$20M - $100M</option>
-                  <option value="Over $100M">Over $100M</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Employee Count</label>
-                <input
-                  type="number"
-                  value={profileForm.employeeCount}
-                  onChange={(e) => setProfileForm({...profileForm, employeeCount: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  placeholder="Enter number of employees"
+            {/* Progress Bar */}
+            <div className="px-6 mb-6">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className="bg-[#3AB7BF] h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(setupStep / 1) * 100}%` }}
                 />
               </div>
               
@@ -1149,19 +1245,48 @@ const Benchmarks: React.FC = () => {
                 onClick={() => setShowProfileModal(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  // Update the company profile with form data
-                  console.log('Updated profile:', profileForm);
-                  alert('Company profile updated successfully!');
-                  setShowProfileModal(false);
-                }}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Save Changes
-              </button>
+            {/* Step Content */}
+            <div className="px-6 pb-6 max-h-[60vh] overflow-y-auto">
+              {renderSetupStep()}
+            </div>
+            
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-between">
+              <div>
+                {setupStep > 1 && (
+                  <Button 
+                    variant="outline" 
+                    onClick={handleSetupPrevious}
+                    className="flex items-center"
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-2" />
+                    Previous
+                  </Button>
+                )}
+              </div>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowProfileModal(false)}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <Button
+                  variant="primary"
+                  onClick={handleSetupNext}
+                  className="flex items-center"
+                >
+                  {setupStep < 1 ? (
+                    <>
+                      Next
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </>
+                  ) : (
+                    'Complete Setup'
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
