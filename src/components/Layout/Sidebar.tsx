@@ -122,7 +122,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/tax', label: 'Reports', icon: Receipt },
+    { path: '/reports', label: 'Reports', icon: Receipt },
     { path: '/chat', label: 'Chat', icon: MessageSquare },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle }
   ];
