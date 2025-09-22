@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe
-}, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
-import {
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  Award, 
-  Target, 
-  Users, 
-  DollarSign, 
-  Building2,
-  ChevronDown,
-  ChevronUp,
+import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
