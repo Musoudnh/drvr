@@ -672,9 +672,8 @@ const Forecasting: React.FC = () => {
         </div>
       </Card>
 
-      <div className="flex gap-6">
         {/* Main Forecast Table */}
-        <div className={`${showScenarioPanel ? 'flex-1' : 'w-full'} transition-all duration-300`}>
+        <div className="w-full">
           <Card title={`${selectedYear} Monthly Forecast by GL Code`}>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -888,14 +887,6 @@ const Forecasting: React.FC = () => {
               </table>
             </div>
           </Card>
-        </div>
-
-        {/* Scenario Panel */}
-        {showScenarioPanel && (
-          <div className="w-80 space-y-4">
-          </div>
-        )}
-      </div>
 
       {/* GL Code Scenario Modal */}
       {showGLScenarioModal && selectedGLCode && (
