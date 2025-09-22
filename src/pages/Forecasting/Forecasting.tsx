@@ -59,6 +59,19 @@ const Forecasting: React.FC = () => {
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [editingCell, setEditingCell] = useState<{glCode: string, month: string} | null>(null);
   const [editValue, setEditValue] = useState<string>('');
+  const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
+  const [sidePanelForm, setSidePanelForm] = useState({
+    selectedGLCode: '',
+    scenarioName: '',
+    description: '',
+    adjustmentType: 'percentage' as 'percentage' | 'fixed',
+    adjustmentValue: 0,
+    startMonth: 'Jan',
+    endMonth: 'Dec',
+    keyAssumptions: [
+      { id: '1', name: '', value: '', description: '' }
+    ]
+  });
   const [glScenarioForm, setGLScenarioForm] = useState({
     title: '',
     description: '',
@@ -552,6 +565,86 @@ const Forecasting: React.FC = () => {
     return glScenarioForm.title.trim() !== '' && glScenarioForm.adjustmentValue !== 0;
   };
 
+  const handleAddAssumption = () => {
+    setSidePanelForm(prev => ({
+      ...prev,
+      keyAssumptions: [
+        ...prev.keyAssumptions,
+        { id: Date.now().toString(), name: '', value: '', description: '' }
+      ]
+    }));
+  };
+
+  const handleRemoveAssumption = (id: string) => {
+    setSidePanelForm(prev => ({
+      ...prev,
+      keyAssumptions: prev.keyAssumptions.filter(assumption => assumption.id !== id)
+    }));
+  };
+
+  const handleUpdateAssumption = (id: string, field: string, value: string) => {
+    setSidePanelForm(prev => ({
+      ...prev,
+      keyAssumptions: prev.keyAssumptions.map(assumption =>
+        assumption.id === id ? { ...assumption, [field]: value } : assumption
+      )
+    }));
+  };
+
+  const handleCreateScenarioFromPanel = () => {
+    if (sidePanelForm.selectedGLCode && sidePanelForm.scenarioName.trim()) {
+      const newScenario: AppliedScenario = {
+        id: Date.now().toString(),
+        glCode: sidePanelForm.selectedGLCode,
+        name: sidePanelForm.scenarioName,
+        description: sidePanelForm.description,
+        startMonth: sidePanelForm.startMonth,
+        endMonth: sidePanelForm.endMonth,
+        adjustmentType: sidePanelForm.adjustmentType,
+        adjustmentValue: sidePanelForm.adjustmentValue,
+        appliedAt: new Date(),
+        createdBy: 'Current User' // Replace with actual user context
+      };
+      
+      setAppliedScenarios(prev => [...prev, newScenario]);
+      
+      // Auto-integrate scenario into monthly budgets
+      const startMonthIndex = months.indexOf(newScenario.startMonth);
+      const endMonthIndex = months.indexOf(newScenario.endMonth);
+      
+      setForecastData(prev => prev.map(item => {
+        if (item.glCode === sidePanelForm.selectedGLCode) {
+          const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
+          if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
+            let adjustedAmount = item.forecastedAmount;
+            if (newScenario.adjustmentType === 'percentage') {
+              adjustedAmount = item.forecastedAmount * (1 + newScenario.adjustmentValue / 100);
+            } else {
+              adjustedAmount = item.forecastedAmount + newScenario.adjustmentValue;
+            }
+            return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+          }
+        }
+        return item;
+      }));
+      
+      // Reset form and close panel
+      setSidePanelForm({
+        selectedGLCode: '',
+        scenarioName: '',
+        description: '',
+        adjustmentType: 'percentage',
+        adjustmentValue: 0,
+        startMonth: 'Jan',
+        endMonth: 'Dec',
+        keyAssumptions: [
+          { id: '1', name: '', value: '', description: '' }
+        ]
+      });
+      setShowScenarioSidePanel(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -1004,6 +1097,251 @@ const Forecasting: React.FC = () => {
          </div>
        </div>
      )}
+      {/* Scenario Configuration Side Panel */}
+      {showScenarioSidePanel && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowScenarioSidePanel(false)}
+          />
+          
+          {/* Side Panel */}
+          <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col border-l border-gray-200 transform transition-transform duration-300 ease-in-out">
+            {/* Panel Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#3AB7BF]/5">
+              <div>
+                <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Configuration</h3>
+                <p className="text-sm text-gray-600 mt-1">Create and configure budget scenarios</p>
+              </div>
+              <button
+                onClick={() => setShowScenarioSidePanel(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+            
+            {/* Panel Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* GL Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <Target className="w-4 h-4 inline mr-2" />
+                  Select GL Account
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <select
+                    value={sidePanelForm.selectedGLCode}
+                    onChange={(e) => setSidePanelForm({...sidePanelForm, selectedGLCode: e.target.value})}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent appearance-none bg-white"
+                  >
+                    <option value="">Choose GL Account...</option>
+                    {glCodes.map(glCode => (
+                      <option key={glCode.code} value={glCode.code}>
+                        {glCode.code} - {glCode.name} ({glCode.category})
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Scenario Details */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                  <input
+                    type="text"
+                    value={sidePanelForm.scenarioName}
+                    onChange={(e) => setSidePanelForm({...sidePanelForm, scenarioName: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="e.g., Q2 Marketing Campaign"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <textarea
+                    value={sidePanelForm.description}
+                    onChange={(e) => setSidePanelForm({...sidePanelForm, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    rows={3}
+                    placeholder="Describe the scenario and its business context"
+                  />
+                </div>
+              </div>
+
+              {/* Date Range */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <Calendar className="w-4 h-4 inline mr-2" />
+                  Date Range
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">Start Month</label>
+                    <select
+                      value={sidePanelForm.startMonth}
+                      onChange={(e) => setSidePanelForm({...sidePanelForm, startMonth: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      {months.map(month => (
+                        <option key={month} value={month}>{month}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">End Month</label>
+                    <select
+                      value={sidePanelForm.endMonth}
+                      onChange={(e) => setSidePanelForm({...sidePanelForm, endMonth: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      {months.map(month => (
+                        <option key={month} value={month}>{month}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Adjustment Configuration */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  <BarChart3 className="w-4 h-4 inline mr-2" />
+                  Budget Adjustment
+                </label>
+                
+                <div>
+                  <label className="block text-xs text-gray-600 mb-2">Adjustment Type</label>
+                  <select
+                    value={sidePanelForm.adjustmentType}
+                    onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    <option value="percentage">Percentage Change (%)</option>
+                    <option value="fixed">Fixed Amount ($)</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-xs text-gray-600 mb-2">
+                    {sidePanelForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}
+                  </label>
+                  <input
+                    type="number"
+                    value={sidePanelForm.adjustmentValue}
+                    onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentValue: parseFloat(e.target.value) || 0})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    step={sidePanelForm.adjustmentType === 'percentage' ? '0.1' : '100'}
+                    placeholder={sidePanelForm.adjustmentType === 'percentage' ? '15.5' : '50000'}
+                  />
+                </div>
+              </div>
+
+              {/* Key Assumptions */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    <Lightbulb className="w-4 h-4 inline mr-2" />
+                    Key Assumptions
+                  </label>
+                  <button
+                    onClick={handleAddAssumption}
+                    className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Add assumption"
+                  >
+                    <Plus className="w-4 h-4 text-[#3AB7BF]" />
+                  </button>
+                </div>
+                
+                <div className="space-y-3">
+                  {sidePanelForm.keyAssumptions.map((assumption, index) => (
+                    <div key={assumption.id} className="p-3 border border-gray-200 rounded-lg bg-gray-50">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-gray-600">Assumption {index + 1}</span>
+                        {sidePanelForm.keyAssumptions.length > 1 && (
+                          <button
+                            onClick={() => handleRemoveAssumption(assumption.id)}
+                            className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <input
+                          type="text"
+                          value={assumption.name}
+                          onChange={(e) => handleUpdateAssumption(assumption.id, 'name', e.target.value)}
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                          placeholder="Assumption name"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <input
+                            type="text"
+                            value={assumption.value}
+                            onChange={(e) => handleUpdateAssumption(assumption.id, 'value', e.target.value)}
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                            placeholder="Value"
+                          />
+                          <input
+                            type="text"
+                            value={assumption.description}
+                            onChange={(e) => handleUpdateAssumption(assumption.id, 'description', e.target.value)}
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                            placeholder="Description"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Impact Preview */}
+              {sidePanelForm.selectedGLCode && sidePanelForm.adjustmentValue !== 0 && (
+                <div className="p-4 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
+                  <h4 className="font-medium text-[#1E2A38] mb-2 flex items-center">
+                    <Eye className="w-4 h-4 mr-2" />
+                    Impact Preview
+                  </h4>
+                  <p className="text-sm text-gray-700">
+                    This scenario will {sidePanelForm.adjustmentValue >= 0 ? 'increase' : 'decrease'} the selected GL account by{' '}
+                    {sidePanelForm.adjustmentType === 'percentage' 
+                      ? `${Math.abs(sidePanelForm.adjustmentValue)}%`
+                      : `$${Math.abs(sidePanelForm.adjustmentValue).toLocaleString()}`
+                    } from {sidePanelForm.startMonth} to {sidePanelForm.endMonth}.
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            {/* Panel Footer */}
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowScenarioSidePanel(false)}
+                  className="flex-1 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateScenarioFromPanel}
+                  disabled={!sidePanelForm.selectedGLCode || !sidePanelForm.scenarioName.trim()}
+                  className="flex-1 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  <Save className="w-4 h-4 mr-2 inline" />
+                  Create Scenario
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );
