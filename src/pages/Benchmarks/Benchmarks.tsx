@@ -90,7 +90,7 @@ const Benchmarks: React.FC = () => {
     }
   ]
   )
-} trend: 'up',
+}, trend: 'up',
       performance: 'outperforming',
       description: 'Year-over-year revenue growth rate',
       category: 'revenue'
