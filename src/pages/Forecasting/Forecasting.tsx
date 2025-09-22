@@ -1,1541 +1,823 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, Edit3, Save, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { 
+  TrendingUp, 
+  Target, 
+  BarChart3, 
+  Plus, 
+  X, 
+  Calendar, 
+  Tag, 
+  Upload, 
+  Save, 
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  FileText,
+  Settings,
+  Filter,
+  Download,
+  RefreshCw,
+  Eye,
+  Edit3,
+  Trash2,
+  Copy,
+  Play,
+  Pause,
+  Star
+} from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
-interface GLCode {
-  code: string;
-  name: string;
-  category: 'Revenue' | 'COGS' | 'OPEX' | 'Other';
-  type: 'revenue' | 'expense';
-}
-
-interface MonthlyForecast {
-  glCode: string;
-  month: string;
-  forecastedAmount: number;
-  actualAmount?: number;
-  variance?: number;
-  changeVsPrior?: number;
-  cumulativeYTD: number;
-  isEditable: boolean;
-}
-
-interface ScenarioAssumption {
-  name: string;
-  value: number;
-  unit: '%' | '$' | 'count';
-  min: number;
-  max: number;
-  step: number;
-}
-
-interface AppliedScenario {
+interface Scenario {
   id: string;
-  glCode: string;
   name: string;
   description: string;
-  startMonth: string;
-  endMonth: string;
-  bonusImpact?: number;
-  adjustmentType: 'percentage' | 'fixed';
-  adjustmentValue: number;
-  appliedAt: Date;
+  category: 'revenue' | 'expense' | 'growth' | 'market' | 'custom';
+  priority: 'high' | 'medium' | 'low';
+  startDate: string;
+  endDate: string;
+  status: 'draft' | 'active' | 'completed' | 'archived';
+  tags: string[];
+  notes: string;
+  attachments: File[];
+  createdAt: Date;
+  updatedAt: Date;
   createdBy: string;
+  assumptions: {
+    revenueGrowth: number;
+    marketGrowth: number;
+    pricingChange: number;
+  };
+  results: {
+    revenue: number;
+    profit: number;
+    cashFlow: number;
+  };
 }
 
 const Forecasting: React.FC = () => {
-  const [selectedYear, setSelectedYear] = useState(2025);
-  const [multiYearView, setMultiYearView] = useState(false);
-  const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
-  const [newGLScenario, setNewGLScenario] = useState({
-    name: '',
-    description: '',
-    glAccount: '',
-    adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: '',
-    startMonth: 'Jan 2025',
-    endMonth: 'Dec 2025'
-  });
-  const [yearRange, setYearRange] = useState([2025, 2026]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(['Revenue', 'OPEX']);
-  const [showScenarioPanel, setShowScenarioPanel] = useState(true);
-  const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
-  const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
-  const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
-  const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
-  const [editingCell, setEditingCell] = useState<{glCode: string, month: string} | null>(null);
-  const [editValue, setEditValue] = useState<string>('');
-  const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
-  const [sidePanelForm, setSidePanelForm] = useState({
-    selectedGLCode: '',
-    scenarioName: '',
-    description: '',
-    adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0,
-    startMonth: 'Jan',
-    endMonth: 'Dec',
-    keyAssumptions: [
-      { id: '1', name: '', value: '', description: '' }
-    ]
-  });
-  const [glScenarioForm, setGLScenarioForm] = useState({
-    title: '',
-    description: '',
-    owner: 'Current User',
-    startMonth: 'Jan',
-    endMonth: 'Dec',
-    startYear: selectedYear,
-    endYear: selectedYear,
-    scenarioType: 'custom',
-    // Sales/Revenue assumptions
-    revenueGrowthPercent: 0,
-    salesVolumeAssumption: 0,
-    pricingAssumption: 0,
-    churnRatePercent: 0,
-    marketExpansion: 0,
-    // Expense assumptions
-    marketingSpendPercent: 0,
-    cogsPercent: 0,
-    rdPercent: 0,
-    overheadCosts: 0,
-    variableFixedSplit: 50,
-    // Payroll specific
-    headcount: 0,
-    headcountGrowthPercent: 0,
-    averageSalary: 0,
-    payrollTaxRate: 15.3,
-    benefitsRate: 25,
-    hiringPlan: 0,
-    attritionRatePercent: 15,
-    // Travel specific
-    numberOfTrips: 0,
-    averageTripCost: 0,
-    // Marketing specific
-    campaignBudget: 0,
-    numberOfCampaigns: 0,
-    // Office/Rent specific
-    squareFootage: 0,
-    pricePerSqFt: 0,
-    // Technology specific
-    numberOfLicenses: 0,
-    costPerLicense: 0,
-    // General
-    adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0
-  });
-
-  // Helper functions - moved before useState to avoid initialization errors
-  const getBaseAmount = (glCode: string): number => {
-    const baseAmounts: { [key: string]: number } = {
-      '4000': 285000, '4100': 95000, '4200': 35000, '4300': 15000,
-      '5000': 125000, '5100': 45000, '5200': 35000,
-      '6000': 128000, '6100': 35000, '6200': 25000, '6300': 18500, '6400': 12000, '6500': 8000,
-      '7000': 5000, '7100': 15000
-    };
-    return baseAmounts[glCode] || 10000;
-  };
-
-  const getSeasonalFactor = (month: string): number => {
-    const factors: { [key: string]: number } = {
-      'Jan': 0.95, 'Feb': 0.98, 'Mar': 1.05, 'Apr': 1.08, 'May': 1.12, 'Jun': 1.15,
-      'Jul': 1.18, 'Aug': 1.10, 'Sep': 1.06, 'Oct': 1.02, 'Nov': 0.92, 'Dec': 0.88
-    };
-    return factors[month] || 1.0;
-  };
-
-  const glCodes: GLCode[] = [
-    { code: '4000', name: 'Product Sales', category: 'Revenue', type: 'revenue' },
-    { code: '4100', name: 'Service Revenue', category: 'Revenue', type: 'revenue' },
-    { code: '4200', name: 'Licensing Revenue', category: 'Revenue', type: 'revenue' },
-    { code: '4300', name: 'Other Income', category: 'Revenue', type: 'revenue' },
-    { code: '5000', name: 'Cost of Goods Sold', category: 'COGS', type: 'expense' },
-    { code: '5100', name: 'Direct Labor', category: 'COGS', type: 'expense' },
-    { code: '5200', name: 'Materials & Supplies', category: 'COGS', type: 'expense' },
-    { code: '6000', name: 'Payroll & Benefits', category: 'OPEX', type: 'expense' },
-    { code: '6100', name: 'Marketing & Advertising', category: 'OPEX', type: 'expense' },
-    { code: '6200', name: 'Rent & Utilities', category: 'OPEX', type: 'expense' },
-    { code: '6300', name: 'Technology & Software', category: 'OPEX', type: 'expense' },
-    { code: '6400', name: 'Professional Services', category: 'OPEX', type: 'expense' },
-    { code: '6500', name: 'Travel & Entertainment', category: 'OPEX', type: 'expense' },
-    { code: '7000', name: 'Interest Expense', category: 'Other', type: 'expense' },
-    { code: '7100', name: 'Depreciation', category: 'Other', type: 'expense' }
-  ];
-
-  const [scenarioAssumptions, setScenarioAssumptions] = useState<ScenarioAssumption[]>([
-    { name: 'Revenue Growth', value: 15.4, unit: '%', min: -20, max: 50, step: 0.1 },
-    { name: 'Headcount Growth', value: 8.2, unit: '%', min: -10, max: 30, step: 0.1 },
-    { name: 'Marketing Spend', value: 12.5, unit: '%', min: 0, max: 25, step: 0.1 },
-    { name: 'Salary Inflation', value: 4.5, unit: '%', min: 0, max: 15, step: 0.1 },
-    { name: 'Office Rent Increase', value: 3.0, unit: '%', min: 0, max: 10, step: 0.1 }
-  ]);
-
-  const glAccounts = [
-    { code: '4000', name: 'Product Revenue', category: 'Revenue' },
-    { code: '4100', name: 'Service Revenue', category: 'Revenue' },
-    { code: '4200', name: 'Other Income', category: 'Revenue' },
-    { code: '5000', name: 'Cost of Goods Sold', category: 'COGS' },
-    { code: '6000', name: 'Salaries & Benefits', category: 'Operating Expenses' },
-    { code: '6100', name: 'Marketing Expenses', category: 'Operating Expenses' },
-    { code: '6200', name: 'Office Rent', category: 'Operating Expenses' },
-    { code: '6300', name: 'Technology & Software', category: 'Operating Expenses' },
-    { code: '7000', name: 'Interest Expense', category: 'Other Expenses' }
-  ];
-
-  const handleCreateGLScenario = () => {
-    if (newGLScenario.name.trim() && newGLScenario.adjustmentValue) {
-      const scenario = {
-        id: Date.now().toString(),
-        name: newGLScenario.name,
-        description: newGLScenario.description,
-        glAccount: newGLScenario.glAccount || null,
-        adjustmentType: newGLScenario.adjustmentType,
-        adjustmentValue: parseFloat(newGLScenario.adjustmentValue),
-        startMonth: newGLScenario.startMonth,
-        endMonth: newGLScenario.endMonth,
-        createdAt: new Date(),
-        createdBy: 'Current User',
-        isActive: true
-      };
-      
-      setScenarios(prev => [...prev, scenario]);
-      setNewGLScenario({
-        name: '',
-        description: '',
-        glAccount: '',
-        adjustmentType: 'percentage',
-        adjustmentValue: '',
-        startMonth: 'Jan 2025',
-        endMonth: 'Dec 2025'
-      });
-      setShowGLScenarioModal(false);
-    }
-  };
-
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  
-  // Generate forecast data
-  const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
-    const data: MonthlyForecast[] = [];
-    const currentMonth = new Date().getMonth();
-    
-    glCodes.forEach(glCode => {
-      let cumulativeYTD = 0;
-      let previousAmount = 0;
-      
-      months.forEach((month, index) => {
-        const isHistorical = index <= currentMonth;
-        const baseAmount = getBaseAmount(glCode.code);
-        const seasonalFactor = getSeasonalFactor(month);
-        const growthFactor = Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
-        
-        let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
-        
-        // Apply scenario assumptions
-        if (glCode.code === '6000') { // Payroll
-          forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
-        } else if (glCode.code === '6100') { // Marketing
-          forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
-        } else if (glCode.code === '6200') { // Rent
-          forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
-        }
-        
-        cumulativeYTD += forecastedAmount;
-        const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
-        
-        const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
-        const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
-        
-        data.push({
-          glCode: glCode.code,
-          month: `${month} ${selectedYear}`,
-          forecastedAmount: Math.round(forecastedAmount),
-          actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
-          variance,
-          changeVsPrior: index > 0 ? changeVsPrior : undefined,
-          cumulativeYTD: Math.round(cumulativeYTD),
-          isEditable: !isHistorical
-        });
-        
-        previousAmount = forecastedAmount;
-      });
-    });
-    
-    return data;
-  });
-
-  const updateForecastAmount = (glCode: string, month: string, newAmount: number) => {
-    setForecastData(prev => prev.map(item => 
-      item.glCode === glCode && item.month === month
-        ? { ...item, forecastedAmount: newAmount }
-        : item
-    ));
-  };
-
-  const handleCellEdit = (glCode: string, month: string, currentAmount: number) => {
-    setEditingCell({ glCode, month });
-    setEditValue(currentAmount.toString());
-  };
-
-  const handleCellSave = () => {
-    if (editingCell && editValue.trim()) {
-      const newAmount = parseFloat(editValue);
-      if (!isNaN(newAmount)) {
-        updateForecastAmount(editingCell.glCode, editingCell.month, newAmount);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [scenarios, setScenarios] = useState<Scenario[]>([
+    {
+      id: '1',
+      name: 'Base Case Forecast',
+      description: 'Conservative growth scenario based on current market conditions',
+      category: 'revenue',
+      priority: 'high',
+      startDate: '2025-01-01',
+      endDate: '2025-12-31',
+      status: 'active',
+      tags: ['baseline', 'conservative', 'q1-2025'],
+      notes: 'This scenario assumes steady growth with no major market disruptions.',
+      attachments: [],
+      createdAt: new Date('2025-01-15'),
+      updatedAt: new Date('2025-01-15'),
+      createdBy: 'Sarah Johnson',
+      assumptions: {
+        revenueGrowth: 15.4,
+        marketGrowth: 8.2,
+        pricingChange: 0
+      },
+      results: {
+        revenue: 10200000,
+        profit: 2856000,
+        cashFlow: 2244000
+      }
+    },
+    {
+      id: '2',
+      name: 'Aggressive Growth',
+      description: 'Optimistic scenario with new product launches and market expansion',
+      category: 'growth',
+      priority: 'medium',
+      startDate: '2025-03-01',
+      endDate: '2025-12-31',
+      status: 'draft',
+      tags: ['optimistic', 'product-launch', 'expansion'],
+      notes: 'Assumes successful product launch and 25% market share increase.',
+      attachments: [],
+      createdAt: new Date('2025-01-12'),
+      updatedAt: new Date('2025-01-14'),
+      createdBy: 'Michael Chen',
+      assumptions: {
+        revenueGrowth: 28.7,
+        marketGrowth: 12.5,
+        pricingChange: 8
+      },
+      results: {
+        revenue: 14800000,
+        profit: 4292000,
+        cashFlow: 3654000
       }
     }
-    setEditingCell(null);
-    setEditValue('');
-  };
+  ]);
 
-  const handleCellCancel = () => {
-    setEditingCell(null);
-    setEditValue('');
-  };
-
-  const isMonthActualized = (month: string) => {
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    const monthIndex = months.indexOf(month.split(' ')[0]);
-    const year = parseInt(month.split(' ')[1]);
-    
-    return year < currentYear || (year === currentYear && monthIndex <= currentMonth);
-  };
-
-  const updateScenarioAssumption = (name: string, value: number) => {
-    setScenarioAssumptions(prev => prev.map(assumption =>
-      assumption.name === name ? { ...assumption, value } : assumption
-    ));
-    
-    // Recalculate forecast data based on new assumptions
-    // This would trigger a recalculation of all forecast amounts
-  };
-
-  const getMonthlyData = (month: string) => {
-    return forecastData.filter(item => item.month === month);
-  };
-
-  const getMonthlyTotal = (month: string, type: 'revenue' | 'expense') => {
-    const monthData = getMonthlyData(month);
-    return monthData
-      .filter(item => {
-        const glCode = glCodes.find(gl => gl.code === item.glCode);
-        return glCode?.type === type;
-      })
-      .reduce((sum, item) => sum + item.forecastedAmount, 0);
-  };
-
-  const getNetProfit = (month: string) => {
-    const revenue = getMonthlyTotal(month, 'revenue');
-    const expenses = getMonthlyTotal(month, 'expense');
-    return revenue - expenses;
-  };
-
-  const filteredGLCodes = glCodes.filter(glCode => {
-    const matchesSearch = glCode.code.includes(searchTerm) || 
-                         glCode.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || glCode.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    category: 'revenue' as const,
+    priority: 'medium' as const,
+    startDate: '',
+    endDate: '',
+    status: 'draft' as const,
+    tags: [] as string[],
+    notes: '',
+    attachments: [] as File[]
   });
 
-  const toggleCategory = (category: string) => {
-    setExpandedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
+  const [currentTag, setCurrentTag] = useState('');
+  const [isLoading, setSaveLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const [preservedFormData, setPreservedFormData] = useState<typeof formData | null>(null);
+
+  // Preserve form data when sidebar closes
+  useEffect(() => {
+    if (!sidebarOpen && (formData.name || formData.description)) {
+      setPreservedFormData(formData);
+    }
+  }, [sidebarOpen, formData]);
+
+  // Restore form data when sidebar reopens
+  useEffect(() => {
+    if (sidebarOpen && preservedFormData) {
+      setFormData(preservedFormData);
+      setPreservedFormData(null);
+    }
+  }, [sidebarOpen, preservedFormData]);
+
+  const openSidebar = () => {
+    setSidebarOpen(true);
+    setFormErrors({});
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Revenue': return '#4ADE80';
-      case 'COGS': return '#F87171';
-      case 'OPEX': return '#3AB7BF';
-      case 'Other': return '#8B5CF6';
-      default: return '#6B7280';
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  const getVarianceColor = (variance: number) => {
-    if (Math.abs(variance) < 5) return 'text-[#4ADE80]';
-    if (Math.abs(variance) < 15) return 'text-[#F59E0B]';
-    return 'text-[#F87171]';
-  };
-
-  const renderGLSpecificInputs = () => {
-    if (!selectedGLCode) return null;
-
-    switch (selectedGLCode.code) {
-      case '6000': // Payroll & Benefits
-        return (
-          <div className="space-y-4">
-            <h4 className="font-medium text-[#1E2A38]">Payroll Assumptions</h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Headcount</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.headcount}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, headcount: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Avg Salary</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.averageSalary}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, averageSalary: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-            </div>
-          </div>
-        );
-      
-      case '6500': // Travel & Entertainment
-        return (
-          <div className="space-y-4">
-            <h4 className="font-medium text-[#1E2A38]">Travel Assumptions</h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Trips</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.numberOfTrips}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, numberOfTrips: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Avg Trip Cost</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.averageTripCost}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, averageTripCost: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-            </div>
-          </div>
-        );
-      
-      default:
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-              <select
-                value={glScenarioForm.adjustmentType}
-                onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-              >
-                <option value="percentage">Percentage Change</option>
-                <option value="fixed">Fixed Amount</option>
-              </select>
-            </div>
-            
-            {/* Date Range Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Date Range</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {/* Button 1: Date Range Selector */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    // Toggle date range picker visibility
-                    const isCurrentlyFromThisMonth = glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                                                   glScenarioForm.startYear === new Date().getFullYear() && 
-                                                   glScenarioForm.endMonth === 'Dec' && 
-                                                   glScenarioForm.endYear === selectedYear;
-                    
-                    if (isCurrentlyFromThisMonth) {
-                      // Reset to custom range
-                      setGLScenarioForm({
-                        ...glScenarioForm,
-                        startMonth: 'Jan',
-                        endMonth: 'Dec',
-                        startYear: selectedYear,
-                        endYear: selectedYear
-                      });
-                    }
-                  }}
-                  className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
-                    !(glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                      glScenarioForm.startYear === new Date().getFullYear() && 
-                      glScenarioForm.endMonth === 'Dec' && 
-                      glScenarioForm.endYear === selectedYear)
-                      ? 'border-[#3AB7BF] bg-[#3AB7BF]/5 text-[#3AB7BF]'
-                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                  }`}
-                >
-                  <div className="font-medium text-sm">Select Month Range</div>
-                  <div className="text-xs mt-1">
-                    {!(glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                      glScenarioForm.startYear === new Date().getFullYear() && 
-                      glScenarioForm.endMonth === 'Dec' && 
-                      glScenarioForm.endYear === selectedYear)
-                      ? `From ${glScenarioForm.startMonth} ${glScenarioForm.startYear} to ${glScenarioForm.endMonth} ${glScenarioForm.endYear}`
-                      : 'Click to select custom range'
-                    }
-                  </div>
-                </button>
-
-                {/* Button 2: Forward Date Selector */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    const currentMonth = months[new Date().getMonth()];
-                    const currentYear = new Date().getFullYear();
-                    setGLScenarioForm({
-                      ...glScenarioForm,
-                      startMonth: currentMonth,
-                      endMonth: 'Dec',
-                      startYear: currentYear,
-                      endYear: selectedYear
-                    });
-                  }}
-                  className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
-                    glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                    glScenarioForm.startYear === new Date().getFullYear() && 
-                    glScenarioForm.endMonth === 'Dec' && 
-                    glScenarioForm.endYear === selectedYear
-                      ? 'border-[#4ADE80] bg-[#4ADE80]/5 text-[#4ADE80]'
-                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
-                  }`}
-                >
-                  <div className="font-medium text-sm">From This Month Forward</div>
-                  <div className="text-xs mt-1">
-                    {glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                     glScenarioForm.startYear === new Date().getFullYear() && 
-                     glScenarioForm.endMonth === 'Dec' && 
-                     glScenarioForm.endYear === selectedYear
-                      ? `From ${months[new Date().getMonth()]} ${new Date().getFullYear()} - Ongoing`
-                      : 'Click to select from current month'
-                    }
-                  </div>
-                </button>
-              </div>
-              
-              {/* Custom Date Range Inputs - Show when Button 1 is selected */}
-              {!(glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                glScenarioForm.startYear === new Date().getFullYear() && 
-                glScenarioForm.endMonth === 'Dec' && 
-                glScenarioForm.endYear === selectedYear) && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <h5 className="font-medium text-[#1E2A38] mb-3">Custom Date Range</h5>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <select
-                          value={glScenarioForm.startMonth}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                        >
-                          {months.map(month => (
-                            <option key={month} value={month}>{month}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={glScenarioForm.startYear}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                        >
-                          <option value={2024}>2024</option>
-                          <option value={2025}>2025</option>
-                          <option value={2026}>2026</option>
-                          <option value={2027}>2027</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <select
-                          value={glScenarioForm.endMonth}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                        >
-                          {months.map(month => (
-                            <option key={month} value={month}>{month}</option>
-                          ))}
-                        </select>
-                        <select
-                          value={glScenarioForm.endYear}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                        >
-                          <option value={2024}>2024</option>
-                          <option value={2025}>2025</option>
-                          <option value={2026}>2026</option>
-                          <option value={2027}>2027</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {glScenarioForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}
-              </label>
-              <input
-                type="number"
-                value={glScenarioForm.adjustmentValue}
-                onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '100'}
-              />
-            </div>
-          </div>
-        );
-    }
-  };
-
-  const getImpactPreview = () => {
-    if (!selectedGLCode) return '';
-    
-    const baseAmount = getBaseAmount(selectedGLCode.code);
-    let impact = 0;
-    
-    if (glScenarioForm.adjustmentType === 'percentage') {
-      impact = baseAmount * (glScenarioForm.adjustmentValue / 100);
-    } else {
-      impact = glScenarioForm.adjustmentValue;
-    }
-    
-    return `This scenario will ${impact >= 0 ? 'increase' : 'decrease'} monthly amounts by approximately $${Math.abs(impact).toLocaleString()}`;
-  };
-
-  const isScenarioValid = () => {
-    return glScenarioForm.title.trim() !== '' && glScenarioForm.adjustmentValue !== 0;
-  };
-
-  const handleAddAssumption = () => {
-    setSidePanelForm(prev => ({
-      ...prev,
-      keyAssumptions: [
-        ...prev.keyAssumptions,
-        { id: Date.now().toString(), name: '', value: '', description: '' }
-      ]
-    }));
-  };
-
-  const handleRemoveAssumption = (id: string) => {
-    setSidePanelForm(prev => ({
-      ...prev,
-      keyAssumptions: prev.keyAssumptions.filter(assumption => assumption.id !== id)
-    }));
-  };
-
-  const handleUpdateAssumption = (id: string, field: string, value: string) => {
-    setSidePanelForm(prev => ({
-      ...prev,
-      keyAssumptions: prev.keyAssumptions.map(assumption =>
-        assumption.id === id ? { ...assumption, [field]: value } : assumption
-      )
-    }));
-  };
-
-  const handleCreateScenarioFromPanel = () => {
-    if (sidePanelForm.selectedGLCode && sidePanelForm.scenarioName.trim()) {
-      const newScenario: AppliedScenario = {
-        id: Date.now().toString(),
-        glCode: sidePanelForm.selectedGLCode,
-        name: sidePanelForm.scenarioName,
-        description: sidePanelForm.description,
-        startMonth: sidePanelForm.startMonth,
-        endMonth: sidePanelForm.endMonth,
-        adjustmentType: sidePanelForm.adjustmentType,
-        adjustmentValue: sidePanelForm.adjustmentValue,
-        appliedAt: new Date(),
-        createdBy: 'Current User' // Replace with actual user context
-      };
-      
-      setAppliedScenarios(prev => [...prev, newScenario]);
-      
-      // Auto-integrate scenario into monthly budgets
-      const startMonthIndex = months.indexOf(newScenario.startMonth);
-      const endMonthIndex = months.indexOf(newScenario.endMonth);
-      
-      setForecastData(prev => prev.map(item => {
-        if (item.glCode === sidePanelForm.selectedGLCode) {
-          const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
-          if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
-            let adjustedAmount = item.forecastedAmount;
-            if (newScenario.adjustmentType === 'percentage') {
-              adjustedAmount = item.forecastedAmount * (1 + newScenario.adjustmentValue / 100);
-            } else {
-              adjustedAmount = item.forecastedAmount + newScenario.adjustmentValue;
-            }
-            return { ...item, forecastedAmount: Math.round(adjustedAmount) };
-          }
-        }
-        return item;
+  const handleAddTag = () => {
+    if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        tags: [...prev.tags, currentTag.trim()]
       }));
-      
-      // Reset form and close panel
-      setSidePanelForm({
-        selectedGLCode: '',
-        scenarioName: '',
-        description: '',
-        adjustmentType: 'percentage',
-        adjustmentValue: 0,
-        startMonth: 'Jan',
-        endMonth: 'Dec',
-        keyAssumptions: [
-          { id: '1', name: '', value: '', description: '' }
-        ]
-      });
-      setShowScenarioSidePanel(false);
+      setCurrentTag('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      setFormData(prev => ({
+        ...prev,
+        attachments: [...prev.attachments, ...Array.from(files)]
+      }));
+    }
+  };
+
+  const handleRemoveFile = (fileToRemove: File) => {
+    setFormData(prev => ({
+      ...prev,
+      attachments: prev.attachments.filter(file => file !== fileToRemove)
+    }));
+  };
+
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Scenario name is required';
+    }
+    if (!formData.description.trim()) {
+      errors.description = 'Description is required';
+    }
+    if (!formData.startDate) {
+      errors.startDate = 'Start date is required';
+    }
+    if (!formData.endDate) {
+      errors.endDate = 'End date is required';
+    }
+    if (formData.startDate && formData.endDate && new Date(formData.startDate) >= new Date(formData.endDate)) {
+      errors.endDate = 'End date must be after start date';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSave = async () => {
+    if (!validateForm()) return;
+
+    setSaveLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    const newScenario: Scenario = {
+      id: Date.now().toString(),
+      ...formData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'Current User',
+      assumptions: {
+        revenueGrowth: 15.4,
+        marketGrowth: 8.2,
+        pricingChange: 0
+      },
+      results: {
+        revenue: 10200000,
+        profit: 2856000,
+        cashFlow: 2244000
+      }
+    };
+
+    setScenarios(prev => [...prev, newScenario]);
+    setSaveLoading(false);
+    setShowSuccess(true);
+    
+    // Reset form
+    setFormData({
+      name: '',
+      description: '',
+      category: 'revenue',
+      priority: 'medium',
+      startDate: '',
+      endDate: '',
+      status: 'draft',
+      tags: [],
+      notes: '',
+      attachments: []
+    });
+
+    setTimeout(() => {
+      setShowSuccess(false);
+      closeSidebar();
+    }, 1500);
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      name: '',
+      description: '',
+      category: 'revenue',
+      priority: 'medium',
+      startDate: '',
+      endDate: '',
+      status: 'draft',
+      tags: [],
+      notes: '',
+      attachments: []
+    });
+    setFormErrors({});
+    closeSidebar();
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
+      case 'draft': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
+      case 'completed': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
+      case 'archived': return 'bg-gray-200 text-gray-600';
+      default: return 'bg-gray-200 text-gray-700';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'text-[#F87171]';
+      case 'medium': return 'text-[#F59E0B]';
+      case 'low': return 'text-[#4ADE80]';
+      default: return 'text-gray-600';
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'revenue': return TrendingUp;
+      case 'expense': return BarChart3;
+      case 'growth': return Target;
+      case 'market': return Eye;
+      default: return Settings;
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-[#1E2A38]">Financial Forecasting</h2>
-          <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
+          <p className="text-gray-600 mt-1">Create and manage financial scenarios and projections</p>
         </div>
         <div className="flex gap-3">
+          <Button variant="outline">
+            <Filter className="w-4 h-4 mr-2" />
+            Filter
+          </Button>
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
-          <Button variant="primary" className="bg-[#3AB7BF] hover:bg-[#2A9BA3]">
-            <Save className="w-4 h-4 mr-2" />
-            Save Forecast
-          </Button>
         </div>
       </div>
 
-      {/* Controls */}
-      <Card>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-            >
-              <option value={2024}>2024</option>
-              <option value={2025}>2025</option>
-              <option value={2026}>2026</option>
-              <option value={2027}>2027</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-            >
-              <option value="All">All Categories</option>
-              <option value="Revenue">Revenue</option>
-              <option value="COGS">Cost of Goods Sold</option>
-              <option value="OPEX">Operating Expenses</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search GL Codes</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search codes..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-              />
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Active Scenarios</p>
+              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{scenarios.filter(s => s.status === 'active').length}</p>
+              <p className="text-sm text-gray-600 mt-1">Running models</p>
             </div>
+            <Target className="w-8 h-8 text-[#3AB7BF]" />
           </div>
-          
-          <div className="flex items-end">
-            <Button
-              variant="outline"
-              onClick={() => setShowScenarioPanel(!showScenarioPanel)}
-              className="w-full"
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              Scenarios
-            </Button>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Draft Scenarios</p>
+              <p className="text-2xl font-bold text-[#F59E0B] mt-1">{scenarios.filter(s => s.status === 'draft').length}</p>
+              <p className="text-sm text-gray-600 mt-1">In development</p>
+            </div>
+            <Edit3 className="w-8 h-8 text-[#F59E0B]" />
           </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Avg Accuracy</p>
+              <p className="text-2xl font-bold text-[#4ADE80] mt-1">87%</p>
+              <p className="text-sm text-gray-600 mt-1">Model performance</p>
+            </div>
+            <CheckCircle className="w-8 h-8 text-[#4ADE80]" />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Last Updated</p>
+              <p className="text-2xl font-bold text-[#8B5CF6] mt-1">2h</p>
+              <p className="text-sm text-gray-600 mt-1">Ago</p>
+            </div>
+            <RefreshCw className="w-8 h-8 text-[#8B5CF6]" />
+          </div>
+        </Card>
+      </div>
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="flex items-end">
+          <button
+            onClick={openSidebar}
+            className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-2 border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF] hover:text-white focus:ring-[#3AB7BF] px-4 py-2 text-sm w-full"
+          >
+            <Plus className="w-4 h-4 mr-2 inline" />
+            Scenarios
+          </button>
+        </div>
+      </div>
+
+      {/* Scenarios List */}
+      <Card title="Scenario Management">
+        <div className="space-y-4">
+          {scenarios.map(scenario => {
+            const CategoryIcon = getCategoryIcon(scenario.category);
+            return (
+              <div key={scenario.id} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] transition-all">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start">
+                    <div className="w-10 h-10 bg-[#3AB7BF]/10 rounded-lg flex items-center justify-center mr-4">
+                      <CategoryIcon className="w-5 h-5 text-[#3AB7BF]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-[#1E2A38]">{scenario.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{scenario.description}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(scenario.status)}`}>
+                          {scenario.status}
+                        </span>
+                        <span className={`text-xs font-medium ${getPriorityColor(scenario.priority)}`}>
+                          {scenario.priority} priority
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm">
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Edit3 className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-600">Revenue</p>
+                    <p className="font-bold text-[#4ADE80]">${(scenario.results.revenue / 1000000).toFixed(1)}M</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Profit</p>
+                    <p className="font-bold text-[#3AB7BF]">${(scenario.results.profit / 1000000).toFixed(1)}M</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Cash Flow</p>
+                    <p className="font-bold text-[#F59E0B]">${(scenario.results.cashFlow / 1000000).toFixed(1)}M</p>
+                  </div>
+                </div>
+                
+                {scenario.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-3">
+                    {scenario.tags.map(tag => (
+                      <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-xs">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Card>
 
-        {/* Main Forecast Table */}
-        <div className="w-full">
-          <Card title={`${selectedYear} Monthly Forecast by GL Code`}>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-white z-10">
-                  <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-32 sticky left-0 bg-white">GL Code</th>
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-48 sticky left-32 bg-white">Description</th>
-                    {months.map((month, index) => (
-                      <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
-                        {month} {selectedYear}
-                      </th>
-                    ))}
-                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
-                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {['Revenue', 'COGS', 'OPEX', 'Other'].map(category => {
-                    const categoryGLCodes = filteredGLCodes.filter(gl => gl.category === category);
-                    if (categoryGLCodes.length === 0) return null;
-                    
-                    return (
-                      <React.Fragment key={category}>
-                        {/* Category Header */}
-                        <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={months.length + 3} className="py-3 px-4">
-                            <button
-                              onClick={() => toggleCategory(category)}
-                              className="flex items-center font-bold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
-                            >
-                              {expandedCategories.includes(category) ? (
-                                <ChevronDown className="w-4 h-4 mr-2" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 mr-2" />
-                              )}
-                              <div 
-                                className="w-3 h-3 rounded-full mr-2"
-                                style={{ backgroundColor: getCategoryColor(category) }}
-                              />
-                              {category}
-                            </button>
-                          </td>
-                        </tr>
-                        
-                        {/* GL Code Rows */}
-                        {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
-                          <React.Fragment key={glCode.code}>
-                            <tr className="border-b border-gray-100 hover:bg-gray-50 group">
-                              <td className="py-3 px-4 font-mono text-sm sticky left-0 bg-white group-hover:bg-gray-50">
-                                {glCode.code}
-                              </td>
-                              <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
-                                <div className="flex items-center justify-between">
-                                  <span>{glCode.name}</span>
-                                  <div className="flex items-center gap-1">
-                                    <button
-                                      onClick={() => {
-                                        setSelectedGLCode(glCode);
-                                        setShowGLScenarioModal(true);
-                                      }}
-                                      className="p-1 hover:bg-gray-100 rounded transition-colors"
-                                      title="Add scenario"
-                                    >
-                                      <Plus className="w-3 h-3" />
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        const glScenarios = appliedScenarios.filter(s => s.glCode === glCode.code);
-                                        if (glScenarios.length > 0) {
-                                          setExpandedGLCodes(prev =>
-                                            prev.includes(glCode.code)
-                                              ? prev.filter(code => code !== glCode.code)
-                                              : [...prev, glCode.code]
-                                          );
-                                        }
-                                      }}
-                                      className={`p-1 hover:bg-gray-100 rounded transition-colors ${
-                                        appliedScenarios.filter(s => s.glCode === glCode.code).length === 0 
-                                          ? 'opacity-30 cursor-not-allowed' 
-                                          : ''
-                                      }`}
-                                      title={`${appliedScenarios.filter(s => s.glCode === glCode.code).length} scenarios`}
-                                      disabled={appliedScenarios.filter(s => s.glCode === glCode.code).length === 0}
-                                    >
-                                      {expandedGLCodes.includes(glCode.code) ? (
-                                        <ChevronDown className="w-3 h-3" />
-                                      ) : (
-                                        <ChevronRight className="w-3 h-3" />
-                                      )}
-                                    </button>
-                                  </div>
-                                </div>
-                              </td>
-                              {months.map((month, monthIndex) => {
-                                const monthData = forecastData.find(
-                                  item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
-                                );
-                                const isActualized = isMonthActualized(`${month} ${selectedYear}`);
-                                const isEditing = editingCell?.glCode === glCode.code && editingCell?.month === `${month} ${selectedYear}`;
-                                
-                                return (
-                                  <td key={monthIndex} className="py-3 px-2 text-center text-sm">
-                                    <div className="space-y-1 relative">
-                                      <div className={`font-medium ${!isActualized ? 'cursor-pointer hover:bg-blue-50 rounded px-1' : ''}`}>
-                                        {isEditing ? (
-                                          <input
-                                            type="number"
-                                            value={editValue}
-                                            onChange={(e) => setEditValue(e.target.value)}
-                                            onBlur={handleCellSave}
-                                            onKeyDown={(e) => {
-                                              if (e.key === 'Enter') handleCellSave();
-                                              if (e.key === 'Escape') handleCellCancel();
-                                            }}
-                                            className="w-full px-1 py-0.5 text-center border border-blue-300 rounded text-xs"
-                                            autoFocus
-                                          />
-                                        ) : (
-                                          <span
-                                            onClick={() => {
-                                              if (!isActualized && monthData) {
-                                                handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
-                                              }
-                                            }}
-                                            className={isActualized ? 'text-gray-600' : 'text-[#1E2A38] hover:text-blue-600'}
-                                          >
-                                            ${monthData?.forecastedAmount.toLocaleString() || '0'}
-                                          </span>
-                                        )}
-                                      </div>
-                                      {monthData?.actualAmount && (
-                                        <div className="text-xs text-gray-500 bg-gray-100 rounded px-1">
-                                          Act: ${monthData.actualAmount.toLocaleString()}
-                                        </div>
-                                      )}
-                                      {monthData?.variance && (
-                                        <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
-                                          {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
-                                        </div>
-                                      )}
-                                      {isActualized && (
-                                        <div className="absolute top-0 right-0 w-2 h-2 bg-gray-400 rounded-full" title="Actualized" />
-                                      )}
-                                    </div>
-                                  </td>
-                                );
-                              })}
-                              <td className="py-3 px-4 text-right text-sm font-medium">
-                                ${forecastData
-                                  .filter(item => item.glCode === glCode.code)
-                                  .slice(0, new Date().getMonth() + 1)
-                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                  .toLocaleString()}
-                              </td>
-                              <td className="py-3 px-4 text-right text-sm font-medium">
-                                ${forecastData
-                                  .filter(item => item.glCode === glCode.code)
-                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                  .toLocaleString()}
-                              </td>
-                            </tr>
-                            
-                            {/* Expanded GL Code Scenarios */}
-                            {expandedGLCodes.includes(glCode.code) && (
-                              <tr>
-                                <td colSpan={months.length + 4} className="py-0">
-                                  <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
-                                    <h5 className="font-medium text-[#1E2A38] mb-3">Applied Scenarios for {glCode.name}</h5>
-                                    {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
-                                      <p className="text-sm text-gray-600 italic">No scenarios applied to this GL code yet.</p>
-                                    ) : (
-                                      <div className="space-y-2">
-                                        {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className="p-3 bg-white rounded border border-gray-200">
-                                            <div className="flex items-center justify-between">
-                                              <div>
-                                                <h6 className="font-medium text-[#1E2A38]">{scenario.name}</h6>
-                                                <p className="text-sm text-gray-600">{scenario.description}</p>
-                                                <div className="flex items-center gap-2 mt-1">
-                                                  <span className="text-xs text-gray-500">
-                                                    Added by {scenario.createdBy} • {scenario.appliedAt.toLocaleDateString()}
-                                                  </span>
-                                                </div>
-                                                <p className="text-xs text-gray-500">
-                                                  {scenario.startMonth} - {scenario.endMonth} • 
-                                                  {scenario.adjustmentType === 'percentage' ? 
-                                                    ` ${scenario.adjustmentValue}% change` : 
-                                                    ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
-                                                  }
-                                                </p>
-                                              </div>
-                                              <div className="flex items-center gap-2">
-                                                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">
-                                                  Active
-                                                </span>
-                                                <button
-                                                  onClick={() => {
-                                                    setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
-                                                    // Recalculate forecast data after removing scenario
-                                                    // This would trigger a recalculation in a real implementation
-                                                  }}
-                                                  className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
-                                                  title="Remove scenario"
-                                                >
-                                                  <X className="w-3 h-3" />
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </React.Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </Card>
-        </div>
+      {/* Sidebar Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
+          onClick={closeSidebar}
+        />
+      )}
 
-      {/* GL Scenario Configuration Modal */}
-      {showGLScenarioModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Create Scenario</h3>
-              <button
-                onClick={() => setShowGLScenarioModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
+      {/* Sidebar Panel */}
+      <div className={`fixed top-0 left-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
+        <div className="flex flex-col h-full">
+          {/* Sidebar Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80]">
+            <div>
+              <h3 className="text-xl font-semibold text-white">Add New Scenario</h3>
+              <p className="text-blue-100 text-sm">Create a financial forecasting scenario</p>
             </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
-                <input
-                  type="text"
-                  value={newGLScenario.name}
-                  onChange={(e) => setNewGLScenario({...newGLScenario, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  placeholder="e.g., Q2 Revenue Boost"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <textarea
-                  value={newGLScenario.description}
-                  onChange={(e) => setNewGLScenario({...newGLScenario, description: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  rows={3}
-                  placeholder="Describe the scenario assumptions and context"
-                />
-              </div>
+            <button
+              onClick={closeSidebar}
+              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          </div>
 
+          {/* Success Message */}
+          {showSuccess && (
+            <div className="mx-6 mt-4 p-4 bg-[#4ADE80]/10 border border-[#4ADE80]/20 rounded-lg flex items-center">
+              <CheckCircle className="w-5 h-5 text-[#4ADE80] mr-3" />
+              <span className="text-sm font-medium text-[#4ADE80]">Scenario saved successfully!</span>
+            </div>
+          )}
+
+          {/* Sidebar Content */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Scenario Name */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Scenario Name *
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent transition-colors ${
+                  formErrors.name ? 'border-[#F87171]' : 'border-gray-300'
+                }`}
+                placeholder="Enter scenario name"
+              />
+              {formErrors.name && (
+                <p className="text-sm text-[#F87171] mt-1 flex items-center">
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  {formErrors.name}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Description *
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent transition-colors resize-none ${
+                  formErrors.description ? 'border-[#F87171]' : 'border-gray-300'
+                }`}
+                rows={3}
+                placeholder="Describe the scenario assumptions and context"
+              />
+              {formErrors.description && (
+                <p className="text-sm text-[#F87171] mt-1 flex items-center">
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  {formErrors.description}
+                </p>
+              )}
+            </div>
+
+            {/* Category and Priority */}
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  GL Account (Optional)
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Category
                 </label>
                 <select
-                  value={newGLScenario.glAccount}
-                  onChange={(e) => setNewGLScenario({...newGLScenario, glAccount: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  value={formData.category}
+                  onChange={(e) => handleInputChange('category', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
-                  <option value="">Select GL Account (Optional)</option>
-                  {glAccounts.map(account => (
-                    <option key={account.code} value={account.code}>
-                      {account.code} - {account.name} ({account.category})
-                    </option>
-                  ))}
+                  <option value="revenue">Revenue</option>
+                  <option value="expense">Expense</option>
+                  <option value="growth">Growth</option>
+                  <option value="market">Market</option>
+                  <option value="custom">Custom</option>
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-                  <select
-                    value={newGLScenario.adjustmentType}
-                    onChange={(e) => setNewGLScenario({...newGLScenario, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    <option value="percentage">Percentage</option>
-                    <option value="fixed">Fixed Amount</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {newGLScenario.adjustmentType === 'percentage' ? 'Percentage (%)' : 'Amount ($)'}
-                  </label>
-                  <input
-                    type="number"
-                    step={newGLScenario.adjustmentType === 'percentage' ? '0.1' : '1000'}
-                    value={newGLScenario.adjustmentValue}
-                    onChange={(e) => setNewGLScenario({...newGLScenario, adjustmentValue: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    placeholder={newGLScenario.adjustmentType === 'percentage' ? '15.0' : '50000'}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
-                  <select
-                    value={newGLScenario.startMonth}
-                    onChange={(e) => setNewGLScenario({...newGLScenario, startMonth: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    {months.map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
-                  <select
-                    value={newGLScenario.endMonth}
-                    onChange={(e) => setNewGLScenario({...newGLScenario, endMonth: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    {months.map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {newGLScenario.glAccount && (
-                <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-                  <h5 className="font-medium text-[#1E2A38] mb-1">GL Account Impact</h5>
-                  <p className="text-sm text-gray-700">
-                    This scenario will apply a {newGLScenario.adjustmentValue}
-                    {newGLScenario.adjustmentType === 'percentage' ? '%' : ' dollar'} adjustment to 
-                    GL {newGLScenario.glAccount} from {newGLScenario.startMonth} to {newGLScenario.endMonth}
-                  </p>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowGLScenarioModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateGLScenario}
-                disabled={!newGLScenario.name.trim() || !newGLScenario.adjustmentValue}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Create Scenario
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-     {/* GL Scenario Modal */}
-     {showGLScenarioModal && selectedGLCode && (
-       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-         <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-           <div className="flex items-center justify-between mb-6">
-             <h3 className="text-xl font-semibold text-[#1E2A38]">
-               Add Scenario for {selectedGLCode.name} ({selectedGLCode.code})
-             </h3>
-             <button
-               onClick={() => {
-                 setShowGLScenarioModal(false);
-                 setSelectedGLCode(null);
-               }}
-               className="p-1 hover:bg-gray-100 rounded"
-             >
-               <X className="w-4 h-4 text-gray-400" />
-             </button>
-           </div>
-           
-           <div className="space-y-4">
-             <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
-               <input
-                 type="text"
-                 value={glScenarioForm.title}
-                 onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                 placeholder="e.g., Q2 Marketing Campaign"
-               />
-             </div>
-             
-             <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-               <textarea
-                 value={glScenarioForm.description}
-                 onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                 rows={3}
-                 placeholder="Describe the scenario and its impact"
-               />
-             </div>
-             
-             {renderGLSpecificInputs()}
-             
-             <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
-             </div>
-           </div>
-           
-           <div className="flex justify-end gap-3 mt-6">
-             <button
-               onClick={() => {
-                 setShowGLScenarioModal(false);
-                 setSelectedGLCode(null);
-               }}
-               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-             >
-               Cancel
-             </button>
-             <button
-               onClick={() => {
-                 if (isScenarioValid()) {
-                   const newScenario: AppliedScenario = {
-                     id: Date.now().toString(),
-                     glCode: selectedGLCode.code,
-                     name: glScenarioForm.title,
-                     description: glScenarioForm.description,
-                     startMonth: glScenarioForm.startMonth,
-                     endMonth: glScenarioForm.endMonth,
-                     adjustmentType: glScenarioForm.adjustmentType,
-                     adjustmentValue: glScenarioForm.adjustmentValue,
-                     appliedAt: new Date(),
-                     createdBy: 'Current User'
-                   };
-                   setAppliedScenarios(prev => [...prev, newScenario]);
-                   
-                   // Auto-integrate scenario into monthly budgets
-                   const startMonthIndex = months.indexOf(newScenario.startMonth);
-                   const endMonthIndex = months.indexOf(newScenario.endMonth);
-                   
-                   setForecastData(prev => prev.map(item => {
-                     if (item.glCode === selectedGLCode.code) {
-                       const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
-                       if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
-                         let adjustedAmount = item.forecastedAmount;
-                         if (newScenario.adjustmentType === 'percentage') {
-                           adjustedAmount = item.forecastedAmount * (1 + newScenario.adjustmentValue / 100);
-                         } else {
-                           adjustedAmount = item.forecastedAmount + newScenario.adjustmentValue;
-                         }
-                         return { ...item, forecastedAmount: Math.round(adjustedAmount) };
-                       }
-                     }
-                     return item;
-                   }));
-                   
-                   setShowGLScenarioModal(false);
-                   setSelectedGLCode(null);
-                   setGLScenarioForm({
-                     title: '',
-                     description: '',
-                     owner: 'Current User',
-                     startMonth: 'Jan',
-                     endMonth: 'Dec',
-                     startYear: selectedYear,
-                     endYear: selectedYear,
-                     scenarioType: 'custom',
-                     revenueGrowthPercent: 0,
-                     salesVolumeAssumption: 0,
-                     pricingAssumption: 0,
-                     churnRatePercent: 0,
-                     marketExpansion: 0,
-                     marketingSpendPercent: 0,
-                     cogsPercent: 0,
-                     rdPercent: 0,
-                     overheadCosts: 0,
-                     variableFixedSplit: 50,
-                     headcount: 0,
-                     headcountGrowthPercent: 0,
-                     averageSalary: 0,
-                     payrollTaxRate: 15.3,
-                     benefitsRate: 25,
-                     hiringPlan: 0,
-                     attritionRatePercent: 15,
-                     numberOfTrips: 0,
-                     averageTripCost: 0,
-                     campaignBudget: 0,
-                     numberOfCampaigns: 0,
-                     squareFootage: 0,
-                     pricePerSqFt: 0,
-                     numberOfLicenses: 0,
-                     costPerLicense: 0,
-                     adjustmentType: 'percentage',
-                     adjustmentValue: 0
-                   });
-                 }
-               }}
-               disabled={!isScenarioValid()}
-               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-             >
-               Apply Scenario
-             </button>
-           </div>
-         </div>
-       </div>
-     )}
-      {/* Scenario Configuration Side Panel */}
-      {showScenarioSidePanel && (
-        <>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setShowScenarioSidePanel(false)}
-          />
-          
-          {/* Side Panel */}
-          <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col border-l border-gray-200 transform transition-transform duration-300 ease-in-out">
-            {/* Panel Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#3AB7BF]/5">
               <div>
-                <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Configuration</h3>
-                <p className="text-sm text-gray-600 mt-1">Create and configure budget scenarios</p>
-              </div>
-              <button
-                onClick={() => setShowScenarioSidePanel(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
-            
-            {/* Panel Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* GL Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  <Target className="w-4 h-4 inline mr-2" />
-                  Select GL Account
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Priority Level
                 </label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <select
-                    value={sidePanelForm.selectedGLCode}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, selectedGLCode: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent appearance-none bg-white"
-                  >
-                    <option value="">Choose GL Account...</option>
-                    {glCodes.map(glCode => (
-                      <option key={glCode.code} value={glCode.code}>
-                        {glCode.code} - {glCode.name} ({glCode.category})
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                </div>
-              </div>
-
-              {/* Scenario Details */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
-                  <input
-                    type="text"
-                    value={sidePanelForm.scenarioName}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, scenarioName: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    placeholder="e.g., Q2 Marketing Campaign"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    value={sidePanelForm.description}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, description: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    rows={3}
-                    placeholder="Describe the scenario and its business context"
-                  />
-                </div>
-              </div>
-
-              {/* Date Range */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  <Calendar className="w-4 h-4 inline mr-2" />
-                  Date Range
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs text-gray-600 mb-1">Start Month</label>
-                    <select
-                      value={sidePanelForm.startMonth}
-                      onChange={(e) => setSidePanelForm({...sidePanelForm, startMonth: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    >
-                      {months.map(month => (
-                        <option key={month} value={month}>{month}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs text-gray-600 mb-1">End Month</label>
-                    <select
-                      value={sidePanelForm.endMonth}
-                      onChange={(e) => setSidePanelForm({...sidePanelForm, endMonth: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    >
-                      {months.map(month => (
-                        <option key={month} value={month}>{month}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Adjustment Configuration */}
-              <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  <BarChart3 className="w-4 h-4 inline mr-2" />
-                  Budget Adjustment
-                </label>
-                
-                <div>
-                  <label className="block text-xs text-gray-600 mb-2">Adjustment Type</label>
-                  <select
-                    value={sidePanelForm.adjustmentType}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    <option value="percentage">Percentage Change (%)</option>
-                    <option value="fixed">Fixed Amount ($)</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-xs text-gray-600 mb-2">
-                    {sidePanelForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}
-                  </label>
-                  <input
-                    type="number"
-                    value={sidePanelForm.adjustmentValue}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    step={sidePanelForm.adjustmentType === 'percentage' ? '0.1' : '100'}
-                    placeholder={sidePanelForm.adjustmentType === 'percentage' ? '15.5' : '50000'}
-                  />
-                </div>
-              </div>
-
-              {/* Key Assumptions */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="block text-sm font-medium text-gray-700">
-                    <Lightbulb className="w-4 h-4 inline mr-2" />
-                    Key Assumptions
-                  </label>
-                  <button
-                    onClick={handleAddAssumption}
-                    className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                    title="Add assumption"
-                  >
-                    <Plus className="w-4 h-4 text-[#3AB7BF]" />
-                  </button>
-                </div>
-                
-                <div className="space-y-3">
-                  {sidePanelForm.keyAssumptions.map((assumption, index) => (
-                    <div key={assumption.id} className="p-3 border border-gray-200 rounded-lg bg-gray-50">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-medium text-gray-600">Assumption {index + 1}</span>
-                        {sidePanelForm.keyAssumptions.length > 1 && (
-                          <button
-                            onClick={() => handleRemoveAssumption(assumption.id)}
-                            className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        )}
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <input
-                          type="text"
-                          value={assumption.name}
-                          onChange={(e) => handleUpdateAssumption(assumption.id, 'name', e.target.value)}
-                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
-                          placeholder="Assumption name"
-                        />
-                        <div className="grid grid-cols-2 gap-2">
-                          <input
-                            type="text"
-                            value={assumption.value}
-                            onChange={(e) => handleUpdateAssumption(assumption.id, 'value', e.target.value)}
-                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
-                            placeholder="Value"
-                          />
-                          <input
-                            type="text"
-                            value={assumption.description}
-                            onChange={(e) => handleUpdateAssumption(assumption.id, 'description', e.target.value)}
-                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
-                            placeholder="Description"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                <div className="space-y-2">
+                  {['high', 'medium', 'low'].map(priority => (
+                    <label key={priority} className="flex items-center">
+                      <input
+                        type="radio"
+                        name="priority"
+                        value={priority}
+                        checked={formData.priority === priority}
+                        onChange={(e) => handleInputChange('priority', e.target.value)}
+                        className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#3AB7BF] mr-3"
+                      />
+                      <span className={`text-sm font-medium capitalize ${getPriorityColor(priority)}`}>
+                        {priority}
+                      </span>
+                    </label>
                   ))}
                 </div>
               </div>
-
-              {/* Impact Preview */}
-              {sidePanelForm.selectedGLCode && sidePanelForm.adjustmentValue !== 0 && (
-                <div className="p-4 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
-                  <h4 className="font-medium text-[#1E2A38] mb-2 flex items-center">
-                    <Eye className="w-4 h-4 mr-2" />
-                    Impact Preview
-                  </h4>
-                  <p className="text-sm text-gray-700">
-                    This scenario will {sidePanelForm.adjustmentValue >= 0 ? 'increase' : 'decrease'} the selected GL account by{' '}
-                    {sidePanelForm.adjustmentType === 'percentage' 
-                      ? `${Math.abs(sidePanelForm.adjustmentValue)}%`
-                      : `$${Math.abs(sidePanelForm.adjustmentValue).toLocaleString()}`
-                    } from {sidePanelForm.startMonth} to {sidePanelForm.endMonth}.
-                  </p>
-                </div>
-              )}
             </div>
-            
-            {/* Panel Footer */}
-            <div className="p-6 border-t border-gray-200 bg-gray-50">
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowScenarioSidePanel(false)}
-                  className="flex-1 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleCreateScenarioFromPanel}
-                  disabled={!sidePanelForm.selectedGLCode || !sidePanelForm.scenarioName.trim()}
-                  className="flex-1 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-                >
-                  <Save className="w-4 h-4 mr-2 inline" />
-                  Create Scenario
-                </button>
+
+            {/* Date Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Start Date *
+                </label>
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) => handleInputChange('startDate', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent transition-colors ${
+                      formErrors.startDate ? 'border-[#F87171]' : 'border-gray-300'
+                    }`}
+                  />
+                </div>
+                {formErrors.startDate && (
+                  <p className="text-sm text-[#F87171] mt-1 flex items-center">
+                    <AlertTriangle className="w-3 h-3 mr-1" />
+                    {formErrors.startDate}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  End Date *
+                </label>
+                <div className="relative">
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="date"
+                    value={formData.endDate}
+                    onChange={(e) => handleInputChange('endDate', e.target.value)}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent transition-colors ${
+                      formErrors.endDate ? 'border-[#F87171]' : 'border-gray-300'
+                    }`}
+                  />
+                </div>
+                {formErrors.endDate && (
+                  <p className="text-sm text-[#F87171] mt-1 flex items-center">
+                    <AlertTriangle className="w-3 h-3 mr-1" />
+                    {formErrors.endDate}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Status
+              </label>
+              <select
+                value={formData.status}
+                onChange={(e) => handleInputChange('status', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              >
+                <option value="draft">Draft</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+
+            {/* Tags */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Tags
+              </label>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      value={currentTag}
+                      onChange={(e) => setCurrentTag(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      placeholder="Add tag"
+                    />
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleAddTag}
+                    disabled={!currentTag.trim()}
+                  >
+                    Add
+                  </Button>
+                </div>
+                
+                {formData.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {formData.tags.map(tag => (
+                      <span 
+                        key={tag}
+                        className="inline-flex items-center px-3 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded-full text-sm"
+                      >
+                        {tag}
+                        <button
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-2 hover:text-[#F87171] transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Additional Notes */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Additional Notes
+              </label>
+              <textarea
+                value={formData.notes}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent resize-none"
+                rows={4}
+                placeholder="Add any additional notes or assumptions"
+              />
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Attachments
+              </label>
+              <div className="space-y-3">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#3AB7BF] transition-colors">
+                  <input
+                    type="file"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="file-upload"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
+                  />
+                  <label htmlFor="file-upload" className="cursor-pointer">
+                    <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-gray-600">Click to upload files</p>
+                    <p className="text-xs text-gray-500">PDF, DOC, XLS, CSV up to 10MB</p>
+                  </label>
+                </div>
+                
+                {formData.attachments.length > 0 && (
+                  <div className="space-y-2">
+                    {formData.attachments.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center">
+                          <FileText className="w-4 h-4 text-gray-400 mr-3" />
+                          <div>
+                            <p className="text-sm font-medium text-[#1E2A38]">{file.name}</p>
+                            <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveFile(file)}
+                          className="p-1 hover:bg-gray-200 rounded transition-colors"
+                        >
+                          <X className="w-4 h-4 text-gray-400" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </>
-      )}
 
+          {/* Sidebar Footer */}
+          <div className="p-6 border-t border-gray-200 bg-gray-50">
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                disabled={isLoading}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleSave}
+                disabled={isLoading}
+                className="flex-1 bg-[#3AB7BF] hover:bg-[#2A9BA3] focus:ring-[#3AB7BF]"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Scenario
+                  </>
+                )}
+              </Button>
+            </div>
+            
+            {/* Form Status */}
+            <div className="mt-3 text-center">
+              <p className="text-xs text-gray-500">
+                {Object.keys(formErrors).length > 0 
+                  ? `${Object.keys(formErrors).length} field(s) need attention`
+                  : 'All fields are valid'
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Overlay Effect */}
+      <style jsx>{`
+        .main-content {
+          transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+        }
+        .main-content.sidebar-open {
+          transform: translateX(20px);
+          filter: brightness(0.7);
+        }
+      `}</style>
     </div>
   );
 };
