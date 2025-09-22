@@ -459,64 +459,6 @@ const Forecasting: React.FC = () => {
         </Card>
       </div>
 
-      {/* Summary Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">YTD Revenue</p>
-              <p className="text-2xl font-bold text-[#4ADE80] mt-1">
-                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
-              </p>
-              <p className="text-sm text-[#4ADE80] mt-1">+15.4% vs budget</p>
-            </div>
-            <TrendingUp className="w-8 h-8 text-[#4ADE80]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">YTD Expenses</p>
-              <p className="text-2xl font-bold text-[#F87171] mt-1">
-                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
-              </p>
-              <p className="text-sm text-[#4ADE80] mt-1">-3.2% vs budget</p>
-            </div>
-            <TrendingDown className="w-8 h-8 text-[#F87171]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">YTD Net Profit</p>
-              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">
-                ${months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
-              </p>
-              <p className="text-sm text-[#4ADE80] mt-1">+28.7% vs budget</p>
-            </div>
-            <Target className="w-8 h-8 text-[#3AB7BF]" />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Profit Margin</p>
-              <p className="text-2xl font-bold text-[#F59E0B] mt-1">
-                {(
-                  (months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) /
-                  months.slice(0, new Date().getMonth() + 1).reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0)) * 100
-                ).toFixed(1)}%
-              </p>
-              <p className="text-sm text-[#4ADE80] mt-1">+2.1% vs budget</p>
-            </div>
-            <BarChart3 className="w-8 h-8 text-[#F59E0B]" />
-          </div>
-        </Card>
-      </div>
-
       {/* Performance Analysis */}
       <Card title="Performance Analysis">
         <div className="space-y-4">
