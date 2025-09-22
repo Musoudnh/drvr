@@ -1,540 +1,619 @@
-import React, { useState } from 'react';
-import { Target, TrendingUp, BarChart3, Brain, Calendar, Settings, Play, Pause, RefreshCw, Download, Eye, Plus, X, Database } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, Edit3, Save, X, ChevronDown, ChevronRight } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
-interface ForecastModel {
-  id: string;
+interface GLCode {
+  code: string;
   name: string;
-  type: 'revenue' | 'expenses' | 'cash_flow' | 'headcount';
-  algorithm: 'linear_regression' | 'arima' | 'neural_network' | 'ensemble';
-  accuracy: number;
-  lastTrained: Date;
-  isActive: boolean;
-  predictions: ForecastPrediction[];
+  category: 'Revenue' | 'COGS' | 'OPEX' | 'Other';
+  type: 'revenue' | 'expense';
 }
 
-interface ForecastPrediction {
-  period: string;
-  predicted: number;
-  confidence: number;
-  lowerBound: number;
-  upperBound: number;
-}
-
-interface SeasonalPattern {
+interface MonthlyForecast {
+  glCode: string;
   month: string;
-  factor: number;
-  confidence: number;
+  forecastedAmount: number;
+  actualAmount?: number;
+  variance?: number;
+  changeVsPrior?: number;
+  cumulativeYTD: number;
+  isEditable: boolean;
+}
+
+interface ScenarioAssumption {
+  name: string;
+  value: number;
+  unit: '%' | '$' | 'count';
+  min: number;
+  max: number;
+  step: number;
 }
 
 const Forecasting: React.FC = () => {
-  const [forecastModels, setForecastModels] = useState<ForecastModel[]>([
-    {
-      id: '1',
-      name: 'Revenue Forecast Model',
-      type: 'revenue',
-      algorithm: 'neural_network',
-      accuracy: 87.3,
-      lastTrained: new Date(Date.now() - 86400000),
-      isActive: true,
-      predictions: [
-        { period: 'Feb 2025', predicted: 465000, confidence: 87, lowerBound: 420000, upperBound: 510000 },
-        { period: 'Mar 2025', predicted: 485000, confidence: 84, lowerBound: 435000, upperBound: 535000 },
-        { period: 'Apr 2025', predicted: 505000, confidence: 81, lowerBound: 450000, upperBound: 560000 },
-        { period: 'May 2025', predicted: 525000, confidence: 78, lowerBound: 465000, upperBound: 585000 }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Expense Forecast Model',
-      type: 'expenses',
-      algorithm: 'arima',
-      accuracy: 92.1,
-      lastTrained: new Date(Date.now() - 172800000),
-      isActive: true,
-      predictions: [
-        { period: 'Feb 2025', predicted: 295000, confidence: 92, lowerBound: 280000, upperBound: 310000 },
-        { period: 'Mar 2025', predicted: 305000, confidence: 90, lowerBound: 290000, upperBound: 320000 },
-        { period: 'Apr 2025', predicted: 315000, confidence: 88, lowerBound: 300000, upperBound: 330000 },
-        { period: 'May 2025', predicted: 325000, confidence: 86, lowerBound: 310000, upperBound: 340000 }
-      ]
-    },
-    {
-      id: '3',
-      name: 'Cash Flow Forecast',
-      type: 'cash_flow',
-      algorithm: 'ensemble',
-      accuracy: 89.7,
-      lastTrained: new Date(Date.now() - 259200000),
-      isActive: false,
-      predictions: [
-        { period: 'Feb 2025', predicted: 170000, confidence: 89, lowerBound: 150000, upperBound: 190000 },
-        { period: 'Mar 2025', predicted: 180000, confidence: 87, lowerBound: 160000, upperBound: 200000 },
-        { period: 'Apr 2025', predicted: 190000, confidence: 85, lowerBound: 170000, upperBound: 210000 },
-        { period: 'May 2025', predicted: 200000, confidence: 83, lowerBound: 180000, upperBound: 220000 }
-      ]
-    }
+  const [selectedYear, setSelectedYear] = useState(2025);
+  const [multiYearView, setMultiYearView] = useState(false);
+  const [yearRange, setYearRange] = useState([2025, 2026]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(['Revenue', 'OPEX']);
+  const [showScenarioPanel, setShowScenarioPanel] = useState(true);
+
+  const glCodes: GLCode[] = [
+    { code: '4000', name: 'Product Sales', category: 'Revenue', type: 'revenue' },
+    { code: '4100', name: 'Service Revenue', category: 'Revenue', type: 'revenue' },
+    { code: '4200', name: 'Licensing Revenue', category: 'Revenue', type: 'revenue' },
+    { code: '4300', name: 'Other Income', category: 'Revenue', type: 'revenue' },
+    { code: '5000', name: 'Cost of Goods Sold', category: 'COGS', type: 'expense' },
+    { code: '5100', name: 'Direct Labor', category: 'COGS', type: 'expense' },
+    { code: '5200', name: 'Materials & Supplies', category: 'COGS', type: 'expense' },
+    { code: '6000', name: 'Payroll & Benefits', category: 'OPEX', type: 'expense' },
+    { code: '6100', name: 'Marketing & Advertising', category: 'OPEX', type: 'expense' },
+    { code: '6200', name: 'Rent & Utilities', category: 'OPEX', type: 'expense' },
+    { code: '6300', name: 'Technology & Software', category: 'OPEX', type: 'expense' },
+    { code: '6400', name: 'Professional Services', category: 'OPEX', type: 'expense' },
+    { code: '6500', name: 'Travel & Entertainment', category: 'OPEX', type: 'expense' },
+    { code: '7000', name: 'Interest Expense', category: 'Other', type: 'expense' },
+    { code: '7100', name: 'Depreciation', category: 'Other', type: 'expense' }
+  ];
+
+  const [scenarioAssumptions, setScenarioAssumptions] = useState<ScenarioAssumption[]>([
+    { name: 'Revenue Growth', value: 15.4, unit: '%', min: -20, max: 50, step: 0.1 },
+    { name: 'Headcount Growth', value: 8.2, unit: '%', min: -10, max: 30, step: 0.1 },
+    { name: 'Marketing Spend', value: 12.5, unit: '%', min: 0, max: 25, step: 0.1 },
+    { name: 'Salary Inflation', value: 4.5, unit: '%', min: 0, max: 15, step: 0.1 },
+    { name: 'Office Rent Increase', value: 3.0, unit: '%', min: 0, max: 10, step: 0.1 }
   ]);
 
-  const [seasonalPatterns] = useState<SeasonalPattern[]>([
-    { month: 'Jan', factor: 0.95, confidence: 92 },
-    { month: 'Feb', factor: 0.98, confidence: 89 },
-    { month: 'Mar', factor: 1.05, confidence: 94 },
-    { month: 'Apr', factor: 1.08, confidence: 91 },
-    { month: 'May', factor: 1.12, confidence: 88 },
-    { month: 'Jun', factor: 1.15, confidence: 85 },
-    { month: 'Jul', factor: 1.18, confidence: 87 },
-    { month: 'Aug', factor: 1.10, confidence: 90 },
-    { month: 'Sep', factor: 1.06, confidence: 93 },
-    { month: 'Oct', factor: 1.02, confidence: 95 },
-    { month: 'Nov', factor: 0.92, confidence: 88 },
-    { month: 'Dec', factor: 0.88, confidence: 86 }
-  ]);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  // Generate forecast data
+  const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
+    const data: MonthlyForecast[] = [];
+    const currentMonth = new Date().getMonth();
+    
+    glCodes.forEach(glCode => {
+      let cumulativeYTD = 0;
+      let previousAmount = 0;
+      
+      months.forEach((month, index) => {
+        const isHistorical = index <= currentMonth;
+        const baseAmount = getBaseAmount(glCode.code);
+        const seasonalFactor = getSeasonalFactor(month);
+        const growthFactor = Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
+        
+        let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
+        
+        // Apply scenario assumptions
+        if (glCode.code === '6000') { // Payroll
+          forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
+        } else if (glCode.code === '6100') { // Marketing
+          forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
+        } else if (glCode.code === '6200') { // Rent
+          forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
+        }
+        
+        cumulativeYTD += forecastedAmount;
+        const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
+        
+        const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
+        const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
+        
+        data.push({
+          glCode: glCode.code,
+          month: `${month} ${selectedYear}`,
+          forecastedAmount: Math.round(forecastedAmount),
+          actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
+          variance,
+          changeVsPrior: index > 0 ? changeVsPrior : undefined,
+          cumulativeYTD: Math.round(cumulativeYTD),
+          isEditable: !isHistorical
+        });
+        
+        previousAmount = forecastedAmount;
+      });
+    });
+    
+    return data;
+  });
 
-  const [selectedModel, setSelectedModel] = useState<ForecastModel | null>(forecastModels[0]);
-  const [showModelConfig, setShowModelConfig] = useState(false);
-  const [isRetraining, setIsRetraining] = useState(false);
+  const getBaseAmount = (glCode: string): number => {
+    const baseAmounts: { [key: string]: number } = {
+      '4000': 285000, '4100': 95000, '4200': 35000, '4300': 15000,
+      '5000': 125000, '5100': 45000, '5200': 35000,
+      '6000': 128000, '6100': 35000, '6200': 25000, '6300': 18500, '6400': 12000, '6500': 8000,
+      '7000': 5000, '7100': 15000
+    };
+    return baseAmounts[glCode] || 10000;
+  };
 
-  const getModelTypeColor = (type: string) => {
-    switch (type) {
-      case 'revenue': return '#4ADE80';
-      case 'expenses': return '#F87171';
-      case 'cash_flow': return '#3AB7BF';
-      case 'headcount': return '#8B5CF6';
+  const getSeasonalFactor = (month: string): number => {
+    const factors: { [key: string]: number } = {
+      'Jan': 0.95, 'Feb': 0.98, 'Mar': 1.05, 'Apr': 1.08, 'May': 1.12, 'Jun': 1.15,
+      'Jul': 1.18, 'Aug': 1.10, 'Sep': 1.06, 'Oct': 1.02, 'Nov': 0.92, 'Dec': 0.88
+    };
+    return factors[month] || 1.0;
+  };
+
+  const updateForecastAmount = (glCode: string, month: string, newAmount: number) => {
+    setForecastData(prev => prev.map(item => 
+      item.glCode === glCode && item.month === month
+        ? { ...item, forecastedAmount: newAmount }
+        : item
+    ));
+  };
+
+  const updateScenarioAssumption = (name: string, value: number) => {
+    setScenarioAssumptions(prev => prev.map(assumption =>
+      assumption.name === name ? { ...assumption, value } : assumption
+    ));
+    
+    // Recalculate forecast data based on new assumptions
+    // This would trigger a recalculation of all forecast amounts
+  };
+
+  const getMonthlyData = (month: string) => {
+    return forecastData.filter(item => item.month === month);
+  };
+
+  const getMonthlyTotal = (month: string, type: 'revenue' | 'expense') => {
+    const monthData = getMonthlyData(month);
+    return monthData
+      .filter(item => {
+        const glCode = glCodes.find(gl => gl.code === item.glCode);
+        return glCode?.type === type;
+      })
+      .reduce((sum, item) => sum + item.forecastedAmount, 0);
+  };
+
+  const getNetProfit = (month: string) => {
+    const revenue = getMonthlyTotal(month, 'revenue');
+    const expenses = getMonthlyTotal(month, 'expense');
+    return revenue - expenses;
+  };
+
+  const filteredGLCodes = glCodes.filter(glCode => {
+    const matchesSearch = glCode.code.includes(searchTerm) || 
+                         glCode.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || glCode.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Revenue': return '#4ADE80';
+      case 'COGS': return '#F87171';
+      case 'OPEX': return '#3AB7BF';
+      case 'Other': return '#8B5CF6';
       default: return '#6B7280';
     }
   };
 
-  const getAlgorithmName = (algorithm: string) => {
-    switch (algorithm) {
-      case 'linear_regression': return 'Linear Regression';
-      case 'arima': return 'ARIMA';
-      case 'neural_network': return 'Neural Network';
-      case 'ensemble': return 'Ensemble';
-      default: return algorithm;
-    }
-  };
-
-  const handleRetrainModel = (modelId: string) => {
-    setIsRetraining(true);
-    setForecastModels(prev => prev.map(model =>
-      model.id === modelId
-        ? { ...model, lastTrained: new Date(), accuracy: model.accuracy + Math.random() * 2 - 1 }
-        : model
-    ));
-    
-    setTimeout(() => {
-      setIsRetraining(false);
-    }, 3000);
-  };
-
-  const toggleModelStatus = (modelId: string) => {
-    setForecastModels(prev => prev.map(model =>
-      model.id === modelId
-        ? { ...model, isActive: !model.isActive }
-        : model
-    ));
+  const getVarianceColor = (variance: number) => {
+    if (Math.abs(variance) < 5) return 'text-[#4ADE80]';
+    if (Math.abs(variance) < 15) return 'text-[#F59E0B]';
+    return 'text-[#F87171]';
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">AI Forecasting</h2>
-          <p className="text-gray-600 mt-1">Advanced predictive modeling and forecasting</p>
+          <h2 className="text-2xl font-bold text-[#1E2A38]">Financial Forecasting</h2>
+          <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
         </div>
         <div className="flex gap-3">
           <Button variant="outline">
-            <Settings className="w-4 h-4 mr-2" />
-            Model Settings
+            <Download className="w-4 h-4 mr-2" />
+            Export
           </Button>
-          <Button 
-            variant="primary" 
-            className="bg-[#8B5CF6] hover:bg-[#7C3AED] focus:ring-[#8B5CF6]"
-            onClick={() => setShowModelConfig(true)}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Model
+          <Button variant="primary" className="bg-[#3AB7BF] hover:bg-[#2A9BA3]">
+            <Save className="w-4 h-4 mr-2" />
+            Save Forecast
           </Button>
         </div>
       </div>
 
-      {/* Forecast Models */}
-      <Card title="Forecast Models">
-        <div className="space-y-4">
-          {forecastModels.map(model => (
-            <div key={model.id} className="p-4 border border-gray-200 rounded-lg hover:border-[#8B5CF6] transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <div 
-                    className="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
-                    style={{ backgroundColor: `${getModelTypeColor(model.type)}20` }}
-                  >
-                    <Brain className="w-5 h-5" style={{ color: getModelTypeColor(model.type) }} />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-[#1E2A38]">{model.name}</h3>
-                    <p className="text-sm text-gray-600">{getAlgorithmName(model.algorithm)} • {model.accuracy}% accuracy</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    model.isActive ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    {model.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                  
-                  <button
-                    onClick={() => toggleModelStatus(model.id)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    title={model.isActive ? 'Pause model' : 'Activate model'}
-                  >
-                    {model.isActive ? (
-                      <Pause className="w-4 h-4 text-gray-400" />
-                    ) : (
-                      <Play className="w-4 h-4 text-gray-400" />
-                    )}
-                  </button>
-                  
-                  <button
-                    onClick={() => handleRetrainModel(model.id)}
-                    disabled={isRetraining}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
-                    title="Retrain model"
-                  >
-                    <RefreshCw className={`w-4 h-4 text-gray-400 ${isRetraining ? 'animate-spin' : ''}`} />
-                  </button>
-                  
-                  <button
-                    onClick={() => setSelectedModel(model)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    title="View details"
-                  >
-                    <Eye className="w-4 h-4 text-gray-400" />
-                  </button>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-4 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-600">Type</p>
-                  <p className="font-medium" style={{ color: getModelTypeColor(model.type) }}>
-                    {model.type.replace('_', ' ')}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Algorithm</p>
-                  <p className="font-medium text-[#1E2A38]">{getAlgorithmName(model.algorithm)}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Last Trained</p>
-                  <p className="font-medium text-[#1E2A38]">{model.lastTrained.toLocaleDateString()}</p>
-                </div>
-                <div>
-                  <p className="text-gray-600">Predictions</p>
-                  <p className="font-medium text-[#1E2A38]">{model.predictions.length} periods</p>
-                </div>
-              </div>
+      {/* Controls */}
+      <Card>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+            >
+              <option value={2024}>2024</option>
+              <option value={2025}>2025</option>
+              <option value={2026}>2026</option>
+              <option value={2027}>2027</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
+            <div className="flex items-center">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  className="sr-only peer" 
+                  checked={multiYearView}
+                  onChange={(e) => setMultiYearView(e.target.checked)}
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
+              </label>
+              <span className="ml-2 text-sm text-gray-700">Multi-Year</span>
             </div>
-          ))}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+            >
+              <option value="All">All Categories</option>
+              <option value="Revenue">Revenue</option>
+              <option value="COGS">Cost of Goods Sold</option>
+              <option value="OPEX">Operating Expenses</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Search GL Codes</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search codes..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-end">
+            <Button
+              variant="outline"
+              onClick={() => setShowScenarioPanel(!showScenarioPanel)}
+              className="w-full"
+            >
+              <Settings className="w-4 h-4 mr-2" />
+              Scenarios
+            </Button>
+          </div>
         </div>
       </Card>
 
-      {/* Selected Model Details */}
-      {selectedModel && (
-        <Card title={`${selectedModel.name} - Predictions`}>
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div 
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
-                  style={{ backgroundColor: `${getModelTypeColor(selectedModel.type)}20` }}
-                >
-                  <Brain className="w-4 h-4" style={{ color: getModelTypeColor(selectedModel.type) }} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-[#1E2A38]">{selectedModel.name}</h3>
-                  <p className="text-sm text-gray-600">Accuracy: {selectedModel.accuracy}% • {getAlgorithmName(selectedModel.algorithm)}</p>
-                </div>
-              </div>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export Forecast
-              </Button>
-            </div>
-
-            {/* Prediction Chart */}
-            <div className="relative h-64 bg-gray-50 rounded-lg p-4">
-              <svg className="w-full h-full">
-                {/* Confidence band */}
-                <polygon
-                  fill={getModelTypeColor(selectedModel.type)}
-                  fillOpacity="0.1"
-                  points={selectedModel.predictions.map((pred, index) => {
-                    const x = 50 + index * 150;
-                    const yUpper = 180 - (pred.upperBound - 400000) / 5000;
-                    return `${x},${Math.max(20, Math.min(180, yUpper))}`;
-                  }).concat(
-                    selectedModel.predictions.slice().reverse().map((pred, index) => {
-                      const x = 50 + (selectedModel.predictions.length - 1 - index) * 150;
-                      const yLower = 180 - (pred.lowerBound - 400000) / 5000;
-                      return `${x},${Math.max(20, Math.min(180, yLower))}`;
-                    })
-                  ).join(' ')}
-                />
-                
-                {/* Prediction line */}
-                <polyline
-                  fill="none"
-                  stroke={getModelTypeColor(selectedModel.type)}
-                  strokeWidth="3"
-                  points={selectedModel.predictions.map((pred, index) => {
-                    const x = 50 + index * 150;
-                    const y = 180 - (pred.predicted - 400000) / 5000;
-                    return `${x},${Math.max(20, Math.min(180, y))}`;
-                  }).join(' ')}
-                />
-                
-                {/* Data points */}
-                {selectedModel.predictions.map((pred, index) => {
-                  const x = 50 + index * 150;
-                  const y = 180 - (pred.predicted - 400000) / 5000;
-                  return (
-                    <circle
-                      key={index}
-                      cx={x}
-                      cy={Math.max(20, Math.min(180, y))}
-                      r="5"
-                      fill={getModelTypeColor(selectedModel.type)}
-                    />
-                  );
-                })}
-              </svg>
-              
-              {/* Period labels */}
-              <div className="flex justify-between mt-2 text-xs text-gray-500">
-                {selectedModel.predictions.map((pred, index) => (
-                  <span key={index} className="flex-1 text-center">{pred.period}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Prediction Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold text-gray-700">Period</th>
-                    <th className="text-right py-3 px-4 font-semibold text-gray-700">Prediction</th>
-                    <th className="text-right py-3 px-4 font-semibold text-gray-700">Confidence</th>
-                    <th className="text-right py-3 px-4 font-semibold text-gray-700">Lower Bound</th>
-                    <th className="text-right py-3 px-4 font-semibold text-gray-700">Upper Bound</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedModel.predictions.map((prediction, index) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium text-[#1E2A38]">{prediction.period}</td>
-                      <td className="py-3 px-4 text-right font-bold" style={{ color: getModelTypeColor(selectedModel.type) }}>
-                        ${prediction.predicted.toLocaleString()}
-                      </td>
-                      <td className="py-3 px-4 text-right font-medium text-[#1E2A38]">{prediction.confidence}%</td>
-                      <td className="py-3 px-4 text-right text-gray-600">${prediction.lowerBound.toLocaleString()}</td>
-                      <td className="py-3 px-4 text-right text-gray-600">${prediction.upperBound.toLocaleString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Seasonal Analysis */}
-      <Card title="Seasonal Pattern Analysis">
+      {/* Chart Overview */}
+      <Card title="Forecast Overview">
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">Monthly Seasonal Factors</span>
-            <span className="text-sm text-[#8B5CF6] font-medium">Based on 3-year historical data</span>
+          <div className="relative h-64 bg-gray-50 rounded-lg p-4">
+            <svg className="w-full h-full">
+              {/* Revenue line */}
+              <polyline
+                fill="none"
+                stroke="#4ADE80"
+                strokeWidth="3"
+                points={months.map((month, index) => {
+                  const revenue = getMonthlyTotal(`${month} ${selectedYear}`, 'revenue');
+                  const x = 50 + index * 60;
+                  const y = 200 - (revenue / 10000);
+                  return `${x},${Math.max(20, Math.min(200, y))}`;
+                }).join(' ')}
+              />
+              
+              {/* Expense line */}
+              <polyline
+                fill="none"
+                stroke="#F87171"
+                strokeWidth="3"
+                points={months.map((month, index) => {
+                  const expenses = getMonthlyTotal(`${month} ${selectedYear}`, 'expense');
+                  const x = 50 + index * 60;
+                  const y = 200 - (expenses / 10000);
+                  return `${x},${Math.max(20, Math.min(200, y))}`;
+                }).join(' ')}
+              />
+              
+              {/* Net profit line */}
+              <polyline
+                fill="none"
+                stroke="#3AB7BF"
+                strokeWidth="3"
+                points={months.map((month, index) => {
+                  const netProfit = getNetProfit(`${month} ${selectedYear}`);
+                  const x = 50 + index * 60;
+                  const y = 200 - (netProfit / 5000);
+                  return `${x},${Math.max(20, Math.min(200, y))}`;
+                }).join(' ')}
+              />
+            </svg>
+            
+            <div className="flex justify-between mt-2 text-xs text-gray-500">
+              {months.map((month, index) => (
+                <span key={index} className="flex-1 text-center">{month}</span>
+              ))}
+            </div>
           </div>
           
-          <div className="grid grid-cols-12 gap-2">
-            {seasonalPatterns.map((pattern, index) => (
-              <div key={index} className="text-center">
-                <div 
-                  className="w-full rounded-lg mb-2 flex items-end justify-center text-white text-xs font-medium"
-                  style={{ 
-                    height: `${40 + pattern.factor * 60}px`,
-                    backgroundColor: pattern.factor > 1 ? '#4ADE80' : '#F87171'
-                  }}
-                >
-                  {(pattern.factor * 100).toFixed(0)}%
-                </div>
-                <span className="text-xs text-gray-600">{pattern.month}</span>
-              </div>
-            ))}
-          </div>
-          
-          <div className="flex justify-center gap-6 pt-4 border-t border-gray-200">
+          <div className="flex justify-center gap-6">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Above Average</span>
+              <span className="text-sm text-gray-600">Revenue</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Below Average</span>
+              <span className="text-sm text-gray-600">Expenses</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
+              <span className="text-sm text-gray-600">Net Profit</span>
             </div>
           </div>
         </div>
       </Card>
 
-      {/* Model Performance Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Model Performance">
-          <div className="space-y-4">
-            {forecastModels.map(model => (
-              <div key={model.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center">
-                  <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
-                    style={{ backgroundColor: `${getModelTypeColor(model.type)}20` }}
-                  >
-                    <Brain className="w-4 h-4" style={{ color: getModelTypeColor(model.type) }} />
-                  </div>
-                  <div>
-                    <p className="font-medium text-[#1E2A38]">{model.name}</p>
-                    <p className="text-sm text-gray-600">{getAlgorithmName(model.algorithm)}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-[#8B5CF6]">{model.accuracy}%</p>
-                  <p className="text-xs text-gray-500">accuracy</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card title="Forecast Accuracy Trends">
-          <div className="space-y-4">
-            <div className="relative h-32">
-              <svg className="w-full h-full">
-                <polyline
-                  fill="none"
-                  stroke="#8B5CF6"
-                  strokeWidth="3"
-                  points="30,100 90,95 150,92 210,89 270,87 330,85 390,87 450,89"
-                />
-                {[100, 95, 92, 89, 87, 85, 87, 89].map((y, index) => (
-                  <circle key={index} cx={30 + index * 60} cy={y} r="4" fill="#8B5CF6" />
-                ))}
-              </svg>
+      <div className="flex gap-6">
+        {/* Main Forecast Table */}
+        <div className={`${showScenarioPanel ? 'flex-1' : 'w-full'} transition-all duration-300`}>
+          <Card title={`${selectedYear} Monthly Forecast by GL Code`}>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-white z-10">
+                  <tr className="border-b-2 border-gray-300">
+                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-32 sticky left-0 bg-white">GL Code</th>
+                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-48 sticky left-32 bg-white">Description</th>
+                    {months.map((month, index) => (
+                      <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
+                        {month} {selectedYear}
+                      </th>
+                    ))}
+                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {['Revenue', 'COGS', 'OPEX', 'Other'].map(category => {
+                    const categoryGLCodes = filteredGLCodes.filter(gl => gl.category === category);
+                    if (categoryGLCodes.length === 0) return null;
+                    
+                    return (
+                      <React.Fragment key={category}>
+                        {/* Category Header */}
+                        <tr className="bg-gray-100 border-b border-gray-200">
+                          <td colSpan={months.length + 3} className="py-3 px-4">
+                            <button
+                              onClick={() => toggleCategory(category)}
+                              className="flex items-center font-bold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                            >
+                              {expandedCategories.includes(category) ? (
+                                <ChevronDown className="w-4 h-4 mr-2" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 mr-2" />
+                              )}
+                              <div 
+                                className="w-3 h-3 rounded-full mr-2"
+                                style={{ backgroundColor: getCategoryColor(category) }}
+                              />
+                              {category}
+                            </button>
+                          </td>
+                        </tr>
+                        
+                        {/* GL Code Rows */}
+                        {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
+                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50">
+                            <td className="py-2 px-4 font-medium text-[#1E2A38] sticky left-0 bg-white">
+                              {glCode.code}
+                            </td>
+                            <td className="py-2 px-4 text-gray-700 sticky left-32 bg-white">
+                              {glCode.name}
+                            </td>
+                            {months.map((month, monthIndex) => {
+                              const monthData = forecastData.find(
+                                item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
+                              );
+                              
+                              if (!monthData) return <td key={monthIndex} className="py-2 px-2 text-center">-</td>;
+                              
+                              return (
+                                <td key={monthIndex} className="py-2 px-2">
+                                  <div className="space-y-1">
+                                    {/* Forecasted Amount */}
+                                    <div className="text-center">
+                                      {monthData.isEditable ? (
+                                        <input
+                                          type="number"
+                                          value={monthData.forecastedAmount}
+                                          onChange={(e) => updateForecastAmount(
+                                            glCode.code, 
+                                            monthData.month, 
+                                            parseInt(e.target.value) || 0
+                                          )}
+                                          className="w-full px-2 py-1 border border-gray-300 rounded text-center text-xs focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                                        />
+                                      ) : (
+                                        <span className="font-medium text-[#1E2A38]">
+                                          ${monthData.forecastedAmount.toLocaleString()}
+                                        </span>
+                                      )}
+                                    </div>
+                                    
+                                    {/* Variance vs Actuals */}
+                                    {monthData.variance !== undefined && (
+                                      <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
+                                        {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
+                                      </div>
+                                    )}
+                                    
+                                    {/* Change vs Prior Month */}
+                                    {monthData.changeVsPrior !== undefined && (
+                                      <div className={`text-xs ${monthData.changeVsPrior >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
+                                        {monthData.changeVsPrior > 0 ? '+' : ''}{monthData.changeVsPrior.toFixed(1)}%
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+                              );
+                            })}
+                            <td className="py-2 px-4 text-right font-medium text-[#1E2A38]">
+                              ${forecastData
+                                .filter(item => item.glCode === glCode.code)
+                                .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                .toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </React.Fragment>
+                    );
+                  })}
+                  
+                  {/* Monthly Totals */}
+                  <tr className="border-t-2 border-gray-400 bg-gray-100 font-bold">
+                    <td colSpan={2} className="py-3 px-4 text-[#1E2A38] sticky left-0 bg-gray-100">
+                      MONTHLY TOTALS
+                    </td>
+                    {months.map((month, index) => (
+                      <td key={index} className="py-3 px-2 text-center">
+                        <div className="space-y-1">
+                          <div className="text-[#4ADE80] font-bold">
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'revenue').toLocaleString()}
+                          </div>
+                          <div className="text-[#F87171] font-bold">
+                            ${getMonthlyTotal(`${month} ${selectedYear}`, 'expense').toLocaleString()}
+                          </div>
+                          <div className={`font-bold ${getNetProfit(`${month} ${selectedYear}`) >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
+                            ${getNetProfit(`${month} ${selectedYear}`).toLocaleString()}
+                          </div>
+                        </div>
+                      </td>
+                    ))}
+                    <td className="py-3 px-4 text-right">
+                      <div className="space-y-1">
+                        <div className="text-[#4ADE80] font-bold">Revenue</div>
+                        <div className="text-[#F87171] font-bold">Expenses</div>
+                        <div className="text-[#3AB7BF] font-bold">Net Profit</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            
-            <div className="grid grid-cols-3 gap-4 text-center text-sm">
-              <div>
-                <p className="font-bold text-[#8B5CF6]">87.3%</p>
-                <p className="text-gray-600">Current</p>
-              </div>
-              <div>
-                <p className="font-bold text-[#4ADE80]">+2.1%</p>
-                <p className="text-gray-600">vs Last Month</p>
-              </div>
-              <div>
-                <p className="font-bold text-[#3AB7BF]">89.1%</p>
-                <p className="text-gray-600">Target</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Model Configuration Modal */}
-      {showModelConfig && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Create Forecast Model</h3>
-              <button
-                onClick={() => setShowModelConfig(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Model Name</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  placeholder="e.g., Q2 Revenue Forecast"
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Forecast Type</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent">
-                    <option value="revenue">Revenue</option>
-                    <option value="expenses">Expenses</option>
-                    <option value="cash_flow">Cash Flow</option>
-                    <option value="headcount">Headcount</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Algorithm</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent">
-                    <option value="neural_network">Neural Network</option>
-                    <option value="arima">ARIMA</option>
-                    <option value="linear_regression">Linear Regression</option>
-                    <option value="ensemble">Ensemble</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Training Period</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent">
-                    <option value="12">12 months</option>
-                    <option value="24">24 months</option>
-                    <option value="36">36 months</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Forecast Horizon</label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent">
-                    <option value="3">3 months</option>
-                    <option value="6">6 months</option>
-                    <option value="12">12 months</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowModelConfig(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setShowModelConfig(false)}
-                className="px-4 py-2 bg-[#8B5CF6] text-white rounded-lg hover:bg-[#7C3AED] transition-colors"
-              >
-                Create Model
-              </button>
-            </div>
-          </div>
+          </Card>
         </div>
-      )}
+
+        {/* Scenario Panel */}
+        {showScenarioPanel && (
+          <div className="w-80 space-y-4">
+            <Card title="Scenario Assumptions">
+              <div className="space-y-4">
+                {scenarioAssumptions.map((assumption, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium text-gray-700">{assumption.name}</label>
+                      <span className="text-sm font-bold text-[#3AB7BF]">
+                        {assumption.value.toFixed(1)}{assumption.unit}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={assumption.min}
+                      max={assumption.max}
+                      step={assumption.step}
+                      value={assumption.value}
+                      onChange={(e) => updateScenarioAssumption(assumption.name, parseFloat(e.target.value))}
+                      className="w-full slider"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>{assumption.min}{assumption.unit}</span>
+                      <span>{assumption.max}{assumption.unit}</span>
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="pt-4 border-t border-gray-200">
+                  <Button variant="outline" size="sm" className="w-full mb-2">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Assumption
+                  </Button>
+                  <Button variant="primary" size="sm" className="w-full">
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Scenario
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Impact Summary">
+              <div className="space-y-3">
+                <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Revenue</p>
+                  <p className="text-lg font-bold text-[#4ADE80]">
+                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#F87171]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Expenses</p>
+                  <p className="text-lg font-bold text-[#F87171]">
+                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Annual Net Profit</p>
+                  <p className="text-lg font-bold text-[#3AB7BF]">
+                    ${months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
+                  </p>
+                </div>
+                
+                <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
+                  <p className="text-sm font-medium text-[#1E2A38]">Profit Margin</p>
+                  <p className="text-lg font-bold text-[#F59E0B]">
+                    {(
+                      (months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) /
+                      months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0)) * 100
+                    ).toFixed(1)}%
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Quick Actions">
+              <div className="space-y-2">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Actuals vs Forecast
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  Generate Report
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Target className="w-4 h-4 mr-2" />
+                  Create Scenario
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export to Excel
+                </Button>
+              </div>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
