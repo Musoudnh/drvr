@@ -893,61 +893,6 @@ const Forecasting: React.FC = () => {
         {/* Scenario Panel */}
         {showScenarioPanel && (
           <div className="w-80 space-y-4">
-            <Card title="Impact Summary">
-              <div className="space-y-3">
-                <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
-                  <p className="text-sm font-medium text-[#1E2A38]">Annual Revenue</p>
-                  <p className="text-lg font-bold text-[#4ADE80]">
-                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
-                  </p>
-                </div>
-                
-                <div className="p-3 bg-[#F87171]/10 rounded-lg">
-                  <p className="text-sm font-medium text-[#1E2A38]">Annual Expenses</p>
-                  <p className="text-lg font-bold text-[#F87171]">
-                    ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
-                  </p>
-                </div>
-                
-                <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-                  <p className="text-sm font-medium text-[#1E2A38]">Annual Net Profit</p>
-                  <p className="text-lg font-bold text-[#3AB7BF]">
-                    ${months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
-                  </p>
-                </div>
-                
-                <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
-                  <p className="text-sm font-medium text-[#1E2A38]">Profit Margin</p>
-                  <p className="text-lg font-bold text-[#F59E0B]">
-                    {(
-                      (months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) /
-                      months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0)) * 100
-                    ).toFixed(1)}%
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card title="Quick Actions">
-              <div className="space-y-2">
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Actuals vs Forecast
-                </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Generate Report
-                </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <Target className="w-4 h-4 mr-2" />
-                  Create Scenario
-                </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export to Excel
-                </Button>
-              </div>
-            </Card>
           </div>
         )}
       </div>
