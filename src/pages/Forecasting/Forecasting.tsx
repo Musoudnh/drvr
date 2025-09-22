@@ -1065,6 +1065,94 @@ const Forecasting: React.FC = () => {
                       <option key={month} value={month}>{month}</option>
                     ))}
                   </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <select
+                    value={glScenarioForm.endMonth}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              {renderGLSpecificInputs()}
+              
+              {getImpactPreview() && (
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-800">{getImpactPreview()}</p>
+                </div>
+              )}
+              
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowGLScenarioModal(false);
+                    setSelectedGLCode(null);
+                  }}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  disabled={!isScenarioValid()}
+                  onClick={() => {
+                    if (selectedGLCode && isScenarioValid()) {
+                      const newScenario: AppliedScenario = {
+                        id: Date.now().toString(),
+                        glCode: selectedGLCode.code,
+                        name: glScenarioForm.name,
+                        description: glScenarioForm.description,
+                        startMonth: glScenarioForm.startMonth,
+                        endMonth: glScenarioForm.endMonth,
+                        adjustmentType: glScenarioForm.adjustmentType,
+                        adjustmentValue: glScenarioForm.adjustmentValue,
+                        appliedAt: new Date()
+                      };
+                      
+                      setAppliedScenarios(prev => [...prev, newScenario]);
+                      setShowGLScenarioModal(false);
+                      setSelectedGLCode(null);
+                      
+                      // Reset form
+                      setGLScenarioForm({
+                        name: '',
+                        startMonth: 'Jan',
+                        endMonth: 'Dec',
+                        headcount: 0,
+                        averageSalary: 0,
+                        payrollTaxRate: 15.3,
+                        benefitsRate: 25,
+                        numberOfTrips: 0,
+                        averageTripCost: 0,
+                        campaignBudget: 0,
+                        numberOfCampaigns: 0,
+                        squareFootage: 0,
+                        pricePerSqFt: 0,
+                        numberOfLicenses: 0,
+                        costPerLicense: 0,
+                        adjustmentType: 'percentage',
+                        adjustmentValue: 0,
+                        description: ''
+                      });
+                    }
+                  }}
+                  className="flex-1"
+                >
+                  Apply Scenario
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
