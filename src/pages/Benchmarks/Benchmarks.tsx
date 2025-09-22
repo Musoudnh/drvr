@@ -75,6 +75,14 @@ const Benchmarks: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showAIInsights, setShowAIInsights] = useState(true);
   const [showExportModal, setShowExportModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    industry: companyProfile.industry,
+    revenueRange: companyProfile.revenueRange,
+    employeeCount: companyProfile.employeeCount.toString(),
+    region: companyProfile.region,
+    businessModel: companyProfile.businessModel
+  });
 
   const [companyProfile] = useState<CompanyProfile>({
     revenueRange: '$5-20M',
@@ -399,7 +407,13 @@ const Benchmarks: React.FC = () => {
               </div>
               <Button variant="outline" size="sm">
                 <Settings className="w-4 h-4 mr-2" />
-                Update Profile
+                <button
+                  onClick={() => setShowProfileModal(true)}
+                  className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-2 border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF] hover:text-white focus:ring-[#3AB7BF] px-3 py-1.5 text-sm"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  Update Profile
+                </button>
               </Button>
             </div>
 
@@ -1006,6 +1020,116 @@ const Benchmarks: React.FC = () => {
               >
                 <Download className="w-4 h-4 mr-2" />
                 Export Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Company Profile Edit Modal */}
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">Update Company Profile</h3>
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                <select
+                  value={profileForm.industry}
+                  onChange={(e) => setProfileForm({...profileForm, industry: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="SaaS">Software as a Service (SaaS)</option>
+                  <option value="Retail">Retail & E-commerce</option>
+                  <option value="Healthcare">Healthcare & Medical</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Fintech">Financial Technology</option>
+                  <option value="Consulting">Professional Services</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
+                <select
+                  value={profileForm.revenueRange}
+                  onChange={(e) => setProfileForm({...profileForm, revenueRange: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="Under $5M">Under $5M</option>
+                  <option value="$5-20M">$5M - $20M</option>
+                  <option value="$20-100M">$20M - $100M</option>
+                  <option value="Over $100M">Over $100M</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Employee Count</label>
+                <input
+                  type="number"
+                  value={profileForm.employeeCount}
+                  onChange={(e) => setProfileForm({...profileForm, employeeCount: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="Enter number of employees"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                <select
+                  value={profileForm.region}
+                  onChange={(e) => setProfileForm({...profileForm, region: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="North America">North America</option>
+                  <option value="Europe">Europe</option>
+                  <option value="Asia Pacific">Asia Pacific</option>
+                  <option value="Global">Global</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Business Model</label>
+                <select
+                  value={profileForm.businessModel}
+                  onChange={(e) => setProfileForm({...profileForm, businessModel: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="B2B Subscription">B2B Subscription</option>
+                  <option value="B2C Subscription">B2C Subscription</option>
+                  <option value="E-commerce">E-commerce</option>
+                  <option value="Marketplace">Marketplace</option>
+                  <option value="Enterprise Software">Enterprise Software</option>
+                  <option value="Professional Services">Professional Services</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  // Update the company profile with form data
+                  console.log('Updated profile:', profileForm);
+                  alert('Company profile updated successfully!');
+                  setShowProfileModal(false);
+                }}
+                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
+              >
+                Save Changes
               </button>
             </div>
           </div>
