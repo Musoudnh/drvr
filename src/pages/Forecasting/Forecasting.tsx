@@ -899,15 +899,15 @@ const Forecasting: React.FC = () => {
                           <label className="block text-sm font-medium text-gray-300 mb-2">Payroll Tax Rate (%)</label>
                         <h4 className="text-md font-medium text-gray-300">Benefits & Taxes</h4>
                       </td>
-                            step="0.1"
-                            value={payrollInputs.payrollTaxRate}
-                            onChange={(e) => setPayrollInputs({...payrollInputs, payrollTaxRate: parseFloat(e.target.value) || 0})}
                       <div className="space-y-1">
                             placeholder="15.3"
                         <div className="text-[#F87171] font-bold">Expenses</div>
                         <div className="text-[#3AB7BF] font-bold">Net Profit</div>
                         <div>
                           <label className="block text-sm font-medium text-gray-300 mb-2">Benefits Rate (%)</label>
+                              step="0.1"
+                              value={payrollInputs.payrollTaxRate}
+                              onChange={(e) => setPayrollInputs({...payrollInputs, payrollTaxRate: parseFloat(e.target.value) || 0})}
                           <input
                             type="number"
                             step="0.1"
