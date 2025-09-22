@@ -328,9 +328,9 @@ const Forecasting: React.FC = () => {
       default:
         return (
           <div className="space-y-4">
-          <div className="bg-white rounded-lg p-6 w-[900px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Setup - {selectedGLCode.name}</h3>
+              <select
                 value={glScenarioForm.adjustmentType}
                 onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
