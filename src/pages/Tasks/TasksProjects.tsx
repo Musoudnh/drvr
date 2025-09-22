@@ -69,6 +69,7 @@ const TasksProjects: React.FC = () => {
   const [clickupConnected, setClickupConnected] = useState(false);
   const [mondayConnected, setMondayConnected] = useState(false);
   const [isDraggingTask, setIsDraggingTask] = useState(false);
+  const [showNotesPanel, setShowNotesPanel] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>([
     {
@@ -469,6 +470,7 @@ const TasksProjects: React.FC = () => {
             <Button variant="outline" size="sm">
               <Settings className="w-4 h-4 mr-2" />
               Settings
+            </Button>
           </div>
         </div>
         
