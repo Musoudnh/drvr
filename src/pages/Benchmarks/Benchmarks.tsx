@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import {
   BarChart3, 
   TrendingUp, 
   TrendingDown, 
@@ -97,7 +98,7 @@ const Benchmarks: React.FC = () => {
     businessModel: 'B2B Subscription'
   };
 
-  const [companyProfile] = useState<CompanyProfile>(initialCompanyProfile);
+  const [companyProfile, setCompanyProfile] = useState<CompanyProfile>(initialCompanyProfile);
   
   const [profileForm, setProfileForm] = useState({
     industry: initialCompanyProfile.industry,
@@ -381,7 +382,7 @@ const Benchmarks: React.FC = () => {
       businessModel: setupData.businessModel,
       revenue: setupData.annualRevenue,
       revenueRange: setupData.revenueRange,
-      employees: parseInt(setupData.employeeCount) || prev.employees,
+      employees: parseInt(setupData.employeeCount) || prev.employeeCount,
       region: setupData.region,
       businessStage: setupData.businessStage
     }));
@@ -1176,12 +1177,83 @@ const Benchmarks: React.FC = () => {
               <h3 className="text-xl font-semibold text-[#1E2A38]">Export Benchmark Report</h3>
               <button
                 onClick={() => setShowExportModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Profile Modal */}
+      {showProfileModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-[800px] max-w-[90vw] max-h-[90vh] overflow-hidden">
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-[#1E2A38]">Update Company Profile</h3>
+                <button
+                  onClick={() => setShowProfileModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            
             {/* Progress Bar */}
             <div className="px-6 mb-6">
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
                   className="bg-[#3AB7BF] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(setupStep / 1) * 100}%` }}
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                <select
+                  value={profileForm.industry}
+                  onChange={(e) => setProfileForm({...profileForm, industry: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="SaaS">Software as a Service (SaaS)</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Financial Services">Financial Services</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Professional Services">Professional Services</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
+                <select
+                  value={profileForm.revenueRange}
+                  onChange={(e) => setProfileForm({...profileForm, revenueRange: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="Under $1M">Under $1M</option>
+                  <option value="$1M - $5M">$1M - $5M</option>
+                  <option value="$5M - $20M">$5M - $20M</option>
+                  <option value="$20M - $100M">$20M - $100M</option>
+                  <option value="Over $100M">Over $100M</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Employee Count</label>
+                <input
+                  type="number"
+                  value={profileForm.employeeCount}
+                  onChange={(e) => setProfileForm({...profileForm, employeeCount: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., 45"
                 />
               </div>
               
@@ -1245,6 +1317,13 @@ const Benchmarks: React.FC = () => {
                 onClick={() => setShowProfileModal(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
+                Cancel
+              </button>
+              <Button variant="primary">
+                Update Profile
+              </Button>
+            </div>
+            
             {/* Step Content */}
             <div className="px-6 pb-6 max-h-[60vh] overflow-y-auto">
               {renderSetupStep()}
