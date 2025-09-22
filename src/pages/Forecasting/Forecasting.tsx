@@ -529,6 +529,7 @@ const Forecasting: React.FC = () => {
                                     onClick={() => {
                                       setSelectedGLCode(glCode);
                                       setShowGLScenarioModal(true);
+                                     console.log('Opening modal for GL code:', glCode.code);
                                     }}
                                     className="p-1 hover:bg-gray-100 rounded transition-colors"
                                     title="Add scenario"
@@ -627,6 +628,131 @@ const Forecasting: React.FC = () => {
             </div>
           </Card>
         </div>
+     {/* GL Scenario Modal */}
+     {showGLScenarioModal && selectedGLCode && (
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+         <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+           <div className="flex items-center justify-between mb-6">
+             <h3 className="text-xl font-semibold text-[#1E2A38]">
+               Add Scenario for {selectedGLCode.name} ({selectedGLCode.code})
+             </h3>
+             <button
+               onClick={() => {
+                 setShowGLScenarioModal(false);
+                 setSelectedGLCode(null);
+               }}
+               className="p-1 hover:bg-gray-100 rounded"
+             >
+               <X className="w-4 h-4 text-gray-400" />
+             </button>
+           </div>
+           
+           <div className="space-y-4">
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+               <input
+                 type="text"
+                 value={glScenarioForm.title}
+                 onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
+                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 placeholder="e.g., Q2 Marketing Campaign"
+               />
+             </div>
+             
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+               <textarea
+                 value={glScenarioForm.description}
+                 onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 rows={3}
+                 placeholder="Describe the scenario and its impact"
+               />
+             </div>
+             
+             {renderGLSpecificInputs()}
+             
+             <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
+               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
+             </div>
+           </div>
+           
+           <div className="flex justify-end gap-3 mt-6">
+             <button
+               onClick={() => {
+                 setShowGLScenarioModal(false);
+                 setSelectedGLCode(null);
+               }}
+               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+             >
+               Cancel
+             </button>
+             <button
+               onClick={() => {
+                 if (isScenarioValid()) {
+                   const newScenario: AppliedScenario = {
+                     id: Date.now().toString(),
+                     glCode: selectedGLCode.code,
+                     name: glScenarioForm.title,
+                     description: glScenarioForm.description,
+                     startMonth: glScenarioForm.startMonth,
+                     endMonth: glScenarioForm.endMonth,
+                     adjustmentType: glScenarioForm.adjustmentType,
+                     adjustmentValue: glScenarioForm.adjustmentValue,
+                     appliedAt: new Date()
+                   };
+                   setAppliedScenarios(prev => [...prev, newScenario]);
+                   setShowGLScenarioModal(false);
+                   setSelectedGLCode(null);
+                   setGLScenarioForm({
+                     title: '',
+                     description: '',
+                     owner: 'Current User',
+                     startMonth: 'Jan',
+                     endMonth: 'Dec',
+                     startYear: selectedYear,
+                     endYear: selectedYear,
+                     scenarioType: 'custom',
+                     revenueGrowthPercent: 0,
+                     salesVolumeAssumption: 0,
+                     pricingAssumption: 0,
+                     churnRatePercent: 0,
+                     marketExpansion: 0,
+                     marketingSpendPercent: 0,
+                     cogsPercent: 0,
+                     rdPercent: 0,
+                     overheadCosts: 0,
+                     variableFixedSplit: 50,
+                     headcount: 0,
+                     headcountGrowthPercent: 0,
+                     averageSalary: 0,
+                     payrollTaxRate: 15.3,
+                     benefitsRate: 25,
+                     hiringPlan: 0,
+                     attritionRatePercent: 15,
+                     numberOfTrips: 0,
+                     averageTripCost: 0,
+                     campaignBudget: 0,
+                     numberOfCampaigns: 0,
+                     squareFootage: 0,
+                     pricePerSqFt: 0,
+                     numberOfLicenses: 0,
+                     costPerLicense: 0,
+                     adjustmentType: 'percentage',
+                     adjustmentValue: 0
+                   });
+                 }
+               }}
+               disabled={!isScenarioValid()}
+               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+             >
+               Apply Scenario
+             </button>
+           </div>
+         </div>
+       </div>
+     )}
+
     </div>
   );
 };
