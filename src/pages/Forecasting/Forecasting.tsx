@@ -56,14 +56,34 @@ const Forecasting: React.FC = () => {
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [glScenarioForm, setGLScenarioForm] = useState({
-    name: '',
+    title: '',
+    description: '',
+    owner: 'Current User',
     startMonth: 'Jan',
     endMonth: 'Dec',
+    startYear: selectedYear,
+    endYear: selectedYear,
+    scenarioType: 'custom',
+    // Sales/Revenue assumptions
+    revenueGrowthPercent: 0,
+    salesVolumeAssumption: 0,
+    pricingAssumption: 0,
+    churnRatePercent: 0,
+    marketExpansion: 0,
+    // Expense assumptions
+    marketingSpendPercent: 0,
+    cogsPercent: 0,
+    rdPercent: 0,
+    overheadCosts: 0,
+    variableFixedSplit: 50,
     // Payroll specific
     headcount: 0,
+    headcountGrowthPercent: 0,
     averageSalary: 0,
     payrollTaxRate: 15.3,
     benefitsRate: 25,
+    hiringPlan: 0,
+    attritionRatePercent: 15,
     // Travel specific
     numberOfTrips: 0,
     averageTripCost: 0,
@@ -78,8 +98,7 @@ const Forecasting: React.FC = () => {
     costPerLicense: 0,
     // General
     adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0,
-    description: ''
+    adjustmentValue: 0
   });
 
   // Helper functions - moved before useState to avoid initialization errors
@@ -353,7 +372,7 @@ const Forecasting: React.FC = () => {
   };
 
   const isScenarioValid = () => {
-    return glScenarioForm.name.trim() !== '' && glScenarioForm.adjustmentValue !== 0;
+    return glScenarioForm.title.trim() !== '' && glScenarioForm.adjustmentValue !== 0;
   };
 
   return (
@@ -894,21 +913,42 @@ const Forecasting: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
           <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl border-l border-gray-200 overflow-y-auto">
             <div className="p-6 border-b border-gray-200 w-full">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">
-                Add Scenario for {selectedGLCode.code} - {selectedGLCode.name}
+              <h3 className="text-xl font-semibold text-[#1E2A38] mb-2">
+                Scenario Setup – Core Info
               </h3>
+              <p className="text-sm text-gray-600">
+                {selectedGLCode.code} - {selectedGLCode.name}
+              </p>
               <button
                 onClick={() => {
                   setShowGLScenarioModal(false);
                   setSelectedGLCode(null);
                   setGLScenarioForm({
-                    name: '',
+                    title: '',
+                    description: '',
+                    owner: 'Current User',
                     startMonth: 'Jan',
                     endMonth: 'Dec',
+                    startYear: selectedYear,
+                    endYear: selectedYear,
+                    scenarioType: 'custom',
+                    revenueGrowthPercent: 0,
+                    salesVolumeAssumption: 0,
+                    pricingAssumption: 0,
+                    churnRatePercent: 0,
+                    marketExpansion: 0,
+                    marketingSpendPercent: 0,
+                    cogsPercent: 0,
+                    rdPercent: 0,
+                    overheadCosts: 0,
+                    variableFixedSplit: 50,
                     headcount: 0,
+                    headcountGrowthPercent: 0,
                     averageSalary: 0,
                     payrollTaxRate: 15.3,
                     benefitsRate: 25,
+                    hiringPlan: 0,
+                    attritionRatePercent: 15,
                     numberOfTrips: 0,
                     averageTripCost: 0,
                     campaignBudget: 0,
@@ -918,8 +958,7 @@ const Forecasting: React.FC = () => {
                     numberOfLicenses: 0,
                     costPerLicense: 0,
                     adjustmentType: 'percentage',
-                    adjustmentValue: 0,
-                    description: ''
+                    adjustmentValue: 0
                   });
                 }}
                 className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg"
@@ -929,6 +968,350 @@ const Forecasting: React.FC = () => {
             </div>
             
             <div className="p-6 space-y-6">
+              {/* Core Info Section */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Title</label>
+                  <input
+                    type="text"
+                    value={glScenarioForm.title}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="e.g., Base Case 2026"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description/Notes</label>
+                  <textarea
+                    value={glScenarioForm.description}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    rows={3}
+                    placeholder="e.g., Assumes 20% YoY revenue growth and opening 2 new offices"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Owner/Created By</label>
+                  <input
+                    type="text"
+                    value={glScenarioForm.owner}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, owner: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="Enter owner name"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Start Period</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={glScenarioForm.startMonth}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
+                        className="px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      >
+                        {months.map(month => (
+                          <option key={month} value={month}>{month}</option>
+                        ))}
+                      </select>
+                      <select
+                        value={glScenarioForm.startYear}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
+                        className="px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      >
+                        <option value={2024}>2024</option>
+                        <option value={2025}>2025</option>
+                        <option value={2026}>2026</option>
+                        <option value={2027}>2027</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">End Period</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={glScenarioForm.endMonth}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                        className="px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      >
+                        {months.map(month => (
+                          <option key={month} value={month}>{month}</option>
+                        ))}
+                      </select>
+                      <select
+                        value={glScenarioForm.endYear}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
+                        className="px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      >
+                        <option value={2024}>2024</option>
+                        <option value={2025}>2025</option>
+                        <option value={2026}>2026</option>
+                        <option value={2027}>2027</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Type</label>
+                  <select
+                    value={glScenarioForm.scenarioType}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, scenarioType: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    <option value="base_case">Base Case</option>
+                    <option value="best_case">Best Case</option>
+                    <option value="worst_case">Worst Case</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Industry Assumptions - Key Drivers */}
+              <div className="border-t border-gray-200 pt-6">
+                <h4 className="font-semibold text-[#1E2A38] mb-4">Industry Assumptions – Key Drivers</h4>
+                
+                {/* Sales/Revenue Section */}
+                <div className="space-y-4 mb-6">
+                  <h5 className="font-medium text-[#1E2A38] text-sm">Sales / Revenue</h5>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Revenue Growth %</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.revenueGrowthPercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, revenueGrowthPercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="15.4"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Sales Volume</label>
+                      <input
+                        type="number"
+                        value={glScenarioForm.salesVolumeAssumption}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, salesVolumeAssumption: parseInt(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="Units/Contracts"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Pricing Change %</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.pricingAssumption}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, pricingAssumption: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="5.0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Churn Rate %</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.churnRatePercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, churnRatePercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="2.5"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Market Expansion (new customers/locations)</label>
+                    <input
+                      type="number"
+                      value={glScenarioForm.marketExpansion}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, marketExpansion: parseInt(e.target.value) || 0})}
+                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                      placeholder="Number of new customers/locations"
+                    />
+                  </div>
+                </div>
+
+                {/* Expenses Section */}
+                <div className="space-y-4 mb-6">
+                  <h5 className="font-medium text-[#1E2A38] text-sm">Expenses (OPEX/COGS)</h5>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Marketing Spend % of Revenue</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.marketingSpendPercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, marketingSpendPercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="12.5"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">COGS % of Sales</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.cogsPercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, cogsPercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="35.0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">R&D % of Revenue</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.rdPercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, rdPercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="8.0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Overhead Costs ($)</label>
+                      <input
+                        type="number"
+                        value={glScenarioForm.overheadCosts}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, overheadCosts: parseInt(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="25000"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Variable vs Fixed Expense Split (%)</label>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs text-gray-500">Variable</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={glScenarioForm.variableFixedSplit}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, variableFixedSplit: parseInt(e.target.value)})}
+                        className="flex-1 slider"
+                      />
+                      <span className="text-xs text-gray-500">Fixed</span>
+                      <span className="text-xs font-medium text-[#3AB7BF] w-8">{glScenarioForm.variableFixedSplit}%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payroll/Headcount Section */}
+                <div className="space-y-4 mb-6">
+                  <h5 className="font-medium text-[#1E2A38] text-sm">Payroll / Headcount</h5>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Headcount Growth %</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.headcountGrowthPercent}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, headcountGrowthPercent: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="8.2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Avg Salary per Employee</label>
+                      <input
+                        type="number"
+                        value={glScenarioForm.averageSalary}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, averageSalary: parseInt(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="85000"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Benefits/Taxes % of Payroll</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={glScenarioForm.benefitsRate}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, benefitsRate: parseFloat(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="25.0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Hiring Plan (monthly hires)</label>
+                      <input
+                        type="number"
+                        value={glScenarioForm.hiringPlan}
+                        onChange={(e) => setGLScenarioForm({...glScenarioForm, hiringPlan: parseInt(e.target.value) || 0})}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                        placeholder="2"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Attrition Rate %</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={glScenarioForm.attritionRatePercent}
+                      onChange={(e) => setGLScenarioForm({...glScenarioForm, attritionRatePercent: parseFloat(e.target.value) || 0})}
+                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                      placeholder="15.0"
+                    />
+                  </div>
+                </div>
+
+                {/* GL-Specific Inputs */}
+                <div className="border-t border-gray-200 pt-4">
+                  <h5 className="font-medium text-[#1E2A38] text-sm mb-4">GL-Specific Assumptions</h5>
+                  {renderGLSpecificInputs()}
+                </div>
+
+                {/* Impact Preview */}
+                <div className="border-t border-gray-200 pt-4">
+                  <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
+                    <h5 className="font-medium text-[#1E2A38] mb-1 text-sm">Impact Preview</h5>
+                    <p className="text-xs text-gray-600">{getImpactPreview()}</p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="border-t border-gray-200 pt-4 flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowGLScenarioModal(false);
+                      setSelectedGLCode(null);
+                    }}
+                    className="flex-1 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (isScenarioValid()) {
+                        const newScenario: AppliedScenario = {
+                          id: Date.now().toString(),
+                          glCode: selectedGLCode.code,
+                          name: glScenarioForm.title,
+                          description: glScenarioForm.description,
+                          startMonth: glScenarioForm.startMonth,
+                          endMonth: glScenarioForm.endMonth,
+                          adjustmentType: glScenarioForm.adjustmentType,
+                          adjustmentValue: glScenarioForm.adjustmentValue,
+                          appliedAt: new Date()
+                        };
+                        setAppliedScenarios(prev => [...prev, newScenario]);
+                        setShowGLScenarioModal(false);
+                        setSelectedGLCode(null);
+                      }
+                    }}
+                    disabled={!isScenarioValid()}
+                    className="flex-1 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <Save className="w-4 h-4 mr-2 inline" />
+                    Apply Scenario
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
