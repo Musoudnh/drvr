@@ -76,7 +76,7 @@ const Forecasting: React.FC = () => {
     costPerLicense: 0,
     // General
     adjustmentType: 'percentage' as 'percentage' | 'fixed',
-    adjustmentValue: 0
+    adjustmentValue: 0,
     description: ''
   });
 
@@ -881,11 +881,10 @@ const Forecasting: React.FC = () => {
       </div>
 
       {/* GL Code Scenario Modal */}
-      {showScenarioModal && selectedGLCode && (
+      {showGLScenarioModal && selectedGLCode && (
         <div className="fixed inset-0 bg-black bg-opacity-30 z-50">
           <div className="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl border-l border-gray-200 overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <div className="p-6 border-b border-gray-200 w-full">
+            <div className="p-6 border-b border-gray-200 w-full">
               <h3 className="text-xl font-semibold text-[#1E2A38]">
                 Add Scenario for {selectedGLCode.code} - {selectedGLCode.name}
               </h3>
@@ -897,6 +896,18 @@ const Forecasting: React.FC = () => {
                     name: '',
                     startMonth: 'Jan',
                     endMonth: 'Dec',
+                    headcount: 0,
+                    averageSalary: 0,
+                    payrollTaxRate: 15.3,
+                    benefitsRate: 25,
+                    numberOfTrips: 0,
+                    averageTripCost: 0,
+                    campaignBudget: 0,
+                    numberOfCampaigns: 0,
+                    squareFootage: 0,
+                    pricePerSqFt: 0,
+                    numberOfLicenses: 0,
+                    costPerLicense: 0,
                     adjustmentType: 'percentage',
                     adjustmentValue: 0,
                     description: ''
@@ -906,7 +917,6 @@ const Forecasting: React.FC = () => {
               >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
-              </div>
             </div>
             
             <div className="p-6 space-y-6">
@@ -965,10 +975,8 @@ const Forecasting: React.FC = () => {
               
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
                 <h4 className="font-medium text-[#1E2A38] mb-2">Impact Preview</h4>
-                <p className="text-sm text-gray-700">
                 <p className="text-sm text-gray-600">{getImpactPreview()}</p>
               </div>
-            </div>
             </div>
             
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-200">
@@ -981,6 +989,18 @@ const Forecasting: React.FC = () => {
                     name: '',
                     startMonth: 'Jan',
                     endMonth: 'Dec',
+                    headcount: 0,
+                    averageSalary: 0,
+                    payrollTaxRate: 15.3,
+                    benefitsRate: 25,
+                    numberOfTrips: 0,
+                    averageTripCost: 0,
+                    campaignBudget: 0,
+                    numberOfCampaigns: 0,
+                    squareFootage: 0,
+                    pricePerSqFt: 0,
+                    numberOfLicenses: 0,
+                    costPerLicense: 0,
                     adjustmentType: 'percentage',
                     adjustmentValue: 0,
                     description: ''
@@ -992,7 +1012,6 @@ const Forecasting: React.FC = () => {
               </button>
               <button
                 onClick={() => {
-                disabled={!scenarioForm.name.trim() || !isScenarioValid()}
                     // Apply the scenario to the forecast data
                     const startMonthIndex = months.indexOf(glScenarioForm.startMonth);
                     const endMonthIndex = months.indexOf(glScenarioForm.endMonth);
@@ -1039,6 +1058,18 @@ const Forecasting: React.FC = () => {
                       name: '',
                       startMonth: 'Jan',
                       endMonth: 'Dec',
+                      headcount: 0,
+                      averageSalary: 0,
+                      payrollTaxRate: 15.3,
+                      benefitsRate: 25,
+                      numberOfTrips: 0,
+                      averageTripCost: 0,
+                      campaignBudget: 0,
+                      numberOfCampaigns: 0,
+                      squareFootage: 0,
+                      pricePerSqFt: 0,
+                      numberOfLicenses: 0,
+                      costPerLicense: 0,
                       adjustmentType: 'percentage',
                       adjustmentValue: 0,
                       description: ''
