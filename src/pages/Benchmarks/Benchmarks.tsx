@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { BarChart3, TrendingUp, TrendingDown, Target, Users, DollarSign, Building, Globe, Award, ArrowRight, Settings, X, ChevronRight, ChevronLeft, Filter, ChevronUp, ChevronDown, RefreshCw, Download, Building2, Eye, Info, AlertTriangle, Brain, Zap, PieChart, CheckCircle, LineChart, Bell, ArrowUp, ArrowDown, Minus, Lightbulb } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
@@ -86,17 +86,7 @@ const Benchmarks: React.FC = () => {
       industryAverage: 12.1,
       topQuartile: 18.7,
       unit: '%',
-     
-    }
-  ]
-  )
-    }, 
-    trend: 'up',
-      performance: 'outperforming',
-      description: 'Year-over-year revenue growth rate',
-      category: 'revenue'
-    },
-    {
+      trend: 'up',
       id: 'gross-margin',
       name: 'Gross Margin',
       companyValue: 62.1,
