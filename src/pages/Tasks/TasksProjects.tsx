@@ -70,6 +70,17 @@ const TasksProjects: React.FC = () => {
   const [clickupConnected, setClickupConnected] = useState(false);
   const [mondayConnected, setMondayConnected] = useState(false);
   const [isDraggingTask, setIsDraggingTask] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [connectForm, setConnectForm] = useState({
+    tabName: '',
+    platform: 'clickup' as 'clickup' | 'monday'
+  });
+  const [connectedBoards, setConnectedBoards] = useState<Array<{
+    id: string;
+    name: string;
+    platform: 'clickup' | 'monday';
+    connected: boolean;
+  }>>([]);
 
   const [tasks, setTasks] = useState<Task[]>([
     {
@@ -484,30 +495,29 @@ const TasksProjects: React.FC = () => {
             title={`${serviceName} Board`}
             sandbox="allow-scripts allow-same-origin allow-forms"
           />
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <div className={`${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''} space-y-6`}>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Tasks & Projects</h2>
-          <p className="text-gray-600 mt-1">Manage your team's tasks and project workflows</p>
-        </div>
-        <div className="flex items-center gap-3">
-          {isFullscreen && (
-            <Button variant="outline" onClick={() => setIsFullscreen(false)}>
-              <X className="w-4 h-4 mr-2" />
-              Exit Fullscreen
-            </Button>
-          )}
-          <Button variant="outline" onClick={() => setIsFullscreen(!isFullscreen)}>
-            <Maximize2 className="w-4 h-4 mr-2" />
-            Fullscreen
-          </Button>
+          {connectedBoards.map(board => (
+            <button
+              key={board.id}
+              onClick={() => setActiveTab(board.id)}
+              disabled={isDraggingTask}
+              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === board.id
+                  ? `border-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}] text-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}]`
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <div className={`w-4 h-4 rounded mr-2`} style={{ backgroundColor: board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B' }} />
+              {board.name}
+            </button>
+          ))}
+          <button
+            onClick={() => setShowConnectModal(true)}
+            disabled={isDraggingTask}
+            className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Connect Board
+          </button>
         </div>
       </div>
 
@@ -610,8 +620,13 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'clickup' && renderIntegrationTab('clickup')}
-          {activeTab === 'monday' && renderIntegrationTab('monday')}
+          {connectedBoards.map(board => (
+            activeTab === board.id && (
+              <div key={board.id}>
+                {renderIntegrationTab(board.platform)}
+              </div>
+            )
+          ))}
         </div>
       </div>
         
@@ -833,6 +848,93 @@ const TasksProjects: React.FC = () => {
                 className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Connect Board Modal */}
+      {showConnectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">Connect Board</h3>
+              <button
+                onClick={() => setShowConnectModal(false)}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tab Name</label>
+                <input
+                  type="text"
+                  value={connectForm.tabName}
+                  onChange={(e) => setConnectForm({...connectForm, tabName: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., Marketing Board"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Platform</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setConnectForm({...connectForm, platform: 'clickup'})}
+                    className={`p-4 border-2 rounded-lg transition-all ${
+                      connectForm.platform === 'clickup'
+                        ? 'border-[#7B68EE] bg-[#7B68EE]/10'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="w-8 h-8 bg-[#7B68EE] rounded mx-auto mb-2" />
+                    <p className="font-medium text-[#1E2A38]">ClickUp</p>
+                  </button>
+                  <button
+                    onClick={() => setConnectForm({...connectForm, platform: 'monday'})}
+                    className={`p-4 border-2 rounded-lg transition-all ${
+                      connectForm.platform === 'monday'
+                        ? 'border-[#FF6B6B] bg-[#FF6B6B]/10'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="w-8 h-8 bg-[#FF6B6B] rounded mx-auto mb-2" />
+                    <p className="font-medium text-[#1E2A38]">Monday.com</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowConnectModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (connectForm.tabName.trim()) {
+                    const newBoard = {
+                      id: `board_${Date.now()}`,
+                      name: connectForm.tabName,
+                      platform: connectForm.platform,
+                      connected: true
+                    };
+                    setConnectedBoards(prev => [...prev, newBoard]);
+                    setActiveTab(newBoard.id);
+                    setConnectForm({ tabName: '', platform: 'clickup' });
+                    setShowConnectModal(false);
+                  }
+                }}
+                disabled={!connectForm.tabName.trim()}
+                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Connect Board
               </button>
             </div>
           </div>
