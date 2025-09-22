@@ -495,32 +495,13 @@ const TasksProjects: React.FC = () => {
             title={`${serviceName} Board`}
             sandbox="allow-scripts allow-same-origin allow-forms"
           />
-          {connectedBoards.map(board => (
-            <button
-              key={board.id}
-              onClick={() => setActiveTab(board.id)}
-              disabled={isDraggingTask}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === board.id
-                  ? `border-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}] text-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}]`
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <div className={`w-4 h-4 rounded mr-2`} style={{ backgroundColor: board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B' }} />
-              {board.name}
-            </button>
-          ))}
-          <button
-            onClick={() => setShowConnectModal(true)}
-            disabled={isDraggingTask}
-            className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Connect Board
-          </button>
         </div>
       </div>
+    );
+  };
 
+  return (
+    <div className="p-6 space-y-6">
       {/* Tab Navigation */}
       <div className="bg-white rounded-lg shadow-sm">
         <div className="border-b border-gray-200">
@@ -560,6 +541,29 @@ const TasksProjects: React.FC = () => {
             >
               <div className="w-4 h-4 bg-[#FF6B6B] rounded mr-2" />
               Monday.com Board
+            </button>
+            {connectedBoards.map(board => (
+              <button
+                key={board.id}
+                onClick={() => setActiveTab(board.id)}
+                disabled={isDraggingTask}
+                className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === board.id
+                    ? `border-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}] text-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}]`
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                <div className={`w-4 h-4 rounded mr-2`} style={{ backgroundColor: board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B' }} />
+                {board.name}
+              </button>
+            ))}
+            <button
+              onClick={() => setShowConnectModal(true)}
+              disabled={isDraggingTask}
+              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Connect Board
             </button>
           </nav>
         </div>
@@ -619,6 +623,9 @@ const TasksProjects: React.FC = () => {
               {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
             </div>
           )}
+
+          {activeTab === 'clickup' && renderIntegrationTab('clickup')}
+          {activeTab === 'monday' && renderIntegrationTab('monday')}
 
           {connectedBoards.map(board => (
             activeTab === board.id && (
