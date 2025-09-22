@@ -570,7 +570,19 @@ const Forecasting: React.FC = () => {
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
                           <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50">
                             <td className="py-2 px-4 font-medium text-[#1E2A38] sticky left-0 bg-white">
-                              {glCode.code}
+                              <div className="flex items-center justify-between">
+                                <span>{glCode.code}</span>
+                                <button
+                                  onClick={() => {
+                                    setSelectedGLCode(glCode);
+                                    setShowGLScenarioModal(true);
+                                  }}
+                                  className="ml-2 p-1 hover:bg-gray-200 rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                                  title="Add scenario assumption"
+                                >
+                                  <Plus className="w-3 h-3 text-[#3AB7BF]" />
+                                </button>
+                              </div>
                             </td>
                             <td className="py-2 px-4 text-gray-700 sticky left-32 bg-white">
                               {glCode.name}
@@ -750,10 +762,187 @@ const Forecasting: React.FC = () => {
                   Export to Excel
                 </Button>
               </div>
-            </Card>
+                          <tr key={glCode.code} className="border-b border-gray-100 hover:bg-gray-50 group">@@ .. @@
           </div>
+  const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
+  const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
+  const [glScenarioForm, setGLScenarioForm] = useState({
+    name: '',
+    startMonth: 'Jan',
+    endMonth: 'Dec',
+    adjustmentType: 'percentage' as 'percentage' | 'fixed',
+    adjustmentValue: 0,
+    description: ''
+  });@@ .. @@
         )}
       </div>
+
+      {/* GL Code Scenario Modal */}
+      {showGLScenarioModal && selectedGLCode && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">
+                Add Scenario for {selectedGLCode.code} - {selectedGLCode.name}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowGLScenarioModal(false);
+                  setSelectedGLCode(null);
+                  setGLScenarioForm({
+                    name: '',
+                    startMonth: 'Jan',
+                    endMonth: 'Dec',
+                    adjustmentType: 'percentage',
+                    adjustmentValue: 0,
+                    description: ''
+                  });
+                }}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                <input
+                  type="text"
+                  value={glScenarioForm.name}
+                  onChange={(e) => setGLScenarioForm({...glScenarioForm, name: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="e.g., Q2 Marketing Campaign"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea
+                  value={glScenarioForm.description}
+                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  rows={2}
+                  placeholder="Describe the scenario impact..."
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <select
+                    value={glScenarioForm.startMonth}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <select
+                    value={glScenarioForm.endMonth}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    {months.map(month => (
+                      <option key={month} value={month}>{month}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
+                  <select
+                    value={glScenarioForm.adjustmentType}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  >
+                    <option value="percentage">Percentage Change</option>
+                    <option value="fixed">Fixed Amount</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {glScenarioForm.adjustmentType === 'percentage' ? 'Percentage (%)' : 'Amount ($)'}
+                  </label>
+                  <input
+                    type="number"
+                    step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '1000'}
+                    value={glScenarioForm.adjustmentValue}
+                    onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder={glScenarioForm.adjustmentType === 'percentage' ? '15.0' : '50000'}
+                  />
+                </div>
+              </div>
+              
+              <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
+                <h4 className="font-medium text-[#1E2A38] mb-2">Impact Preview</h4>
+                <p className="text-sm text-gray-700">
+                  This will {glScenarioForm.adjustmentValue >= 0 ? 'increase' : 'decrease'} {selectedGLCode.name} by{' '}
+                  {glScenarioForm.adjustmentType === 'percentage' 
+                    ? `${Math.abs(glScenarioForm.adjustmentValue)}%` 
+                    : `$${Math.abs(glScenarioForm.adjustmentValue).toLocaleString()}`
+                  } from {glScenarioForm.startMonth} to {glScenarioForm.endMonth}.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowGLScenarioModal(false);
+                  setSelectedGLCode(null);
+                  setGLScenarioForm({
+                    name: '',
+                    startMonth: 'Jan',
+                    endMonth: 'Dec',
+                    adjustmentType: 'percentage',
+                    adjustmentValue: 0,
+                    description: ''
+                  });
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (glScenarioForm.name.trim()) {
+                    // Apply the scenario to the forecast data
+                    console.log('Applying scenario:', {
+                      glCode: selectedGLCode.code,
+                      scenario: glScenarioForm
+                    });
+                    
+                    setShowGLScenarioModal(false);
+                    setSelectedGLCode(null);
+                    setGLScenarioForm({
+                      name: '',
+                      startMonth: 'Jan',
+                      endMonth: 'Dec',
+                      adjustmentType: 'percentage',
+                      adjustmentValue: 0,
+                      description: ''
+                    });
+                  }
+                }}
+                disabled={!glScenarioForm.name.trim()}
+                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Apply Scenario
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
