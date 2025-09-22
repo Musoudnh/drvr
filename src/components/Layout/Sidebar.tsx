@@ -92,8 +92,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   
   // Check if we're on an admin page
   const isAdminPage = location.pathname.startsWith('/admin');
-  // Check if we're on a chat page
-  const isChatPage = location.pathname.startsWith('/chat');
   
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
@@ -389,16 +387,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
   return (
     <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-6 pb-8 gap-12 mr-4 relative`} style={{ backgroundColor: navigationColor }}>
-      {isChatPage ? renderChatNavigation() : (
-        <nav className="flex-1 overflow-y-auto mt-12">
-          <div className="space-y-1">
-            {navItems.map(item => renderNavItem(item))}
-          </div>
-        </nav>
-      )}
+      <nav className="flex-1 overflow-y-auto mt-12">
+        <div className="space-y-1">
+          {navItems.map(item => renderNavItem(item))}
+        </div>
+      </nav>
       
       <div className="pt-4">
-        {isAdminPage || isChatPage ? (
+        {isAdminPage ? (
           <div className="space-y-3">
             <button
               onClick={() => navigate('/dashboard')}
