@@ -746,17 +746,16 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <span>{glCode.name}</span>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
+                                  <button
                                     onClick={() => {
                                       setSelectedGLCode(glCode);
                                       setShowGLScenarioModal(true);
                                     }}
-                                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="p-1 hover:bg-gray-100 rounded transition-colors"
+                                    title="Add scenario"
                                   >
                                     <Plus className="w-4 h-4" />
-                                  </Button>
+                                  </button>
                                 </div>
                               </td>
                               {months.map((month, monthIndex) => {
