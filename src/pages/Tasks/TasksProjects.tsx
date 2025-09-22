@@ -602,6 +602,17 @@ const TasksProjects: React.FC = () => {
                     >
                       <List className="w-4 h-4 mr-1 inline" />
                       List
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Task View */}
+              {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
+            </div>
+          )}
+
+          {activeTab === 'monday' && renderIntegrationTab('monday')}
           {connectedBoards.map(board => (
             activeTab === board.id && (
               <div key={board.id}>
