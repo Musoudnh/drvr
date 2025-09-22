@@ -56,6 +56,8 @@ const Forecasting: React.FC = () => {
   const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
+  const [editingCell, setEditingCell] = useState<{glCode: string, month: string} | null>(null);
+  const [editValue, setEditValue] = useState<string>('');
   const [glScenarioForm, setGLScenarioForm] = useState({
     title: '',
     description: '',
@@ -205,6 +207,36 @@ const Forecasting: React.FC = () => {
         ? { ...item, forecastedAmount: newAmount }
         : item
     ));
+  };
+
+  const handleCellEdit = (glCode: string, month: string, currentAmount: number) => {
+    setEditingCell({ glCode, month });
+    setEditValue(currentAmount.toString());
+  };
+
+  const handleCellSave = () => {
+    if (editingCell && editValue.trim()) {
+      const newAmount = parseFloat(editValue);
+      if (!isNaN(newAmount)) {
+        updateForecastAmount(editingCell.glCode, editingCell.month, newAmount);
+      }
+    }
+    setEditingCell(null);
+    setEditValue('');
+  };
+
+  const handleCellCancel = () => {
+    setEditingCell(null);
+    setEditValue('');
+  };
+
+  const isMonthActualized = (month: string) => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const monthIndex = months.indexOf(month.split(' ')[0]);
+    const year = parseInt(month.split(' ')[1]);
+    
+    return year < currentYear || (year === currentYear && monthIndex <= currentMonth);
   };
 
   const updateScenarioAssumption = (name: string, value: number) => {
@@ -668,32 +700,84 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <span>{glCode.name}</span>
-                                  <button
-                                    onClick={() => {
-                                      setSelectedGLCode(glCode);
-                                      setShowGLScenarioModal(true);
-                                     console.log('Opening modal for GL code:', glCode.code);
-                                    }}
-                                    className="p-1 hover:bg-gray-100 rounded transition-colors"
-                                    title="Add scenario"
-                                  >
-                                    <Plus className="w-4 h-4" />
-                                  </button>
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      onClick={() => {
+                                        setSelectedGLCode(glCode);
+                                        setShowGLScenarioModal(true);
+                                      }}
+                                      className="p-1 hover:bg-gray-100 rounded transition-colors"
+                                      title="Add scenario"
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        const glScenarios = appliedScenarios.filter(s => s.glCode === glCode.code);
+                                        if (glScenarios.length > 0) {
+                                          setExpandedGLCodes(prev =>
+                                            prev.includes(glCode.code)
+                                              ? prev.filter(code => code !== glCode.code)
+                                              : [...prev, glCode.code]
+                                          );
+                                        }
+                                      }}
+                                      className={`p-1 hover:bg-gray-100 rounded transition-colors ${
+                                        appliedScenarios.filter(s => s.glCode === glCode.code).length === 0 
+                                          ? 'opacity-30 cursor-not-allowed' 
+                                          : ''
+                                      }`}
+                                      title={`${appliedScenarios.filter(s => s.glCode === glCode.code).length} scenarios`}
+                                      disabled={appliedScenarios.filter(s => s.glCode === glCode.code).length === 0}
+                                    >
+                                      {expandedGLCodes.includes(glCode.code) ? (
+                                        <ChevronDown className="w-3 h-3" />
+                                      ) : (
+                                        <ChevronRight className="w-3 h-3" />
+                                      )}
+                                    </button>
+                                  </div>
                                 </div>
                               </td>
                               {months.map((month, monthIndex) => {
                                 const monthData = forecastData.find(
                                   item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
                                 );
+                                const isActualized = isMonthActualized(`${month} ${selectedYear}`);
+                                const isEditing = editingCell?.glCode === glCode.code && editingCell?.month === `${month} ${selectedYear}`;
                                 
                                 return (
                                   <td key={monthIndex} className="py-3 px-2 text-center text-sm">
-                                    <div className="space-y-1">
-                                      <div className="font-medium">
-                                        ${monthData?.forecastedAmount.toLocaleString() || '0'}
+                                    <div className="space-y-1 relative">
+                                      <div className={`font-medium ${!isActualized ? 'cursor-pointer hover:bg-blue-50 rounded px-1' : ''}`}>
+                                        {isEditing ? (
+                                          <input
+                                            type="number"
+                                            value={editValue}
+                                            onChange={(e) => setEditValue(e.target.value)}
+                                            onBlur={handleCellSave}
+                                            onKeyDown={(e) => {
+                                              if (e.key === 'Enter') handleCellSave();
+                                              if (e.key === 'Escape') handleCellCancel();
+                                            }}
+                                            className="w-full px-1 py-0.5 text-center border border-blue-300 rounded text-xs"
+                                            autoFocus
+                                          />
+                                        ) : (
+                                          <span
+                                            onClick={() => {
+                                              if (!isActualized && monthData) {
+                                                handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
+                                              }
+                                            }}
+                                            className={isActualized ? 'text-gray-600' : 'text-[#1E2A38] hover:text-blue-600'}
+                                          >
+                                            ${monthData?.forecastedAmount.toLocaleString() || '0'}
+                                          </span>
+                                        )}
                                       </div>
                                       {monthData?.actualAmount && (
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-xs text-gray-500 bg-gray-100 rounded px-1">
                                           Act: ${monthData.actualAmount.toLocaleString()}
                                         </div>
                                       )}
@@ -701,6 +785,9 @@ const Forecasting: React.FC = () => {
                                         <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
                                           {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
                                         </div>
+                                      )}
+                                      {isActualized && (
+                                        <div className="absolute top-0 right-0 w-2 h-2 bg-gray-400 rounded-full" title="Actualized" />
                                       )}
                                     </div>
                                   </td>
@@ -745,6 +832,8 @@ const Forecasting: React.FC = () => {
                                                 <button
                                                   onClick={() => {
                                                     setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
+                                                    // Recalculate forecast data after removing scenario
+                                                    // This would trigger a recalculation in a real implementation
                                                   }}
                                                   className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
                                                   title="Remove scenario"
@@ -845,6 +934,27 @@ const Forecasting: React.FC = () => {
                      appliedAt: new Date()
                    };
                    setAppliedScenarios(prev => [...prev, newScenario]);
+                   
+                   // Auto-integrate scenario into monthly budgets
+                   const startMonthIndex = months.indexOf(newScenario.startMonth);
+                   const endMonthIndex = months.indexOf(newScenario.endMonth);
+                   
+                   setForecastData(prev => prev.map(item => {
+                     if (item.glCode === selectedGLCode.code) {
+                       const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
+                       if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
+                         let adjustedAmount = item.forecastedAmount;
+                         if (newScenario.adjustmentType === 'percentage') {
+                           adjustedAmount = item.forecastedAmount * (1 + newScenario.adjustmentValue / 100);
+                         } else {
+                           adjustedAmount = item.forecastedAmount + newScenario.adjustmentValue;
+                         }
+                         return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+                       }
+                     }
+                     return item;
+                   }));
+                   
                    setShowGLScenarioModal(false);
                    setSelectedGLCode(null);
                    setGLScenarioForm({
