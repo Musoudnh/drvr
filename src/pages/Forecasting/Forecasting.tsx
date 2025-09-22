@@ -81,24 +81,6 @@ const Forecasting: React.FC = () => {
     description: ''
   });
 
-  const [payrollInputs, setPayrollInputs] = useState({
-    headcount: 0,
-    avgSalary: 0,
-    payrollTaxRate: 15.3,
-    benefitsRate: 25.0,
-    bonusAmount: 0,
-    bonusMonth: ''
-  });
-  
-  const [travelInputs, setTravelInputs] = useState({
-    trips: 0,
-    avgCost: 0,
-    airfare: 0,
-    hotel: 0,
-    meals: 0,
-    days: 0
-  });
-
   // Helper functions - moved before useState to avoid initialization errors
   const getBaseAmount = (glCode: string): number => {
     const baseAmounts: { [key: string]: number } = {
@@ -891,13 +873,23 @@ const Forecasting: React.FC = () => {
                             ${getNetProfit(`${month} ${selectedYear}`).toLocaleString()}
                           </div>
                         </div>
+                        <div className="space-y-1">
+                          <div className="text-[#F87171] font-bold">Expenses</div>
+                          <div className="text-[#3AB7BF] font-bold">Net Profit</div>
+                        </div>
                       </td>
                     ))}
                     <td className="py-3 px-4 text-right">
                       <div className="space-y-1">
-                        <div className="text-[#4ADE80] font-bold">Revenue</div>
-                        <div className="text-[#F87171] font-bold">Expenses</div>
-                        <div className="text-[#3AB7BF] font-bold">Net Profit</div>
+                        <div className="text-[#4ADE80] font-bold">
+                          ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'revenue'), 0).toLocaleString()}
+                        </div>
+                        <div className="text-[#F87171] font-bold">
+                          ${months.reduce((sum, month) => sum + getMonthlyTotal(`${month} ${selectedYear}`, 'expense'), 0).toLocaleString()}
+                        </div>
+                        <div className={`font-bold ${months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0) >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
+                          ${months.reduce((sum, month) => sum + getNetProfit(`${month} ${selectedYear}`), 0).toLocaleString()}
+                        </div>
                       </div>
                     </td>
                   </tr>
