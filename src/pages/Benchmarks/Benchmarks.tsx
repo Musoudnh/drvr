@@ -93,7 +93,9 @@ const Benchmarks: React.FC = () => {
     revenueRange: initialCompanyProfile.revenueRange,
     employeeCount: initialCompanyProfile.employeeCount.toString(),
     region: initialCompanyProfile.region,
-    businessModel: initialCompanyProfile.businessModel
+    businessModel: initialCompanyProfile.businessModel,
+    state: '',
+    city: ''
   });
 
 
@@ -1115,6 +1117,30 @@ const Benchmarks: React.FC = () => {
                   <option value="Enterprise Software">Enterprise Software</option>
                   <option value="Professional Services">Professional Services</option>
                 </select>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
+                  <input
+                    type="text"
+                    value={profileForm.state}
+                    onChange={(e) => setProfileForm({...profileForm, state: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="e.g., California"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <input
+                    type="text"
+                    value={profileForm.city}
+                    onChange={(e) => setProfileForm({...profileForm, city: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    placeholder="e.g., San Francisco"
+                  />
+                </div>
               </div>
             </div>
             
