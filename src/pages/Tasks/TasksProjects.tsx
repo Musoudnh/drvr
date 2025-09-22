@@ -519,18 +519,6 @@ const TasksProjects: React.FC = () => {
               Native Task Board
             </button>
             <button
-              onClick={() => setActiveTab('clickup')}
-              disabled={isDraggingTask}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'clickup'
-                  ? 'border-[#7B68EE] text-[#7B68EE]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <div className="w-4 h-4 bg-[#7B68EE] rounded mr-2" />
-              ClickUp Board
-            </button>
-            <button
               onClick={() => setActiveTab('monday')}
               disabled={isDraggingTask}
               className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
