@@ -551,13 +551,26 @@ const TasksProjects: React.FC = () => {
               {/* Controls */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-3">
-                  <button
+                  <Button 
+                    variant="primary" 
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
+                   className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                   style={{
+                     backgroundColor: '#8B5CF6',
+                     borderRadius: '12px',
+                     fontSize: '14px',
+                     fontWeight: '500'
+                   }}
+                   onMouseEnter={(e) => {
+                     e.currentTarget.style.backgroundColor = '#7C3AED';
+                   }}
+                   onMouseLeave={(e) => {
+                     e.currentTarget.style.backgroundColor = '#8B5CF6';
+                   }}
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
-                  </button>
+                  </Button>
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -728,8 +741,20 @@ const TasksProjects: React.FC = () => {
         </div>
       )}
 
-                className="p-1 hover:bg-gray-100 rounded"
-              >
+      {/* Task Detail Modal */}
+      {showTaskDetail && selectedTask && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#1E2A38]">{selectedTask.title}</h3>
+              <div className="flex items-center gap-2">
+                <button className="p-1 hover:bg-gray-100 rounded">
+                  <Edit3 className="w-4 h-4 text-gray-400" />
+                </button>
+                <button
+                  onClick={() => setShowTaskDetail(false)}
+                  className="p-1 hover:bg-gray-100 rounded"
+                >
                   <X className="w-4 h-4 text-gray-400" />
                 </button>
               </div>
