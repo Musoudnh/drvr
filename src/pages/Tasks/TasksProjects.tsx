@@ -182,38 +182,22 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination, draggableId } = result;
+    
+    if (source.droppableId === destination.droppableId) return;
+
+    const task = tasks.find(t => t.id === draggableId);
+    if (task) {
+      const updatedTask = { ...task, status: destination.droppableId as 'todo' | 'in_progress' | 'done' };
+      setTasks(prev => prev.map(t => t.id === draggableId ? updatedTask : t));
+    }
+    
     setIsDraggingTask(false);
-    
-    if (!result.destination) {
-      return;
-    }
-
-    const { source, destination } = result;
-    
-    if (source.droppableId === destination.droppableId && source.index === destination.index) {
-      return;
-    }
-
-    const sourceStatus = source.droppableId as 'todo' | 'in_progress' | 'done';
-    const destStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
-    
-    const updatedTasks = [...tasks];
-    const taskIndex = updatedTasks.findIndex(task => task.id === result.draggableId);
-    
-    if (taskIndex !== -1) {
-      updatedTasks[taskIndex] = {
-        ...updatedTasks[taskIndex],
-        status: destStatus,
-        updatedAt: new Date()
-      };
-      setTasks(updatedTasks);
-    }
   };
 
   const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) {
-      return;
-    }
+    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
 
     const task: Task = {
       id: Date.now().toString(),
@@ -229,14 +213,8 @@ const TasksProjects: React.FC = () => {
       updatedAt: new Date()
     };
 
-    setTasks([...tasks, task]);
-    setNewTask({
-      title: '',
-      description: '',
-      assignee: '',
-      dueDate: '',
-      priority: 'medium'
-    });
+    setTasks(prev => [...prev, task]);
+    setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
     setShowAddTaskModal(false);
   };
 
@@ -244,16 +222,16 @@ const TasksProjects: React.FC = () => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
       case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#10B981]/20 text-[#10B981]';
+      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
       default: return 'bg-gray-200 text-gray-700';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-gray-100 text-gray-700';
+      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
       case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
-      case 'done': return 'bg-[#10B981]/20 text-[#10B981]';
+      case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
     }
   };
@@ -269,6 +247,10 @@ const TasksProjects: React.FC = () => {
   const isOverdue = (date: Date) => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
+
+  useEffect(() => {
+    setIsDraggingTask(false);
+  }, []);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
