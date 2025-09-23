@@ -781,7 +781,6 @@ const Forecasting: React.FC = () => {
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-32 sticky left-0 bg-white">GL Code</th>
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-48 sticky left-32 bg-white">Description</th>
                     {months.map((month, index) => (
                       <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
@@ -824,9 +823,6 @@ const Forecasting: React.FC = () => {
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
                           <React.Fragment key={glCode.code}>
                             <tr className="border-b border-gray-100 hover:bg-gray-50 group">
-                              <td className="py-3 px-4 font-mono text-sm sticky left-0 bg-white group-hover:bg-gray-50">
-                                {glCode.code}
-                              </td>
                               <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <span>{glCode.name}</span>
