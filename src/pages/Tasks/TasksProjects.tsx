@@ -352,9 +352,18 @@ const TasksProjects: React.FC = () => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={`flex-1 min-h-[400px] p-3 rounded-lg transition-colors ${
-                      snapshot.isDraggingOver ? 'bg-[#3AB7BF]/10' : 'bg-gray-50'
+                      snapshot.isDraggingOver ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF] border-dashed' : 'bg-gray-50'
                     }`}
                   >
+                    {/* Drop zone indicator */}
+                    {snapshot.isDraggingOver && (
+                      <div className="text-center py-4 mb-4">
+                        <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-2">
+                          <span className="text-white text-sm">↓</span>
+                        </div>
+                        <p className="text-sm font-medium text-[#3AB7BF]">Drop task here</p>
+                      </div>
+                    )}
                     {statusTasks.map((task, index) => renderTaskCard(task, index))}
                     {provided.placeholder}
                   </div>
