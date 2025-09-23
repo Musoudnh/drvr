@@ -178,46 +178,14 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-
-  };
-
-  const handleDragStart = () => {
-    setIsDraggingTask(true);
-  };
-
-  const handleAddTask = () => {
-    const task: Task = {
-      id: Date.now().toString(),
-      title: newTask.title,
       description: newTask.description,
-      assignee: newTask.assignee,
-      dueDate: new Date(newTask.dueDate),
-      priority: newTask.priority,
-      status: 'todo',
-      tags: [],
-      comments: [],
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
 
-    setTasks(prev => [...prev, task]);
     setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
     setShowAddTaskModal(false);
-  };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
-      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
-    }
-  };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'todo': return 'bg-gray-100 text-gray-700';
-      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
+
       case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
     }
@@ -231,13 +199,13 @@ const TasksProjects: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    setIsDraggingTask(false);
-  }, []);
 
-  const isOverdue = (date: Date) => {
-    return date < new Date();
-  };
+
+
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -246,7 +214,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
