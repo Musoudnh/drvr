@@ -76,6 +76,27 @@ interface AIInsight {
   actionItems: string[];
 }
 
+interface PrescriptiveAction {
+  metric: string;
+  currentValue: string;
+  targetValue: string;
+  actions: string[];
+  expectedImpact: string;
+  confidence: number;
+  priority: 'high' | 'medium' | 'low';
+  timeframe: string;
+}
+
+interface CustomerSegment {
+  segment: string;
+  revenue: number;
+  growth: number;
+  retention: number;
+  ltv: number;
+  cac: number;
+  trend: 'up' | 'down' | 'stable';
+}
+
 const VarianceInsights: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('current-month');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
