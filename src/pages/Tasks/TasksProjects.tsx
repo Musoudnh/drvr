@@ -178,49 +178,14 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-    setIsDraggingTask(false);
-    
-    if (!result.destination) {
-      console.log('No destination - drag cancelled');
-      return;
-    }
 
-    const { source, destination, draggableId } = result;
-    
-    console.log('Drag completed:', { source, destination, draggableId });
-    
-    // If dropped in same position, do nothing
-    if (source.droppableId === destination.droppableId && source.index === destination.index) {
-      return;
-    }
 
-    const newStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
-    
-    console.log('Updating task status to:', newStatus);
-    
-    setTasks(prev => prev.map(task =>
-      task.id === draggableId
-        ? { ...task, status: newStatus, updatedAt: new Date() }
-        : task
-    ));
   };
 
-  const handleDragStart = (start: any) => {
-    console.log('Drag started:', start);
-    setIsDraggingTask(true);
-  };
 
-  const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
-
-    const task: Task = {
-      id: Date.now().toString(),
-      title: newTask.title,
       description: newTask.description,
       assignee: newTask.assignee,
-      dueDate: new Date(newTask.dueDate),
-      priority: newTask.priority,
-      status: 'todo',
+
       tags: [],
       comments: [],
       createdAt: new Date(),
@@ -258,9 +223,11 @@ const TasksProjects: React.FC = () => {
     });
   };
 
+
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+
   const isOverdue = (date: Date) => {
-    return date < new Date() && date.toDateString() !== new Date().toDateString();
-  };
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
