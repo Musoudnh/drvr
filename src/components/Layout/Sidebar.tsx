@@ -122,13 +122,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/forecasting', label: 'Forecasting', icon: Target },
-    { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { 
-      path: '/runway', 
-      label: 'Runway', 
+      path: '/forecasting', 
+      label: 'Forecasting', 
       icon: Target,
       children: [
+        { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+        { path: '/runway', label: 'Runway', icon: Target },
         { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
       ]
     },
@@ -254,11 +254,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const renderNavItem = (item: NavItem, depth = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems.includes(item.path);
-    const active = isActive(item.path);
+    const active = isActive(item.path) || (hasChildren && item.children?.some(child => isActive(child.path)));
+    const isForecasting = item.path === '/forecasting';
 
     return (
       <div key={item.path} className="mb-2">
-        <div className="flex items-center">
+        <div className={`flex items-center ${isForecasting && isFinancialPage ? 'bg-white/10 rounded-lg p-1' : ''}`}>
           <Link
             to={item.path}
             className={`flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 flex-1 ${
@@ -303,8 +304,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
           )}
         </div>
-        {hasChildren && isExpanded && !isCollapsed && (
-          <div className="mt-1 space-y-1">
+        {hasChildren && (isExpanded || (isForecasting && isFinancialPage)) && !isCollapsed && (
+          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : ''}`}>
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
@@ -396,8 +397,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       attributeFilter: ['style']
     });
 
+    // Auto-expand Forecasting when on financial pages
+    if (isFinancialPage && !expandedItems.includes('/forecasting')) {
+      setExpandedItems(prev => [...prev, '/forecasting']);
+    }
+
     return () => observer.disconnect();
-  }, []);
+  }, [isFinancialPage]);
 
   return (
     <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: navigationColor }}>
