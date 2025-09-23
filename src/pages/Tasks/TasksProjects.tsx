@@ -165,10 +165,8 @@ const TasksProjects: React.FC = () => {
   ];
 
   const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const tasksByStatus = {
@@ -182,24 +180,13 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const { source, destination, draggableId } = result;
-    
-    if (source.droppableId === destination.droppableId) return;
-
-    const task = tasks.find(t => t.id === draggableId);
-    if (task) {
-      const updatedTask = { ...task, status: destination.droppableId as 'todo' | 'in_progress' | 'done' };
-      setTasks(prev => prev.map(t => t.id === draggableId ? updatedTask : t));
-    }
-    
     setIsDraggingTask(false);
+    // Simple drag end handler
+    console.log('Drag ended:', result);
   };
 
   const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
-
-    const task: Task = {
+    const task = {
       id: Date.now().toString(),
       title: newTask.title,
       description: newTask.description,
@@ -211,7 +198,7 @@ const TasksProjects: React.FC = () => {
       comments: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    } as Task;
 
     setTasks(prev => [...prev, task]);
     setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
@@ -259,7 +246,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
@@ -607,12 +594,24 @@ const TasksProjects: React.FC = () => {
                       <List className="w-4 h-4 mr-1 inline" />
                       List
                     </button>
+                    <button
+                      onClick={() => setViewMode('gantt')}
+                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                        viewMode === 'gantt'
+                          ? 'bg-white text-[#3AB7BF] shadow-sm'
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4 mr-1 inline" />
+                      Gantt
+                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Task View */}
-              {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
+              {viewMode === 'board' && renderKanbanBoard()}
+              {viewMode === 'list' && renderListView()}
             </div>
           )}
 
