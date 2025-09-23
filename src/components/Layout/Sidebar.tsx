@@ -127,7 +127,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       label: 'Forecasting', 
       icon: Target,
       children: [
-        { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
         { path: '/runway', label: 'Runway', icon: Target },
         { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
       ]

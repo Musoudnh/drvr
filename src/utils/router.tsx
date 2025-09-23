@@ -41,6 +41,8 @@ import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
+import ScenarioPlanning from '../pages/Forecasting/ScenarioPlanning';
+import VarianceInsights from '../pages/Forecasting/VarianceInsights';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
@@ -245,7 +247,23 @@ export const router = createBrowserRouter([
     path: "/scenario-planning",
     element: (
       <ProtectedRoute title="Scenario Planning">
+        <PlaceholderPage title="Scenario Planning" description="Model different business scenarios and compare outcomes" />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/forecasting/scenario-planning",
+    element: (
+      <ProtectedRoute title="Scenario Planning">
         <ScenarioPlanning />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/forecasting/variance-insights",
+    element: (
+      <ProtectedRoute title="Variance & Insights">
+        <VarianceInsights />
       </ProtectedRoute>
     )
   },
