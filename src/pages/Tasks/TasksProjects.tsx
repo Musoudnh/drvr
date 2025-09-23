@@ -554,7 +554,7 @@ const TasksProjects: React.FC = () => {
                   <Button 
                     variant="primary" 
                     onClick={() => setShowAddTaskModal(true)}
-                   className="px-4 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                   className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
                    style={{
                      backgroundColor: '#8B5CF6',
                      borderRadius: '12px',
