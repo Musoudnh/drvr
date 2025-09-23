@@ -40,7 +40,6 @@ import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
-import SignIn from '../pages/Auth/SignIn';
 import VarianceInsights from '../pages/Forecasting/VarianceInsights';
 
 // Protected Route Component
