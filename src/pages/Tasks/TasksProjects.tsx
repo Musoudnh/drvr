@@ -165,45 +165,16 @@ const TasksProjects: React.FC = () => {
   ];
 
   const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const tasksByStatus = {
     todo: filteredTasks.filter(task => task.status === 'todo'),
-    in_progress: filteredTasks.filter(task => task.status === 'in_progress'),
-    done: filteredTasks.filter(task => task.status === 'done')
-  };
-
-  const handleDragStart = () => {
-    setIsDraggingTask(true);
-  };
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const { source, destination, draggableId } = result;
-    
-    if (source.droppableId === destination.droppableId) return;
 
-    const task = tasks.find(t => t.id === draggableId);
-    if (task) {
-      const updatedTask = { ...task, status: destination.droppableId as 'todo' | 'in_progress' | 'done' };
-      setTasks(prev => prev.map(t => t.id === draggableId ? updatedTask : t));
-    }
-    
-    setIsDraggingTask(false);
-  };
-
-  const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
-
-    const task: Task = {
-      id: Date.now().toString(),
-      title: newTask.title,
-      description: newTask.description,
-      assignee: newTask.assignee,
+    // Simple drag end handler
+    console.log('Drag ended:', result);
       dueDate: new Date(newTask.dueDate),
       priority: newTask.priority,
       status: 'todo',
@@ -211,7 +182,7 @@ const TasksProjects: React.FC = () => {
       comments: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
+    } as Task;
 
     setTasks(prev => [...prev, task]);
     setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
@@ -248,9 +219,11 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
-  useEffect(() => {
+
     setIsDraggingTask(false);
-  }, []);
+    setIsDraggingTask(false);
+
+  useEffect(() => {
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -443,6 +416,17 @@ const TasksProjects: React.FC = () => {
                 </td>
               </tr>
             ))}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedTask(task);
+          setShowTaskDetail(true);
+        }}
+        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
+        title="View details"
+      >
+        <Eye className="w-4 h-4 text-gray-400" />
+      </button>
+    </div>
           </tbody>
         </table>
       </div>
@@ -607,12 +591,25 @@ const TasksProjects: React.FC = () => {
                       <List className="w-4 h-4 mr-1 inline" />
                       List
                     </button>
+                    <button
+                      onClick={() => setViewMode('gantt')}
+                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                        viewMode === 'gantt'
+                          ? 'bg-white text-[#3AB7BF] shadow-sm'
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4 mr-1 inline" />
+                      Gantt
+                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Task View */}
-              {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
+              {viewMode === 'board' && renderKanbanBoard()}
+              {viewMode === 'list' && renderListView()}
+              {viewMode === 'gantt' && <AdvancedGantt />}
             </div>
           )}
 
