@@ -47,7 +47,6 @@ const Task: React.FC<{
   onDragEnd?: () => void;
 }> = React.memo(({ task, index, moveTask, updateTask, startDate, onDragStart, onDragEnd }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isDraggingTimeline, setIsDraggingTimeline] = useState(false);
 
   // Drop for reordering tasks vertically
   const [, drop] = useDrop({
@@ -72,7 +71,7 @@ const Task: React.FC<{
     },
   });
 
-  // Drag for moving tasks horizontally along timeline
+  // Drag for moving tasks both vertically (reorder) and horizontally (timeline)
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.TASK,
     item: { id: task.id, index },
@@ -80,11 +79,9 @@ const Task: React.FC<{
       isDragging: monitor.isDragging() 
     }),
     begin: () => {
-      setIsDraggingTimeline(true);
       onDragStart?.();
     },
     end: (item, monitor) => {
-      setIsDraggingTimeline(false);
       onDragEnd?.();
       
       const delta = monitor.getDifferenceFromInitialOffset();
@@ -107,49 +104,42 @@ const Task: React.FC<{
     updateTask(task.id, { duration: newDuration });
   }, [task.id, updateTask]);
 
-  const leftPosition = differenceInDays(task.start, startDate) * 80;
-  const topPosition = index * 60;
-
   return (
-    <div
+    <ResizableBox
+      width={task.duration * 80}
+      height={40}
+      minConstraints={[80, 40]}
+      axis="x"
+      onResizeStop={handleResize}
+      handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       style={{
         position: 'absolute',
-        left: leftPosition,
-        top: topPosition,
+        left: differenceInDays(task.start, startDate) * 80,
+        top: index * 60,
         zIndex: isDragging ? 1000 : 1,
       }}
     >
-      <ResizableBox
-        width={task.duration * 80}
-        height={40}
-        minConstraints={[80, 40]}
-        axis="x"
-        onResizeStop={handleResize}
-        handle={<span className="react-resizable-handle react-resizable-handle-se" />}
+      <div
+        ref={ref}
+        className={`bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move transition-all duration-200 hover:bg-blue-600 ${
+          isDragging ? 'opacity-70 scale-105 shadow-lg' : ''
+        }`}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        title={`${task.title} - ${formatDate(task.start)} (${task.duration} days)`}
       >
-        <div
-          ref={ref}
-          className={`bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move transition-all duration-200 hover:bg-blue-600 ${
-            isDragging ? 'opacity-70 scale-105 shadow-lg' : ''
-          }`}
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-          }}
-          title={`${task.title} - ${formatDate(task.start)} (${task.duration} days)`}
-        >
-          <span className="text-sm font-medium truncate px-2">{task.title}</span>
-          
-          {/* Drag indicator */}
-          {isDraggingTimeline && (
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-              {formatDate(task.start)}
-            </div>
-          )}
-        </div>
-      </ResizableBox>
-    </div>
+        <span className="text-sm font-medium truncate px-2">{task.title}</span>
+        
+        {/* Drag indicator */}
+        {isDragging && (
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
+            {formatDate(task.start)}
+          </div>
+        )}
+      </div>
+    </ResizableBox>
   );
 });
 
