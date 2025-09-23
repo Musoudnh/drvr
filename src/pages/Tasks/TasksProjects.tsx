@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import AdvancedGantt from './AdvancedGantt';
 import { 
   Plus, 
   Search, 
@@ -627,6 +628,11 @@ const TasksProjects: React.FC = () => {
               {/* Task View */}
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
+              {viewMode === 'gantt' && (
+                <div className="h-full">
+                  <AdvancedGantt />
+                </div>
+              )}
             </div>
           )}
 
