@@ -800,7 +800,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={months.length + 3} className="py-3 px-4">
+                            <span className="font-medium text-[#1E2A38] truncate ml-[-16px]">{item.description}</span>
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
