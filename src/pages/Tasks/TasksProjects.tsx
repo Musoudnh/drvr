@@ -258,7 +258,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing ${
             snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
           }`}
           onClick={(e) => {
@@ -267,6 +267,12 @@ const TasksProjects: React.FC = () => {
               setSelectedTask(task);
               setShowTaskDetail(true);
             }
+          }}
+          style={{
+            ...provided.draggableProps.style,
+            transform: snapshot.isDragging 
+              ? `${provided.draggableProps.style?.transform} rotate(2deg)` 
+              : provided.draggableProps.style?.transform
           }}
         >
           <div className="flex items-start justify-between mb-3">
