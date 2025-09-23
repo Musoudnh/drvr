@@ -551,26 +551,25 @@ const TasksProjects: React.FC = () => {
               {/* Controls */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-3">
-                  <Button 
-                    variant="primary" 
+                  <button
                     onClick={() => setShowAddTaskModal(true)}
-                   className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
-                   style={{
-                     backgroundColor: '#8B5CF6',
-                     borderRadius: '12px',
-                     fontSize: '14px',
-                     fontWeight: '500'
-                   }}
-                   onMouseEnter={(e) => {
-                     e.currentTarget.style.backgroundColor = '#7C3AED';
-                   }}
-                   onMouseLeave={(e) => {
-                     e.currentTarget.style.backgroundColor = '#8B5CF6';
-                   }}
+                    className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                    style={{
+                      backgroundColor: '#8B5CF6',
+                      borderRadius: '12px',
+                      fontSize: '14px',
+                      fontWeight: '500'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#7C3AED';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#8B5CF6';
+                    }}
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
-                  </Button>
+                  </button>
                 </div>
                 
                 <div className="flex items-center gap-2">
