@@ -111,7 +111,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/forecasting', label: 'Forecasting', icon: Target },
+    { 
+      path: '/financials', 
+      label: 'Financials', 
+      icon: Target,
+      children: [
+        { 
+          path: '/forecasting', 
+          label: 'Forecasting', 
+          icon: Target,
+          children: [
+            { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+            { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+            { path: '/runway', label: 'Runway', icon: Target },
+            { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
+          ]
+        }
+      ]
+    },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare },
@@ -123,14 +140,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
     { 
-      path: '/forecasting', 
-      label: 'Forecasting', 
+      path: '/financials', 
+      label: 'Financials', 
       icon: Target,
       children: [
-        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway', icon: Target },
-        { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
+        { 
+          path: '/forecasting', 
+          label: 'Forecasting', 
+          icon: Target,
+          children: [
+            { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+            { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+            { path: '/runway', label: 'Runway', icon: Target },
+            { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
+          ]
+        }
+      ]
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
@@ -400,7 +425,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
     // Auto-expand Forecasting when on financial pages
     if (isFinancialPage && !expandedItems.includes('/forecasting')) {
-      setExpandedItems(prev => [...prev, '/forecasting']);
+      setExpandedItems(prev => [...prev, '/financials', '/forecasting']);
     }
 
     return () => observer.disconnect();
