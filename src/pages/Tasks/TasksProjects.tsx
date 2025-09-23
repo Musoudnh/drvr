@@ -178,34 +178,58 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-  };
+    if (!result.destination) return;
 
-  const handleAddTask = () => {
-    const task: Task = {
-      id: Date.now().toString(),
-      title: newTask.title,
-      description: newTask.description,
-      assignee: newTask.assignee,
-      dueDate: new Date(newTask.dueDate),
-      priority: newTask.priority,
-      status: 'todo',
-      tags: [],
-      comments: [],
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+    const { source, destination } = result;
     
-    setTasks(prev => [...prev, task]);
-    setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
-    setShowAddTaskModal(false);
-  };
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+      return;
+    }
 
-  const isOverdue = (date: Date) => {
-    return date < new Date();
+    const sourceStatus = source.droppableId as 'todo' | 'in_progress' | 'done';
+    const destStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
+    
+    setTasks(prevTasks => {
+      const newTasks = [...prevTasks];
+      const taskIndex = newTasks.findIndex(task => task.id === result.draggableId);
+      
+      if (taskIndex !== -1) {
+        newTasks[taskIndex] = {
+          ...newTasks[taskIndex],
+          status: destStatus,
+          updatedAt: new Date()
+        };
+      }
+      
+      return newTasks;
+    });
+    
+    setIsDraggingTask(false);
   };
 
   const handleDragStart = () => {
     setIsDraggingTask(true);
+  };
+
+  const handleAddTask = () => {
+    if (newTask.title.trim() && newTask.assignee && newTask.dueDate) {
+      const task: Task = {
+        id: Date.now().toString(),
+        title: newTask.title,
+        description: newTask.description,
+        assignee: newTask.assignee,
+        dueDate: new Date(newTask.dueDate),
+        priority: newTask.priority,
+        status: 'todo',
+        tags: [],
+        comments: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      setTasks(prev => [...prev, task]);
+      setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
+      setShowAddTaskModal(false);
+    }
   };
 
   const getPriorityColor = (priority: string) => {
@@ -217,9 +241,13 @@ const TasksProjects: React.FC = () => {
     }
   };
 
+  const isOverdue = (date: Date) => {
+    return date < new Date();
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-gray-100 text-gray-700';
+      case 'todo': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
       case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
       case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
@@ -234,12 +262,6 @@ const TasksProjects: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
-  }, []);
-
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -247,7 +269,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
@@ -566,7 +588,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm flex items-center"
+                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
