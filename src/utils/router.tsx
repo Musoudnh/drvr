@@ -41,6 +41,7 @@ import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import VarianceInsights from '../pages/Forecasting/VarianceInsights';
+import SignIn from '../pages/Auth/SignIn';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
