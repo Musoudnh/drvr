@@ -114,7 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { 
       path: '/financials', 
       label: 'Financials', 
-      icon: DollarSign,
+      icon: Target,
       children: [
         { 
           path: '/forecasting', 
@@ -124,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
             { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
             { path: '/runway', label: 'Runway', icon: Target },
-            { path: '/runway/revenue', label: 'Revenue Planning', icon: TrendingUp }
+            { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
           ]
         }
       ]
@@ -142,7 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { 
       path: '/financials', 
       label: 'Financials', 
-      icon: DollarSign,
+      icon: Target,
       children: [
         { 
           path: '/forecasting', 
@@ -152,7 +152,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
             { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
             { path: '/runway', label: 'Runway', icon: Target },
-            { path: '/runway/revenue', label: 'Revenue Planning', icon: TrendingUp }
+            { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
           ]
         }
       ]
@@ -330,7 +330,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
         {hasChildren && (isExpanded || (isForecasting && isFinancialPage)) && !isCollapsed && (
-          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : depth > 0 ? 'ml-2' : ''}`}>
+          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : ''}`}>
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
@@ -424,7 +424,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
     // Auto-expand Forecasting when on financial pages
     if (isFinancialPage && !expandedItems.includes('/forecasting')) {
-      setExpandedItems(prev => [...prev, '/financials', '/forecasting']);
+      setExpandedItems(prev => [...prev, '/forecasting']);
     }
 
     return () => observer.disconnect();
