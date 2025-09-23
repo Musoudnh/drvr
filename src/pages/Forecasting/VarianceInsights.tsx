@@ -465,11 +465,9 @@ const VarianceInsights: React.FC = () => {
                         </div>
                       ))}
                       {insight.actionItems.length > 2 && (
-                        <>
-                          <button className="text-xs text-[#3AB7BF] hover:underline">
-                            +{insight.actionItems.length - 2} more actions
-                          </button>
-                        </>
+                        <button className="text-xs text-[#3AB7BF] hover:underline">
+                          +{insight.actionItems.length - 2} more actions
+                        </button>
                       )}
                     </div>
                   </div>
@@ -580,7 +578,6 @@ const VarianceInsights: React.FC = () => {
                                 {variance.variancePercent > 0 ? '+' : ''}{variance.variancePercent.toFixed(1)}%
                               </span>
                             </div>
-                            </div>
                           </td>
                           <td className="py-4 px-6 text-center">
                             <div className="flex items-center justify-center">
@@ -690,8 +687,8 @@ const VarianceInsights: React.FC = () => {
               </table>
             </div>
           </div>
-        </Card>
-      )}
+        </div>
+      </Card>
 
       {/* Performance Dashboard */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
