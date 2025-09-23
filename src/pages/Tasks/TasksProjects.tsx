@@ -629,9 +629,22 @@ const TasksProjects: React.FC = () => {
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
               {viewMode === 'gantt' && (
-                <div className="h-full">
-                  <AdvancedGantt />
-                </div>
+                <AdvancedGantt 
+                  tasks={filteredTasks}
+                  onTaskUpdate={(taskId, updates) => {
+                    setTasks(prev => prev.map(task => 
+                      task.id === taskId ? { ...task, ...updates } : task
+                    ));
+                  }}
+                  onTaskMove={(fromIndex, toIndex) => {
+                    setTasks(prev => {
+                      const updated = [...prev];
+                      const [moved] = updated.splice(fromIndex, 1);
+                      updated.splice(toIndex, 0, moved);
+                      return updated;
+                    });
+                  }}
+                />
               )}
             </div>
           )}
