@@ -565,6 +565,14 @@ const TasksProjects: React.FC = () => {
                     <Filter className="w-4 h-4 mr-2" />
                     Filter
                   </Button>
+                  <Button 
+                    variant="primary" 
+                    onClick={() => setShowAddTaskModal(true)}
+                    className="bg-[#3AB7BF] hover:bg-[#2A9BA3] focus:ring-[#3AB7BF]"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Task
+                  </Button>
                 </div>
                 
                 <div className="flex items-center gap-2">
