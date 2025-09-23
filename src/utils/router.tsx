@@ -22,6 +22,7 @@ import AdminSettings from '../pages/Admin/AdminSettings';
 import Forecasting from '../pages/Forecasting/Forecasting';
 import Benchmarks from '../pages/Benchmarks/Benchmarks';
 import TaxDocuments from '../pages/Tax/TaxDocuments';
+import Reports from '../pages/Reports/Reports';
 import Alerts from '../pages/Alerts/Alerts';
 import BalanceSheet from '../pages/Reports/BalanceSheet';
 import ProfitLoss from '../pages/Reports/ProfitLoss';
@@ -40,7 +41,6 @@ import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
-import VarianceInsights from '../pages/Forecasting/VarianceInsights';
 import SignIn from '../pages/Auth/SignIn';
 
 // Protected Route Component
@@ -203,10 +203,6 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: "/financials",
-    element: <Navigate to="/forecasting" replace />
-  },
-  {
     path: "/forecasting",
     element: (
       <ProtectedRoute title="Forecasting">
@@ -250,23 +246,7 @@ export const router = createBrowserRouter([
     path: "/scenario-planning",
     element: (
       <ProtectedRoute title="Scenario Planning">
-        <PlaceholderPage title="Scenario Planning" description="Model different business scenarios and compare outcomes" />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/forecasting/scenario-planning",
-    element: (
-      <ProtectedRoute title="Scenario Planning">
         <ScenarioPlanning />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/forecasting/variance-insights",
-    element: (
-      <ProtectedRoute title="Variance & Insights">
-        <VarianceInsights />
       </ProtectedRoute>
     )
   },
@@ -275,6 +255,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Benchmarks">
         <Benchmarks />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/reports",
+    element: (
+      <ProtectedRoute title="Reports">
+        <Reports />
       </ProtectedRoute>
     )
   },

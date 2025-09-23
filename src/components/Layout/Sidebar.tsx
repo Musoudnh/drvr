@@ -93,11 +93,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   // Check if we're on an admin page
   const isAdminPage = location.pathname.startsWith('/admin');
   
-  // Check if we're on a financial/forecasting page
-  const isFinancialPage = location.pathname.startsWith('/forecasting') || 
-                         location.pathname.startsWith('/scenario-planning') || 
-                         location.pathname.startsWith('/runway');
-  
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
     { path: '/admin/team', label: 'Team Management', icon: Users },
@@ -111,47 +106,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    {
-      path: '/financials',
-      label: 'Financials',
-      icon: DollarSign,
+    { 
+      path: '/forecasting', 
+      label: 'Forecasting', 
+      icon: Target
+    },
+    { 
+      path: '/runway', 
+      label: 'Runway', 
+      icon: Target,
       children: [
-        { path: '/forecasting', label: 'Forecasting', icon: Target },
-        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp }
+        { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
       ]
     },
+    { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
+    { path: '/reports', label: 'Reports', icon: Receipt },
     { path: '/chat', label: 'Chat', icon: MessageSquare },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle }
   ];
 
-  // Financial navigation items (shown when on forecasting-related pages)
-  const financialNavItems: NavItem[] = [
-    { path: '/dashboard', label: 'Overview', icon: Home },
-    { path: '/analytics', label: 'Analysis', icon: PieChart },
-    {
-      path: '/financials',
-      label: 'Financials',
-      icon: DollarSign,
-      children: [
-        { path: '/forecasting', label: 'Forecasting', icon: Target },
-        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp }
-      ]
-    },
-    { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
-    { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/chat', label: 'Chat', icon: MessageSquare },
-    { path: '/alerts', label: 'Alerts', icon: AlertCircle }
-  ];
-  // Use appropriate nav items based on current page context
-  const navItems = isAdminPage ? adminNavItems : 
-                   isFinancialPage ? financialNavItems : 
-                   companyNavItems;
+  // Use appropriate nav items based on current page
+  const navItems = isAdminPage ? adminNavItems : companyNavItems;
   
   // Check if any items with children are expanded
   const hasExpandedChildren = expandedItems.some(path => 
@@ -265,7 +242,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const renderNavItem = (item: NavItem, depth = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems.includes(item.path);
-    const active = isActive(item.path) || (hasChildren && item.children?.some(child => isActive(child.path)));
+    const active = isActive(item.path);
 
     return (
       <div key={item.path} className="mb-2">
@@ -282,8 +259,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               transform: active ? 'translateX(4px)' : 'translateX(0)',
               color: active ? '#4F46E5' : 'white',
-              fontSize: '12px',
-              fontWeight: 'var(--font-heavy)'
             }}
             onMouseEnter={(e) => {
               if (!active) {
@@ -315,7 +290,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
         {hasChildren && isExpanded && !isCollapsed && (
-          <div className={`mt-1 space-y-1 ${depth > 0 ? 'ml-2' : ''}`}>
+          <div className="mt-1 space-y-1">
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
@@ -407,13 +382,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       attributeFilter: ['style']
     });
 
-    // Auto-expand Forecasting when on financial pages
-    if (isFinancialPage && !expandedItems.includes('/financials')) {
-      setExpandedItems(prev => [...prev, '/financials']);
-    }
-
     return () => observer.disconnect();
-  }, [isFinancialPage]);
+  }, []);
 
   return (
     <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: navigationColor }}>

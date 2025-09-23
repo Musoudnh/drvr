@@ -165,8 +165,10 @@ const TasksProjects: React.FC = () => {
   ];
 
   const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    task.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const tasksByStatus = {
@@ -175,33 +177,32 @@ const TasksProjects: React.FC = () => {
     done: filteredTasks.filter(task => task.status === 'done')
   };
 
-  const handleDragStart = () => {
-    setIsDraggingTask(true);
-  };
-
   const handleDragEnd = (result: DropResult) => {
     setIsDraggingTask(false);
     
+    if (!result.destination) return;
+
     const { source, destination, draggableId } = result;
-
-    if (!destination) return;
     
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
+    if (source.droppableId === destination.droppableId) return;
 
-    setTasks(prev => prev.map(task => 
-      task.id === draggableId 
-        ? { ...task, status: destination.droppableId as Task['status'] }
+    const newStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
+    
+    setTasks(prev => prev.map(task =>
+      task.id === draggableId
+        ? { ...task, status: newStatus, updatedAt: new Date() }
         : task
     ));
   };
 
+  const handleDragStart = () => {
+    setIsDraggingTask(true);
+  };
+
   const handleAddTask = () => {
-    const task = {
+    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
+
+    const task: Task = {
       id: Date.now().toString(),
       title: newTask.title,
       description: newTask.description,
@@ -213,7 +214,7 @@ const TasksProjects: React.FC = () => {
       comments: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    } as Task;
+    };
 
     setTasks(prev => [...prev, task]);
     setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
@@ -223,15 +224,15 @@ const TasksProjects: React.FC = () => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
+      case 'medium': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
+      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
+      case 'todo': return 'bg-gray-100 text-gray-700';
       case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
       case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
@@ -250,10 +251,6 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
-  useEffect(() => {
-    setIsDraggingTask(false);
-  }, []);
-
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -261,11 +258,15 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
-            snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer ${
+            snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
           }`}
-          style={{
-            ...provided.draggableProps.style,
+          onClick={(e) => {
+            // Only open modal if not dragging
+            if (!snapshot.isDragging) {
+              setSelectedTask(task);
+              setShowTaskDetail(true);
+            }
           }}
         >
           <div className="flex items-start justify-between mb-3">
@@ -275,9 +276,7 @@ const TasksProjects: React.FC = () => {
             </span>
           </div>
           
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-            {task.description}
-          </p>
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{task.description}</p>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -314,25 +313,19 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
           
-          {/* View Details Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedTask(task);
-              setShowTaskDetail(true);
-            }}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
-            title="View details"
-          >
-            <Eye className="w-4 h-4 text-gray-400" />
-          </button>
+          {/* Drag indicator */}
+          {snapshot.isDragging && (
+            <div className="absolute top-2 right-2 w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">↔</span>
+            </div>
+          )}
         </div>
       )}
     </Draggable>
   );
 
   const renderKanbanBoard = () => (
-    <DragDropContext onDragStart={() => setIsDraggingTask(true)} onDragEnd={handleDragEnd}>
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
@@ -358,20 +351,21 @@ const TasksProjects: React.FC = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[400px] p-2 rounded-lg transition-all duration-200 ${
-                      snapshot.isDraggingOver 
-                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed' 
-                        : 'bg-gray-50 border-2 border-transparent'
+                    className={`flex-1 min-h-[400px] p-3 rounded-lg transition-colors ${
+                      snapshot.isDraggingOver ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF] border-dashed' : 'bg-gray-50'
                     }`}
                   >
-                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
-                    {provided.placeholder}
-                    {/* Drop zone indicator when dragging over */}
+                    {/* Drop zone indicator */}
                     {snapshot.isDraggingOver && (
-                      <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
-                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
+                      <div className="text-center py-4 mb-4">
+                        <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-2">
+                          <span className="text-white text-sm">↓</span>
+                        </div>
+                        <p className="text-sm font-medium text-[#3AB7BF]">Drop task here</p>
                       </div>
                     )}
+                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
@@ -609,24 +603,12 @@ const TasksProjects: React.FC = () => {
                       <List className="w-4 h-4 mr-1 inline" />
                       List
                     </button>
-                    <button
-                      onClick={() => setViewMode('gantt')}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                        viewMode === 'gantt'
-                          ? 'bg-white text-[#3AB7BF] shadow-sm'
-                          : 'text-gray-600 hover:text-gray-800'
-                      }`}
-                    >
-                      <Calendar className="w-4 h-4 mr-1 inline" />
-                      Gantt
-                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Task View */}
-              {viewMode === 'board' && renderKanbanBoard()}
-              {viewMode === 'list' && renderListView()}
+              {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
             </div>
           )}
 
