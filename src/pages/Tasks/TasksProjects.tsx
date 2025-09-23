@@ -553,19 +553,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
-                    style={{
-                      backgroundColor: '#8B5CF6',
-                      borderRadius: '12px',
-                      fontSize: '14px',
-                      fontWeight: '500'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#7C3AED';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#8B5CF6';
-                    }}
+                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
@@ -746,13 +734,12 @@ const TasksProjects: React.FC = () => {
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-[#1E2A38]">{selectedTask.title}</h3>
-              <div className="flex items-center gap-2">
-                <button
-                  className="px-3 py-1 rounded text-sm font-medium transition-colors bg-white text-[#8B5CF6] shadow-sm border border-gray-200 hover:bg-[#8B5CF6] hover:text-white"
-                >
-                  <X className="w-4 h-4 text-gray-400" />
-                </button>
-              </div>
+              <button
+                onClick={() => setShowTaskDetail(false)}
+                className="px-3 py-1 rounded text-sm font-medium transition-colors bg-white text-[#8B5CF6] shadow-sm border border-gray-200 hover:bg-[#8B5CF6] hover:text-white"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
             </div>
             
             <div className="space-y-6">
