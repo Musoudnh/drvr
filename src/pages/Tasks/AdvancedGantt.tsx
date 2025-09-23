@@ -38,17 +38,18 @@ interface TaskData {
   index: number;
 }
 
-// Task component with proper react-dnd only (no native drag)
-const Task: React.FC<{
+interface TaskProps {
   task: TaskData;
   tasks: TaskData[];
   startDate: Date;
   moveTask: (fromIndex: number, toIndex: number) => void;
   updateTask: (id: number, updatedTask: TaskData) => void;
-}> = React.memo(({ task, tasks, startDate, moveTask, updateTask }) => {
+}
+
+const Task: React.FC<TaskProps> = React.memo(({ task, tasks, startDate, moveTask, updateTask }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Drop for reordering tasks vertically
+  // Drop for vertical reordering
   const [, drop] = useDrop({
     accept: ItemTypes.TASK,
     hover(item: any, monitor) {
@@ -57,11 +58,11 @@ const Task: React.FC<{
       const hoverIndex = task.index;
       if (dragIndex === hoverIndex) return;
 
-      const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoverRect.bottom - hoverRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       if (!clientOffset) return;
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset.y - hoverRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
@@ -71,19 +72,16 @@ const Task: React.FC<{
     },
   });
 
-  // Drag for moving tasks both vertically (reorder) and horizontally (timeline)
-  // Vertical reordering drag
-  const [{ isDragging: isDraggingVertical }, dragVertical] = useDrag({
+  // Drag for horizontal timeline and vertical reorder
+  const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.TASK,
-    item: { id: task.id, index: task.index },
-    collect: (monitor) => ({ 
-      isDragging: monitor.isDragging() 
-    }),
+    item: { id: task.id, index: task.index, start: task.start },
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     end: (item, monitor) => {
-      // Handle horizontal timeline movement
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
-      
+
+      // Horizontal movement in days - snap to 80px/day
       const daysMoved = Math.round(delta.x / DAY_WIDTH);
       if (daysMoved !== 0) {
         const newStart = addDays(task.start, daysMoved);
@@ -92,52 +90,59 @@ const Task: React.FC<{
     },
   });
 
-  // Vertical reordering drop
-  // Combine drag and drop refs
-  const dragDropRef = useCallback((node: HTMLDivElement) => {
-    ref.current = node;
-    dragVertical(drop(node));
-  }, [dragVertical, drop]);
+  const dragDropRef = useCallback(
+    (node: HTMLDivElement) => {
+      ref.current = node;
+      drag(drop(node));
+    },
+    [drag, drop]
+  );
 
-  // Handle resize
-  const handleResize = useCallback((e: any, { size }: any) => {
-    const newDuration = Math.max(1, Math.round(size.width / DAY_WIDTH));
-    updateTask(task.id, { ...task, duration: newDuration });
-  }, [task, updateTask]);
+  const handleResize = useCallback(
+    (e: any, { size }: any) => {
+      const newDuration = Math.max(1, Math.round(size.width / DAY_WIDTH));
+      updateTask(task.id, { ...task, duration: newDuration });
+    },
+    [task, updateTask]
+  );
 
   return (
     <div
       style={{
-        position: 'absolute',
+        position: "absolute",
         left: differenceInDays(task.start, startDate) * DAY_WIDTH,
         top: task.index * 60,
-        zIndex: isDraggingVertical ? 1000 : 1,
+        zIndex: isDragging ? 1000 : 1,
       }}
     >
+      {/* Dedicated drag handle - OUTSIDE ResizableBox */}
+      <div
+        ref={dragDropRef}
+        className={`w-full h-10 bg-blue-500 text-white rounded-t shadow cursor-move flex items-center justify-center transition-all ${
+          isDragging ? "opacity-70 scale-105 shadow-lg" : "hover:bg-blue-600"
+        }`}
+        style={{ width: task.duration * DAY_WIDTH }}
+      >
+        <span className="text-sm font-medium truncate px-2">{task.title}</span>
+        
+        {/* Drag indicator */}
+        {isDragging && (
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
+            {formatDate(task.start)}
+          </div>
+        )}
+      </div>
+
+      {/* Resizable Box - handles ONLY resizing */}
       <ResizableBox
         width={task.duration * DAY_WIDTH}
-        height={40}
-        minConstraints={[DAY_WIDTH, 40]}
+        height={30}
+        minConstraints={[DAY_WIDTH, 30]}
         axis="x"
         onResizeStop={handleResize}
         handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       >
-        <div
-          ref={dragDropRef}
-          className={`w-full h-full bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move transition-all duration-200 hover:bg-blue-600 ${
-            isDraggingVertical ? 'opacity-70 scale-105 shadow-lg' : ''
-          }`}
-          title={`${task.title} - ${formatDate(task.start)} (${task.duration} days)`}
-        >
-          <span className="text-sm font-medium truncate px-2">{task.title}</span>
-          
-          {/* Drag indicator */}
-          {isDraggingVertical && (
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-              {formatDate(task.start)}
-            </div>
-          )}
-        </div>
+        <div className="w-full h-full bg-blue-400 rounded-b border-t border-blue-300" />
       </ResizableBox>
     </div>
   );
@@ -218,7 +223,7 @@ const AdvancedGantt: React.FC = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-[#1E2A38]">Advanced Gantt Chart</h2>
           <div className="text-sm text-gray-600">
-            Drag tasks vertically to reorder • Drag horizontally to reschedule • Resize to adjust duration
+            Drag task headers to reorder • Drag horizontally to reschedule • Resize handles to adjust duration
           </div>
         </div>
 
@@ -229,12 +234,19 @@ const AdvancedGantt: React.FC = () => {
           </div>
 
           {/* Gantt Chart Area */}
-          <div className="relative" style={{ height: tasks.length * 60 + 40, minWidth: totalDays * DAY_WIDTH }}>
+          <div 
+            className="relative bg-gray-50 rounded-lg" 
+            style={{ 
+              height: tasks.length * 60 + 40, 
+              minWidth: totalDays * DAY_WIDTH,
+              backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH}px)`
+            }}
+          >
             {/* Task rows background */}
             {tasks.map((_, index) => (
               <div
                 key={`row-${index}`}
-                className="absolute w-full h-12 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                className="absolute w-full h-12 border-b border-gray-200 hover:bg-blue-50/30 transition-colors"
                 style={{ top: index * 60 }}
               />
             ))}
@@ -277,15 +289,15 @@ const AdvancedGantt: React.FC = () => {
         <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
           <div className="flex items-center">
             <div className="w-4 h-4 bg-blue-500 rounded mr-2"></div>
-            <span>Tasks</span>
+            <span>Task Header (Drag to move/reorder)</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-4 h-4 bg-blue-400 rounded mr-2"></div>
+            <span>Task Body (Resize to adjust duration)</span>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-0.5 bg-gray-600 mr-2"></div>
             <span>Dependencies</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 border-2 border-dashed border-blue-200 mr-2"></div>
-            <span>Drag to reorder or reschedule</span>
           </div>
         </div>
       </div>
