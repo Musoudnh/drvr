@@ -331,7 +331,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
         {hasChildren && (isExpanded || (isForecasting && isFinancialPage)) && !isCollapsed && (
-          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : ''}`}>
+          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : depth > 0 ? 'ml-2' : ''}`}>
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
