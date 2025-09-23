@@ -203,6 +203,10 @@ export const router = createBrowserRouter([
     )
   },
   {
+    path: "/financials",
+    element: <Navigate to="/forecasting" replace />
+  },
+  {
     path: "/forecasting",
     element: (
       <ProtectedRoute title="Forecasting">
