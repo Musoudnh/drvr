@@ -6,6 +6,7 @@ import { addDays, format, differenceInDays } from "date-fns";
 import "react-resizable/css/styles.css";
 
 const ItemTypes = { TASK: "task" };
+const DAY_WIDTH = 80; // pixels per day
 
 // Helper function to format dates
 const formatDate = (date: Date) => format(date, "MMM dd");
@@ -34,18 +35,17 @@ interface TaskData {
   title: string;
   start: Date;
   duration: number;
+  index: number;
 }
 
-// Task component with proper drag/drop and resize
+// Task component with proper react-dnd only (no native drag)
 const Task: React.FC<{
   task: TaskData;
-  index: number;
-  moveTask: (fromIndex: number, toIndex: number) => void;
-  updateTask: (id: number, updatedTask: Partial<TaskData>) => void;
+  tasks: TaskData[];
   startDate: Date;
-  onDragStart?: () => void;
-  onDragEnd?: () => void;
-}> = React.memo(({ task, index, moveTask, updateTask, startDate, onDragStart, onDragEnd }) => {
+  moveTask: (fromIndex: number, toIndex: number) => void;
+  updateTask: (id: number, updatedTask: TaskData) => void;
+}> = React.memo(({ task, tasks, startDate, moveTask, updateTask }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   // Drop for reordering tasks vertically
@@ -54,7 +54,7 @@ const Task: React.FC<{
     hover(item: any, monitor) {
       if (!ref.current) return;
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = task.index;
       if (dragIndex === hoverIndex) return;
 
       const hoverBoundingRect = ref.current.getBoundingClientRect();
@@ -74,24 +74,19 @@ const Task: React.FC<{
   // Drag for moving tasks both vertically (reorder) and horizontally (timeline)
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.TASK,
-    item: { id: task.id, index },
+    item: { id: task.id, index: task.index },
     collect: (monitor) => ({ 
       isDragging: monitor.isDragging() 
     }),
-    begin: () => {
-      onDragStart?.();
-    },
     end: (item, monitor) => {
-      onDragEnd?.();
-      
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
       
       // Snap to day grid (80px per day)
-      const daysMoved = Math.round(delta.x / 80);
+      const daysMoved = Math.round(delta.x / DAY_WIDTH);
       if (daysMoved !== 0) {
         const newStart = addDays(task.start, daysMoved);
-        updateTask(task.id, { start: newStart });
+        updateTask(task.id, { ...task, start: newStart });
       }
     },
   });
@@ -100,22 +95,22 @@ const Task: React.FC<{
 
   // Handle resize
   const handleResize = useCallback((e: any, { size }: any) => {
-    const newDuration = Math.max(1, Math.round(size.width / 80));
-    updateTask(task.id, { duration: newDuration });
-  }, [task.id, updateTask]);
+    const newDuration = Math.max(1, Math.round(size.width / DAY_WIDTH));
+    updateTask(task.id, { ...task, duration: newDuration });
+  }, [task, updateTask]);
 
   return (
     <ResizableBox
-      width={task.duration * 80}
+      width={task.duration * DAY_WIDTH}
       height={40}
-      minConstraints={[80, 40]}
+      minConstraints={[DAY_WIDTH, 40]}
       axis="x"
       onResizeStop={handleResize}
       handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       style={{
         position: 'absolute',
-        left: differenceInDays(task.start, startDate) * 80,
-        top: index * 60,
+        left: differenceInDays(task.start, startDate) * DAY_WIDTH,
+        top: task.index * 60,
         zIndex: isDragging ? 1000 : 1,
       }}
     >
@@ -148,15 +143,11 @@ const DependencyLine: React.FC<{
   fromTask: TaskData;
   toTask: TaskData;
   startDate: Date;
-  tasks: TaskData[];
-}> = React.memo(({ fromTask, toTask, startDate, tasks }) => {
-  const fromIndex = tasks.findIndex(t => t.id === fromTask.id);
-  const toIndex = tasks.findIndex(t => t.id === toTask.id);
-  
-  const x1 = differenceInDays(fromTask.start, startDate) * 80 + fromTask.duration * 80;
-  const y1 = fromIndex * 60 + 20;
-  const x2 = differenceInDays(toTask.start, startDate) * 80;
-  const y2 = toIndex * 60 + 20;
+}> = React.memo(({ fromTask, toTask, startDate }) => {
+  const x1 = differenceInDays(fromTask.start, startDate) * DAY_WIDTH + fromTask.duration * DAY_WIDTH;
+  const y1 = fromTask.index * 60 + 20;
+  const x2 = differenceInDays(toTask.start, startDate) * DAY_WIDTH;
+  const y2 = toTask.index * 60 + 20;
   
   return (
     <g className="dependency-line group">
@@ -190,12 +181,11 @@ const DependencyLine: React.FC<{
 const AdvancedGantt: React.FC = () => {
   const today = new Date("2025-01-22");
   const totalDays = 20;
-  const [isDraggingAny, setIsDraggingAny] = useState(false);
 
   const [tasks, setTasks] = useState<TaskData[]>([
-    { id: 1, title: "Forecast Review", start: today, duration: 3 },
-    { id: 2, title: "Variance Analysis", start: addDays(today, 3), duration: 5 },
-    { id: 3, title: "Scenario Planning", start: addDays(today, 8), duration: 2 },
+    { id: 1, title: "Forecast Review", start: today, duration: 3, index: 0 },
+    { id: 2, title: "Variance Analysis", start: addDays(today, 3), duration: 5, index: 1 },
+    { id: 3, title: "Scenario Planning", start: addDays(today, 8), duration: 2, index: 2 },
   ]);
 
   const dependencies = useMemo(() => [
@@ -208,20 +198,13 @@ const AdvancedGantt: React.FC = () => {
       const updated = [...prev];
       const [moved] = updated.splice(fromIndex, 1);
       updated.splice(toIndex, 0, moved);
-      return updated;
+      // Update indices after reordering
+      return updated.map((task, i) => ({ ...task, index: i }));
     });
   }, []);
 
-  const updateTask = useCallback((id: number, updatedFields: Partial<TaskData>) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updatedFields } : t));
-  }, []);
-
-  const handleDragStart = useCallback(() => {
-    setIsDraggingAny(true);
-  }, []);
-
-  const handleDragEnd = useCallback(() => {
-    setIsDraggingAny(false);
+  const updateTask = useCallback((id: number, updatedTask: TaskData) => {
+    setTasks(prev => prev.map(t => t.id === id ? updatedTask : t));
   }, []);
 
   return (
@@ -241,7 +224,7 @@ const AdvancedGantt: React.FC = () => {
           </div>
 
           {/* Gantt Chart Area */}
-          <div className="relative" style={{ height: tasks.length * 60 + 40, minWidth: totalDays * 80 }}>
+          <div className="relative" style={{ height: tasks.length * 60 + 40, minWidth: totalDays * DAY_WIDTH }}>
             {/* Task rows background */}
             {tasks.map((_, index) => (
               <div
@@ -252,16 +235,14 @@ const AdvancedGantt: React.FC = () => {
             ))}
 
             {/* Tasks */}
-            {tasks.map((task, index) => (
+            {tasks.map((task) => (
               <Task
                 key={task.id}
                 task={task}
-                index={index}
+                tasks={tasks}
+                startDate={today}
                 moveTask={moveTask}
                 updateTask={updateTask}
-                startDate={today}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
               />
             ))}
 
@@ -280,24 +261,10 @@ const AdvancedGantt: React.FC = () => {
                     fromTask={fromTask}
                     toTask={toTask}
                     startDate={today}
-                    tasks={tasks}
                   />
                 );
               })}
             </svg>
-
-            {/* Grid overlay when dragging */}
-            {isDraggingAny && (
-              <div className="absolute inset-0 pointer-events-none">
-                {Array.from({ length: totalDays }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute top-0 bottom-0 border-l border-blue-200 opacity-50"
-                    style={{ left: i * 80 }}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
@@ -313,7 +280,7 @@ const AdvancedGantt: React.FC = () => {
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 border-2 border-dashed border-blue-200 mr-2"></div>
-            <span>Day Grid (when dragging)</span>
+            <span>Drag to reorder or reschedule</span>
           </div>
         </div>
       </div>
