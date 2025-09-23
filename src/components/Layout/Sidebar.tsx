@@ -424,7 +424,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
     // Auto-expand Forecasting when on financial pages
     if (isFinancialPage && !expandedItems.includes('/forecasting')) {
-      setExpandedItems(prev => [...prev, '/forecasting']);
+      setExpandedItems(prev => [...prev, '/financials', '/forecasting']);
     }
 
     return () => observer.disconnect();
