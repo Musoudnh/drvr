@@ -120,16 +120,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { 
-      path: '/forecasting', 
-      label: 'Forecasting', 
-      icon: Target
-    },
+    { path: '/forecasting', label: 'Forecasting', icon: Target },
     { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-    { 
-      path: '/runway', 
-      label: 'Runway', 
-      icon: Target,
+    { path: '/runway', label: 'Runway', icon: TrendingUp,
       children: [
         { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
       ]
