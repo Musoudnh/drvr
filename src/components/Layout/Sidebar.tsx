@@ -278,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             }}
           >
             <item.icon className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-            {!isCollapsed && <span className="truncate">{item.label}</span>}
+            {!isCollapsed && <span className="truncate tracking-wide">{item.label}</span>}
           </Link>
           {hasChildren && !isCollapsed && (
             <button
@@ -419,7 +419,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <Home className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Back to Dashboard</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Back to Dashboard</span>}
             </button>
             <button
               onClick={logout}
@@ -444,7 +444,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <LogOut className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Logout</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Logout</span>}
             </button>
           </div>
         ) : (
@@ -472,7 +472,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <MessageCircle className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Talk to Expert</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Talk to Expert</span>}
             </button>
             <button
               onClick={() => navigate('/referrals')}
@@ -497,7 +497,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <Gift className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Referrals</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Referrals</span>}
             </button>
             <button
               onClick={() => setShowHelpModal(true)}
@@ -522,7 +522,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <HelpCircle className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Help Center</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Help Center</span>}
             </button>
             <button
               onClick={logout}
@@ -547,7 +547,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }}
             >
               <LogOut className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
-              {!isCollapsed && <span className="truncate">Logout</span>}
+              {!isCollapsed && <span className="truncate tracking-wide">Logout</span>}
             </button>
           </div>
         )}
