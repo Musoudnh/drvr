@@ -72,10 +72,22 @@ const Task: React.FC<{
   });
 
   // Drag for moving tasks both vertically (reorder) and horizontally (timeline)
-  const [{ isDragging }, drag] = useDrag({
+  // Vertical reordering drag
+  const [{ isDragging: isDraggingVertical }, dragVertical] = useDrag({
     type: ItemTypes.TASK,
     item: { id: task.id, index: task.index },
     collect: (monitor) => ({ 
+    end: (item, monitor) => {
+      // Handle horizontal timeline movement
+      const delta = monitor.getDifferenceFromInitialOffset();
+      if (!delta) return;
+      
+      const daysMoved = Math.round(delta.x / DAY_WIDTH);
+      if (daysMoved !== 0) {
+        const newStart = addDays(task.start, daysMoved);
+        updateTask(task.id, { ...task, start: newStart });
+      }
+    },
       isDragging: monitor.isDragging() 
     }),
     end: (item, monitor) => {
@@ -91,7 +103,12 @@ const Task: React.FC<{
     },
   });
 
-  drag(drop(ref));
+  // Vertical reordering drop
+  // Combine drag and drop refs
+  const dragDropRef = useCallback((node: HTMLDivElement) => {
+    ref.current = node;
+    dragVertical(drop(node));
+  }, [dragVertical, drop]);
 
   // Handle resize
   const handleResize = useCallback((e: any, { size }: any) => {
@@ -105,36 +122,40 @@ const Task: React.FC<{
       height={40}
       minConstraints={[DAY_WIDTH, 40]}
       axis="x"
-      onResizeStop={handleResize}
-      handle={<span className="react-resizable-handle react-resizable-handle-se" />}
+    <div
       style={{
         position: 'absolute',
         left: differenceInDays(task.start, startDate) * DAY_WIDTH,
         top: task.index * 60,
-        zIndex: isDragging ? 1000 : 1,
+        zIndex: isDraggingVertical ? 1000 : 1,
       }}
     >
-      <div
-        ref={ref}
-        className={`bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move transition-all duration-200 hover:bg-blue-600 ${
-          isDragging ? 'opacity-70 scale-105 shadow-lg' : ''
-        }`}
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
-        title={`${task.title} - ${formatDate(task.start)} (${task.duration} days)`}
+      <ResizableBox
+        width={task.duration * DAY_WIDTH}
+        height={40}
+        minConstraints={[DAY_WIDTH, 40]}
+        axis="x"
+        onResizeStop={handleResize}
+        handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       >
-        <span className="text-sm font-medium truncate px-2">{task.title}</span>
-        
-        {/* Drag indicator */}
-        {isDragging && (
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-            {formatDate(task.start)}
-          </div>
-        )}
-      </div>
-    </ResizableBox>
+        <div
+          ref={dragDropRef}
+          className={`w-full h-full bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move transition-all duration-200 hover:bg-blue-600 ${
+            isDraggingVertical ? 'opacity-70 scale-105 shadow-lg' : ''
+          }`}
+          title={`${task.title} - ${formatDate(task.start)} (${task.duration} days)`}
+        >
+          <span className="text-sm font-medium truncate px-2">{task.title}</span>
+          
+          {/* Drag indicator */}
+          {isDraggingVertical && (
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
+              {formatDate(task.start)}
+            </div>
+          )}
+        </div>
+      </ResizableBox>
+    </div>
   );
 });
 
