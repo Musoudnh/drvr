@@ -40,7 +40,6 @@ import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import { Database, GitBranch, Brain } from 'lucide-react';
-import VarianceInsights from '../pages/Forecasting/VarianceInsights';
 import SignIn from '../pages/Auth/SignIn';
 
 // Protected Route Component
@@ -203,10 +202,6 @@ export const router = createBrowserRouter([
     )
   },
   {
-    path: "/financials",
-    element: <Navigate to="/forecasting" replace />
-  },
-  {
     path: "/forecasting",
     element: (
       <ProtectedRoute title="Forecasting">
@@ -250,23 +245,7 @@ export const router = createBrowserRouter([
     path: "/scenario-planning",
     element: (
       <ProtectedRoute title="Scenario Planning">
-        <PlaceholderPage title="Scenario Planning" description="Model different business scenarios and compare outcomes" />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/forecasting/scenario-planning",
-    element: (
-      <ProtectedRoute title="Scenario Planning">
         <ScenarioPlanning />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/forecasting/variance-insights",
-    element: (
-      <ProtectedRoute title="Variance & Insights">
-        <VarianceInsights />
       </ProtectedRoute>
     )
   },
