@@ -184,31 +184,21 @@ const TasksProjects: React.FC = () => {
   const handleDragEnd = (result: DropResult) => {
     setIsDraggingTask(false);
     
-    if (!result.destination) {
-      return;
-    }
+    if (!result.destination) return;
 
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     
-    if (source.droppableId !== destination.droppableId) {
-      const newTasks = [...tasks];
-      const taskIndex = newTasks.findIndex(task => task.id === result.draggableId);
-      
-      if (taskIndex !== -1) {
-        newTasks[taskIndex] = {
-          ...newTasks[taskIndex],
-          status: destination.droppableId as 'todo' | 'in_progress' | 'done',
-          updatedAt: new Date()
-        };
-        setTasks(newTasks);
-      }
-    }
+    if (source.droppableId === destination.droppableId) return;
+
+    setTasks(prev => prev.map(task =>
+      task.id === result.draggableId
+        ? { ...task, status: destination.droppableId as 'todo' | 'in_progress' | 'done' }
+        : task
+    ));
   };
 
   const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) {
-      return;
-    }
+    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
 
     const task: Task = {
       id: Date.now().toString(),
@@ -224,14 +214,8 @@ const TasksProjects: React.FC = () => {
       updatedAt: new Date()
     };
 
-    setTasks([...tasks, task]);
-    setNewTask({
-      title: '',
-      description: '',
-      assignee: '',
-      dueDate: '',
-      priority: 'medium'
-    });
+    setTasks(prev => [...prev, task]);
+    setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
     setShowAddTaskModal(false);
   };
 
@@ -239,7 +223,7 @@ const TasksProjects: React.FC = () => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
       case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
+      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
       default: return 'bg-gray-200 text-gray-700';
     }
   };
@@ -265,6 +249,10 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
+  useEffect(() => {
+    setIsDraggingTask(false);
+  }, []);
+
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -272,7 +260,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
