@@ -119,14 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
-        { path: '/runway/revenue', label: 'Revenue Runway', icon: TrendingUp },
-        { path: '/runway/opex', label: 'OpEx Runway', icon: TrendingDown },
-        { path: '/runway/hiring', label: 'Hiring Runway', icon: Users },
-        { path: '/reports/financial', label: 'Financial Reports', icon: FileText },
-        { path: '/reports/profit-loss', label: 'P&L Statement', icon: BarChart3 },
-        { path: '/reports/balance', label: 'Balance Sheet', icon: PieChart },
-        { path: '/reports/cashflow', label: 'Cash Flow', icon: TrendingUp }
+        { path: '/runway', label: 'Runway Planning', icon: TrendingUp }
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
