@@ -319,12 +319,10 @@ const TasksProjects: React.FC = () => {
                   >
                     {statusTasks.map((task, index) => renderTaskCard(task, index))}
                     {provided.placeholder}
-                    {/* Drop zone indicator */}
+                    {/* Drop zone indicator when dragging over */}
                     {snapshot.isDraggingOver && (
-                      <div className="text-center py-8 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
-                        <p className="text-sm font-medium text-[#3AB7BF]">
-                          Drop here to move to {statusLabels[status]}
-                        </p>
+                      <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
+                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
                       </div>
                     )}
                   </div>
