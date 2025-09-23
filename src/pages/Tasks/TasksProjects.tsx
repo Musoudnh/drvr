@@ -554,7 +554,19 @@ const TasksProjects: React.FC = () => {
                   <Button 
                     variant="primary" 
                     onClick={() => setShowAddTaskModal(true)}
-                    className="bg-[#3AB7BF] hover:bg-[#2A9BA3] focus:ring-[#3AB7BF]"
+                   className="px-4 py-2 rounded-lg font-medium text-white transition-all duration-200"
+                   style={{
+                     backgroundColor: '#8B5CF6',
+                     borderRadius: '12px',
+                     fontSize: '14px',
+                     fontWeight: '500'
+                   }}
+                   onMouseEnter={(e) => {
+                     e.currentTarget.style.backgroundColor = '#7C3AED';
+                   }}
+                   onMouseLeave={(e) => {
+                     e.currentTarget.style.backgroundColor = '#8B5CF6';
+                   }}
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
