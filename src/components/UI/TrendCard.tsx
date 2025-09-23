@@ -50,7 +50,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
   return (
     <div
       ref={cardRef}
-      className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#3AB7BF] focus:ring-offset-2 ${
+      className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#3AB7BF] focus:ring-offset-2 ${
         onClick ? 'cursor-pointer' : ''
       }`}
       onClick={onClick}
@@ -66,26 +66,26 @@ const TrendCard: React.FC<TrendCardProps> = ({
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-2">{title}</p>
-          <p className="text-2xl font-bold text-[#1E2A38] mb-1">{value}</p>
+          <p className="text-xs font-medium text-gray-600 mb-1">{title}</p>
+          <p className="text-lg font-bold text-[#1E2A38] mb-0.5">{value}</p>
           <div className="flex items-center">
             <span 
-              className="text-sm font-medium"
+              className="text-xs font-medium"
               style={{ color: trendColor }}
               aria-label={`${trend === 'up' ? 'Increased' : trend === 'down' ? 'Decreased' : 'Changed'} by ${change}`}
             >
               {change}
             </span>
             {description && (
-              <span className="text-sm text-gray-500 ml-2">{description}</span>
+              <span className="text-xs text-gray-500 ml-2">{description}</span>
             )}
           </div>
         </div>
         <div 
-          className="w-12 h-12 rounded-lg flex items-center justify-center"
+          className="w-10 h-10 rounded-lg flex items-center justify-center"
           style={{ backgroundColor: `${bgColor}20` }}
         >
-          <Icon className="w-6 h-6" style={{ color: bgColor }} />
+          <Icon className="w-5 h-5" style={{ color: bgColor }} />
         </div>
       </div>
     </div>

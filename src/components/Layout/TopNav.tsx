@@ -81,25 +81,25 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-white border-b border-gray-200 px-4 py-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <button
             onClick={onToggleSidebar}
-            className="p-2 text-gray-600 hover:text-gray-900 transition-colors mr-4"
+            className="p-1.5 text-gray-600 hover:text-gray-900 transition-colors mr-3"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4" />
           </button>
-          <h1 className="text-xl font-semibold text-[#1E2A38]">{title}</h1>
+          <h1 className="text-lg font-semibold text-[#1E2A38]">{title}</h1>
         </div>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" />
             <input
               type="text"
               placeholder="Search..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              className="pl-7 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
             />
           </div>
 
@@ -107,11 +107,11 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
           <div className="relative" ref={notificationRef}>
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+              className="relative p-1.5 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
             >
-              <Bell className="w-5 h-5" />
+              <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#F87171] text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#F87171] text-white text-xs rounded-full flex items-center justify-center">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -119,19 +119,19 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
 
             {/* Notifications Dropdown */}
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                <div className="p-4 border-b border-gray-200">
+              <div className="absolute right-0 mt-1 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                <div className="p-3 border-b border-gray-200">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-[#1E2A38]">Notifications</h3>
-                    <span className="text-sm text-gray-500">{unreadCount} unread</span>
+                    <h3 className="font-semibold text-[#1E2A38] text-sm">Notifications</h3>
+                    <span className="text-xs text-gray-500">{unreadCount} unread</span>
                   </div>
                 </div>
                 
-                <div className="max-h-96 overflow-y-auto">
+                <div className="max-h-80 overflow-y-auto">
                   {notifications.slice(0, 5).map((notification) => (
                     <div
                       key={notification.id}
-                      className={`p-4 border-l-4 hover:bg-gray-50 cursor-pointer ${
+                      className={`p-3 border-l-4 hover:bg-gray-50 cursor-pointer ${
                         notification.type === 'critical' ? 'border-[#F87171]' :
                         notification.type === 'warning' ? 'border-[#F59E0B]' :
                         notification.type === 'success' ? 'border-[#4ADE80]' :
@@ -139,31 +139,31 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
                       }`}
                     >
                       <div className="flex items-start">
-                        <span className="text-lg mr-3">{getNotificationIcon(notification.type)}</span>
+                        <span className="text-base mr-2">{getNotificationIcon(notification.type)}</span>
                         <div className="flex-1">
-                          <p className={`text-sm ${notification.unread ? 'font-semibold text-[#1E2A38]' : 'font-medium text-gray-700'}`}>
+                          <p className={`text-xs ${notification.unread ? 'font-semibold text-[#1E2A38]' : 'font-medium text-gray-700'}`}>
                             {notification.title}
                           </p>
-                          <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-                          <p className="text-xs text-gray-500 mt-2">{notification.time}</p>
+                          <p className="text-xs text-gray-600 mt-0.5">{notification.message}</p>
+                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
                         </div>
                         {notification.unread && (
-                          <div className="w-2 h-2 bg-[#3AB7BF] rounded-full mt-2"></div>
+                          <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mt-1"></div>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
                 
-                <div className="p-4 border-t border-gray-200 flex justify-between">
+                <div className="p-3 border-t border-gray-200 flex justify-between">
                   <Link 
                     to="/alerts" 
-                    className="text-sm text-[#3AB7BF] hover:underline"
+                    className="text-xs text-[#3AB7BF] hover:underline"
                     onClick={() => setShowNotifications(false)}
                   >
                     View all notifications
                   </Link>
-                  <button className="text-sm text-gray-500 hover:text-gray-700">
+                  <button className="text-xs text-gray-500 hover:text-gray-700">
                     Mark all as read
                   </button>
                 </div>
@@ -174,20 +174,20 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
           {/* Settings Button */}
           <Link
             to="/admin/settings"
-            className="p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+            className="p-1.5 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
             title="Settings"
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="w-4 h-4" />
           </Link>
 
           {/* Admin Profile Dropdown */}
           <div className="relative">
             <Link
               to="/admin"
-              className="p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+              className="p-1.5 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
             >
-              <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
-                <User className="w-4 h-4 text-white" />
+              <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center">
+                <User className="w-3 h-3 text-white" />
               </div>
             </Link>
           </div>

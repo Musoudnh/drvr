@@ -15,17 +15,17 @@ const CompanyDashboard: React.FC = () => {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {metrics.map((metric, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow">
+          <Card key={index} className="hover:shadow-md transition-shadow p-3">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-600">{metric.label}</p>
-                <p className="text-xl font-bold text-[#1E2A38] mt-1">{metric.value}</p>
-                <p className={`text-xs mt-2 ${metric.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
+                <p className="text-xs font-medium text-gray-600 leading-tight">{metric.label}</p>
+                <p className="text-lg font-bold text-[#1E2A38] mt-0.5">{metric.value}</p>
+                <p className={`text-xs mt-1 ${metric.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                   {metric.change} from last month
                 </p>
               </div>
-              <div className={`p-3 rounded-lg ${metric.positive ? 'bg-[#4ADE80]/10' : 'bg-[#F87171]/10'}`}>
-                <metric.icon className={`w-6 h-6 ${metric.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`} />
+              <div className={`p-2 rounded-lg ${metric.positive ? 'bg-[#4ADE80]/10' : 'bg-[#F87171]/10'}`}>
+                <metric.icon className={`w-5 h-5 ${metric.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`} />
               </div>
             </div>
           </Card>
@@ -33,16 +33,16 @@ const CompanyDashboard: React.FC = () => {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4">
         <Card title="Revenue Analysis">
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-gray-600">Monthly Revenue Growth</span>
-              <span className="text-sm text-[#4ADE80] font-medium">+12.5% vs Prior Month</span>
+              <span className="text-xs font-medium text-gray-600">Monthly Revenue Growth</span>
+              <span className="text-xs text-[#4ADE80] font-medium">+12.5% vs Prior Month</span>
             </div>
-            <div className="relative h-64">
+            <div className="relative h-48">
               {/* Chart Container */}
-              <div className="h-48 relative">
+              <div className="h-36 relative">
                 {/* Prior Year Line Graph (2024) - Light Grey */}
                 <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
                   <polyline
@@ -85,30 +85,30 @@ const CompanyDashboard: React.FC = () => {
             </div>
             
             {/* Legend */}
-            <div className="flex items-center justify-center gap-6 pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-center gap-4 pt-3 border-t border-gray-200">
               <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-                <span className="text-sm text-gray-600">FY 2025</span>
+                <div className="w-3 h-3 bg-[#3AB7BF] rounded mr-1.5"></div>
+                <span className="text-xs text-gray-600">FY 2025</span>
               </div>
               <div className="flex items-center">
-                <div className="w-4 h-0.5 bg-[#94A3B8] mr-2" style={{ borderTop: '2px dashed #94A3B8' }}></div>
-                <span className="text-sm text-gray-600">FY 2024</span>
+                <div className="w-3 h-0.5 bg-[#94A3B8] mr-1.5" style={{ borderTop: '2px dashed #94A3B8' }}></div>
+                <span className="text-xs text-gray-600">FY 2024</span>
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-3 text-center">
               <div>
-                <p className="text-lg font-bold text-[#3AB7BF]">$847K</p>
+                <p className="text-base font-bold text-[#3AB7BF]">$847K</p>
                 <p className="text-xs text-gray-500">Current Month</p>
                 <p className="text-xs text-[#4ADE80]">+12.5% vs Prior Month</p>
               </div>
               <div>
-                <p className="text-lg font-bold text-[#4ADE80]">$847K</p>
+                <p className="text-base font-bold text-[#4ADE80]">$847K</p>
                 <p className="text-xs text-gray-500">YTD</p>
                 <p className="text-xs text-[#4ADE80]">+15.4% vs Prior YTD</p>
               </div>
               <div>
-                <p className="text-lg font-bold text-[#F59E0B]">$10.2M</p>
+                <p className="text-base font-bold text-[#F59E0B]">$10.2M</p>
                 <p className="text-xs text-gray-500">FY Projection</p>
                 <p className="text-xs text-[#4ADE80]">+18.7% vs Prior FY</p>
               </div>
@@ -124,11 +124,11 @@ const CompanyDashboard: React.FC = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Metric</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Current</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Previous</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Change</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Target</th>
+                <th className="text-left py-2 px-3 font-semibold text-gray-700 text-xs">Metric</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Current</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Previous</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Change</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Target</th>
               </tr>
             </thead>
             <tbody>
@@ -140,13 +140,13 @@ const CompanyDashboard: React.FC = () => {
                 { metric: 'Cost per Acquisition', current: '$145', previous: '$167', change: '-13.2%', target: '$140', positive: true }
               ].map((row, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-medium text-[#1E2A38]">{row.metric}</td>
-                  <td className="py-3 px-4 text-right font-medium text-[#1E2A38]">{row.current}</td>
-                  <td className="py-3 px-4 text-right text-gray-600">{row.previous}</td>
-                  <td className={`py-3 px-4 text-right font-medium ${row.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
+                  <td className="py-2 px-3 font-medium text-[#1E2A38] text-sm">{row.metric}</td>
+                  <td className="py-2 px-3 text-right font-medium text-[#1E2A38] text-sm">{row.current}</td>
+                  <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.previous}</td>
+                  <td className={`py-2 px-3 text-right font-medium text-sm ${row.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                     {row.change}
                   </td>
-                  <td className="py-3 px-4 text-right text-gray-600">{row.target}</td>
+                  <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.target}</td>
                 </tr>
               ))}
             </tbody>
@@ -155,76 +155,76 @@ const CompanyDashboard: React.FC = () => {
       </Card>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card title="AI Financial Summary" className="lg:col-span-2">
-          <div className="space-y-4">
-            <div className="flex items-start p-4 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-lg border border-[#3AB7BF]/20">
-              <div className="w-8 h-8 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                <span className="text-white text-sm font-bold">AI</span>
+          <div className="space-y-3">
+            <div className="flex items-start p-3 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-lg border border-[#3AB7BF]/20">
+              <div className="w-6 h-6 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center mr-2 flex-shrink-0">
+                <span className="text-white text-xs font-bold">AI</span>
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-[#1E2A38] mb-2">January 2025 Performance Insights</h4>
-                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                <h4 className="font-semibold text-[#1E2A38] mb-1 text-sm">January 2025 Performance Insights</h4>
+                <p className="text-xs text-gray-700 leading-relaxed mb-2">
                   Your January performance shows strong momentum with revenue exceeding targets by 12.5%. 
                   Cash flow remains healthy at $224K positive, and profit margins improved to 26.4% - 
                   above industry average of 22.3%.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></div>
+                    <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
                     <span className="text-gray-600">Revenue growth accelerating</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></div>
+                    <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
                     <span className="text-gray-600">Margins expanding consistently</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-[#F59E0B] rounded-full mr-2"></div>
+                    <div className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full mr-1.5"></div>
                     <span className="text-gray-600">Watch Q2 seasonal trends</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-[#3AB7BF] rounded-full mr-2"></div>
+                    <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mr-1.5"></div>
                     <span className="text-gray-600">Cash position strengthening</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-1">Key Strength</h5>
-                <p className="text-sm text-gray-600">Revenue diversification across product lines reducing risk</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="p-2 bg-[#4ADE80]/10 rounded-lg">
+                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Key Strength</h5>
+                <p className="text-xs text-gray-600">Revenue diversification across product lines reducing risk</p>
               </div>
-              <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-1">Watch Area</h5>
-                <p className="text-sm text-gray-600">Marketing spend up 23% - monitor ROI closely</p>
+              <div className="p-2 bg-[#F59E0B]/10 rounded-lg">
+                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Watch Area</h5>
+                <p className="text-xs text-gray-600">Marketing spend up 23% - monitor ROI closely</p>
               </div>
-              <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-1">Opportunity</h5>
-                <p className="text-sm text-gray-600">Consider pricing optimization for 5-8% margin boost</p>
+              <div className="p-2 bg-[#3AB7BF]/10 rounded-lg">
+                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Opportunity</h5>
+                <p className="text-xs text-gray-600">Consider pricing optimization for 5-8% margin boost</p>
               </div>
             </div>
             
-            <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+            <div className="flex items-center justify-between pt-2 border-t border-gray-200">
               <p className="text-xs text-gray-500">Last updated: 2 hours ago</p>
-              <button className="text-xs text-[#3AB7BF] hover:underline">Ask AI for deeper analysis →</button>
+              <button className="text-xs text-[#3AB7BF] hover:underline">Ask AI →</button>
             </div>
           </div>
         </Card>
 
         <Card title="Quick Actions">
-          <div className="space-y-3">
-            <button className="w-full p-3 text-left bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38]">Generate Report</p>
-              <p className="text-sm text-gray-600">Create monthly summary</p>
+          <div className="space-y-2">
+            <button className="w-full p-2 text-left bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-colors">
+              <p className="font-medium text-[#1E2A38] text-sm">Generate Report</p>
+              <p className="text-xs text-gray-600">Create monthly summary</p>
             </button>
-            <button className="w-full p-3 text-left bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38]">Add Transaction</p>
-              <p className="text-sm text-gray-600">Record new income/expense</p>
+            <button className="w-full p-2 text-left bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-colors">
+              <p className="font-medium text-[#1E2A38] text-sm">Add Transaction</p>
+              <p className="text-xs text-gray-600">Record new income/expense</p>
             </button>
-            <button className="w-full p-3 text-left bg-[#F87171]/10 hover:bg-[#F87171]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38]">Review Alerts</p>
-              <p className="text-sm text-gray-600">3 items need attention</p>
+            <button className="w-full p-2 text-left bg-[#F87171]/10 hover:bg-[#F87171]/20 rounded-lg transition-colors">
+              <p className="font-medium text-[#1E2A38] text-sm">Review Alerts</p>
+              <p className="text-xs text-gray-600">3 items need attention</p>
             </button>
           </div>
         </Card>

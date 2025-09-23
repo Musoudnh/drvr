@@ -245,15 +245,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     const active = isActive(item.path);
 
     return (
-      <div key={item.path} className="mb-1">
+      <div key={item.path} className="mb-0.5">
         <div className="flex items-center">
           <Link
             to={item.path}
-            className={`flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex-1 ${
+            className={`flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 flex-1 ${
               active
                 ? 'text-[#4F46E5] shadow-md'
                 : 'text-white hover:text-[#4F46E5]'
-            } ${depth > 0 ? 'ml-4' : ''} text-xs`}
+            } ${depth > 0 ? 'ml-3' : ''}`}
             style={{
               backgroundColor: active ? '#F7F8FD' : 'transparent',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -277,20 +277,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               }
             }}
           >
-            <item.icon className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+            <item.icon className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
             {!isCollapsed && <span className="truncate">{item.label}</span>}
           </Link>
           {hasChildren && !isCollapsed && (
             <button
               onClick={() => toggleExpanded(item.path)}
-              className="p-1 text-white hover:text-white transition-colors ml-2"
+              className="p-0.5 text-white hover:text-white transition-colors ml-1"
             >
-              {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
             </button>
           )}
         </div>
         {hasChildren && isExpanded && !isCollapsed && (
-          <div className="mt-1 space-y-1">
+          <div className="mt-0.5 space-y-0.5">
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
@@ -386,23 +386,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   }, []);
 
   return (
-    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-6 pb-8 gap-12 mr-4 relative`} style={{ backgroundColor: navigationColor }}>
-      <nav className="flex-1 overflow-y-auto mt-12">
-        <div className="space-y-1">
+    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: navigationColor }}>
+      <nav className="flex-1 overflow-y-auto mt-8">
+        <div className="space-y-0.5">
           {navItems.map(item => renderNavItem(item))}
         </div>
       </nav>
       
-      <div className="pt-4">
+      <div className="pt-3">
         {isAdminPage ? (
-          <div className="space-y-3">
+          <div className="space-y-2">
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -418,16 +418,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <Home className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <Home className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Back to Dashboard</span>}
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -443,19 +443,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <LogOut className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <LogOut className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Logout</span>}
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2">
             <button
               onClick={() => setShowExpertModal(true)}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -471,16 +471,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <MessageCircle className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <MessageCircle className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Talk to Expert</span>}
             </button>
             <button
               onClick={() => navigate('/referrals')}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -496,16 +496,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <Gift className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <Gift className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Referrals</span>}
             </button>
             <button
               onClick={() => setShowHelpModal(true)}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -521,16 +521,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <HelpCircle className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <HelpCircle className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Help Center</span>}
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
-                fontSize: '13px',
+                fontSize: '12px',
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
@@ -546,7 +546,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <LogOut className={`${isCollapsed ? 'w-5 h-5' : 'w-4 h-4 mr-3'} flex-shrink-0`} />
+              <LogOut className={`${isCollapsed ? 'w-4 h-4' : 'w-3 h-3 mr-2'} flex-shrink-0`} />
               {!isCollapsed && <span className="truncate">Logout</span>}
             </button>
           </div>
