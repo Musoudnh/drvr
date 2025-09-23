@@ -578,6 +578,7 @@ const VarianceInsights: React.FC = () => {
                                 {variance.variancePercent > 0 ? '+' : ''}{variance.variancePercent.toFixed(1)}%
                               </span>
                             </div>
+                            </div>
                           </td>
                           <td className="py-4 px-6 text-center">
                             <div className="flex items-center justify-center">
