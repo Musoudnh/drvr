@@ -388,7 +388,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   return (
     <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: navigationColor }}>
       <nav className="flex-1 overflow-y-auto mt-8">
-        <div className="space-y-2">
+        <div className="space-y-4">
           {navItems.map(item => renderNavItem(item))}
         </div>
       </nav>
