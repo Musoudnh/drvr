@@ -177,17 +177,23 @@ const TasksProjects: React.FC = () => {
     done: filteredTasks.filter(task => task.status === 'done')
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    const newStatus = result.destination?.droppableId as 'todo' | 'in_progress' | 'done';
-    setTasks(prev => prev.map(task =>
-      task.id === result.draggableId
-        ? { ...task, status: newStatus, updatedAt: new Date() }
-        : task
-    ));
-  };
-
   const handleDragStart = () => {
     setIsDraggingTask(true);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination, draggableId } = result;
+    
+    if (source.droppableId === destination.droppableId) return;
+
+    const task = tasks.find(t => t.id === draggableId);
+    if (task) {
+      const updatedTask = { ...task, status: destination.droppableId as 'todo' | 'in_progress' | 'done' };
+      setTasks(prev => prev.map(t => t.id === draggableId ? updatedTask : t));
+    }
+    
+    setIsDraggingTask(false);
   };
 
   const handleAddTask = () => {
