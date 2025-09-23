@@ -184,7 +184,8 @@ const TasksProjects: React.FC = () => {
 
     const { source, destination, draggableId } = result;
     
-    if (source.droppableId === destination.droppableId) return;
+    // Allow moving within the same column for reordering
+    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
 
     const newStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
     
@@ -258,21 +259,18 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 ${
             snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
-          }`}
+          } ${snapshot.isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
           onClick={(e) => {
-            // Only open modal if not dragging
-            if (!snapshot.isDragging) {
+            // Only open modal if not dragging and not in the middle of a drag operation
+            if (!snapshot.isDragging && !isDraggingTask) {
               setSelectedTask(task);
               setShowTaskDetail(true);
             }
           }}
           style={{
             ...provided.draggableProps.style,
-            transform: snapshot.isDragging 
-              ? `${provided.draggableProps.style?.transform} rotate(2deg)` 
-              : provided.draggableProps.style?.transform
           }}
         >
           <div className="flex items-start justify-between mb-3">
@@ -357,17 +355,21 @@ const TasksProjects: React.FC = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[400px] p-3 rounded-lg transition-colors ${
-                      snapshot.isDraggingOver ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF] border-dashed' : 'bg-gray-50'
+                    className={`flex-1 min-h-[400px] p-3 rounded-lg transition-all duration-200 ${
+                      snapshot.isDraggingOver 
+                        ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF] border-dashed transform scale-105' 
+                        : 'bg-gray-50 border-2 border-transparent'
                     }`}
                   >
-                    {/* Drop zone indicator */}
-                    {snapshot.isDraggingOver && (
+                    {/* Enhanced drop zone indicator */}
+                    {snapshot.isDraggingOver && isDraggingTask && (
                       <div className="text-center py-4 mb-4">
-                        <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-2">
-                          <span className="text-white text-sm">↓</span>
+                        <div className="w-12 h-12 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse">
+                          <span className="text-white text-lg">↓</span>
                         </div>
-                        <p className="text-sm font-medium text-[#3AB7BF]">Drop task here</p>
+                        <p className="text-sm font-bold text-[#3AB7BF] animate-pulse">
+                          Drop task to move to {statusLabels[status]}
+                        </p>
                       </div>
                     )}
                     {statusTasks.map((task, index) => renderTaskCard(task, index))}
