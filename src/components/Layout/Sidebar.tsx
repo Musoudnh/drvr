@@ -258,6 +258,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               transform: active ? 'translateX(4px)' : 'translateX(0)',
               color: active ? '#4F46E5' : 'white',
+              fontSize: '12px',
+              fontWeight: 'var(--font-heavy)'
             }}
             onMouseEnter={(e) => {
               if (!active) {
