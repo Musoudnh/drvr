@@ -184,43 +184,20 @@ const TasksProjects: React.FC = () => {
     
     const { source, destination, draggableId } = result;
 
-    // dropped outside a droppable
     if (!destination) return;
-
-    // if dropped in the same position
+    
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
-    ) return;
-
-    // get source and destination arrays
-    const sourceTasks = Array.from(tasksByStatus[source.droppableId as keyof typeof tasksByStatus]);
-    const destTasks = Array.from(tasksByStatus[destination.droppableId as keyof typeof tasksByStatus]);
-
-    // moving within same column
-    if (source.droppableId === destination.droppableId) {
-      const [movedTask] = sourceTasks.splice(source.index, 1);
-      sourceTasks.splice(destination.index, 0, movedTask);
-
-      // update tasks state
-      setTasks(prev =>
-        prev.map(task =>
-          task.status === source.droppableId ? sourceTasks.find(t => t.id === task.id) || task : task
-        )
-      );
-    } else {
-      // moving between columns
-      const [movedTask] = sourceTasks.splice(source.index, 1);
-      movedTask.status = destination.droppableId as Task['status'];
-      destTasks.splice(destination.index, 0, movedTask);
-
-      setTasks(prev =>
-        prev.map(task => {
-          if (task.id === movedTask.id) return movedTask;
-          return task;
-        })
-      );
+    ) {
+      return;
     }
+
+    setTasks(prev => prev.map(task => 
+      task.id === draggableId 
+        ? { ...task, status: destination.droppableId as Task['status'] }
+        : task
+    ));
   };
 
   const handleAddTask = () => {
