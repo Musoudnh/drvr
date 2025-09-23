@@ -93,6 +93,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   // Check if we're on an admin page
   const isAdminPage = location.pathname.startsWith('/admin');
   
+  // Check if we're on a forecasting-related page
+  const isForecastingPage = location.pathname.startsWith('/forecasting') || 
+                           location.pathname.startsWith('/scenario-planning') || 
+                           location.pathname.startsWith('/runway');
+  
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
     { path: '/admin/team', label: 'Team Management', icon: Users },
@@ -103,7 +108,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/admin/settings', label: 'Settings', icon: Settings }
   ];
 
-  const companyNavItems: NavItem[] = [
+  const defaultNavItems: NavItem[] = [
+    { path: '/dashboard', label: 'Overview', icon: Home },
+    { path: '/analytics', label: 'Analysis', icon: PieChart },
+    { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
+    { path: '/tasks', label: 'Tasks', icon: CheckCircle },
+    { path: '/chat', label: 'Chat', icon: MessageSquare },
+    { path: '/alerts', label: 'Alerts', icon: AlertCircle }
+  ];
+
+  const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
     { 
@@ -111,6 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       label: 'Forecasting', 
       icon: Target
     },
+    { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { 
       path: '/runway', 
       label: 'Runway', 
@@ -119,15 +134,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/runway/revenue', label: 'Revenue Planning', icon: DollarSign }
       ]
     },
-    { path: '/scenario-planning', label: 'Scenario Planning', icon: LineChart },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle }
   ];
-
   // Use appropriate nav items based on current page
-  const navItems = isAdminPage ? adminNavItems : companyNavItems;
+  const navItems = isAdminPage ? adminNavItems : isForecastingPage ? financialNavItems : defaultNavItems;
   
   // Check if any items with children are expanded
   const hasExpandedChildren = expandedItems.some(path => 
