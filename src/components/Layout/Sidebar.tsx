@@ -280,11 +280,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems.includes(item.path);
     const active = isActive(item.path) || (hasChildren && item.children?.some(child => isActive(child.path)));
-    const isForecasting = item.path === '/forecasting';
 
     return (
       <div key={item.path} className="mb-2">
-        <div className={`flex items-center ${isForecasting && isFinancialPage ? 'bg-white/10 rounded-lg p-1' : ''}`}>
+        <div className="flex items-center">
           <Link
             to={item.path}
             className={`flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 flex-1 ${
@@ -329,8 +328,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
           )}
         </div>
-        {hasChildren && (isExpanded || (isForecasting && isFinancialPage)) && !isCollapsed && (
-          <div className={`mt-1 space-y-1 ${isForecasting && isFinancialPage ? 'bg-white/5 rounded-lg p-2 ml-2' : depth > 0 ? 'ml-2' : ''}`}>
+        {hasChildren && isExpanded && !isCollapsed && (
+          <div className={`mt-1 space-y-1 ${depth > 0 ? 'ml-2' : ''}`}>
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
@@ -424,7 +423,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
 
     // Auto-expand Forecasting when on financial pages
     if (isFinancialPage && !expandedItems.includes('/forecasting')) {
-      setExpandedItems(prev => [...prev, '/financials', '/forecasting']);
+      setExpandedItems(prev => [...prev, '/financials']);
     }
 
     return () => observer.disconnect();
