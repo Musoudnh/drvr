@@ -177,15 +177,88 @@ const TasksProjects: React.FC = () => {
     done: filteredTasks.filter(task => task.status === 'done')
   };
 
+  const handleDragStart = () => {
+    setIsDraggingTask(true);
+  };
+
   const handleDragEnd = (result: DropResult) => {
-      comments: [],
-
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-
-      default: return 'bg-gray-200 text-gray-700';
+    setIsDraggingTask(false);
+    
+    if (!result.destination) {
+      return;
     }
 
+    const { source, destination } = result;
+    
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+      return;
+    }
+
+    const sourceStatus = source.droppableId as 'todo' | 'in_progress' | 'done';
+    const destStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
+    
+    const updatedTasks = [...tasks];
+    const taskIndex = updatedTasks.findIndex(task => task.id === result.draggableId);
+    
+    if (taskIndex !== -1) {
+      updatedTasks[taskIndex] = {
+        ...updatedTasks[taskIndex],
+        status: destStatus,
+        updatedAt: new Date()
+      };
+      setTasks(updatedTasks);
+    }
+  };
+
+  const handleAddTask = () => {
+    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) {
+      return;
+    }
+
+    const task: Task = {
+      id: Date.now().toString(),
+      title: newTask.title,
+      description: newTask.description,
+      assignee: newTask.assignee,
+      dueDate: new Date(newTask.dueDate),
+      priority: newTask.priority,
+      status: 'todo',
+      tags: [],
+      comments: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    setTasks([...tasks, task]);
+    setNewTask({
+      title: '',
+      description: '',
+      assignee: '',
+      dueDate: '',
+      priority: 'medium'
+    });
+    setShowAddTaskModal(false);
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
+      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
+      case 'low': return 'bg-[#10B981]/20 text-[#10B981]';
+      default: return 'bg-gray-200 text-gray-700';
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'todo': return 'bg-gray-100 text-gray-700';
+      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
+      case 'done': return 'bg-[#10B981]/20 text-[#10B981]';
+      default: return 'bg-gray-200 text-gray-700';
+    }
+  };
+
+  const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
@@ -196,14 +269,6 @@ const TasksProjects: React.FC = () => {
   const isOverdue = (date: Date) => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
-
-
-
-
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
