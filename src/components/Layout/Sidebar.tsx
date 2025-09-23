@@ -245,7 +245,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     const active = isActive(item.path);
 
     return (
-      <div key={item.path} className="mb-0.5">
+      <div key={item.path} className="mb-2">
         <div className="flex items-center">
           <Link
             to={item.path}
@@ -290,7 +290,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           )}
         </div>
         {hasChildren && isExpanded && !isCollapsed && (
-          <div className="mt-0.5 space-y-0.5">
+          <div className="mt-1 space-y-1">
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </div>
         )}
