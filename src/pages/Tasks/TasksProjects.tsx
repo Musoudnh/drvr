@@ -178,38 +178,14 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-
-
-  };
-
-
       description: newTask.description,
-      assignee: newTask.assignee,
 
-      tags: [],
-      comments: [],
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-
-    setTasks(prev => [...prev, task]);
     setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
     setShowAddTaskModal(false);
-  };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
-      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
-    }
-  };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'todo': return 'bg-gray-100 text-gray-700';
-      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
+
       case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
     }
@@ -224,10 +200,12 @@ const TasksProjects: React.FC = () => {
   };
 
 
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
 
-  const isOverdue = (date: Date) => {
+
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
