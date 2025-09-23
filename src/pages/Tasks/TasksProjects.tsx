@@ -728,8 +728,8 @@ const TasksProjects: React.FC = () => {
         </div>
       )}
 
-                  className="px-3 py-1 rounded text-sm font-medium transition-colors bg-white text-[#8B5CF6] shadow-sm border border-gray-200 hover:bg-[#8B5CF6] hover:text-white"
-                >
+                className="p-1 hover:bg-gray-100 rounded"
+              >
                   <X className="w-4 h-4 text-gray-400" />
                 </button>
               </div>
