@@ -527,15 +527,15 @@ const TasksProjects: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 space-y-4">
       {/* Tab Navigation */}
       <div className="bg-white rounded-lg shadow-sm">
         <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6" aria-label="Task Navigation">
+          <nav className="flex space-x-6 px-4" aria-label="Task Navigation">
             <button
               onClick={() => setActiveTab('native')}
               disabled={isDraggingTask}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'native'
                   ? 'border-[#4F46E5] text-[#4F46E5]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -549,7 +549,7 @@ const TasksProjects: React.FC = () => {
                 key={board.id}
                 onClick={() => setActiveTab(board.id)}
                 disabled={isDraggingTask}
-                className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === board.id
                     ? `border-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}] text-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}]`
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -562,7 +562,7 @@ const TasksProjects: React.FC = () => {
             <button
               onClick={() => setShowConnectModal(true)}
               disabled={isDraggingTask}
-              className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <Plus className="w-4 h-4 mr-2" />
               Connect Board
@@ -571,26 +571,26 @@ const TasksProjects: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-4">
           {activeTab === 'native' && (
             <div className="space-y-6">
               {/* Controls */}
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
+                    className="px-3 py-1.5 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
                   </button>
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  <div className="flex bg-gray-100 rounded-lg p-1">
+                <div className="flex items-center gap-1">
+                  <div className="flex bg-gray-100 rounded-lg p-0.5">
                     <button
                       onClick={() => setViewMode('board')}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'board'
                           ? 'bg-white text-[#3AB7BF] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -601,7 +601,7 @@ const TasksProjects: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'list'
                           ? 'bg-white text-[#3AB7BF] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -612,7 +612,7 @@ const TasksProjects: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setViewMode('gantt')}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'gantt'
                           ? 'bg-white text-[#3AB7BF] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -629,6 +629,7 @@ const TasksProjects: React.FC = () => {
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
               {viewMode === 'gantt' && (
+                <div className="mt-4">
                 <AdvancedGantt 
                   tasks={filteredTasks}
                   onTaskUpdate={(taskId, updates) => {
@@ -645,6 +646,7 @@ const TasksProjects: React.FC = () => {
                     });
                   }}
                 />
+                </div>
               )}
             </div>
           )}

@@ -196,7 +196,7 @@ const GanttTask: React.FC<{
   };
 
   const taskLeft = differenceInDays(task.startDate, startDate) * DAY_WIDTH;
-  const taskTop = index * 80 + 20;
+  const taskTop = index * 70 + 15;
 
   return (
     <div
@@ -210,7 +210,7 @@ const GanttTask: React.FC<{
       {/* Dedicated drag handle */}
       <div
         ref={dragDropRef}
-        className={`h-12 text-white rounded-t shadow cursor-move flex items-center justify-between px-3 transition-all ${
+        className={`h-10 text-white rounded-t shadow cursor-move flex items-center justify-between px-2 transition-all ${
           isDragging ? "opacity-70 scale-105 shadow-lg" : "hover:shadow-md"
         }`}
         style={{ 
@@ -234,7 +234,7 @@ const GanttTask: React.FC<{
         
         {/* Drag indicator */}
         {isDragging && (
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
+          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-black text-white px-1 py-0.5 rounded text-xs whitespace-nowrap">
             {format(task.startDate, "MMM dd")} - {format(addDays(task.startDate, task.duration), "MMM dd")}
           </div>
         )}
@@ -243,8 +243,8 @@ const GanttTask: React.FC<{
       {/* Resizable task body */}
       <ResizableBox
         width={task.duration * DAY_WIDTH}
-        height={20}
-        minConstraints={[DAY_WIDTH, 20]}
+        height={15}
+        minConstraints={[DAY_WIDTH, 15]}
         axis="x"
         onResizeStop={handleResize}
         handle={<span className="react-resizable-handle react-resizable-handle-se" />}
@@ -284,9 +284,9 @@ const DependencyLine: React.FC<{
   const toIndex = tasks.findIndex(t => t.id === toTask.id);
   
   const x1 = differenceInDays(fromTask.startDate, startDate) * DAY_WIDTH + fromTask.duration * DAY_WIDTH;
-  const y1 = fromIndex * 80 + 40;
+  const y1 = fromIndex * 70 + 35;
   const x2 = differenceInDays(toTask.startDate, startDate) * DAY_WIDTH;
-  const y2 = toIndex * 80 + 40;
+  const y2 = toIndex * 70 + 35;
   
   return (
     <g className="dependency-line group">
@@ -408,16 +408,16 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {/* Gantt Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white rounded-lg border border-gray-200">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-white rounded-lg border border-gray-200">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-gray-700">View:</label>
               <select
                 value={viewMode}
                 onChange={(e) => setViewMode(e.target.value as any)}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
               >
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
@@ -430,7 +430,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
               <select
                 value={filterAssignee}
                 onChange={(e) => setFilterAssignee(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
               >
                 <option value="">All Assignees</option>
                 {assignees.map(assignee => (
@@ -444,7 +444,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
               >
                 <option value="">All Status</option>
                 <option value="todo">To Do</option>
@@ -457,7 +457,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowWeekends(!showWeekends)}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 showWeekends ? 'bg-[#3AB7BF] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -467,7 +467,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
             
             <button
               onClick={() => setShowCriticalPath(!showCriticalPath)}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 showCriticalPath ? 'bg-[#F87171] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -482,7 +482,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
               >
                 <ZoomOut className="w-4 h-4 text-gray-600" />
               </button>
-              <span className="text-sm text-gray-600 px-2">{Math.round(zoomLevel * 100)}%</span>
+              <span className="text-sm text-gray-600 px-1">{Math.round(zoomLevel * 100)}%</span>
               <button
                 onClick={handleZoomIn}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -496,18 +496,18 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 
         {/* Task List Sidebar */}
         <div className="flex bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="w-80 border-r border-gray-200 bg-gray-50">
-            <div className="p-4 border-b border-gray-200 bg-white">
+          <div className="w-72 border-r border-gray-200 bg-gray-50">
+            <div className="p-3 border-b border-gray-200 bg-white">
               <h3 className="font-semibold text-[#1E2A38]">Tasks ({filteredTasks.length})</h3>
             </div>
-            <div className="overflow-y-auto" style={{ maxHeight: '600px' }}>
+            <div className="overflow-y-auto" style={{ maxHeight: '500px' }}>
               {filteredTasks.map((task, index) => (
                 <div
                   key={task.id}
-                  className="p-3 border-b border-gray-200 hover:bg-white transition-colors"
-                  style={{ height: '80px' }}
+                  className="p-2 border-b border-gray-200 hover:bg-white transition-colors"
+                  style={{ height: '70px' }}
                 >
-                  <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-start justify-between mb-1">
                     <h4 className="font-medium text-[#1E2A38] text-sm leading-tight">{task.title}</h4>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       task.priority === 'high' ? 'bg-[#F87171]/20 text-[#F87171]' :
@@ -529,7 +529,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center justify-between mt-1">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       task.status === 'done' ? 'bg-[#4ADE80]/20 text-[#4ADE80]' :
                       task.status === 'in_progress' ? 'bg-[#3AB7BF]/20 text-[#3AB7BF]' :
@@ -566,7 +566,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
               <div 
                 className="relative bg-gray-50"
                 style={{ 
-                  height: Math.max(filteredTasks.length * 80 + 40, 400),
+                  height: Math.max(filteredTasks.length * 70 + 30, 350),
                   minWidth: totalDays * DAY_WIDTH,
                   transform: `scale(${zoomLevel})`,
                   transformOrigin: 'top left'
@@ -578,7 +578,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                   style={{
                     backgroundImage: `
                       repeating-linear-gradient(90deg, transparent, transparent ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH}px),
-                      repeating-linear-gradient(0deg, transparent, transparent 79px, #e5e7eb 79px, #e5e7eb 80px)
+                      repeating-linear-gradient(0deg, transparent, transparent 69px, #e5e7eb 69px, #e5e7eb 70px)
                     `
                   }}
                 />
@@ -588,7 +588,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                   className="absolute top-0 bottom-0 w-0.5 bg-red-500 z-20 pointer-events-none"
                   style={{ left: differenceInDays(new Date(), startDate) * DAY_WIDTH }}
                 >
-                  <div className="absolute -top-2 -left-8 bg-red-500 text-white px-2 py-1 rounded text-xs">
+                  <div className="absolute -top-1 -left-6 bg-red-500 text-white px-1 py-0.5 rounded text-xs">
                     Today
                   </div>
                 </div>
@@ -635,7 +635,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                     className="absolute flex items-center justify-center"
                     style={{
                       left: differenceInDays(milestone.startDate, startDate) * DAY_WIDTH - 10,
-                      top: filteredTasks.findIndex(t => t.id === milestone.id) * 80 + 10,
+                      top: filteredTasks.findIndex(t => t.id === milestone.id) * 70 + 10,
                       zIndex: 15
                     }}
                   >
@@ -649,7 +649,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600 p-4 bg-gray-50 rounded-lg">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 p-2 bg-gray-50 rounded-lg">
           <div className="flex items-center">
             <div className="w-4 h-4 bg-[#94A3B8] rounded mr-2"></div>
             <span>Not Started</span>
@@ -681,20 +681,20 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div className="p-3 bg-white rounded-lg border border-gray-200 text-center">
             <div className="text-2xl font-bold text-[#3AB7BF]">{filteredTasks.length}</div>
             <div className="text-sm text-gray-600">Total Tasks</div>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center">
+          <div className="p-3 bg-white rounded-lg border border-gray-200 text-center">
             <div className="text-2xl font-bold text-[#4ADE80]">{filteredTasks.filter(t => t.status === 'done').length}</div>
             <div className="text-sm text-gray-600">Completed</div>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center">
+          <div className="p-3 bg-white rounded-lg border border-gray-200 text-center">
             <div className="text-2xl font-bold text-[#F87171]">{filteredTasks.filter(t => t.isOnCriticalPath).length}</div>
             <div className="text-sm text-gray-600">Critical Path</div>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center">
+          <div className="p-3 bg-white rounded-lg border border-gray-200 text-center">
             <div className="text-2xl font-bold text-[#F59E0B]">{filteredTasks.filter(t => t.isMilestone).length}</div>
             <div className="text-sm text-gray-600">Milestones</div>
           </div>
