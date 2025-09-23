@@ -740,19 +740,7 @@ const TasksProjects: React.FC = () => {
         </div>
       )}
 
-      {/* Task Detail Modal */}
-      {showTaskDetail && selectedTask && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">{selectedTask.title}</h3>
-              <div className="flex items-center gap-2">
-                <button className="p-1 hover:bg-gray-100 rounded">
-                  <Edit3 className="w-4 h-4 text-gray-400" />
-                </button>
-                <button
-                  onClick={() => setShowTaskDetail(false)}
-                  className="p-1 hover:bg-gray-100 rounded"
+                  className="px-3 py-1 rounded text-sm font-medium transition-colors bg-white text-[#8B5CF6] shadow-sm border border-gray-200 hover:bg-[#8B5CF6] hover:text-white"
                 >
                   <X className="w-4 h-4 text-gray-400" />
                 </button>
