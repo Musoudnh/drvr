@@ -72,6 +72,7 @@ interface CustomerSegment {
 const Analytics: React.FC = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState('12-months');
   const [selectedMetrics, setSelectedMetrics] = useState(['revenue', 'profit']);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showCorrelationModal, setShowCorrelationModal] = useState(false);
   const [showCohortModal, setShowCohortModal] = useState(false);
   const [showRootCauseModal, setShowRootCauseModal] = useState(false);
@@ -233,6 +234,158 @@ const Analytics: React.FC = () => {
     );
   };
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(selectedCategory === category ? null : category);
+  };
+
+  const getCategoryData = (category: string) => {
+    const categoryDataMap: { [key: string]: any } = {
+      'Revenue': {
+        subcategories: [
+          { name: 'Product Sales', actual: 485000, budget: 450000, prior: 420000 },
+          { name: 'Service Revenue', actual: 245000, budget: 250000, prior: 230000 },
+          { name: 'Licensing', actual: 87500, budget: 85000, prior: 75000 },
+          { name: 'Other Income', actual: 30000, budget: 25000, prior: 28000 }
+        ]
+      },
+      'Expenses': {
+        subcategories: [
+          { name: 'Salaries & Benefits', actual: 285000, budget: 280000, prior: 265000 },
+          { name: 'Marketing', actual: 65400, budget: 55000, prior: 58000 },
+          { name: 'Technology', actual: 45200, budget: 48000, prior: 42000 },
+          { name: 'Office & Facilities', actual: 32800, budget: 35000, prior: 31000 },
+          { name: 'Professional Services', actual: 28500, budget: 30000, prior: 25000 }
+        ]
+      },
+      'Profit': {
+        subcategories: [
+          { name: 'Gross Profit', actual: 524500, budget: 485000, prior: 475000 },
+          { name: 'Operating Profit', actual: 267300, budget: 245000, prior: 235000 },
+          { name: 'Net Profit', actual: 224065, budget: 195000, prior: 185000 }
+        ]
+      }
+    };
+    return categoryDataMap[category] || { subcategories: [] };
+  };
+
+  const renderCategoryBreakdown = () => {
+    if (!selectedCategory) return null;
+
+    const categoryData = getCategoryData(selectedCategory);
+    
+    return (
+      <Card title={`${selectedCategory} Breakdown - Actuals vs Budget vs Prior`}>
+        <div className="space-y-6">
+          {/* Comparison Chart */}
+          <div className="relative h-64 bg-gray-50 rounded-lg p-4">
+            <h4 className="font-semibold text-[#1E2A38] mb-4">Subcategory Comparison</h4>
+            <div className="flex items-end justify-between h-48 space-x-2">
+              {categoryData.subcategories.map((item: any, index: number) => {
+                const maxValue = Math.max(item.actual, item.budget, item.prior);
+                const actualHeight = (item.actual / maxValue) * 160;
+                const budgetHeight = (item.budget / maxValue) * 160;
+                const priorHeight = (item.prior / maxValue) * 160;
+                
+                return (
+                  <div key={index} className="flex flex-col items-center min-w-[100px]">
+                    <div className="flex items-end space-x-1 mb-2">
+                      {/* Actual */}
+                      <div
+                        className="w-6 bg-[#3AB7BF] rounded-t transition-all duration-300 hover:opacity-80"
+                        style={{ height: `${actualHeight}px` }}
+                        title={`Actual: $${item.actual.toLocaleString()}`}
+                      />
+                      {/* Budget */}
+                      <div
+                        className="w-6 bg-[#8B5CF6] rounded-t transition-all duration-300 hover:opacity-80"
+                        style={{ height: `${budgetHeight}px` }}
+                        title={`Budget: $${item.budget.toLocaleString()}`}
+                      />
+                      {/* Prior */}
+                      <div
+                        className="w-6 bg-[#F59E0B] rounded-t transition-all duration-300 hover:opacity-80"
+                        style={{ height: `${priorHeight}px` }}
+                        title={`Prior: $${item.prior.toLocaleString()}`}
+                      />
+                    </div>
+                    
+                    {/* Category label */}
+                    <span className="text-xs text-gray-600 text-center leading-tight max-w-[90px]">
+                      {item.name.length > 12 ? item.name.substring(0, 12) + '...' : item.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Legend */}
+            <div className="flex justify-center gap-6 mt-4 text-sm">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
+                <span className="text-gray-600">Actual</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#8B5CF6] rounded mr-2"></div>
+                <span className="text-gray-600">Budget</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#F59E0B] rounded mr-2"></div>
+                <span className="text-gray-600">Prior Year</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Detailed Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Subcategory</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Actual</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Budget</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Prior Year</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">vs Budget</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">vs Prior</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categoryData.subcategories.map((item: any, index: number) => {
+                  const budgetVariance = ((item.actual - item.budget) / item.budget) * 100;
+                  const priorVariance = ((item.actual - item.prior) / item.prior) * 100;
+                  
+                  return (
+                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4 font-medium text-[#1E2A38]">{item.name}</td>
+                      <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
+                        ${item.actual.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-right font-medium text-[#8B5CF6]">
+                        ${item.budget.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-right font-medium text-[#F59E0B]">
+                        ${item.prior.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-right font-medium">
+                        <span className={budgetVariance >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}>
+                          {budgetVariance >= 0 ? '+' : ''}{budgetVariance.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right font-medium">
+                        <span className={priorVariance >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}>
+                          {priorVariance >= 0 ? '+' : ''}{priorVariance.toFixed(1)}%
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Card>
+    );
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
@@ -268,14 +421,14 @@ const Analytics: React.FC = () => {
             {availableMetrics.map(metric => (
               <button
                 key={metric.id}
-                onClick={() => handleMetricToggle(metric.id)}
+                onClick={() => handleCategorySelect(metric.name)}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                  selectedMetrics.includes(metric.id)
+                  selectedCategory === metric.name
                     ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
                 style={{
-                  backgroundColor: selectedMetrics.includes(metric.id) ? metric.color : undefined
+                  backgroundColor: selectedCategory === metric.name ? metric.color : undefined
                 }}
               >
                 {metric.name}
@@ -284,6 +437,9 @@ const Analytics: React.FC = () => {
           </div>
         </div>
       </Card>
+
+      {/* Category Breakdown */}
+      {selectedCategory && renderCategoryBreakdown()}
 
       {/* Main Analytics Section */}
       <Card title="Key Performance Metrics">
@@ -570,347 +726,4 @@ const Analytics: React.FC = () => {
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(action.priority)}`}>
                         {action.priority} priority
                       </span>
-                      <span className="text-xs text-gray-500">{action.timeframe}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2 mb-3">
-                    <h5 className="font-medium text-[#1E2A38]">Recommended Actions:</h5>
-                    {action.actions.map((actionItem, actionIndex) => (
-                      <div key={actionIndex} className="flex items-start">
-                        <div className="w-5 h-5 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3 mt-0.5">
-                          <span className="text-white text-xs font-bold">{actionIndex + 1}</span>
-                        </div>
-                        <span className="text-sm text-gray-700">{actionItem}</span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="p-3 bg-[#4ADE80]/10 rounded-lg flex-1 mr-3">
-                      <p className="text-sm font-medium text-[#4ADE80]">Expected Impact: {action.expectedImpact}</p>
-                    </div>
-                    <span className="text-sm text-gray-600">{action.confidence}% confidence</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline">
-                <Download className="w-4 h-4 mr-2" />
-                Export Actions
-              </Button>
-              <button
-                onClick={() => setShowPrescriptiveModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Customer Segments Modal */}
-      {showCustomerSegments && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[900px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Customer Segment Analysis</h3>
-              <button
-                onClick={() => setShowCustomerSegments(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Segment</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Revenue</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Growth</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Retention</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">LTV</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">CAC</th>
-                      <th className="text-center py-3 px-4 font-semibold text-gray-700">Trend</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {customerSegments.map((segment, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-4 font-medium text-[#1E2A38]">{segment.segment}</td>
-                        <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
-                          ${segment.revenue.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium">
-                          <span className={segment.growth > 20 ? 'text-[#4ADE80]' : segment.growth > 10 ? 'text-[#F59E0B]' : 'text-[#F87171]'}>
-                            {segment.growth}%
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium">
-                          <span className={segment.retention >= 90 ? 'text-[#4ADE80]' : segment.retention >= 80 ? 'text-[#F59E0B]' : 'text-[#F87171]'}>
-                            {segment.retention}%
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium text-[#8B5CF6]">
-                          ${segment.ltv.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium text-[#F87171]">
-                          ${segment.cac}
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          <div className={`w-2 h-2 rounded-full mx-auto ${
-                            segment.trend === 'up' ? 'bg-[#4ADE80]' :
-                            segment.trend === 'down' ? 'bg-[#F87171]' : 'bg-[#F59E0B]'
-                          }`} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-                <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#4ADE80]">$920K</p>
-                  <p className="text-sm text-gray-600">Total Revenue</p>
-                </div>
-                <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#3AB7BF]">19.8%</p>
-                  <p className="text-sm text-gray-600">Avg Growth</p>
-                </div>
-                <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#F59E0B]">81%</p>
-                  <p className="text-sm text-gray-600">Avg Retention</p>
-                </div>
-                <div className="p-4 bg-[#8B5CF6]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#8B5CF6]">3.2:1</p>
-                  <p className="text-sm text-gray-600">LTV:CAC Ratio</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline">
-                <Download className="w-4 h-4 mr-2" />
-                Export Analysis
-              </Button>
-              <button
-                onClick={() => setShowCustomerSegments(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Correlation Analysis Modal */}
-      {showCorrelationModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Correlation Analysis</h3>
-              <button
-                onClick={() => setShowCorrelationModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              {correlations.map((correlation, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h4 className="font-semibold text-[#1E2A38]">
-                        {correlation.metric1} ↔ {correlation.metric2}
-                      </h4>
-                      <p className="text-sm text-gray-600">{correlation.insight}</p>
-                    </div>
-                    <div className="text-right">
-                      <span 
-                        className="text-lg font-bold"
-                        style={{ color: getCorrelationColor(correlation.correlation) }}
-                      >
-                        {correlation.correlation.toFixed(2)}
-                      </span>
-                      <p className="text-xs text-gray-500">{getCorrelationStrength(correlation.correlation)}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="h-2 rounded-full"
-                      style={{ 
-                        width: `${Math.abs(correlation.correlation) * 100}%`,
-                        backgroundColor: getCorrelationColor(correlation.correlation)
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowCorrelationModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Cohort Analysis Modal */}
-      {showCohortModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Customer Cohort Analysis</h3>
-              <button
-                onClick={() => setShowCohortModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Cohort</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Period</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Revenue</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Retention</th>
-                      <th className="text-right py-3 px-4 font-semibold text-gray-700">Growth</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cohortData.map((cohort, index) => (
-                      <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                        <td className="py-3 px-4 font-medium text-[#1E2A38]">{cohort.cohort}</td>
-                        <td className="py-3 px-4 text-gray-600">{cohort.period}</td>
-                        <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
-                          ${cohort.revenue.toLocaleString()}
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium">
-                          <span className={cohort.retention >= 85 ? 'text-[#4ADE80]' : cohort.retention >= 70 ? 'text-[#F59E0B]' : 'text-[#F87171]'}>
-                            {cohort.retention}%
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-right font-medium">
-                          <span className={cohort.growth > 0 ? 'text-[#4ADE80]' : 'text-gray-600'}>
-                            {cohort.growth > 0 ? '+' : ''}{cohort.growth}%
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#4ADE80]">83%</p>
-                  <p className="text-sm text-gray-600">Avg Retention</p>
-                </div>
-                <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#3AB7BF]">18%</p>
-                  <p className="text-sm text-gray-600">Avg Growth</p>
-                </div>
-                <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
-                  <p className="text-lg font-bold text-[#F59E0B]">$1.4M</p>
-                  <p className="text-sm text-gray-600">Cohort LTV</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowCohortModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Root Cause Analysis Modal */}
-      {showRootCauseModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Root Cause Analysis</h3>
-              <button
-                onClick={() => setShowRootCauseModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              {rootCauseAnalyses.map((analysis, index) => (
-                <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#F59E0B] transition-all">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h4 className="font-semibold text-[#1E2A38]">{analysis.metric}</h4>
-                      <p className="text-sm text-gray-600">
-                        Deviation: {analysis.deviation > 0 ? '+' : ''}{analysis.deviation}%
-                      </p>
-                    </div>
-                    <span className="px-2 py-1 bg-[#F59E0B]/20 text-[#F59E0B] rounded-full text-xs font-medium">
-                      {analysis.confidence}% confidence
-                    </span>
-                  </div>
-                  
-                  <div className="mb-3">
-                    <h5 className="font-medium text-[#1E2A38] mb-2">Potential Causes:</h5>
-                    <div className="space-y-1">
-                      {analysis.potentialCauses.map((cause, causeIndex) => (
-                        <div key={causeIndex} className="flex items-start">
-                          <div className="w-2 h-2 bg-[#F59E0B] rounded-full mt-2 mr-3 flex-shrink-0" />
-                          <span className="text-sm text-gray-700">{cause}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
-                    <h5 className="font-medium text-[#1E2A38] mb-1">Recommendation:</h5>
-                    <p className="text-sm text-gray-700">{analysis.recommendation}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowRootCauseModal(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Analytics;
+                
