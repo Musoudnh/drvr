@@ -261,9 +261,12 @@ const TasksProjects: React.FC = () => {
           className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer ${
             snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
           }`}
-          onClick={() => {
-            setSelectedTask(task);
-            setShowTaskDetail(true);
+          onClick={(e) => {
+            // Only open modal if not dragging
+            if (!snapshot.isDragging) {
+              setSelectedTask(task);
+              setShowTaskDetail(true);
+            }
           }}
         >
           <div className="flex items-start justify-between mb-3">
@@ -307,6 +310,13 @@ const TasksProjects: React.FC = () => {
                   +{task.tags.length - 2}
                 </span>
               )}
+            </div>
+          )}
+          
+          {/* Drag indicator */}
+          {snapshot.isDragging && (
+            <div className="absolute top-2 right-2 w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center">
+              <span className="text-white text-xs">↔</span>
             </div>
           )}
         </div>
