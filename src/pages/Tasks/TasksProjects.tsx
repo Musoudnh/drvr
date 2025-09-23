@@ -165,8 +165,10 @@ const TasksProjects: React.FC = () => {
   ];
 
   const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    task.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const tasksByStatus = {
@@ -175,63 +177,77 @@ const TasksProjects: React.FC = () => {
     done: filteredTasks.filter(task => task.status === 'done')
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const { source, destination } = result;
+    
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+      return;
+    }
+
+    const sourceStatus = source.droppableId as 'todo' | 'in_progress' | 'done';
+    const destStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
+    
+    setTasks(prevTasks => {
+      const newTasks = [...prevTasks];
+      const taskIndex = newTasks.findIndex(task => task.id === result.draggableId);
+      
+      if (taskIndex !== -1) {
+        newTasks[taskIndex] = {
+          ...newTasks[taskIndex],
+          status: destStatus,
+          updatedAt: new Date()
+        };
+      }
+      
+      return newTasks;
+    });
+    
+    setIsDraggingTask(false);
+  };
+
   const handleDragStart = () => {
     setIsDraggingTask(true);
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    setIsDraggingTask(false);
-    
-    const { source, destination, draggableId } = result;
-
-    if (!destination) return;
-    
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    ) {
-      return;
-    }
-
-    setTasks(prev => prev.map(task => 
-      task.id === draggableId 
-        ? { ...task, status: destination.droppableId as Task['status'] }
-        : task
-    ));
-  };
-
   const handleAddTask = () => {
-    const task = {
-      id: Date.now().toString(),
-      title: newTask.title,
-      description: newTask.description,
-      assignee: newTask.assignee,
-      dueDate: new Date(newTask.dueDate),
-      priority: newTask.priority,
-      status: 'todo',
-      tags: [],
-      comments: [],
-      createdAt: new Date(),
-      updatedAt: new Date()
-    } as Task;
-
-    setTasks(prev => [...prev, task]);
-    setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
-    setShowAddTaskModal(false);
+    if (newTask.title.trim() && newTask.assignee && newTask.dueDate) {
+      const task: Task = {
+        id: Date.now().toString(),
+        title: newTask.title,
+        description: newTask.description,
+        assignee: newTask.assignee,
+        dueDate: new Date(newTask.dueDate),
+        priority: newTask.priority,
+        status: 'todo',
+        tags: [],
+        comments: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      setTasks(prev => [...prev, task]);
+      setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
+      setShowAddTaskModal(false);
+    }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
+      case 'medium': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
+      case 'low': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
     }
   };
 
+  const isOverdue = (date: Date) => {
+    return date < new Date();
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
+      case 'todo': return 'bg-[#F59E0B]/20 text-[#F59E0B]';
       case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
       case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
       default: return 'bg-gray-200 text-gray-700';
@@ -246,14 +262,6 @@ const TasksProjects: React.FC = () => {
     });
   };
 
-  const isOverdue = (date: Date) => {
-    return date < new Date() && date.toDateString() !== new Date().toDateString();
-  };
-
-  useEffect(() => {
-    setIsDraggingTask(false);
-  }, []);
-
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -261,7 +269,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
@@ -332,7 +340,7 @@ const TasksProjects: React.FC = () => {
   );
 
   const renderKanbanBoard = () => (
-    <DragDropContext onDragStart={() => setIsDraggingTask(true)} onDragEnd={handleDragEnd}>
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
@@ -366,10 +374,12 @@ const TasksProjects: React.FC = () => {
                   >
                     {statusTasks.map((task, index) => renderTaskCard(task, index))}
                     {provided.placeholder}
-                    {/* Drop zone indicator when dragging over */}
+                    {/* Drop zone indicator */}
                     {snapshot.isDraggingOver && (
-                      <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
-                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
+                      <div className="text-center py-8 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
+                        <p className="text-sm font-medium text-[#3AB7BF]">
+                          Drop here to move to {statusLabels[status]}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -609,24 +619,12 @@ const TasksProjects: React.FC = () => {
                       <List className="w-4 h-4 mr-1 inline" />
                       List
                     </button>
-                    <button
-                      onClick={() => setViewMode('gantt')}
-                      className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                        viewMode === 'gantt'
-                          ? 'bg-white text-[#3AB7BF] shadow-sm'
-                          : 'text-gray-600 hover:text-gray-800'
-                      }`}
-                    >
-                      <Calendar className="w-4 h-4 mr-1 inline" />
-                      Gantt
-                    </button>
                   </div>
                 </div>
               </div>
 
               {/* Task View */}
-              {viewMode === 'board' && renderKanbanBoard()}
-              {viewMode === 'list' && renderListView()}
+              {viewMode === 'board' ? renderKanbanBoard() : renderListView()}
             </div>
           )}
 
