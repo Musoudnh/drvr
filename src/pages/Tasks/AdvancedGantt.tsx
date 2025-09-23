@@ -52,14 +52,14 @@ const Task: React.FC<{
       const hoverIndex = index;
       if (dragIndex === hoverIndex) return;
 
-      const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+      const hoverRect = ref.current.getBoundingClientRect();
+      const hoverMiddleX = (hoverRect.right - hoverRect.left) / 2;
       const clientOffset = monitor.getClientOffset();
       if (!clientOffset) return;
-      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+      const hoverClientX = clientOffset.x - hoverRect.left;
 
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
+      if ((dragIndex < hoverIndex && hoverClientX < hoverMiddleX) ||
+          (dragIndex > hoverIndex && hoverClientX > hoverMiddleX)) return;
 
       moveTask(dragIndex, hoverIndex);
       item.index = hoverIndex;
@@ -73,7 +73,7 @@ const Task: React.FC<{
     end: (item, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
-      const daysMoved = Math.round(delta.x / 80); // 80px = 1 day
+      const daysMoved = Math.round(delta.x / 80);
       if (daysMoved !== 0) {
         const newStart = addDays(task.start, daysMoved);
         updateTask(task.id, { ...task, start: newStart });
@@ -98,7 +98,7 @@ const Task: React.FC<{
     >
       <div
         ref={ref}
-        className={`absolute bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move`}
+        className="absolute bg-blue-500 text-white rounded shadow flex items-center justify-center cursor-move"
         style={{
           left: differenceInDays(task.start, startDate) * 80,
           top: index * 60,
