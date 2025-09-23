@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
+    "analyze": "npm run build && npx source-map-explorer dist/assets/*.js",
+    "check-deps": "npx depcheck"
   },
   "dependencies": {
     "@types/react-beautiful-dnd": "^13.1.8",
