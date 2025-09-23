@@ -180,14 +180,23 @@ const TasksProjects: React.FC = () => {
   const handleDragEnd = (result: DropResult) => {
     setIsDraggingTask(false);
     
-    if (!result.destination) return;
+    if (!result.destination) {
+      console.log('No destination - drag cancelled');
+      return;
+    }
 
     const { source, destination, draggableId } = result;
     
-    // Allow moving within the same column for reordering
-    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    console.log('Drag completed:', { source, destination, draggableId });
+    
+    // If dropped in same position, do nothing
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
+      return;
+    }
 
     const newStatus = destination.droppableId as 'todo' | 'in_progress' | 'done';
+    
+    console.log('Updating task status to:', newStatus);
     
     setTasks(prev => prev.map(task =>
       task.id === draggableId
@@ -196,7 +205,8 @@ const TasksProjects: React.FC = () => {
     ));
   };
 
-  const handleDragStart = () => {
+  const handleDragStart = (start: any) => {
+    console.log('Drag started:', start);
     setIsDraggingTask(true);
   };
 
@@ -259,30 +269,52 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 ${
-            snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
-          } ${snapshot.isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-          onClick={(e) => {
-            // Only open modal if not dragging and not in the middle of a drag operation
-            if (!snapshot.isDragging && !isDraggingTask) {
-              setSelectedTask(task);
-              setShowTaskDetail(true);
-            }
-          }}
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
+            snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
+          }`}
           style={{
             ...provided.draggableProps.style,
           }}
         >
-          <div className="flex items-start justify-between mb-3">
+          <div 
+            className="flex items-start justify-between mb-3"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!snapshot.isDragging && !isDraggingTask) {
+                setSelectedTask(task);
+                setShowTaskDetail(true);
+              }
+            }}
+          >
             <h3 className="font-semibold text-[#1E2A38] text-sm leading-tight">{task.title}</h3>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
               {task.priority}
             </span>
           </div>
           
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{task.description}</p>
+          <p 
+            className="text-sm text-gray-600 mb-3 line-clamp-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!snapshot.isDragging && !isDraggingTask) {
+                setSelectedTask(task);
+                setShowTaskDetail(true);
+              }
+            }}
+          >
+            {task.description}
+          </p>
           
-          <div className="flex items-center justify-between">
+          <div 
+            className="flex items-center justify-between"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!snapshot.isDragging && !isDraggingTask) {
+                setSelectedTask(task);
+                setShowTaskDetail(true);
+              }
+            }}
+          >
             <div className="flex items-center">
               <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
                 <span className="text-white text-xs font-medium">
@@ -303,7 +335,16 @@ const TasksProjects: React.FC = () => {
           </div>
           
           {task.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
+            <div 
+              className="flex flex-wrap gap-1 mt-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!snapshot.isDragging && !isDraggingTask) {
+                  setSelectedTask(task);
+                  setShowTaskDetail(true);
+                }
+              }}
+            >
               {task.tags.slice(0, 2).map(tag => (
                 <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-xs">
                   {tag}
@@ -317,12 +358,12 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
           
-          {/* Drag indicator */}
-          {snapshot.isDragging && (
-            <div className="absolute top-2 right-2 w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center">
-              <span className="text-white text-xs">↔</span>
+          {/* Drag handle indicator */}
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center">
+              <span className="text-gray-500 text-xs">⋮⋮</span>
             </div>
-          )}
+          </div>
         </div>
       )}
     </Draggable>
@@ -355,25 +396,22 @@ const TasksProjects: React.FC = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[400px] p-3 rounded-lg transition-all duration-200 ${
+                    className={`flex-1 min-h-[400px] p-2 rounded-lg transition-all duration-200 ${
                       snapshot.isDraggingOver 
-                        ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF] border-dashed transform scale-105' 
+                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed' 
                         : 'bg-gray-50 border-2 border-transparent'
                     }`}
                   >
-                    {/* Enhanced drop zone indicator */}
-                    {snapshot.isDraggingOver && isDraggingTask && (
-                      <div className="text-center py-4 mb-4">
-                        <div className="w-12 h-12 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-2 animate-pulse">
-                          <span className="text-white text-lg">↓</span>
-                        </div>
-                        <p className="text-sm font-bold text-[#3AB7BF] animate-pulse">
-                          Drop task to move to {statusLabels[status]}
+                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
+                    {provided.placeholder}
+                    {/* Drop zone indicator */}
+                    {snapshot.isDraggingOver && (
+                      <div className="text-center py-8 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
+                        <p className="text-sm font-medium text-[#3AB7BF]">
+                          Drop here to move to {statusLabels[status]}
                         </p>
                       </div>
                     )}
-                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
-                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
