@@ -800,7 +800,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={months.length + 3} className="py-3 px-4">
+                            <span className="font-medium text-[#1E2A38] truncate ml-[-16px]">{item.description}</span>
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
@@ -817,11 +817,31 @@ const Forecasting: React.FC = () => {
                               {category}
                             </button>
                           </td>
-                        </tr>
+                            <React.Fragment key={category}>
+                              <tr className="border-b border-gray-200">
+                                <td className="py-3 px-4">
+                                  <button
+                                    onClick={() => toggleCategory(category)}
+                                    className="flex items-center font-semibold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                                  >
+                                    {expandedCategories.includes(category) ? (
+                                      <ChevronDown className="w-4 h-4 mr-2" />
+                                    ) : (
+                                      <ChevronRight className="w-4 h-4 mr-2" />
+                                    )}
+                                    <div
+                                      className="w-3 h-3 rounded-full mr-2"
+                                      style={{ backgroundColor: getCategoryColor(category) }}
+                                    />
+                                    {category}
+                                  </button>
+                                </td>
+                              </tr>
                         
                         {/* GL Code Rows */}
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
                           <React.Fragment key={glCode.code}>
+                           <tr className="border-b border-gray-100">
                             <tr className="border-b border-gray-100 hover:bg-gray-50 group">
                               <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
