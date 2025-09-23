@@ -111,22 +111,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { 
-      path: '/financials', 
-      label: 'Financials', 
+    {
+      path: '/financials',
+      label: 'Financials',
       icon: DollarSign,
       children: [
-        { 
-          path: '/forecasting', 
-          label: 'Forecasting', 
-          icon: Target,
-          children: [
-            { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-            { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-            { path: '/runway', label: 'Runway', icon: Target },
-            { path: '/runway/revenue', label: 'Revenue Planning', icon: TrendingUp }
-          ]
-        }
+        { path: '/forecasting', label: 'Forecasting', icon: Target },
+        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/runway/revenue', label: 'Revenue Runway', icon: TrendingUp },
+        { path: '/runway/opex', label: 'OpEx Runway', icon: TrendingDown },
+        { path: '/runway/hiring', label: 'Hiring Runway', icon: Users },
+        { path: '/reports/financial', label: 'Financial Reports', icon: FileText },
+        { path: '/reports/profit-loss', label: 'P&L Statement', icon: BarChart3 },
+        { path: '/reports/balance', label: 'Balance Sheet', icon: PieChart },
+        { path: '/reports/cashflow', label: 'Cash Flow', icon: TrendingUp }
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
@@ -144,17 +144,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       label: 'Financials',
       icon: DollarSign,
       children: [
-        {
-          path: '/forecasting',
-          label: 'Forecasting',
-          icon: Target,
-          children: [
-            { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
-            { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-            { path: '/runway', label: 'Runway', icon: Target },
-            { path: '/runway/revenue', label: 'Revenue Planning', icon: TrendingUp }
-          ]
-        }
+        { path: '/forecasting', label: 'Forecasting', icon: Target },
+        { path: '/forecasting/scenario-planning', label: 'Scenario Planning', icon: LineChart },
+        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/runway/revenue', label: 'Revenue Runway', icon: TrendingUp },
+        { path: '/runway/opex', label: 'OpEx Runway', icon: TrendingDown },
+        { path: '/runway/hiring', label: 'Hiring Runway', icon: Users },
+        { path: '/reports/financial', label: 'Financial Reports', icon: FileText },
+        { path: '/reports/profit-loss', label: 'P&L Statement', icon: BarChart3 },
+        { path: '/reports/balance', label: 'Balance Sheet', icon: PieChart },
+        { path: '/reports/cashflow', label: 'Cash Flow', icon: TrendingUp }
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
@@ -422,7 +422,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     });
 
     // Auto-expand Forecasting when on financial pages
-    if (isFinancialPage && !expandedItems.includes('/forecasting')) {
+    if (isFinancialPage && !expandedItems.includes('/financials')) {
       setExpandedItems(prev => [...prev, '/financials']);
     }
 
