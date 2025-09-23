@@ -553,19 +553,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200"
-                    style={{
-                      backgroundColor: '#8B5CF6',
-                      borderRadius: '12px',
-                      fontSize: '14px',
-                      fontWeight: '500'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#7C3AED';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#8B5CF6';
-                    }}
+                    className="px-3 py-1 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
