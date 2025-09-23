@@ -166,15 +166,31 @@ const TasksProjects: React.FC = () => {
 
   const filteredTasks = tasks.filter(task =>
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const tasksByStatus = {
     todo: filteredTasks.filter(task => task.status === 'todo'),
+    in_progress: filteredTasks.filter(task => task.status === 'in_progress'),
+    done: filteredTasks.filter(task => task.status === 'done')
+  };
+
+  const handleDragStart = () => {
+    setIsDraggingTask(true);
+  };
 
   const handleDragEnd = (result: DropResult) => {
-
+    setIsDraggingTask(false);
     // Simple drag end handler
     console.log('Drag ended:', result);
+  };
+
+  const handleAddTask = () => {
+    const task = {
+      id: Date.now().toString(),
+      title: newTask.title,
+      description: newTask.description,
+      assignee: newTask.assignee,
       dueDate: new Date(newTask.dueDate),
       priority: newTask.priority,
       status: 'todo',
@@ -219,11 +235,9 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
-
-    setIsDraggingTask(false);
-    setIsDraggingTask(false);
-
   useEffect(() => {
+    setIsDraggingTask(false);
+  }, []);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -232,7 +246,7 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab ${
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
@@ -416,17 +430,6 @@ const TasksProjects: React.FC = () => {
                 </td>
               </tr>
             ))}
-        onClick={(e) => {
-          e.stopPropagation();
-          setSelectedTask(task);
-          setShowTaskDetail(true);
-        }}
-        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
-        title="View details"
-      >
-        <Eye className="w-4 h-4 text-gray-400" />
-      </button>
-    </div>
           </tbody>
         </table>
       </div>
@@ -609,7 +612,6 @@ const TasksProjects: React.FC = () => {
               {/* Task View */}
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
-              {viewMode === 'gantt' && <AdvancedGantt />}
             </div>
           )}
 
