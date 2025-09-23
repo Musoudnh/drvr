@@ -3,7 +3,6 @@ import {
   MessageCircle, 
   X, 
   Send, 
-  Upload, 
   FileText, 
   TrendingUp, 
   AlertTriangle, 
