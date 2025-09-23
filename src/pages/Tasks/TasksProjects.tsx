@@ -177,24 +177,19 @@ const TasksProjects: React.FC = () => {
     done: filteredTasks.filter(task => task.status === 'done')
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    const newStatus = result.destination?.droppableId as 'todo' | 'in_progress' | 'done';
-    setTasks(prev => prev.map(task =>
-      task.id === result.draggableId
-        ? { ...task, status: newStatus, updatedAt: new Date() }
-        : task
-    ));
-  };
-
   const handleDragStart = () => {
     setIsDraggingTask(true);
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    const { source, destination, draggableId } = result;
+    
+    if (source.droppableId === destination.droppableId) return;
+
   const handleAddTask = () => {
     if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
 
-    const task: Task = {
-      id: Date.now().toString(),
       title: newTask.title,
       description: newTask.description,
       assignee: newTask.assignee,
@@ -242,9 +237,10 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
+    setIsDraggingTask(false);
+
   useEffect(() => {
     setIsDraggingTask(false);
-  }, []);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
