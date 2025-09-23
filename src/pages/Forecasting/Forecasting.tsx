@@ -817,7 +817,26 @@ const Forecasting: React.FC = () => {
                               {category}
                             </button>
                           </td>
-                        </tr>
+                            <React.Fragment key={category}>
+                              <tr className="border-b border-gray-200">
+                                <td className="py-3 px-4">
+                                  <button
+                                    onClick={() => toggleCategory(category)}
+                                    className="flex items-center font-semibold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                                  >
+                                    {expandedCategories.includes(category) ? (
+                                      <ChevronDown className="w-4 h-4 mr-2" />
+                                    ) : (
+                                      <ChevronRight className="w-4 h-4 mr-2" />
+                                    )}
+                                    <div
+                                      className="w-3 h-3 rounded-full mr-2"
+                                      style={{ backgroundColor: getCategoryColor(category) }}
+                                    />
+                                    {category}
+                                  </button>
+                                </td>
+                              </tr>
                         
                         {/* GL Code Rows */}
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
