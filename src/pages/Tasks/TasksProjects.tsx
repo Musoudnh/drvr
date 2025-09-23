@@ -178,62 +178,14 @@ const TasksProjects: React.FC = () => {
   };
 
   const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    
-    const newStatus = result.destination.droppableId as 'todo' | 'in_progress' | 'done';
-    
-    setTasks(prev => prev.map(task =>
-      task.id === result.draggableId
-        ? { ...task, status: newStatus, updatedAt: new Date() }
-        : task
-    ));
-  };
-
-  const handleDragStart = (start: any) => {
-    setIsDraggingTask(true);
-  };
-
-  const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.assignee || !newTask.dueDate) return;
-
-    const task: Task = {
-      id: Date.now().toString(),
-      title: newTask.title,
-      description: newTask.description,
-      assignee: newTask.assignee,
-      dueDate: new Date(newTask.dueDate),
-      priority: newTask.priority,
-      status: 'todo',
-      tags: [],
       comments: [],
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
 
-    setTasks(prev => [...prev, task]);
-    setNewTask({ title: '', description: '', assignee: '', dueDate: '', priority: 'medium' });
-    setShowAddTaskModal(false);
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
       case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
+
       default: return 'bg-gray-200 text-gray-700';
     }
-  };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
-      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
-      case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
-    }
-  };
-
-  const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
@@ -245,9 +197,13 @@ const TasksProjects: React.FC = () => {
     return date < new Date() && date.toDateString() !== new Date().toDateString();
   };
 
-  useEffect(() => {
+
+
+
     setIsDraggingTask(false);
-  }, []);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
+    setIsDraggingTask(false);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
