@@ -77,24 +77,13 @@ const Task: React.FC<{
     type: ItemTypes.TASK,
     item: { id: task.id, index: task.index },
     collect: (monitor) => ({ 
+      isDragging: monitor.isDragging() 
+    }),
     end: (item, monitor) => {
       // Handle horizontal timeline movement
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
       
-      const daysMoved = Math.round(delta.x / DAY_WIDTH);
-      if (daysMoved !== 0) {
-        const newStart = addDays(task.start, daysMoved);
-        updateTask(task.id, { ...task, start: newStart });
-      }
-    },
-      isDragging: monitor.isDragging() 
-    }),
-    end: (item, monitor) => {
-      const delta = monitor.getDifferenceFromInitialOffset();
-      if (!delta) return;
-      
-      // Snap to day grid (80px per day)
       const daysMoved = Math.round(delta.x / DAY_WIDTH);
       if (daysMoved !== 0) {
         const newStart = addDays(task.start, daysMoved);
@@ -117,11 +106,6 @@ const Task: React.FC<{
   }, [task, updateTask]);
 
   return (
-    <ResizableBox
-      width={task.duration * DAY_WIDTH}
-      height={40}
-      minConstraints={[DAY_WIDTH, 40]}
-      axis="x"
     <div
       style={{
         position: 'absolute',
