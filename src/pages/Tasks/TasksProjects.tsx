@@ -276,45 +276,18 @@ const TasksProjects: React.FC = () => {
             ...provided.draggableProps.style,
           }}
         >
-          <div 
-            className="flex items-start justify-between mb-3"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!snapshot.isDragging && !isDraggingTask) {
-                setSelectedTask(task);
-                setShowTaskDetail(true);
-              }
-            }}
-          >
+          <div className="flex items-start justify-between mb-3">
             <h3 className="font-semibold text-[#1E2A38] text-sm leading-tight">{task.title}</h3>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
               {task.priority}
             </span>
           </div>
           
-          <p 
-            className="text-sm text-gray-600 mb-3 line-clamp-2"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!snapshot.isDragging && !isDraggingTask) {
-                setSelectedTask(task);
-                setShowTaskDetail(true);
-              }
-            }}
-          >
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
             {task.description}
           </p>
           
-          <div 
-            className="flex items-center justify-between"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!snapshot.isDragging && !isDraggingTask) {
-                setSelectedTask(task);
-                setShowTaskDetail(true);
-              }
-            }}
-          >
+          <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
                 <span className="text-white text-xs font-medium">
@@ -335,16 +308,7 @@ const TasksProjects: React.FC = () => {
           </div>
           
           {task.tags.length > 0 && (
-            <div 
-              className="flex flex-wrap gap-1 mt-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!snapshot.isDragging && !isDraggingTask) {
-                  setSelectedTask(task);
-                  setShowTaskDetail(true);
-                }
-              }}
-            >
+            <div className="flex flex-wrap gap-1 mt-2">
               {task.tags.slice(0, 2).map(tag => (
                 <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-xs">
                   {tag}
@@ -358,12 +322,18 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
           
-          {/* Drag handle indicator */}
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="w-6 h-6 bg-gray-200 rounded flex items-center justify-center">
-              <span className="text-gray-500 text-xs">⋮⋮</span>
-            </div>
-          </div>
+          {/* View Details Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedTask(task);
+              setShowTaskDetail(true);
+            }}
+            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
+            title="View details"
+          >
+            <Eye className="w-4 h-4 text-gray-400" />
+          </button>
         </div>
       )}
     </Draggable>
