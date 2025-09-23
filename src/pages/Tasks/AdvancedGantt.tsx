@@ -110,17 +110,18 @@ const Task: React.FC<TaskProps> = React.memo(({ task, tasks, startDate, moveTask
     <div
       style={{
         position: "absolute",
-        left: differenceInDays(task.start, startDate) * DAY_WIDTH,
-        top: task.index * 60,
+        left: differenceInDays(task.start, startDate) * DAY_WIDTH + 10,
+        top: task.index * 80 + 30,
         zIndex: isDragging ? 1000 : 1,
       }}
     >
       {/* Dedicated drag handle - OUTSIDE ResizableBox */}
       <div
         ref={dragDropRef}
-        className={`w-full h-10 bg-blue-500 text-white rounded-t shadow cursor-move flex items-center justify-center transition-all ${
+        className={`h-12 bg-blue-500 text-white rounded-t shadow cursor-move flex items-center justify-center transition-all ${
           isDragging ? "opacity-70 scale-105 shadow-lg" : "hover:bg-blue-600"
         }`}
+        style={{ width: task.duration * DAY_WIDTH - 4 }}
         style={{ width: task.duration * DAY_WIDTH }}
       >
         <span className="text-sm font-medium truncate px-2">{task.title}</span>
@@ -128,7 +129,7 @@ const Task: React.FC<TaskProps> = React.memo(({ task, tasks, startDate, moveTask
         {/* Drag indicator */}
         {isDragging && (
           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-            {formatDate(task.start)}
+            {format(task.start, "MMM dd")}
           </div>
         )}
       </div>
@@ -136,13 +137,13 @@ const Task: React.FC<TaskProps> = React.memo(({ task, tasks, startDate, moveTask
       {/* Resizable Box - handles ONLY resizing */}
       <ResizableBox
         width={task.duration * DAY_WIDTH}
-        height={30}
+        height={20}
         minConstraints={[DAY_WIDTH, 30]}
         axis="x"
         onResizeStop={handleResize}
         handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       >
-        <div className="w-full h-full bg-blue-400 rounded-b border-t border-blue-300" />
+        <div className="w-full h-full bg-blue-400 rounded-b" />
       </ResizableBox>
     </div>
   );
@@ -154,10 +155,10 @@ const DependencyLine: React.FC<{
   toTask: TaskData;
   startDate: Date;
 }> = React.memo(({ fromTask, toTask, startDate }) => {
-  const x1 = differenceInDays(fromTask.start, startDate) * DAY_WIDTH + fromTask.duration * DAY_WIDTH;
-  const y1 = fromTask.index * 60 + 20;
-  const x2 = differenceInDays(toTask.start, startDate) * DAY_WIDTH;
-  const y2 = toTask.index * 60 + 20;
+  const x1 = differenceInDays(fromTask.start, startDate) * DAY_WIDTH + fromTask.duration * DAY_WIDTH + 10;
+  const y1 = fromTask.index * 80 + 40;
+  const x2 = differenceInDays(toTask.start, startDate) * DAY_WIDTH + 10;
+  const y2 = toTask.index * 80 + 40;
   
   return (
     <g className="dependency-line group">
@@ -237,7 +238,7 @@ const AdvancedGantt: React.FC = () => {
           <div 
             className="relative bg-gray-50 rounded-lg" 
             style={{ 
-              height: tasks.length * 60 + 40, 
+              height: Math.max(tasks.length * 80 + 60, 300), 
               minWidth: totalDays * DAY_WIDTH,
               backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH}px)`
             }}
@@ -246,8 +247,8 @@ const AdvancedGantt: React.FC = () => {
             {tasks.map((_, index) => (
               <div
                 key={`row-${index}`}
-                className="absolute w-full h-12 border-b border-gray-200 hover:bg-blue-50/30 transition-colors"
-                style={{ top: index * 60 }}
+                className="absolute w-full h-16 border-b border-gray-200 hover:bg-blue-50/30 transition-colors"
+                style={{ top: index * 80 + 20 }}
               />
             ))}
 
