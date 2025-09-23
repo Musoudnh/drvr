@@ -22,6 +22,7 @@ import AdminSettings from '../pages/Admin/AdminSettings';
 import Forecasting from '../pages/Forecasting/Forecasting';
 import Benchmarks from '../pages/Benchmarks/Benchmarks';
 import TaxDocuments from '../pages/Tax/TaxDocuments';
+import Reports from '../pages/Reports/Reports';
 import Alerts from '../pages/Alerts/Alerts';
 import BalanceSheet from '../pages/Reports/BalanceSheet';
 import ProfitLoss from '../pages/Reports/ProfitLoss';
@@ -254,6 +255,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Benchmarks">
         <Benchmarks />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/reports",
+    element: (
+      <ProtectedRoute title="Reports">
+        <Reports />
       </ProtectedRoute>
     )
   },
