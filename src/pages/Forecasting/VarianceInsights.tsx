@@ -465,9 +465,11 @@ const VarianceInsights: React.FC = () => {
                         </div>
                       ))}
                       {insight.actionItems.length > 2 && (
-                        <button className="text-xs text-[#3AB7BF] hover:underline">
-                          +{insight.actionItems.length - 2} more actions
-                        </button>
+                        <>
+                          <button className="text-xs text-[#3AB7BF] hover:underline">
+                            +{insight.actionItems.length - 2} more actions
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>
