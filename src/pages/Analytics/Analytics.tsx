@@ -726,4 +726,15 @@ const Analytics: React.FC = () => {
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(action.priority)}`}>
                         {action.priority} priority
                       </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
                 
