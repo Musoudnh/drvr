@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreditCard, Download, Calendar, AlertCircle, Zap, Shield, Users, BarChart3, Bell, Settings, Eye, RefreshCw, Lock, CheckCircle, X, Plus } from 'lucide-react';
+import { CreditCard, Download, Calendar, AlertCircle, Zap, Shield, Users, BarChart3, Bell, Settings, Eye, RefreshCw, Lock, CheckCircle, X, Plus, Smartphone } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
@@ -230,6 +230,13 @@ const BillingSettings: React.FC = () => {
                 className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Card title="Integrations">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-600">Manage your connected services and data sync</p>
@@ -279,6 +286,7 @@ const BillingSettings: React.FC = () => {
             <Button variant="outline" size="sm">Browse All</Button>
           </div>
         </div>
+      </Card>
     </div>
   );
 };
