@@ -539,7 +539,9 @@ const Analytics: React.FC = () => {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h4 className="font-medium text-[#1E2A38] mb-4">Revenue - Bar Chart</h4>
               <div className="relative h-64">
-                <div className="flex items-end justify-between h-48 space-x-2">
+                <div className="relative h-48">
+                  {/* Bars Container */}
+                  <div className="flex items-end justify-between h-full">
                   {[
                     { month: 'Jan', actual: 425000, budget: 400000 },
                     { month: 'Feb', actual: 445000, budget: 420000 },
@@ -556,15 +558,14 @@ const Analytics: React.FC = () => {
                   ].map((data, index) => {
                     const maxValue = 620000;
                     const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
-                    const budgetHeight = (data.budget / maxValue) * 160;
                     
                     return (
-                      <div key={index} className="flex flex-col items-center min-w-[60px]">
-                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                      <div key={index} className="flex flex-col items-center" style={{ width: '60px' }}>
+                        <div className="relative" style={{ height: '160px', width: '40px' }}>
                           {/* Actual Bar (for completed months) */}
                           {data.actual && (
                             <div
-                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 rounded-t transition-all duration-300 hover:opacity-80"
                               style={{ 
                                 height: `${actualHeight}px`,
                                 backgroundColor: chartColors.actual
@@ -572,40 +573,110 @@ const Analytics: React.FC = () => {
                               title={`Actual: $${data.actual.toLocaleString()}`}
                             />
                           )}
-                          
-                          {/* Budget Line */}
-                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                            <line
-                              x1="5"
-                              y1={160 - budgetHeight}
-                              x2="45"
-                              y2={160 - budgetHeight}
-                              stroke={chartColors.budget}
-                              strokeWidth="3"
-                              strokeDasharray={data.actual ? "4,2" : "0"}
-                            />
-                            <circle
-                              cx="25"
-                              cy={160 - budgetHeight}
-                              r="4"
-                              fill={chartColors.budget}
-                              title={`Budget: $${data.budget.toLocaleString()}`}
-                            />
-                          </svg>
                         </div>
-                        <span className="text-xs text-gray-600">{data.month}</span>
                       </div>
                     );
                   })}
+                  </div>
+                  
+                  {/* Connecting Lines Overlay */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* Budget Line connecting all months */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.budget}
+                      strokeWidth="3"
+                      strokeDasharray="4,2"
+                      points={[
+                        { month: 'Jan', budget: 400000 },
+                        { month: 'Feb', budget: 420000 },
+                        { month: 'Mar', budget: 440000 },
+                        { month: 'Apr', budget: 460000 },
+                        { month: 'May', budget: 480000 },
+                        { month: 'Jun', budget: 500000 },
+                        { month: 'Jul', budget: 520000 },
+                        { month: 'Aug', budget: 540000 },
+                        { month: 'Sep', budget: 560000 },
+                        { month: 'Oct', budget: 580000 },
+                        { month: 'Nov', budget: 600000 },
+                        { month: 'Dec', budget: 620000 }
+                      ].map((data, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (data.budget / 620000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Prior Year Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.prior}
+                      strokeWidth="3"
+                      strokeDasharray="2,3"
+                      points={[
+                        { month: 'Jan', prior: 380000 },
+                        { month: 'Feb', prior: 395000 },
+                        { month: 'Mar', prior: 410000 },
+                        { month: 'Apr', prior: 425000 },
+                        { month: 'May', prior: 440000 },
+                        { month: 'Jun', prior: 455000 },
+                        { month: 'Jul', prior: 470000 },
+                        { month: 'Aug', prior: 485000 },
+                        { month: 'Sep', prior: 500000 },
+                        { month: 'Oct', prior: 515000 },
+                        { month: 'Nov', prior: 530000 },
+                        { month: 'Dec', prior: 545000 }
+                      ].map((data, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (data.prior / 620000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Data Points */}
+                    {[400000, 420000, 440000, 460000, 480000, 500000, 520000, 540000, 560000, 580000, 600000, 620000].map((budget, index) => (
+                      <circle
+                        key={`budget-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (budget / 620000) * 160}
+                        r="4"
+                        fill={chartColors.budget}
+                        title={`Budget: $${budget.toLocaleString()}`}
+                      />
+                    ))}
+                    
+                    {[380000, 395000, 410000, 425000, 440000, 455000, 470000, 485000, 500000, 515000, 530000, 545000].map((prior, index) => (
+                      <circle
+                        key={`prior-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (prior / 620000) * 160}
+                        r="4"
+                        fill={chartColors.prior}
+                        title={`Prior Year: $${prior.toLocaleString()}`}
+                      />
+                    ))}
+                  </svg>
                 </div>
+                
+                {/* Month Labels */}
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+                
                 <div className="flex justify-center gap-6 mt-4 text-sm">
                   <div className="flex items-center">
                     <div className="w-4 h-4 rounded mr-2" style={{ backgroundColor: chartColors.actual }}></div>
-                    <span className="text-gray-600">Actual</span>
+                    <span className="text-gray-600">Actual (Bars)</span>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px solid ${chartColors.budget}`, width: '16px' }}></div>
-                    <span className="text-gray-600">Budget</span>
+                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.budget}`, width: '16px' }}></div>
+                    <span className="text-gray-600">Budget (Line)</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.prior}`, width: '16px' }}></div>
+                    <span className="text-gray-600">Prior Year (Line)</span>
                   </div>
                 </div>
               </div>
@@ -656,7 +727,8 @@ const Analytics: React.FC = () => {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h4 className="font-medium text-[#1E2A38] mb-4">Profit - Bar Chart</h4>
               <div className="relative h-64">
-                <div className="flex items-end justify-between h-48 space-x-2">
+                <div className="relative h-48">
+                  <div className="flex items-end justify-between h-full">
                   {[
                     { month: 'Jan', actual: 140000, budget: 120000 },
                     { month: 'Feb', actual: 150000, budget: 130000 },
@@ -673,14 +745,13 @@ const Analytics: React.FC = () => {
                   ].map((data, index) => {
                     const maxValue = 200000;
                     const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
-                    const budgetHeight = (data.budget / maxValue) * 160;
                     
                     return (
-                      <div key={index} className="flex flex-col items-center min-w-[60px]">
-                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                      <div key={index} className="flex flex-col items-center" style={{ width: '60px' }}>
+                        <div className="relative" style={{ height: '160px', width: '40px' }}>
                           {data.actual && (
                             <div
-                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 rounded-t transition-all duration-300 hover:opacity-80"
                               style={{ 
                                 height: `${actualHeight}px`,
                                 backgroundColor: chartColors.actual
@@ -688,29 +759,85 @@ const Analytics: React.FC = () => {
                               title={`Actual: $${data.actual.toLocaleString()}`}
                             />
                           )}
-                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                            <line
-                              x1="5"
-                              y1={160 - budgetHeight}
-                              x2="45"
-                              y2={160 - budgetHeight}
-                              stroke={chartColors.budget}
-                              strokeWidth="3"
-                              strokeDasharray={data.actual ? "4,2" : "0"}
-                            />
-                            <circle
-                              cx="25"
-                              cy={160 - budgetHeight}
-                              r="4"
-                              fill={chartColors.budget}
-                              title={`Budget: $${data.budget.toLocaleString()}`}
-                            />
-                          </svg>
                         </div>
-                        <span className="text-xs text-gray-600">{data.month}</span>
                       </div>
                     );
                   })}
+                  </div>
+                  
+                  {/* Connecting Lines Overlay */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* Budget Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.budget}
+                      strokeWidth="3"
+                      strokeDasharray="4,2"
+                      points={[120000, 130000, 140000, 150000, 160000, 170000, 175000, 180000, 185000, 190000, 195000, 200000].map((budget, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (budget / 200000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Prior Year Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.prior}
+                      strokeWidth="3"
+                      strokeDasharray="2,3"
+                      points={[115000, 125000, 135000, 145000, 155000, 165000, 170000, 175000, 180000, 185000, 190000, 195000].map((prior, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (prior / 200000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Data Points */}
+                    {[120000, 130000, 140000, 150000, 160000, 170000, 175000, 180000, 185000, 190000, 195000, 200000].map((budget, index) => (
+                      <circle
+                        key={`budget-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (budget / 200000) * 160}
+                        r="4"
+                        fill={chartColors.budget}
+                        title={`Budget: $${budget.toLocaleString()}`}
+                      />
+                    ))}
+                    
+                    {[115000, 125000, 135000, 145000, 155000, 165000, 170000, 175000, 180000, 185000, 190000, 195000].map((prior, index) => (
+                      <circle
+                        key={`prior-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (prior / 200000) * 160}
+                        r="4"
+                        fill={chartColors.prior}
+                        title={`Prior Year: $${prior.toLocaleString()}`}
+                      />
+                    ))}
+                  </svg>
+                </div>
+                
+                {/* Month Labels */}
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+                
+                <div className="flex justify-center gap-6 mt-4 text-sm">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 rounded mr-2" style={{ backgroundColor: chartColors.actual }}></div>
+                    <span className="text-gray-600">Actual (Bars)</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.budget}`, width: '16px' }}></div>
+                    <span className="text-gray-600">Budget (Line)</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.prior}`, width: '16px' }}></div>
+                    <span className="text-gray-600">Prior Year (Line)</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -757,7 +884,8 @@ const Analytics: React.FC = () => {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h4 className="font-medium text-[#1E2A38] mb-4">Expenses - Bar Chart</h4>
               <div className="relative h-64">
-                <div className="flex items-end justify-between h-48 space-x-2">
+                <div className="relative h-48">
+                  <div className="flex items-end justify-between h-full">
                   {[
                     { month: 'Jan', actual: 285000, budget: 280000 },
                     { month: 'Feb', actual: 295000, budget: 290000 },
@@ -774,14 +902,13 @@ const Analytics: React.FC = () => {
                   ].map((data, index) => {
                     const maxValue = 390000;
                     const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
-                    const budgetHeight = (data.budget / maxValue) * 160;
                     
                     return (
-                      <div key={index} className="flex flex-col items-center min-w-[60px]">
-                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                      <div key={index} className="flex flex-col items-center" style={{ width: '60px' }}>
+                        <div className="relative" style={{ height: '160px', width: '40px' }}>
                           {data.actual && (
                             <div
-                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 rounded-t transition-all duration-300 hover:opacity-80"
                               style={{ 
                                 height: `${actualHeight}px`,
                                 backgroundColor: '#F87171'
@@ -789,29 +916,69 @@ const Analytics: React.FC = () => {
                               title={`Actual: $${data.actual.toLocaleString()}`}
                             />
                           )}
-                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                            <line
-                              x1="5"
-                              y1={160 - budgetHeight}
-                              x2="45"
-                              y2={160 - budgetHeight}
-                              stroke={chartColors.budget}
-                              strokeWidth="3"
-                              strokeDasharray={data.actual ? "4,2" : "0"}
-                            />
-                            <circle
-                              cx="25"
-                              cy={160 - budgetHeight}
-                              r="4"
-                              fill={chartColors.budget}
-                              title={`Budget: $${data.budget.toLocaleString()}`}
-                            />
-                          </svg>
                         </div>
-                        <span className="text-xs text-gray-600">{data.month}</span>
                       </div>
                     );
                   })}
+                  </div>
+                  
+                  {/* Connecting Lines Overlay */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* Budget Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.budget}
+                      strokeWidth="3"
+                      strokeDasharray="4,2"
+                      points={[280000, 290000, 300000, 310000, 320000, 330000, 340000, 350000, 360000, 370000, 380000, 390000].map((budget, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (budget / 390000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Prior Year Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.prior}
+                      strokeWidth="3"
+                      strokeDasharray="2,3"
+                      points={[275000, 285000, 295000, 305000, 315000, 325000, 335000, 345000, 355000, 365000, 375000, 385000].map((prior, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (prior / 390000) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Data Points */}
+                    {[280000, 290000, 300000, 310000, 320000, 330000, 340000, 350000, 360000, 370000, 380000, 390000].map((budget, index) => (
+                      <circle
+                        key={`budget-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (budget / 390000) * 160}
+                        r="4"
+                        fill={chartColors.budget}
+                        title={`Budget: $${budget.toLocaleString()}`}
+                      />
+                    ))}
+                    
+                    {[275000, 285000, 295000, 305000, 315000, 325000, 335000, 345000, 355000, 365000, 375000, 385000].map((prior, index) => (
+                      <circle
+                        key={`prior-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (prior / 390000) * 160}
+                        r="4"
+                        fill={chartColors.prior}
+                        title={`Prior Year: $${prior.toLocaleString()}`}
+                      />
+                    ))}
+                  </svg>
+                </div>
+                
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -858,7 +1025,8 @@ const Analytics: React.FC = () => {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h4 className="font-medium text-[#1E2A38] mb-4">Profit Margin % - Bar Chart</h4>
               <div className="relative h-64">
-                <div className="flex items-end justify-between h-48 space-x-2">
+                <div className="relative h-48">
+                  <div className="flex items-end justify-between h-full">
                   {[
                     { month: 'Jan', actual: 32.9, budget: 30.0 },
                     { month: 'Feb', actual: 33.7, budget: 31.0 },
@@ -875,14 +1043,13 @@ const Analytics: React.FC = () => {
                   ].map((data, index) => {
                     const maxValue = 40;
                     const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
-                    const budgetHeight = (data.budget / maxValue) * 160;
                     
                     return (
-                      <div key={index} className="flex flex-col items-center min-w-[60px]">
-                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                      <div key={index} className="flex flex-col items-center" style={{ width: '60px' }}>
+                        <div className="relative" style={{ height: '160px', width: '40px' }}>
                           {data.actual && (
                             <div
-                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 rounded-t transition-all duration-300 hover:opacity-80"
                               style={{ 
                                 height: `${actualHeight}px`,
                                 backgroundColor: '#4ADE80'
@@ -890,29 +1057,69 @@ const Analytics: React.FC = () => {
                               title={`Actual: ${data.actual.toFixed(1)}%`}
                             />
                           )}
-                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                            <line
-                              x1="5"
-                              y1={160 - budgetHeight}
-                              x2="45"
-                              y2={160 - budgetHeight}
-                              stroke={chartColors.budget}
-                              strokeWidth="3"
-                              strokeDasharray={data.actual ? "4,2" : "0"}
-                            />
-                            <circle
-                              cx="25"
-                              cy={160 - budgetHeight}
-                              r="4"
-                              fill={chartColors.budget}
-                              title={`Budget: ${data.budget.toFixed(1)}%`}
-                            />
-                          </svg>
                         </div>
-                        <span className="text-xs text-gray-600">{data.month}</span>
                       </div>
                     );
                   })}
+                  </div>
+                  
+                  {/* Connecting Lines Overlay */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {/* Budget Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.budget}
+                      strokeWidth="3"
+                      strokeDasharray="4,2"
+                      points={[30.0, 31.0, 31.8, 32.6, 33.3, 34.0, 33.7, 33.3, 33.0, 32.8, 32.5, 32.3].map((budget, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (budget / 40) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Prior Year Line */}
+                    <polyline
+                      fill="none"
+                      stroke={chartColors.prior}
+                      strokeWidth="3"
+                      strokeDasharray="2,3"
+                      points={[28.5, 29.2, 30.1, 30.8, 31.5, 32.2, 32.8, 33.1, 33.4, 33.7, 34.0, 34.3].map((prior, index) => {
+                        const x = 30 + (index * 60);
+                        const y = 160 - (prior / 40) * 160;
+                        return `${x},${y}`;
+                      }).join(' ')}
+                    />
+                    
+                    {/* Data Points */}
+                    {[30.0, 31.0, 31.8, 32.6, 33.3, 34.0, 33.7, 33.3, 33.0, 32.8, 32.5, 32.3].map((budget, index) => (
+                      <circle
+                        key={`budget-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (budget / 40) * 160}
+                        r="4"
+                        fill={chartColors.budget}
+                        title={`Budget: ${budget.toFixed(1)}%`}
+                      />
+                    ))}
+                    
+                    {[28.5, 29.2, 30.1, 30.8, 31.5, 32.2, 32.8, 33.1, 33.4, 33.7, 34.0, 34.3].map((prior, index) => (
+                      <circle
+                        key={`prior-${index}`}
+                        cx={30 + (index * 60)}
+                        cy={160 - (prior / 40) * 160}
+                        r="4"
+                        fill={chartColors.prior}
+                        title={`Prior Year: ${prior.toFixed(1)}%`}
+                      />
+                    ))}
+                  </svg>
+                </div>
+                
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
                 </div>
               </div>
             </div>
