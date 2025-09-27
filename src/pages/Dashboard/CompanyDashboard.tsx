@@ -159,8 +159,8 @@ const CompanyDashboard: React.FC = () => {
       </Card>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card title="AI Financial Summary" className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-4">
+        <Card title="AI Financial Summary">
           <div className="space-y-3">
             <div className="flex items-start p-3 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-lg border border-[#3AB7BF]/20">
               <div className="w-6 h-6 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center mr-2 flex-shrink-0">
@@ -213,23 +213,6 @@ const CompanyDashboard: React.FC = () => {
               <p className="text-xs text-gray-500">Last updated: 2 hours ago</p>
               <button className="text-xs text-[#3AB7BF] hover:underline">Ask AI →</button>
             </div>
-          </div>
-        </Card>
-
-        <Card title="Quick Actions">
-          <div className="space-y-2">
-            <button className="w-full p-2 text-left bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38] text-sm">Generate Report</p>
-              <p className="text-xs text-gray-600">Create monthly summary</p>
-            </button>
-            <button className="w-full p-2 text-left bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38] text-sm">Add Transaction</p>
-              <p className="text-xs text-gray-600">Record new income/expense</p>
-            </button>
-            <button className="w-full p-2 text-left bg-[#F87171]/10 hover:bg-[#F87171]/20 rounded-lg transition-colors">
-              <p className="font-medium text-[#1E2A38] text-sm">Review Alerts</p>
-              <p className="text-xs text-gray-600">3 items need attention</p>
-            </button>
           </div>
         </Card>
       </div>
