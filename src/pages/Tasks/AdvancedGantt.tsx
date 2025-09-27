@@ -878,7 +878,6 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                 <div
                   className="absolute top-0 bottom-0 w-0.5 bg-red-500 z-20 pointer-events-none"
                   style={{ left: differenceInDays(new Date(), startDate) * DAY_WIDTH }}
-                  const group = organizedGroups.find(g => g.id === task.groupId);
                 >
                   <div className="absolute -top-1 -left-6 bg-red-500 text-white px-1 py-0.5 rounded text-xs">
                     Today
@@ -887,13 +886,8 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 
                 {/* Tasks */}
                 {filteredTasks.map((task, index) => (
-                  <GanttTask
-                      groupColor={group?.color || '#6B7280'}
-                    key={task.id}
-                    task={task}
-                    startDate={startDate}
-                    onUpdate={(updates) => handleTaskUpdate(task.id, updates)}
-                    onMove={handleTaskMove}
+                  const group = organizedGroups.find(g => g.id === task.groupId);
+                  return (
           {/* Hierarchical Task Sidebar */}
           <HierarchicalTaskSidebar
             taskGroups={organizedGroups}
