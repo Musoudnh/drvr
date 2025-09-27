@@ -377,7 +377,7 @@ const BillingSettings: React.FC = () => {
 
       {/* Billing History */}
       <Card title="Enhanced Billing History">
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-600">Complete billing history with detailed breakdowns</p>
             <div className="flex gap-2">
@@ -392,7 +392,7 @@ const BillingSettings: React.FC = () => {
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { 
                 date: 'Jan 15, 2025', 
@@ -419,25 +419,31 @@ const BillingSettings: React.FC = () => {
                 paymentMethod: '**** 4532'
               }
             ].map((bill, index) => (
-              <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] transition-all">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <Calendar className="w-5 h-5 text-gray-400 mr-3" />
-                    <div>
-                      <p className="font-medium text-[#1E2A38]">{bill.date}</p>
-                      <p className="text-sm text-gray-600">Invoice: {bill.invoice} • {bill.paymentMethod}</p>
-                    </div>
+              <div key={index} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-[#3AB7BF] transition-all duration-200">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center">
+                    <CreditCard className="w-6 h-6 text-white" />
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <span className="font-bold text-[#1E2A38]">{bill.amount}</span>
-                    </div>
-                    <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">
-                      {bill.status}
-                    </span>
-                    <Button variant="outline" size="sm">
-                      <Download className="w-4 h-4 mr-1" />
-                      PDF
+                  <span className="px-3 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs font-medium">
+                    {bill.status.toUpperCase()}
+                  </span>
+                </div>
+                
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-2xl font-bold text-[#1E2A38]">{bill.amount}</p>
+                    <p className="text-sm text-gray-500">{bill.date}</p>
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <p className="text-sm text-gray-600">Invoice: {bill.invoice}</p>
+                    <p className="text-sm text-gray-600">Payment: {bill.paymentMethod}</p>
+                  </div>
+                  
+                  <div className="pt-3 border-t border-gray-100">
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download PDF
                     </Button>
                   </div>
                 </div>
