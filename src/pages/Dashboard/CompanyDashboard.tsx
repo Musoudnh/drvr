@@ -134,11 +134,11 @@ const CompanyDashboard: React.FC = () => {
             </thead>
             <tbody>
               {[
-                { metric: 'Monthly Revenue', current: '$847,245', previous: '$753,200', budget: '$825,000', change: '+12.5%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
-                { metric: 'Customer Acquisition', current: '245', previous: '198', budget: '230', change: '+23.7%', vsBudget: '+6.5%', positive: true, budgetPositive: true },
-                { metric: 'Average Order Value', current: '$3,456', previous: '$3,201', budget: '$3,400', change: '+8.0%', vsBudget: '+1.6%', positive: true, budgetPositive: true },
-                { metric: 'Customer Churn', current: '2.1%', previous: '2.4%', budget: '2.5%', change: '-0.3%', vsBudget: '-0.4%', positive: true, budgetPositive: true },
-                { metric: 'Cost per Acquisition', current: '$145', previous: '$167', budget: '$155', change: '-13.2%', vsBudget: '-6.5%', positive: true, budgetPositive: true }
+                { metric: 'Revenue', current: '$847,245', previous: '$753,200', budget: '$825,000', change: '+12.5%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
+                { metric: 'Gross Profit', current: '$526,272', previous: '$467,488', budget: '$512,250', change: '+12.6%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
+                { metric: 'Operational Expenses', current: '$265,890', previous: '$248,120', budget: '$275,000', change: '+7.2%', vsBudget: '-3.3%', positive: false, budgetPositive: true },
+                { metric: 'Net Income', current: '$224,065', previous: '$185,340', budget: '$195,000', change: '+20.9%', vsBudget: '+14.9%', positive: true, budgetPositive: true },
+                { metric: 'Net Margin', current: '26.4%', previous: '24.6%', budget: '23.6%', change: '+1.8%', vsBudget: '+2.8%', positive: true, budgetPositive: true }
               ].map((row, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="py-2 px-3 font-medium text-[#1E2A38] text-sm">{row.metric}</td>
