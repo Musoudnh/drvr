@@ -279,3 +279,8 @@ const BillingSettings: React.FC = () => {
             <Button variant="outline" size="sm">Browse All</Button>
           </div>
         </div>
+    </div>
+  );
+};
+
+export default BillingSettings;
