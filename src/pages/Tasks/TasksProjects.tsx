@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import AdvancedGantt from './AdvancedGantt';
 import { 
   Plus, 
   Search, 
@@ -629,23 +628,12 @@ const TasksProjects: React.FC = () => {
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
               {viewMode === 'gantt' && (
-                <div className="mt-4">
-                <AdvancedGantt 
-                  tasks={filteredTasks}
-                  onTaskUpdate={(taskId, updates) => {
-                    setTasks(prev => prev.map(task => 
-                      task.id === taskId ? { ...task, ...updates } : task
-                    ));
-                  }}
-                  onTaskMove={(fromIndex, toIndex) => {
-                    setTasks(prev => {
-                      const updated = [...prev];
-                      const [moved] = updated.splice(fromIndex, 1);
-                      updated.splice(toIndex, 0, moved);
-                      return updated;
-                    });
-                  }}
-                />
+                <div className="flex items-center justify-center h-96">
+                  <div className="text-center">
+                    <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-500 mb-2">Gantt View</h3>
+                    <p className="text-gray-400">Gantt chart functionality coming soon</p>
+                  </div>
                 </div>
               )}
             </div>
