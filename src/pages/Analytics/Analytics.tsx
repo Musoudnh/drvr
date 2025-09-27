@@ -79,6 +79,12 @@ const Analytics: React.FC = () => {
   const [selectedRootCause, setSelectedRootCause] = useState<RootCauseAnalysis | null>(null);
   const [showPrescriptiveModal, setShowPrescriptiveModal] = useState(false);
   const [showCustomerSegments, setShowCustomerSegments] = useState(false);
+  const [chartColors, setChartColors] = useState({
+    actual: '#3AB7BF',
+    budget: '#8B5CF6',
+    prior: '#F59E0B'
+  });
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const [prescriptiveActions, setPrescriptiveActions] = useState<PrescriptiveAction[]>([
     {
@@ -246,35 +252,115 @@ const Analytics: React.FC = () => {
         <div className="space-y-6">
           {/* Comparison Chart */}
           <div className="relative h-64 bg-gray-50 rounded-lg p-4">
-            <h4 className="font-semibold text-[#1E2A38] mb-4">Subcategory Comparison</h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-semibold text-[#1E2A38]">Subcategory Comparison</h4>
+              <button
+                onClick={() => setShowColorPicker(!showColorPicker)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Customize colors"
+              >
+                <Settings className="w-4 h-4 text-gray-400" />
+              </button>
+            </div>
+            
+            {/* Color Picker Panel */}
+            {showColorPicker && (
+              <div className="absolute top-16 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10">
+                <h5 className="font-medium text-[#1E2A38] mb-3">Chart Colors</h5>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Actual (Bars)</span>
+                    <input
+                      type="color"
+                      value={chartColors.actual}
+                      onChange={(e) => setChartColors({...chartColors, actual: e.target.value})}
+                      className="w-8 h-8 rounded border border-gray-300"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Budget (Line)</span>
+                    <input
+                      type="color"
+                      value={chartColors.budget}
+                      onChange={(e) => setChartColors({...chartColors, budget: e.target.value})}
+                      className="w-8 h-8 rounded border border-gray-300"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Prior (Line)</span>
+                    <input
+                      type="color"
+                      value={chartColors.prior}
+                      onChange={(e) => setChartColors({...chartColors, prior: e.target.value})}
+                      className="w-8 h-8 rounded border border-gray-300"
+                    />
+                  </div>
+                  <button
+                    onClick={() => setChartColors({ actual: '#3AB7BF', budget: '#8B5CF6', prior: '#F59E0B' })}
+                    className="w-full px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                  >
+                    Reset to Default
+                  </button>
+                </div>
+              </div>
+            )}
+            
             <div className="flex items-end justify-between h-48 space-x-2">
               {categoryData.subcategories.map((item: any, index: number) => {
                 const maxValue = Math.max(item.actual, item.budget, item.prior);
                 const actualHeight = (item.actual / maxValue) * 160;
-                const budgetHeight = (item.budget / maxValue) * 160;
-                const priorHeight = (item.prior / maxValue) * 160;
                 
                 return (
                   <div key={index} className="flex flex-col items-center min-w-[100px]">
-                    <div className="flex items-end space-x-1 mb-2">
-                      {/* Actual */}
+                    <div className="relative mb-2" style={{ height: '160px', width: '60px' }}>
+                      {/* Actual Bar */}
                       <div
-                        className="w-6 bg-[#3AB7BF] rounded-t transition-all duration-300 hover:opacity-80"
-                        style={{ height: `${actualHeight}px` }}
+                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 rounded-t transition-all duration-300 hover:opacity-80"
+                        style={{ 
+                          height: `${actualHeight}px`,
+                          backgroundColor: chartColors.actual
+                        }}
                         title={`Actual: $${item.actual.toLocaleString()}`}
                       />
-                      {/* Budget */}
-                      <div
-                        className="w-6 bg-[#8B5CF6] rounded-t transition-all duration-300 hover:opacity-80"
-                        style={{ height: `${budgetHeight}px` }}
-                        title={`Budget: $${item.budget.toLocaleString()}`}
-                      />
-                      {/* Prior */}
-                      <div
-                        className="w-6 bg-[#F59E0B] rounded-t transition-all duration-300 hover:opacity-80"
-                        style={{ height: `${priorHeight}px` }}
-                        title={`Prior: $${item.prior.toLocaleString()}`}
-                      />
+                      
+                      {/* Budget and Prior Lines */}
+                      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                        {/* Budget Line */}
+                        <line
+                          x1="10"
+                          y1={160 - (item.budget / maxValue) * 160}
+                          x2="50"
+                          y2={160 - (item.budget / maxValue) * 160}
+                          stroke={chartColors.budget}
+                          strokeWidth="3"
+                          strokeDasharray="4,2"
+                        />
+                        <circle
+                          cx="30"
+                          cy={160 - (item.budget / maxValue) * 160}
+                          r="4"
+                          fill={chartColors.budget}
+                          title={`Budget: $${item.budget.toLocaleString()}`}
+                        />
+                        
+                        {/* Prior Line */}
+                        <line
+                          x1="10"
+                          y1={160 - (item.prior / maxValue) * 160}
+                          x2="50"
+                          y2={160 - (item.prior / maxValue) * 160}
+                          stroke={chartColors.prior}
+                          strokeWidth="3"
+                          strokeDasharray="2,2"
+                        />
+                        <circle
+                          cx="30"
+                          cy={160 - (item.prior / maxValue) * 160}
+                          r="4"
+                          fill={chartColors.prior}
+                          title={`Prior: $${item.prior.toLocaleString()}`}
+                        />
+                      </svg>
                     </div>
                     
                     {/* Category label */}
@@ -289,16 +375,16 @@ const Analytics: React.FC = () => {
             {/* Legend */}
             <div className="flex justify-center gap-6 mt-4 text-sm">
               <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-                <span className="text-gray-600">Actual</span>
+                <div className="w-4 h-4 rounded mr-2" style={{ backgroundColor: chartColors.actual }}></div>
+                <span className="text-gray-600">Actual (Bars)</span>
               </div>
               <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#8B5CF6] rounded mr-2"></div>
-                <span className="text-gray-600">Budget</span>
+                <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.budget}`, width: '16px' }}></div>
+                <span className="text-gray-600">Budget (Line)</span>
               </div>
               <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#F59E0B] rounded mr-2"></div>
-                <span className="text-gray-600">Prior Year</span>
+                <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px dashed ${chartColors.prior}`, width: '16px' }}></div>
+                <span className="text-gray-600">Prior Year (Line)</span>
               </div>
             </div>
           </div>
@@ -327,10 +413,10 @@ const Analytics: React.FC = () => {
                       <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
                         ${item.actual.toLocaleString()}
                       </td>
-                      <td className="py-3 px-4 text-right font-medium text-[#8B5CF6]">
+                      <td className="py-3 px-4 text-right font-medium" style={{ color: chartColors.budget }}>
                         ${item.budget.toLocaleString()}
                       </td>
-                      <td className="py-3 px-4 text-right font-medium text-[#F59E0B]">
+                      <td className="py-3 px-4 text-right font-medium" style={{ color: chartColors.prior }}>
                         ${item.prior.toLocaleString()}
                       </td>
                       <td className="py-3 px-4 text-right font-medium">
