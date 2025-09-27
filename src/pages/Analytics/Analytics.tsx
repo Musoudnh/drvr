@@ -495,6 +495,491 @@ const Analytics: React.FC = () => {
       {/* Category Breakdown */}
       {selectedCategory && renderCategoryBreakdown()}
 
+      {/* Comprehensive Financial Visualizations */}
+      <Card title="Annual Financial Performance - Actual vs Budget">
+        <div className="space-y-8">
+          {/* Chart Controls */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-gray-600">Chart Colors:</span>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center">
+                  <span className="text-xs text-gray-600 mr-2">Actual:</span>
+                  <input
+                    type="color"
+                    value={chartColors.actual}
+                    onChange={(e) => setChartColors({...chartColors, actual: e.target.value})}
+                    className="w-6 h-6 rounded border border-gray-300"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <span className="text-xs text-gray-600 mr-2">Budget:</span>
+                  <input
+                    type="color"
+                    value={chartColors.budget}
+                    onChange={(e) => setChartColors({...chartColors, budget: e.target.value})}
+                    className="w-6 h-6 rounded border border-gray-300"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={() => setChartColors({ actual: '#3AB7BF', budget: '#8B5CF6', prior: '#F59E0B' })}
+                className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+              >
+                Reset Colors
+              </button>
+            </div>
+          </div>
+
+          {/* Revenue Summary Charts */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-[#1E2A38]">1. Revenue Summary</h3>
+            
+            {/* Revenue Bar Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Revenue - Bar Chart</h4>
+              <div className="relative h-64">
+                <div className="flex items-end justify-between h-48 space-x-2">
+                  {[
+                    { month: 'Jan', actual: 425000, budget: 400000 },
+                    { month: 'Feb', actual: 445000, budget: 420000 },
+                    { month: 'Mar', actual: 465000, budget: 440000 },
+                    { month: 'Apr', actual: 485000, budget: 460000 },
+                    { month: 'May', actual: 505000, budget: 480000 },
+                    { month: 'Jun', actual: 525000, budget: 500000 },
+                    { month: 'Jul', actual: null, budget: 520000 },
+                    { month: 'Aug', actual: null, budget: 540000 },
+                    { month: 'Sep', actual: null, budget: 560000 },
+                    { month: 'Oct', actual: null, budget: 580000 },
+                    { month: 'Nov', actual: null, budget: 600000 },
+                    { month: 'Dec', actual: null, budget: 620000 }
+                  ].map((data, index) => {
+                    const maxValue = 620000;
+                    const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
+                    const budgetHeight = (data.budget / maxValue) * 160;
+                    
+                    return (
+                      <div key={index} className="flex flex-col items-center min-w-[60px]">
+                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                          {/* Actual Bar (for completed months) */}
+                          {data.actual && (
+                            <div
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              style={{ 
+                                height: `${actualHeight}px`,
+                                backgroundColor: chartColors.actual
+                              }}
+                              title={`Actual: $${data.actual.toLocaleString()}`}
+                            />
+                          )}
+                          
+                          {/* Budget Line */}
+                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            <line
+                              x1="5"
+                              y1={160 - budgetHeight}
+                              x2="45"
+                              y2={160 - budgetHeight}
+                              stroke={chartColors.budget}
+                              strokeWidth="3"
+                              strokeDasharray={data.actual ? "4,2" : "0"}
+                            />
+                            <circle
+                              cx="25"
+                              cy={160 - budgetHeight}
+                              r="4"
+                              fill={chartColors.budget}
+                              title={`Budget: $${data.budget.toLocaleString()}`}
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-xs text-gray-600">{data.month}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex justify-center gap-6 mt-4 text-sm">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 rounded mr-2" style={{ backgroundColor: chartColors.actual }}></div>
+                    <span className="text-gray-600">Actual</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-4 h-0.5 mr-2" style={{ borderTop: `3px solid ${chartColors.budget}`, width: '16px' }}></div>
+                    <span className="text-gray-600">Budget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Revenue Line Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Revenue - Line Chart</h4>
+              <div className="relative h-64">
+                <svg className="w-full h-48">
+                  {/* Actual Line (Jan-Jun) */}
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.actual}
+                    strokeWidth="3"
+                    points="50,140 110,130 170,120 230,110 290,100 350,90"
+                  />
+                  {/* Budget Line (Full Year) */}
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.budget}
+                    strokeWidth="3"
+                    strokeDasharray="5,5"
+                    points="50,150 110,140 170,130 230,120 290,110 350,100 410,95 470,85 530,75 590,65 650,55 710,45"
+                  />
+                  {/* Data Points */}
+                  {[140, 130, 120, 110, 100, 90].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="4" fill={chartColors.actual} />
+                  ))}
+                  {[150, 140, 130, 120, 110, 100, 95, 85, 75, 65, 55, 45].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="3" fill={chartColors.budget} />
+                  ))}
+                </svg>
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Profit Summary Charts */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-[#1E2A38]">2. Profit Summary</h3>
+            
+            {/* Profit Bar Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Profit - Bar Chart</h4>
+              <div className="relative h-64">
+                <div className="flex items-end justify-between h-48 space-x-2">
+                  {[
+                    { month: 'Jan', actual: 140000, budget: 120000 },
+                    { month: 'Feb', actual: 150000, budget: 130000 },
+                    { month: 'Mar', actual: 160000, budget: 140000 },
+                    { month: 'Apr', actual: 170000, budget: 150000 },
+                    { month: 'May', actual: 180000, budget: 160000 },
+                    { month: 'Jun', actual: 190000, budget: 170000 },
+                    { month: 'Jul', actual: null, budget: 175000 },
+                    { month: 'Aug', actual: null, budget: 180000 },
+                    { month: 'Sep', actual: null, budget: 185000 },
+                    { month: 'Oct', actual: null, budget: 190000 },
+                    { month: 'Nov', actual: null, budget: 195000 },
+                    { month: 'Dec', actual: null, budget: 200000 }
+                  ].map((data, index) => {
+                    const maxValue = 200000;
+                    const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
+                    const budgetHeight = (data.budget / maxValue) * 160;
+                    
+                    return (
+                      <div key={index} className="flex flex-col items-center min-w-[60px]">
+                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                          {data.actual && (
+                            <div
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              style={{ 
+                                height: `${actualHeight}px`,
+                                backgroundColor: chartColors.actual
+                              }}
+                              title={`Actual: $${data.actual.toLocaleString()}`}
+                            />
+                          )}
+                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            <line
+                              x1="5"
+                              y1={160 - budgetHeight}
+                              x2="45"
+                              y2={160 - budgetHeight}
+                              stroke={chartColors.budget}
+                              strokeWidth="3"
+                              strokeDasharray={data.actual ? "4,2" : "0"}
+                            />
+                            <circle
+                              cx="25"
+                              cy={160 - budgetHeight}
+                              r="4"
+                              fill={chartColors.budget}
+                              title={`Budget: $${data.budget.toLocaleString()}`}
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-xs text-gray-600">{data.month}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Profit Line Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Profit - Line Chart</h4>
+              <div className="relative h-64">
+                <svg className="w-full h-48">
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.actual}
+                    strokeWidth="3"
+                    points="50,120 110,110 170,100 230,90 290,80 350,70"
+                  />
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.budget}
+                    strokeWidth="3"
+                    strokeDasharray="5,5"
+                    points="50,140 110,130 170,120 230,110 290,100 350,90 410,85 470,80 530,75 590,70 650,65 710,60"
+                  />
+                  {[120, 110, 100, 90, 80, 70].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="4" fill={chartColors.actual} />
+                  ))}
+                  {[140, 130, 120, 110, 100, 90, 85, 80, 75, 70, 65, 60].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="3" fill={chartColors.budget} />
+                  ))}
+                </svg>
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Expense Summary Charts */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-[#1E2A38]">3. Expense Summary</h3>
+            
+            {/* Expense Bar Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Expenses - Bar Chart</h4>
+              <div className="relative h-64">
+                <div className="flex items-end justify-between h-48 space-x-2">
+                  {[
+                    { month: 'Jan', actual: 285000, budget: 280000 },
+                    { month: 'Feb', actual: 295000, budget: 290000 },
+                    { month: 'Mar', actual: 305000, budget: 300000 },
+                    { month: 'Apr', actual: 315000, budget: 310000 },
+                    { month: 'May', actual: 325000, budget: 320000 },
+                    { month: 'Jun', actual: 335000, budget: 330000 },
+                    { month: 'Jul', actual: null, budget: 340000 },
+                    { month: 'Aug', actual: null, budget: 350000 },
+                    { month: 'Sep', actual: null, budget: 360000 },
+                    { month: 'Oct', actual: null, budget: 370000 },
+                    { month: 'Nov', actual: null, budget: 380000 },
+                    { month: 'Dec', actual: null, budget: 390000 }
+                  ].map((data, index) => {
+                    const maxValue = 390000;
+                    const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
+                    const budgetHeight = (data.budget / maxValue) * 160;
+                    
+                    return (
+                      <div key={index} className="flex flex-col items-center min-w-[60px]">
+                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                          {data.actual && (
+                            <div
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              style={{ 
+                                height: `${actualHeight}px`,
+                                backgroundColor: '#F87171'
+                              }}
+                              title={`Actual: $${data.actual.toLocaleString()}`}
+                            />
+                          )}
+                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            <line
+                              x1="5"
+                              y1={160 - budgetHeight}
+                              x2="45"
+                              y2={160 - budgetHeight}
+                              stroke={chartColors.budget}
+                              strokeWidth="3"
+                              strokeDasharray={data.actual ? "4,2" : "0"}
+                            />
+                            <circle
+                              cx="25"
+                              cy={160 - budgetHeight}
+                              r="4"
+                              fill={chartColors.budget}
+                              title={`Budget: $${data.budget.toLocaleString()}`}
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-xs text-gray-600">{data.month}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Expense Line Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Expenses - Line Chart</h4>
+              <div className="relative h-64">
+                <svg className="w-full h-48">
+                  <polyline
+                    fill="none"
+                    stroke="#F87171"
+                    strokeWidth="3"
+                    points="50,120 110,115 170,110 230,105 290,100 350,95"
+                  />
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.budget}
+                    strokeWidth="3"
+                    strokeDasharray="5,5"
+                    points="50,125 110,120 170,115 230,110 290,105 350,100 410,95 470,90 530,85 590,80 650,75 710,70"
+                  />
+                  {[120, 115, 110, 105, 100, 95].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="4" fill="#F87171" />
+                  ))}
+                  {[125, 120, 115, 110, 105, 100, 95, 90, 85, 80, 75, 70].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="3" fill={chartColors.budget} />
+                  ))}
+                </svg>
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Margin Summary Charts */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-[#1E2A38]">4. Margin Summary</h3>
+            
+            {/* Margin Bar Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Profit Margin % - Bar Chart</h4>
+              <div className="relative h-64">
+                <div className="flex items-end justify-between h-48 space-x-2">
+                  {[
+                    { month: 'Jan', actual: 32.9, budget: 30.0 },
+                    { month: 'Feb', actual: 33.7, budget: 31.0 },
+                    { month: 'Mar', actual: 34.4, budget: 31.8 },
+                    { month: 'Apr', actual: 35.1, budget: 32.6 },
+                    { month: 'May', actual: 35.6, budget: 33.3 },
+                    { month: 'Jun', actual: 36.2, budget: 34.0 },
+                    { month: 'Jul', actual: null, budget: 33.7 },
+                    { month: 'Aug', actual: null, budget: 33.3 },
+                    { month: 'Sep', actual: null, budget: 33.0 },
+                    { month: 'Oct', actual: null, budget: 32.8 },
+                    { month: 'Nov', actual: null, budget: 32.5 },
+                    { month: 'Dec', actual: null, budget: 32.3 }
+                  ].map((data, index) => {
+                    const maxValue = 40;
+                    const actualHeight = data.actual ? (data.actual / maxValue) * 160 : 0;
+                    const budgetHeight = (data.budget / maxValue) * 160;
+                    
+                    return (
+                      <div key={index} className="flex flex-col items-center min-w-[60px]">
+                        <div className="relative mb-2" style={{ height: '160px', width: '50px' }}>
+                          {data.actual && (
+                            <div
+                              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 rounded-t transition-all duration-300 hover:opacity-80"
+                              style={{ 
+                                height: `${actualHeight}px`,
+                                backgroundColor: '#4ADE80'
+                              }}
+                              title={`Actual: ${data.actual.toFixed(1)}%`}
+                            />
+                          )}
+                          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                            <line
+                              x1="5"
+                              y1={160 - budgetHeight}
+                              x2="45"
+                              y2={160 - budgetHeight}
+                              stroke={chartColors.budget}
+                              strokeWidth="3"
+                              strokeDasharray={data.actual ? "4,2" : "0"}
+                            />
+                            <circle
+                              cx="25"
+                              cy={160 - budgetHeight}
+                              r="4"
+                              fill={chartColors.budget}
+                              title={`Budget: ${data.budget.toFixed(1)}%`}
+                            />
+                          </svg>
+                        </div>
+                        <span className="text-xs text-gray-600">{data.month}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Margin Line Chart */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h4 className="font-medium text-[#1E2A38] mb-4">Profit Margin % - Line Chart</h4>
+              <div className="relative h-64">
+                <svg className="w-full h-48">
+                  <polyline
+                    fill="none"
+                    stroke="#4ADE80"
+                    strokeWidth="3"
+                    points="50,130 110,125 170,120 230,115 290,110 350,105"
+                  />
+                  <polyline
+                    fill="none"
+                    stroke={chartColors.budget}
+                    strokeWidth="3"
+                    strokeDasharray="5,5"
+                    points="50,140 110,135 170,130 230,125 290,120 350,115 410,118 470,120 530,122 590,124 650,126 710,128"
+                  />
+                  {[130, 125, 120, 115, 110, 105].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="4" fill="#4ADE80" />
+                  ))}
+                  {[140, 135, 130, 125, 120, 115, 118, 120, 122, 124, 126, 128].map((y, index) => (
+                    <circle key={index} cx={50 + index * 60} cy={y} r="3" fill={chartColors.budget} />
+                  ))}
+                </svg>
+                <div className="flex justify-between mt-4 text-xs text-gray-500">
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, index) => (
+                    <span key={index}>{month}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Summary Statistics */}
+          <div className="bg-gray-50 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-[#1E2A38] mb-4">Year-to-Date Performance Summary</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <p className="text-2xl font-bold" style={{ color: chartColors.actual }}>$2.85M</p>
+                <p className="text-sm text-gray-600">YTD Revenue (Actual)</p>
+                <p className="text-xs text-[#4ADE80]">+7.9% vs Budget</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold" style={{ color: chartColors.actual }}>$990K</p>
+                <p className="text-sm text-gray-600">YTD Profit (Actual)</p>
+                <p className="text-xs text-[#4ADE80]">+15.4% vs Budget</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#F87171]">$1.86M</p>
+                <p className="text-sm text-gray-600">YTD Expenses (Actual)</p>
+                <p className="text-xs text-[#4ADE80]">-2.1% vs Budget</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-[#4ADE80]">34.7%</p>
+                <p className="text-sm text-gray-600">YTD Margin (Actual)</p>
+                <p className="text-xs text-[#4ADE80]">+2.8% vs Budget</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
       {/* Main Analytics Section */}
       <Card title="Key Performance Metrics">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -793,4 +1278,3 @@ const Analytics: React.FC = () => {
 };
 
 export default Analytics;
-                
