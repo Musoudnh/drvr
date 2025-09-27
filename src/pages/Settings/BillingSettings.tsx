@@ -55,109 +55,39 @@ const BillingSettings: React.FC = () => {
 
       {/* Current Plan */}
       <Card title="Current Plan">
-        <div className="relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-full blur-xl -translate-y-8 translate-x-8"></div>
+        <div className="space-y-4">
+          {/* Plan Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <span className="text-white font-medium text-sm">P</span>
+              </div>
+              <div>
+                <h3 className="font-medium text-[#1E2A38]">Professional Plan</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-bold text-[#1E2A38]">$79</span>
+                  <span className="text-sm text-gray-600">per month</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm">Change Plan</Button>
+              <Button variant="danger" size="sm">Cancel</Button>
+            </div>
+          </div>
           
-          <div className="relative space-y-6">
-            {/* Plan Header */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#3AB7BF] to-[#4ADE80] rounded-2xl flex items-center justify-center mr-4 shadow-lg">
-                  <span className="text-white font-bold text-xl">P</span>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-[#1E2A38] mb-1">Professional Plan</h3>
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl font-bold text-[#3AB7BF]">$79</span>
-                    <div className="text-gray-600">
-                      <p className="text-sm">per month</p>
-                      <p className="text-xs">Billed monthly</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Button variant="outline" size="sm">Change Plan</Button>
-                <Button variant="danger" size="sm">Cancel</Button>
+          {/* Next Billing */}
+          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center">
+              <Calendar className="w-5 h-5 text-gray-400 mr-3" />
+              <div>
+                <p className="font-medium text-[#1E2A38]">Next Billing Date</p>
+                <p className="text-sm text-gray-600">February 15, 2025</p>
               </div>
             </div>
-            
-            {/* Next Billing */}
-            <div className="p-4 bg-gradient-to-r from-[#8B5CF6]/10 to-[#3AB7BF]/10 rounded-xl border border-[#8B5CF6]/20">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Calendar className="w-5 h-5 text-[#8B5CF6] mr-3" />
-                  <div>
-                    <p className="font-semibold text-[#1E2A38]">Next Billing Date</p>
-                    <p className="text-sm text-gray-600">February 15, 2025</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold text-[#8B5CF6]">$79.00</p>
-                  <p className="text-xs text-gray-500">Auto-renewal</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Plan Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-5 bg-white rounded-xl border-2 border-[#4ADE80]/20 hover:border-[#4ADE80]/40 transition-all duration-200 shadow-sm hover:shadow-md">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#4ADE80]/20 rounded-xl flex items-center justify-center">
-                    <Users className="w-5 h-5 text-[#4ADE80]" />
-                  </div>
-                  <span className="text-xs font-medium text-[#4ADE80] bg-[#4ADE80]/10 px-2 py-1 rounded-full">48% used</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-2xl font-bold text-[#1E2A38]">12</span>
-                    <span className="text-sm text-gray-500">/ 25</span>
-                  </div>
-                  <p className="text-sm font-medium text-gray-700">Team Members</p>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#4ADE80] h-2 rounded-full transition-all duration-500" style={{ width: '48%' }} />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-5 bg-white rounded-xl border-2 border-[#3AB7BF]/20 hover:border-[#3AB7BF]/40 transition-all duration-200 shadow-sm hover:shadow-md">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#3AB7BF]/20 rounded-xl flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-[#3AB7BF]" />
-                  </div>
-                  <span className="text-xs font-medium text-[#F59E0B] bg-[#F59E0B]/10 px-2 py-1 rounded-full">84.5% used</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-2xl font-bold text-[#1E2A38]">8.4K</span>
-                    <span className="text-sm text-gray-500">/ 10K</span>
-                  </div>
-                  <p className="text-sm font-medium text-gray-700">API Calls</p>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#3AB7BF] h-2 rounded-full transition-all duration-500" style={{ width: '84.5%' }} />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-5 bg-white rounded-xl border-2 border-[#F59E0B]/20 hover:border-[#F59E0B]/40 transition-all duration-200 shadow-sm hover:shadow-md">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-[#F59E0B]/20 rounded-xl flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 text-[#F59E0B]" />
-                  </div>
-                  <span className="text-xs font-medium text-[#4ADE80] bg-[#4ADE80]/10 px-2 py-1 rounded-full">48% used</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-2xl font-bold text-[#1E2A38]">2.4</span>
-                    <span className="text-sm text-gray-500">/ 5 GB</span>
-                  </div>
-                  <p className="text-sm font-medium text-gray-700">Storage</p>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#F59E0B] h-2 rounded-full transition-all duration-500" style={{ width: '48%' }} />
-                  </div>
-                </div>
-              </div>
+            <div className="text-right">
+              <p className="font-bold text-[#1E2A38]">$79.00</p>
+              <p className="text-xs text-gray-500">Auto-renewal</p>
             </div>
           </div>
         </div>
