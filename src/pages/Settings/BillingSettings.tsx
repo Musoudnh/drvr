@@ -30,31 +30,10 @@ const BillingSettings: React.FC = () => {
     { id: '1', type: 'card', last4: '4532', expiryMonth: 12, expiryYear: 2027, isDefault: true, isValid: true },
     { id: '2', type: 'bank', last4: '7890', isDefault: false, isValid: true }
   ]);
-  const [billingAlerts, setBillingAlerts] = useState<BillingAlert[]>([
-    {
-      id: '1',
-      type: 'usage_limit',
-      message: 'You\'re approaching your API call limit (8,450/10,000)',
-      severity: 'medium',
-      createdAt: new Date(Date.now() - 3600000),
-      isRead: false
-    },
-    {
-      id: '2',
-      type: 'plan_upgrade',
-      message: 'Consider upgrading to Enterprise for unlimited team members',
-      severity: 'low',
-      createdAt: new Date(Date.now() - 86400000),
-      isRead: false
-    }
-  ]);
   const [autoPayEnabled, setAutoPayEnabled] = useState(true);
-  const [usageAlerts, setUsageAlerts] = useState(true);
 
   const handleMarkAlertRead = (alertId: string) => {
-    setBillingAlerts(prev => prev.map(alert =>
-      alert.id === alertId ? { ...alert, isRead: true } : alert
-    ));
+    // Alert handling logic can be added here if needed
   };
 
   const getAlertColor = (severity: string) => {
@@ -73,47 +52,6 @@ const BillingSettings: React.FC = () => {
         <p className="text-gray-600 mt-1">Manage your plan, billing, and usage with automated alerts</p>
       </div>
 
-      {/* Billing Alerts */}
-      {billingAlerts.filter(a => !a.isRead).length > 0 && (
-        <Card>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-[#1E2A38] flex items-center">
-                <Bell className="w-4 h-4 mr-2 text-[#F59E0B]" />
-                Billing Alerts
-              </h3>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowAlertsModal(true)}
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                Configure
-              </Button>
-            </div>
-            
-            {billingAlerts.filter(a => !a.isRead).map(alert => (
-              <div 
-                key={alert.id}
-                className={`p-3 rounded-lg border-l-4 ${getAlertColor(alert.severity)}`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{alert.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">{alert.createdAt.toLocaleString()}</p>
-                  </div>
-                  <button
-                    onClick={() => handleMarkAlertRead(alert.id)}
-                    className="p-1 hover:bg-gray-100 rounded ml-2"
-                  >
-                    <X className="w-3 h-3 text-gray-400" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
 
       {/* Current Plan */}
       <Card title="Current Plan">
