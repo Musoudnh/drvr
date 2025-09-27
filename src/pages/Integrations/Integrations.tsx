@@ -7,10 +7,13 @@ const Integrations: React.FC = () => {
   const integrations = [
     { name: 'QuickBooks', description: 'Sync your accounting data automatically', status: 'connected', icon: '📊' },
     { name: 'Stripe', description: 'Payment processing and revenue tracking', status: 'connected', icon: '💳' },
-    { name: 'Slack', description: 'Get notifications in your workspace', status: 'available', icon: '💬' },
-    { name: 'Salesforce', description: 'CRM data integration', status: 'available', icon: '🏢' },
-    { name: 'HubSpot', description: 'Marketing and sales automation', status: 'available', icon: '🚀' },
-    { name: 'Zapier', description: 'Connect with 1000+ other apps', status: 'available', icon: '⚡' }
+    { name: 'QuickBooks', description: 'Accounting software integration', status: 'available', icon: '📊' },
+    { name: 'Sage', description: 'Business management software', status: 'available', icon: '📈' },
+    { name: 'Slack', description: 'Team communication platform', status: 'available', icon: '💬' },
+    { name: 'Shopify', description: 'E-commerce platform integration', status: 'available', icon: '🛒' },
+    { name: 'Outlook Calendar', description: 'Calendar and scheduling sync', status: 'available', icon: '📅' },
+    { name: 'Monday.com', description: 'Project management platform', status: 'available', icon: '📋' },
+    { name: 'ClickUp', description: 'Task and project management', status: 'available', icon: '✅' }
   ];
 
   return (
