@@ -22,21 +22,23 @@ const Integrations: React.FC = () => {
 
       {/* Connected Integrations */}
       <Card title="Connected Integrations">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4">
           {integrations.filter(integration => integration.status === 'connected').map((integration, index) => (
-            <div key={index} className="flex items-center justify-between p-4 border border-[#4ADE80]/30 bg-[#4ADE80]/5 rounded-lg">
+            <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <span className="text-2xl mr-3">{integration.icon}</span>
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <span className="text-white font-medium text-sm">
+                    {integration.name === 'QuickBooks' ? 'QB' : integration.name.substring(0, 2)}
+                  </span>
+                </div>
                 <div>
-                  <h3 className="font-semibold text-[#1E2A38]">{integration.name}</h3>
+                  <p className="font-medium text-[#1E2A38]">{integration.name}</p>
                   <p className="text-sm text-gray-600">{integration.description}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-[#4ADE80]" />
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4" />
-                </Button>
+                <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
+                <Button variant="outline" size="sm">Configure</Button>
               </div>
             </div>
           ))}
@@ -45,18 +47,24 @@ const Integrations: React.FC = () => {
 
       {/* Available Integrations */}
       <Card title="Available Integrations">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {integrations.filter(integration => integration.status === 'available').map((integration, index) => (
-            <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] hover:shadow-md transition-all">
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-2xl">{integration.icon}</span>
-                <Button variant="outline" size="sm">
-                  <Plus className="w-4 h-4 mr-1" />
-                  Connect
-                </Button>
+            <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center">
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <span className="text-white font-medium text-sm">
+                    {integration.name.substring(0, 2)}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-medium text-[#1E2A38]">{integration.name}</p>
+                  <p className="text-sm text-gray-600">{integration.description}</p>
+                </div>
               </div>
-              <h3 className="font-semibold text-[#1E2A38] mb-1">{integration.name}</h3>
-              <p className="text-sm text-gray-600">{integration.description}</p>
+              <Button variant="outline" size="sm">
+                <Plus className="w-4 h-4 mr-2" />
+                Connect
+              </Button>
             </div>
           ))}
         </div>
