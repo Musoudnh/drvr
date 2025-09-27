@@ -423,10 +423,6 @@ const BillingSettings: React.FC = () => {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <Calendar className="w-5 h-5 text-gray-400 mr-3" />
-                    <div>
-                      <p className="font-medium text-[#1E2A38]">{bill.date}</p>
-                      <p className="text-sm text-gray-600">{bill.invoice} • {bill.paymentMethod}</p>
-                    </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
