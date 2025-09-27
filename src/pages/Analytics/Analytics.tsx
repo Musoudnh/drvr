@@ -96,6 +96,36 @@ const Analytics: React.FC = () => {
       priority: 'high',
       timeframe: '3-6 months'
     },
+    {
+      metric: 'Customer Acquisition Cost',
+      currentValue: '$145',
+      targetValue: '$120',
+      actions: [
+        'Optimize ad targeting to reduce cost per click',
+        'Improve landing page conversion rates',
+        'Focus on organic acquisition channels',
+        'Implement customer referral program'
+      ],
+      expectedImpact: 'Save $25K monthly on acquisition',
+      confidence: 85,
+      priority: 'high',
+      timeframe: '2-4 months'
+    },
+    {
+      metric: 'Customer Lifetime Value',
+      currentValue: '$2,450',
+      targetValue: '$3,000',
+      actions: [
+        'Implement customer success program',
+        'Develop upselling strategies',
+        'Improve product stickiness',
+        'Reduce churn through better onboarding'
+      ],
+      expectedImpact: '+$550 per customer LTV',
+      confidence: 72,
+      priority: 'medium',
+      timeframe: '6-12 months'
+    }
   ]);
 
   const [customerSegments, setCustomerSegments] = useState<CustomerSegment[]>([
@@ -178,6 +208,8 @@ const Analytics: React.FC = () => {
     { id: 'profit', name: 'Profit', color: '#3AB7BF' },
     { id: 'expenses', name: 'Expenses', color: '#F87171' },
     { id: 'margin', name: 'Margin', color: '#F59E0B' },
+    { id: 'customers', name: 'Customers', color: '#8B5CF6' },
+    { id: 'cac', name: 'Customer Acquisition Cost', color: '#EC4899' }
   ];
 
   const getCorrelationColor = (correlation: number) => {
@@ -694,17 +726,4 @@ const Analytics: React.FC = () => {
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(action.priority)}`}>
                         {action.priority} priority
                       </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Analytics;
                 
