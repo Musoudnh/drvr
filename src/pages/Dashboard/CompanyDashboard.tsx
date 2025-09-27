@@ -42,7 +42,7 @@ const CompanyDashboard: React.FC = () => {
             </div>
             <div className="relative h-48">
               {/* Chart Container */}
-              <div className="h-36 relative">
+              <div className="h-64 relative">
                 {/* Prior Year Line Graph (2024) - Light Grey */}
                 <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
                   <polyline
@@ -50,10 +50,10 @@ const CompanyDashboard: React.FC = () => {
                     stroke="#94A3B8"
                     strokeWidth="2"
                     strokeDasharray="4,4"
-                    points="30,140 90,130 150,125 210,120 270,115 330,110 390,105 450,100 510,95 570,90 630,85 690,80"
+                    points="30,220 90,210 150,200 210,190 270,180 330,170 390,160 450,150 510,140 570,130 630,120 690,110"
                   />
                   {/* Data points for prior year */}
-                  {[140, 130, 125, 120, 115, 110, 105, 100, 95, 90, 85, 80].map((y, index) => (
+                  {[220, 210, 200, 190, 180, 170, 160, 150, 140, 130, 120, 110].map((y, index) => (
                     <circle key={index} cx={30 + index * 60} cy={y} r="3" fill="#94A3B8" />
                   ))}
                 </svg>
@@ -64,11 +64,11 @@ const CompanyDashboard: React.FC = () => {
                     fill="none"
                     stroke="#3B82F6"
                     strokeWidth="3"
-                    points="30,120 90,0 150,0 210,0 270,0 330,0 390,0 450,0 510,0 570,0 630,0 690,0"
+                    points="30,180 90,0 150,0 210,0 270,0 330,0 390,0 450,0 510,0 570,0 630,0 690,0"
                     strokeDasharray="0,0"
                   />
                   {/* Data points for current year - only January has data */}
-                  <circle cx="30" cy="120" r="4" fill="#3B82F6" />
+                  <circle cx="30" cy="180" r="4" fill="#3B82F6" />
                   {/* Placeholder points for future months (invisible) */}
                   {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((y, index) => (
                     <circle key={index} cx={90 + index * 60} cy={y} r="0" fill="#3B82F6" opacity="0" />
