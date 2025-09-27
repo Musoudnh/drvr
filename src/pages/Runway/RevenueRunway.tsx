@@ -174,6 +174,7 @@ const RevenueRunway: React.FC = () => {
             <div className="w-2 h-2 bg-[#3b82f6] rounded-full"></div>
           </div>
         </div>
+      </div>
 
       <div>
         <h2 className="text-2xl font-bold text-[#1E2A38]">Revenue Scenario Planning</h2>
@@ -595,11 +596,4 @@ const RevenueRunway: React.FC = () => {
   );
 };
 
-
-
-
-
-
-
-
-export default RevenueRunway
+export default RevenueRunway;
