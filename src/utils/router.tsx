@@ -40,6 +40,7 @@ import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
 import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
+import Sandbox from '../pages/Financials/Sandbox';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
@@ -259,6 +260,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Variance & Insights">
         <VarianceInsights />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/financials/sandbox",
+    element: (
+      <ProtectedRoute title="Financial Sandbox">
+        <Sandbox />
       </ProtectedRoute>
     )
   },
