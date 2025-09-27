@@ -50,24 +50,26 @@ const Integrations: React.FC = () => {
 
       {/* Available Integrations */}
       <Card title="Available Integrations">
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {integrations.filter(integration => integration.status === 'available').map((integration, index) => (
-            <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+            <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center">
                   <span className="text-white font-medium text-sm">
-                    {integration.name.substring(0, 2)}
+                    {integration.name === 'QuickBooks' ? 'QB' : 
+                     integration.name === 'Outlook Calendar' ? 'OC' :
+                     integration.name === 'Monday.com' ? 'MD' :
+                     integration.name === 'ClickUp' ? 'CU' :
+                     integration.name.substring(0, 2)}
                   </span>
                 </div>
-                <div>
-                  <p className="font-medium text-[#1E2A38]">{integration.name}</p>
-                  <p className="text-sm text-gray-600">{integration.description}</p>
-                </div>
+                <Button variant="outline" size="sm">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Connect
+                </Button>
               </div>
-              <Button variant="outline" size="sm">
-                <Plus className="w-4 h-4 mr-2" />
-                Connect
-              </Button>
+              <h3 className="font-medium text-[#1E2A38] mb-1">{integration.name}</h3>
+              <p className="text-sm text-gray-600">{integration.description}</p>
             </div>
           ))}
         </div>
