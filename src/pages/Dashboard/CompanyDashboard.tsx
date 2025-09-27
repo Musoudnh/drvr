@@ -130,16 +130,15 @@ const CompanyDashboard: React.FC = () => {
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Budget</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Previous</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Budget</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Target</th>
               </tr>
             </thead>
             <tbody>
               {[
-                { metric: 'Monthly Revenue', current: '$847,245', previous: '$753,200', budget: '$825,000', change: '+12.5%', vsBudget: '+2.7%', target: '$850,000', positive: true, budgetPositive: true },
-                { metric: 'Customer Acquisition', current: '245', previous: '198', budget: '230', change: '+23.7%', vsBudget: '+6.5%', target: '250', positive: true, budgetPositive: true },
-                { metric: 'Average Order Value', current: '$3,456', previous: '$3,201', budget: '$3,400', change: '+8.0%', vsBudget: '+1.6%', target: '$3,500', positive: true, budgetPositive: true },
-                { metric: 'Customer Churn', current: '2.1%', previous: '2.4%', budget: '2.5%', change: '-0.3%', vsBudget: '-0.4%', target: '2.0%', positive: true, budgetPositive: true },
-                { metric: 'Cost per Acquisition', current: '$145', previous: '$167', budget: '$155', change: '-13.2%', vsBudget: '-6.5%', target: '$140', positive: true, budgetPositive: true }
+                { metric: 'Monthly Revenue', current: '$847,245', previous: '$753,200', budget: '$825,000', change: '+12.5%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
+                { metric: 'Customer Acquisition', current: '245', previous: '198', budget: '230', change: '+23.7%', vsBudget: '+6.5%', positive: true, budgetPositive: true },
+                { metric: 'Average Order Value', current: '$3,456', previous: '$3,201', budget: '$3,400', change: '+8.0%', vsBudget: '+1.6%', positive: true, budgetPositive: true },
+                { metric: 'Customer Churn', current: '2.1%', previous: '2.4%', budget: '2.5%', change: '-0.3%', vsBudget: '-0.4%', positive: true, budgetPositive: true },
+                { metric: 'Cost per Acquisition', current: '$145', previous: '$167', budget: '$155', change: '-13.2%', vsBudget: '-6.5%', positive: true, budgetPositive: true }
               ].map((row, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                   <td className="py-2 px-3 font-medium text-[#1E2A38] text-sm">{row.metric}</td>
@@ -152,7 +151,6 @@ const CompanyDashboard: React.FC = () => {
                   <td className={`py-2 px-3 text-right font-medium text-sm ${row.budgetPositive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                     {row.vsBudget}
                   </td>
-                  <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.target}</td>
                 </tr>
               ))}
             </tbody>
