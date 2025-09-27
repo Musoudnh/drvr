@@ -388,33 +388,6 @@ const Sandbox: React.FC = () => {
 
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Financial Sandbox</h1>
-            <p className="text-sm text-gray-600 mt-1">Natural language financial calculations and scenario modeling</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsRightPanelExpanded(!isRightPanelExpanded)}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isRightPanelExpanded ? "Minimize panel" : "Expand panel"}
-            >
-              {isRightPanelExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            </button>
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              <Save className="w-4 h-4 mr-2" />
-              Save Session
-            </button>
-            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-              <Share2 className="w-4 h-4 mr-2" />
-              Share
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content - Split Screen */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - AI Chat Interface */}
