@@ -162,34 +162,40 @@ const CompanyDashboard: React.FC = () => {
       <div className="grid grid-cols-1 gap-4">
         <Card title="AI Financial Summary">
           <div className="space-y-3">
-            <div className="flex items-start p-3 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-lg border border-[#3AB7BF]/20">
-              <div className="w-6 h-6 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-                <span className="text-white text-xs font-bold">AI</span>
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              <div className="flex items-center">
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <span className="text-white font-medium text-sm">AI</span>
+                </div>
+                <div>
+                  <p className="font-medium text-[#1E2A38]">January 2025 Performance Insights</p>
+                  <p className="text-sm text-gray-600">
+                    Revenue exceeding targets by 12.5%. Cash flow healthy at $224K positive, margins improved to 26.4%
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-[#1E2A38] mb-1 text-sm">January 2025 Performance Insights</h4>
-                <p className="text-xs text-gray-700 leading-relaxed mb-2">
-                  Your January performance shows strong momentum with revenue exceeding targets by 12.5%. 
-                  Cash flow remains healthy at $224K positive, and profit margins improved to 26.4% - 
-                  above industry average of 22.3%.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                  <div className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
-                    <span className="text-gray-600">Revenue growth accelerating</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
-                    <span className="text-gray-600">Margins expanding consistently</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full mr-1.5"></div>
-                    <span className="text-gray-600">Watch Q2 seasonal trends</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mr-1.5"></div>
-                    <span className="text-gray-600">Cash position strengthening</span>
-                  </div>
+              <div className="flex gap-2">
+                <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Strong</span>
+                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">Healthy</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs px-4">
+              <div className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
+                <span className="text-gray-600">Revenue growth accelerating</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-[#4ADE80] rounded-full mr-1.5"></div>
+                <span className="text-gray-600">Margins expanding consistently</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-[#F59E0B] rounded-full mr-1.5"></div>
+                <span className="text-gray-600">Watch Q2 seasonal trends</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mr-1.5"></div>
+                <span className="text-gray-600">Cash position strengthening</span>
                 </div>
               </div>
             </div>
