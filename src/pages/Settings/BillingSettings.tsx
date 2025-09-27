@@ -238,62 +238,85 @@ const BillingSettings: React.FC = () => {
             </div>
           </div>
           
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-700">Team Members</span>
-              <span className="text-sm text-gray-600">12 / 25</span>
+          {/* Usage Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Team Members Card */}
+            <div className="bg-gradient-to-br from-[#3AB7BF]/10 to-[#3AB7BF]/5 rounded-xl p-6 border border-[#3AB7BF]/20">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-[#3AB7BF] rounded-xl flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-[#3AB7BF]">12/25</span>
+              </div>
+              <h4 className="font-semibold text-[#1E2A38] mb-2">Team Members</h4>
+              <div className="w-full bg-white/60 rounded-full h-2 mb-3">
+                <div className="bg-[#3AB7BF] h-2 rounded-full transition-all duration-500" style={{ width: '48%' }} />
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#3AB7BF] font-medium">48% used</span>
+                <span className="text-gray-600">13 remaining</span>
+              </div>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div className="bg-[#3AB7BF] h-3 rounded-full transition-all duration-300" style={{ width: '48%' }} />
+
+            {/* API Calls Card */}
+            <div className="bg-gradient-to-br from-[#F59E0B]/10 to-[#F59E0B]/5 rounded-xl p-6 border border-[#F59E0B]/20">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-[#F59E0B] rounded-xl flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-[#F59E0B]">8.4K/10K</span>
+              </div>
+              <h4 className="font-semibold text-[#1E2A38] mb-2">API Calls</h4>
+              <div className="w-full bg-white/60 rounded-full h-2 mb-3">
+                <div className="bg-[#F59E0B] h-2 rounded-full transition-all duration-500" style={{ width: '84.5%' }} />
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#F59E0B] font-medium">84.5% used</span>
+                <span className="text-gray-600">1,550 remaining</span>
+              </div>
             </div>
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>48% used</span>
-              <span>13 remaining</span>
+
+            {/* Storage Card */}
+            <div className="bg-gradient-to-br from-[#4ADE80]/10 to-[#4ADE80]/5 rounded-xl p-6 border border-[#4ADE80]/20">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-[#4ADE80] rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-[#4ADE80]">2.4/5 GB</span>
+              </div>
+              <h4 className="font-semibold text-[#1E2A38] mb-2">Storage</h4>
+              <div className="w-full bg-white/60 rounded-full h-2 mb-3">
+                <div className="bg-[#4ADE80] h-2 rounded-full transition-all duration-500" style={{ width: '48%' }} />
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-[#4ADE80] font-medium">48% used</span>
+                <span className="text-gray-600">2.6 GB remaining</span>
+              </div>
             </div>
           </div>
-          
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-700">API Calls (Monthly)</span>
-              <span className="text-sm text-gray-600">8,450 / 10,000</span>
+
+          {/* Usage Alerts Toggle */}
+          <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#3AB7BF]/10 rounded-xl p-6 border border-[#8B5CF6]/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#8B5CF6] to-[#3AB7BF] rounded-xl flex items-center justify-center mr-4">
+                  <Bell className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#1E2A38]">Usage Alerts</h4>
+                  <p className="text-sm text-gray-600">Get notified when approaching limits</p>
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  className="sr-only peer" 
+                  checked={usageAlerts}
+                  onChange={() => setUsageAlerts(!usageAlerts)}
+                />
+                <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#8B5CF6]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#8B5CF6] peer-checked:to-[#3AB7BF]"></div>
+              </label>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div className="bg-[#F59E0B] h-3 rounded-full transition-all duration-300" style={{ width: '84.5%' }} />
-            </div>
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>84.5% used</span>
-              <span>1,550 remaining</span>
-            </div>
-          </div>
-          
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-700">Storage</span>
-              <span className="text-sm text-gray-600">2.4 GB / 5 GB</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div className="bg-[#4ADE80] h-3 rounded-full transition-all duration-300" style={{ width: '48%' }} />
-            </div>
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>48% used</span>
-              <span>2.6 GB remaining</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 bg-[#F59E0B]/10 rounded-lg">
-            <div>
-              <p className="font-medium text-[#1E2A38]">Usage Alerts</p>
-              <p className="text-sm text-gray-600">Get notified when approaching limits</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={usageAlerts}
-                onChange={() => setUsageAlerts(!usageAlerts)}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#F59E0B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#F59E0B]"></div>
-            </label>
           </div>
         </div>
       </Card>
