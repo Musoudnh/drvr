@@ -111,8 +111,8 @@ const OpExRunway: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">OpEx Runway Planning</h2>
-        <p className="text-gray-600 mt-1">Optimize operational expenses and control burn rate</p>
+        <h2 className="text-2xl font-bold text-[#1E2A38]">OpEx Scenario Planning</h2>
+        <p className="text-gray-600 mt-1">Model operational expense scenarios and optimize costs</p>
       </div>
 
       {/* OpEx Overview */}

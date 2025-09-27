@@ -218,7 +218,7 @@ export const router = createBrowserRouter([
   {
     path: "/runway",
     element: (
-      <ProtectedRoute title="Runway">
+      <ProtectedRoute title="Scenario Planner">
         <RunwayPlanning />
       </ProtectedRoute>
     )
@@ -226,7 +226,7 @@ export const router = createBrowserRouter([
   {
     path: "/runway/revenue",
     element: (
-      <ProtectedRoute title="Revenue Runway">
+      <ProtectedRoute title="Revenue Scenarios">
         <RevenueRunway />
       </ProtectedRoute>
     )
@@ -234,7 +234,7 @@ export const router = createBrowserRouter([
   {
     path: "/runway/opex",
     element: (
-      <ProtectedRoute title="OpEx Runway">
+      <ProtectedRoute title="OpEx Scenarios">
         <OpExRunway />
       </ProtectedRoute>
     )
@@ -242,7 +242,7 @@ export const router = createBrowserRouter([
   {
     path: "/runway/hiring",
     element: (
-      <ProtectedRoute title="Hiring Runway">
+      <ProtectedRoute title="Hiring Scenarios">
         <HiringRunway />
       </ProtectedRoute>
     )

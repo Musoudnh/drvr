@@ -109,8 +109,8 @@ const HiringRunway: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Hiring Runway Planning</h2>
-        <p className="text-gray-600 mt-1">Plan team growth and manage hiring costs</p>
+        <h2 className="text-2xl font-bold text-[#1E2A38]">Hiring Scenario Planning</h2>
+        <p className="text-gray-600 mt-1">Model team growth scenarios and analyze hiring impact</p>
       </div>
 
       {/* Hiring Overview */}

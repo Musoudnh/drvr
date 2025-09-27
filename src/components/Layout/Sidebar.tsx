@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
@@ -139,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
