@@ -241,6 +241,7 @@ const CompanyDashboard: React.FC = () => {
               <button className="text-xs text-[#3AB7BF] hover:underline">Ask AI →</button>
             </div>
           </div>
+          </div>
         </Card>
       </div>
     </div>
