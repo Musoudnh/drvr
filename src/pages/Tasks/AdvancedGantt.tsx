@@ -72,12 +72,11 @@ interface GanttProps {
 
 // Convert board tasks to Gantt format
 const convertBoardTasksToGantt = (boardTasks: any[]): TaskData[] => {
-  // Assign tasks to groups based on their properties
   const getGroupId = (task: any) => {
     if (task.tags.includes('contract') || task.title.toLowerCase().includes('contract')) return 'contracts';
     if (task.tags.includes('design') || task.title.toLowerCase().includes('design')) return 'design';
     if (task.tags.includes('procurement') || task.title.toLowerCase().includes('procurement')) return 'procurement';
-    return 'construction'; // default group
+    return 'construction';
   };
 
   return boardTasks.map((task, index) => ({
@@ -85,7 +84,7 @@ const convertBoardTasksToGantt = (boardTasks: any[]): TaskData[] => {
     startDate: task.createdAt || new Date(),
     duration: Math.max(1, Math.ceil((task.dueDate.getTime() - (task.createdAt || new Date()).getTime()) / (1000 * 60 * 60 * 24))),
     progress: task.status === 'done' ? 100 : task.status === 'in_progress' ? 50 : 0,
-    dependencies: [], // Could be enhanced to detect dependencies
+    dependencies: [],
     isMilestone: task.priority === 'high',
     isOnCriticalPath: task.priority === 'high' && task.status !== 'done',
     groupId: getGroupId(task)
@@ -145,51 +144,24 @@ const TimelineGrid: React.FC<{
   return <div className="flex border-b border-gray-300">{timeUnits}</div>;
 });
 
-// Task Component with dedicated drag handle
+// Task Component with drag and resize
 const GanttTask: React.FC<{
   task: TaskData;
   startDate: Date;
   onUpdate: (updates: Partial<TaskData>) => void;
-  onMove: (fromIndex: number, toIndex: number) => void;
-  index: number;
-  showWeekends: boolean;
   groupColor: string;
-}> = React.memo(({ task, startDate, onUpdate, onMove, index, showWeekends }) => {
+  taskIndex: number;
+}> = React.memo(({ task, startDate, onUpdate, groupColor, taskIndex }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Drop for vertical reordering
-  const [, drop] = useDrop({
-    accept: ItemTypes.TASK,
-    hover(item: any, monitor) {
-      if (!ref.current) return;
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      if (dragIndex === hoverIndex) return;
-
-      const hoverRect = ref.current.getBoundingClientRect();
-      const hoverMiddleY = (hoverRect.bottom - hoverRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
-      if (!clientOffset) return;
-      const hoverClientY = clientOffset.y - hoverRect.top;
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
-
-      onMove(dragIndex, hoverIndex);
-      item.index = hoverIndex;
-    },
-  });
-
-  // Drag for horizontal timeline and vertical reorder
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.TASK,
-    item: { id: task.id, index, startDate: task.startDate },
+    item: { id: task.id, startDate: task.startDate },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     end: (item, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset();
       if (!delta) return;
 
-      // Horizontal movement in days - snap to grid
       const daysMoved = Math.round(delta.x / DAY_WIDTH);
       if (daysMoved !== 0) {
         const newStartDate = addDays(task.startDate, daysMoved);
@@ -198,12 +170,12 @@ const GanttTask: React.FC<{
     },
   });
 
-  const dragDropRef = useCallback(
+  const dragRef = useCallback(
     (node: HTMLDivElement) => {
       ref.current = node;
-      drag(drop(node));
+      drag(node);
     },
-    [drag, drop]
+    [drag]
   );
 
   const handleResize = useCallback(
@@ -214,26 +186,8 @@ const GanttTask: React.FC<{
     [onUpdate]
   );
 
-  const getGroupColor = () => {
-    const groups = {
-      'contracts': '#3B82F6',
-      'design': '#10B981', 
-      'procurement': '#6B7280',
-      'construction': '#F97316'
-    };
-    return groups[task.groupId as keyof typeof groups] || '#6B7280';
-  };
-
-  const getPriorityColor = () => {
-    switch (task.priority) {
-      case 'high': return '#F87171';
-      case 'medium': return '#F59E0B';
-      default: return '#4ADE80';
-    }
-  };
-
   const taskLeft = differenceInDays(task.startDate, startDate) * DAY_WIDTH;
-  const taskTop = index * 70 + 15;
+  const taskTop = taskIndex * 50 + 10;
 
   return (
     <div
@@ -244,67 +198,36 @@ const GanttTask: React.FC<{
         zIndex: isDragging ? 1000 : 1,
       }}
     >
-      {/* Dedicated drag handle */}
       <div
-        ref={dragDropRef}
-        className={`h-10 text-white rounded-t shadow cursor-move flex items-center justify-between px-2 transition-all ${
+        ref={dragRef}
+        className={`h-8 text-white rounded shadow cursor-move flex items-center justify-between px-2 transition-all ${
           isDragging ? "opacity-70 scale-105 shadow-lg" : "hover:shadow-md"
         }`}
         style={{ 
           width: task.duration * DAY_WIDTH,
-          backgroundColor: task.isOnCriticalPath ? '#F87171' : getGroupColor()
+          backgroundColor: task.isOnCriticalPath ? '#F87171' : groupColor,
+          background: `linear-gradient(90deg, ${groupColor} 0%, ${groupColor}dd ${task.progress}%, ${groupColor}66 ${task.progress}%, ${groupColor}33 100%)`
         }}
       >
         <div className="flex items-center flex-1 min-w-0">
-          <span className="text-sm font-medium truncate">{task.title}</span>
-          {task.isMilestone && <Target className="w-3 h-3 ml-2 flex-shrink-0" />}
+          <span className="text-xs font-medium truncate">{task.title}</span>
+          {task.isMilestone && <Target className="w-3 h-3 ml-1 flex-shrink-0" />}
         </div>
         
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
-            <span className="text-xs font-medium">
-              {task.assignee.split(' ').map(n => n[0]).join('')}
-            </span>
-          </div>
+        <div className="flex items-center gap-1 flex-shrink-0">
           <span className="text-xs">{task.progress}%</span>
         </div>
-        
-        {/* Drag indicator */}
-        {isDragging && (
-          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-black text-white px-1 py-0.5 rounded text-xs whitespace-nowrap">
-            {format(task.startDate, "MMM dd")} - {format(addDays(task.startDate, task.duration), "MMM dd")}
-          </div>
-        )}
       </div>
 
-      {/* Resizable task body */}
       <ResizableBox
         width={task.duration * DAY_WIDTH}
-        height={15}
-        minConstraints={[DAY_WIDTH, 15]}
+        height={8}
+        minConstraints={[DAY_WIDTH, 8]}
         axis="x"
         onResizeStop={handleResize}
         handle={<span className="react-resizable-handle react-resizable-handle-se" />}
       >
-        <div 
-          className="w-full h-full rounded-b relative overflow-hidden"
-          style={{ backgroundColor: `${getGroupColor()}80` }}
-        >
-          {/* Progress bar */}
-          <div 
-            className="h-full transition-all duration-300"
-            style={{ 
-              width: `${task.progress}%`,
-              backgroundColor: getGroupColor()
-            }}
-          />
-          
-          {/* Priority indicator */}
-          <div 
-            className="absolute top-0 right-0 w-1 h-full"
-            style={{ backgroundColor: getPriorityColor() }}
-          />
-        </div>
+        <div className="w-full h-full" />
       </ResizableBox>
     </div>
   );
@@ -321,9 +244,9 @@ const DependencyLine: React.FC<{
   const toIndex = tasks.findIndex(t => t.id === toTask.id);
   
   const x1 = differenceInDays(fromTask.startDate, startDate) * DAY_WIDTH + fromTask.duration * DAY_WIDTH;
-  const y1 = fromIndex * 70 + 35;
+  const y1 = fromIndex * 50 + 25;
   const x2 = differenceInDays(toTask.startDate, startDate) * DAY_WIDTH;
-  const y2 = toIndex * 70 + 35;
+  const y2 = toIndex * 50 + 25;
   
   return (
     <g className="dependency-line group">
@@ -533,8 +456,6 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
   const [showWeekends, setShowWeekends] = useState(true);
   const [showCriticalPath, setShowCriticalPath] = useState(true);
   const [showMilestones, setShowMilestones] = useState(true);
-  const [filterAssignee, setFilterAssignee] = useState<string>('');
-  const [filterStatus, setFilterStatus] = useState<string>('');
   const [zoomLevel, setZoomLevel] = useState(1);
   const [groupStates, setGroupStates] = useState<{ [key: string]: boolean }>({
     contracts: true,
@@ -561,23 +482,14 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
       group.expanded ? group.tasks : []
     );
   }, [organizedGroups]);
-  
-  // Filter tasks based on current filters
-  const filteredTasks = useMemo(() => {
-    return visibleTasks.filter(task => {
-      const matchesAssignee = !filterAssignee || task.assignee.includes(filterAssignee);
-      const matchesStatus = !filterStatus || task.status === filterStatus;
-      return matchesAssignee && matchesStatus;
-    });
-  }, [visibleTasks, filterAssignee, filterStatus]);
 
   // Calculate timeline bounds
   const { startDate, totalDays } = useMemo(() => {
-    if (filteredTasks.length === 0) {
+    if (visibleTasks.length === 0) {
       return { startDate: new Date(), totalDays: 30 };
     }
     
-    const allDates = filteredTasks.flatMap(task => [
+    const allDates = visibleTasks.flatMap(task => [
       task.startDate,
       addDays(task.startDate, task.duration)
     ]);
@@ -593,12 +505,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
       startDate: paddedStart,
       totalDays: differenceInDays(paddedEnd, paddedStart)
     };
-  }, [filteredTasks]);
-
-  // Get unique assignees for filter
-  const assignees = useMemo(() => {
-    return [...new Set(ganttTasks.map(task => task.assignee))];
-  }, [ganttTasks]);
+  }, [visibleTasks]);
   
   const handleToggleGroup = useCallback((groupId: string) => {
     setGroupStates(prev => ({
@@ -615,37 +522,9 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
     );
   }, [groupStates]);
 
-  // Auto-detect dependencies (simple heuristic)
-  useEffect(() => {
-    const tasksWithDeps = filteredTasks.map(task => {
-      const dependencies = filteredTasks
-        .filter(otherTask => 
-          otherTask.id !== task.id && 
-          otherTask.dueDate <= task.startDate &&
-          otherTask.assignee === task.assignee
-        )
-        .map(dep => dep.id);
-      
-      return { ...task, dependencies };
-    });
-    
-    // Update critical path calculation
-    const criticalTasks = tasksWithDeps.filter(task => 
-      task.priority === 'high' || task.dependencies.length > 0
-    );
-    
-    criticalTasks.forEach(task => {
-      task.isOnCriticalPath = true;
-    });
-  }, [filteredTasks]);
-
   const handleTaskUpdate = useCallback((taskId: string, updates: Partial<TaskData>) => {
     onTaskUpdate(taskId, updates);
   }, [onTaskUpdate]);
-
-  const handleTaskMove = useCallback((fromIndex: number, toIndex: number) => {
-    onTaskMove(fromIndex, toIndex);
-  }, [onTaskMove]);
 
   const handleZoomIn = () => setZoomLevel(prev => Math.min(prev * 1.2, 3));
   const handleZoomOut = () => setZoomLevel(prev => Math.max(prev / 1.2, 0.5));
@@ -669,35 +548,6 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                 <option value="days">Days</option>
                 <option value="weeks">Weeks</option>
                 <option value="months">Months</option>
-              </select>
-            </div>
-            
-            {/* Filters */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Assignee:</label>
-              <select
-                value={filterAssignee}
-                onChange={(e) => setFilterAssignee(e.target.value)}
-                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-              >
-                <option value="">All Assignees</option>
-                {assignees.map(assignee => (
-                  <option key={assignee} value={assignee}>{assignee}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Status:</label>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-              >
-                <option value="">All Status</option>
-                <option value="todo">To Do</option>
-                <option value="in_progress">In Progress</option>
-                <option value="done">Done</option>
               </select>
             </div>
           </div>
@@ -787,58 +637,13 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 
         {/* Main Gantt Layout */}
         <div className="flex bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="w-72 border-r border-gray-200 bg-gray-50">
-            <div className="p-3 border-b border-gray-200 bg-white">
-              <h3 className="font-semibold text-[#1E2A38]">Tasks ({filteredTasks.length})</h3>
-            </div>
-            <div className="overflow-y-auto" style={{ maxHeight: '500px' }}>
-              {filteredTasks.map((task, index) => (
-                <div
-                  key={task.id}
-                  className="p-2 border-b border-gray-200 hover:bg-white transition-colors"
-                  style={{ height: '70px' }}
-                >
-                  <div className="flex items-start justify-between mb-1">
-                    <h4 className="font-medium text-[#1E2A38] text-sm leading-tight">{task.title}</h4>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      task.priority === 'high' ? 'bg-[#F87171]/20 text-[#F87171]' :
-                      task.priority === 'medium' ? 'bg-[#F59E0B]/20 text-[#F59E0B]' :
-                      'bg-[#4ADE80]/20 text-[#4ADE80]'
-                    }`}>
-                      {task.priority}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-xs text-gray-600">
-                    <div className="flex items-center">
-                      <User className="w-3 h-3 mr-1" />
-                      <span>{task.assignee}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Clock className="w-3 h-3 mr-1" />
-                      <span>{task.duration}d</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mt-1">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      task.status === 'done' ? 'bg-[#4ADE80]/20 text-[#4ADE80]' :
-                      task.status === 'in_progress' ? 'bg-[#3AB7BF]/20 text-[#3AB7BF]' :
-                      'bg-gray-200 text-gray-600'
-                    }`}>
-                      {task.status.replace('_', ' ')}
-                    </span>
-                    
-                    {task.isOnCriticalPath && (
-                      <span className="px-2 py-1 bg-[#F87171]/20 text-[#F87171] rounded-full text-xs font-medium">
-                        Critical
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Hierarchical Task Sidebar */}
+          <HierarchicalTaskSidebar
+            taskGroups={organizedGroups}
+            onToggleGroup={handleToggleGroup}
+            onToggleAll={handleToggleAll}
+            allExpanded={allExpanded}
+          />
 
           {/* Gantt Chart Area */}
           <div className="flex-1 overflow-x-auto">
@@ -847,7 +652,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
               <div className="sticky top-0 bg-white z-10 border-b border-gray-200">
                 <TimelineGrid 
                   startDate={startDate} 
-                className="relative bg-gradient-to-b from-gray-50 to-white"
+                  totalDays={totalDays}
                   viewMode={viewMode}
                   showWeekends={showWeekends}
                 />
@@ -855,9 +660,9 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 
               {/* Chart Area */}
               <div 
-                className="relative bg-gray-50"
+                className="relative bg-gradient-to-b from-gray-50 to-white"
                 style={{ 
-                  height: Math.max(filteredTasks.length * 70 + 30, 350),
+                  height: Math.max(visibleTasks.length * 50 + 30, 350),
                   minWidth: totalDays * DAY_WIDTH,
                   transform: `scale(${zoomLevel})`,
                   transformOrigin: 'top left'
@@ -869,7 +674,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                   style={{
                     backgroundImage: `
                       repeating-linear-gradient(90deg, transparent, transparent ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH - 1}px, #e5e7eb ${DAY_WIDTH}px),
-                      repeating-linear-gradient(0deg, transparent, transparent 69px, #e5e7eb 69px, #e5e7eb 70px)
+                      repeating-linear-gradient(0deg, transparent, transparent 49px, #e5e7eb 49px, #e5e7eb 50px)
                     `
                   }}
                 />
@@ -885,39 +690,61 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
                 </div>
 
                 {/* Tasks */}
-                {filteredTasks.map((task, index) => (
+                {visibleTasks.map((task, index) => {
                   const group = organizedGroups.find(g => g.id === task.groupId);
                   return (
-          {/* Hierarchical Task Sidebar */}
-          <HierarchicalTaskSidebar
-            taskGroups={organizedGroups}
-            onToggleGroup={handleToggleGroup}
-            onToggleAll={handleToggleAll}
-            allExpanded={allExpanded}
-          />
+                    <GanttTask
+                      key={task.id}
+                      task={task}
+                      startDate={startDate}
+                      onUpdate={(updates) => handleTaskUpdate(task.id, updates)}
+                      groupColor={group?.color || '#6B7280'}
+                      taskIndex={index}
+                    />
+                  );
+                })}
+
+                {/* Dependencies */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 10 }}>
+                  {visibleTasks.flatMap(task =>
+                    task.dependencies.map(depId => {
+                      const depTask = visibleTasks.find(t => t.id === depId);
+                      return depTask ? (
+                        <DependencyLine
+                          key={`${task.id}-${depId}`}
+                          fromTask={depTask}
+                          toTask={task}
+                          startDate={startDate}
+                          tasks={visibleTasks}
+                        />
+                      ) : null;
+                    }).filter(Boolean)
+                  )}
+                </svg>
+
+                {/* Milestones */}
+                {showMilestones && visibleTasks.filter(task => task.isMilestone).map((task, index) => {
+                  const taskLeft = differenceInDays(task.startDate, startDate) * DAY_WIDTH;
+                  const taskTop = visibleTasks.indexOf(task) * 50 + 20;
+                  
+                  return (
+                    <div
+                      key={`milestone-${task.id}`}
+                      className="absolute w-4 h-4 bg-[#F59E0B] transform rotate-45 z-15"
+                      style={{
+                        left: taskLeft - 8,
+                        top: taskTop,
+                      }}
+                      title={`Milestone: ${task.title}`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 p-2 bg-gray-50 rounded-lg">
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-[#94A3B8] rounded mr-2"></div>
-            <span>Not Started</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-            <span>In Progress</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
-            <span>Completed</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
-            <span>Critical Path</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-[#F59E0B] transform rotate-45 mr-2"></div>
-            <span>Milestone</span>
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600 p-3 bg-white rounded-lg border border-gray-200">
           {/* Task Groups */}
           <div className="flex items-center">
@@ -928,7 +755,7 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
             <div className="w-4 h-4 bg-[#10B981] rounded mr-2"></div>
             <span>Design</span>
           </div>
-        </div>
+          <div className="flex items-center">
             <div className="w-4 h-4 bg-[#6B7280] rounded mr-2"></div>
             <span>Procurement</span>
           </div>
@@ -943,16 +770,16 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
           <div className="flex items-center">
             <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
             <span>Critical Path</span>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center shadow-sm">
+          </div>
+          <div className="flex items-center">
             <div className="w-3 h-3 bg-[#F59E0B] transform rotate-45 mr-2"></div>
             <span>Milestone</span>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center shadow-sm">
+          <div className="flex items-center">
             <div className="w-4 h-0.5 bg-gray-600 mr-2"></div>
             <span>Dependencies</span>
           </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center shadow-sm">
+          <div className="flex items-center">
             <div className="w-0.5 h-4 bg-red-500 mr-2"></div>
             <span>Today</span>
           </div>
@@ -963,5 +790,3 @@ const AdvancedGantt: React.FC<GanttProps> = ({ tasks: boardTasks, onTaskUpdate, 
 };
 
 export default AdvancedGantt;
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-white rounded-lg border border-gray-200 text-center shadow-sm">
