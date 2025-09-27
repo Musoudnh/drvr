@@ -108,13 +108,13 @@ const AccountProfile: React.FC = () => {
         {/* Notifications & Alerts */}
         <Card title="Notifications & Alerts">
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-xl border border-[#3AB7BF]/20">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-xl flex items-center justify-center mr-4">
-                  <Bell className="w-6 h-6 text-white" />
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <Bell className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38]">Email Notifications</h4>
+                  <p className="font-medium text-[#1E2A38]">Email Notifications</p>
                   <p className="text-sm text-gray-600">Financial alerts and system updates</p>
                 </div>
               </div>
@@ -124,13 +124,13 @@ const AccountProfile: React.FC = () => {
               </label>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-[#F59E0B]/10 rounded-xl border border-[#F59E0B]/20">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-[#F59E0B] rounded-xl flex items-center justify-center mr-4">
-                  <Smartphone className="w-6 h-6 text-white" />
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <Smartphone className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38]">Push Notifications</h4>
+                  <p className="font-medium text-[#1E2A38]">Push Notifications</p>
                   <p className="text-sm text-gray-600">Mobile and desktop alerts</p>
                 </div>
               </div>
@@ -154,13 +154,13 @@ const AccountProfile: React.FC = () => {
         {/* Security & Privacy */}
         <Card title="Security & Privacy">
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#4ADE80]/10 to-[#3AB7BF]/10 rounded-xl border border-[#4ADE80]/20">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-[#4ADE80] to-[#3AB7BF] rounded-xl flex items-center justify-center mr-4">
-                  <Shield className="w-6 h-6 text-white" />
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <Shield className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38]">Two-Factor Authentication</h4>
+                  <p className="font-medium text-[#1E2A38]">Two-Factor Authentication</p>
                   <p className="text-sm text-gray-600">Enhanced account security</p>
                 </div>
               </div>
@@ -176,13 +176,13 @@ const AccountProfile: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-[#8B5CF6]/10 rounded-xl border border-[#8B5CF6]/20">
+            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-[#8B5CF6] rounded-xl flex items-center justify-center mr-4">
-                  <Eye className="w-6 h-6 text-white" />
+                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                  <Eye className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38]">Privacy Controls</h4>
+                  <p className="font-medium text-[#1E2A38]">Privacy Controls</p>
                   <p className="text-sm text-gray-600">Data sharing and visibility</p>
                 </div>
               </div>
