@@ -118,7 +118,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp }
+        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
@@ -138,7 +139,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
-        { path: '/runway', label: 'Runway Planning', icon: TrendingUp }
+        { path: '/runway', label: 'Runway Planning', icon: TrendingUp },
+        { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
