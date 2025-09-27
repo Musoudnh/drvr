@@ -230,82 +230,52 @@ const BillingSettings: React.FC = () => {
                 className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
               >
                 Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Billing History */}
-      <Card title="Enhanced Billing History">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">Complete billing history with detailed breakdowns</p>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <Calendar className="w-4 h-4 mr-2" />
-                Filter by Date
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export All
-              </Button>
+            <p className="text-sm text-gray-600">Manage your connected services and data sync</p>
+            <Button variant="outline" size="sm">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Integration
+            </Button>
+          </div>
+          
+          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <span className="text-white font-medium text-sm">QB</span>
+              </div>
+              <div>
+                <p className="font-medium text-[#1E2A38]">QuickBooks Online</p>
+                <p className="text-sm text-gray-600">Last sync: 2 hours ago</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
+              <Button variant="outline" size="sm">Configure</Button>
             </div>
           </div>
           
-          <div className="space-y-3">
-            {[
-              { 
-                date: 'Jan 15, 2025', 
-                amount: '$79.00', 
-                status: 'paid', 
-                invoice: 'INV-2025-001',
-                paymentMethod: '**** 4532'
-              },
-              { 
-                date: 'Dec 15, 2024', 
-                amount: '$74.00', 
-                status: 'paid', 
-                invoice: 'INV-2024-012',
-                paymentMethod: '**** 4532'
-              },
-              { 
-                date: 'Nov 15, 2024', 
-                amount: '$79.00', 
-                status: 'paid', 
-                invoice: 'INV-2024-011',
-                paymentMethod: '**** 4532'
-              }
-            ].map((bill, index) => (
-              <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                <div className="flex items-center">
-                  <CreditCard className="w-5 h-5 text-gray-400 mr-3" />
-                  <div>
-                    <p className="font-medium text-[#1E2A38]">{bill.invoice}</p>
-                    <p className="text-sm text-gray-600">{bill.date} • {bill.paymentMethod}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-[#1E2A38]">{bill.amount}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    bill.status === 'paid' 
-                      ? 'bg-[#4ADE80]/20 text-[#4ADE80]'
-                      : 'bg-[#F87171]/20 text-[#F87171]'
-                  }`}>
-                    {bill.status}
-                  </span>
-                  <Button variant="outline" size="sm">
-                    <Download className="w-4 h-4 mr-1" />
-                    PDF
-                  </Button>
-                </div>
+          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            <div className="flex items-center">
+              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <CreditCard className="w-4 h-4 text-white" />
               </div>
-            ))}
+              <div>
+                <p className="font-medium text-[#1E2A38]">Stripe</p>
+                <p className="text-sm text-gray-600">Last transaction: 1 hour ago</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
+              <Button variant="outline" size="sm">Configure</Button>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div>
+              <p className="font-medium text-[#1E2A38]">Available Integrations</p>
+              <p className="text-sm text-gray-600">Connect Xero, Slack, Zapier and more</p>
+            </div>
+            <Button variant="outline" size="sm">Browse All</Button>
           </div>
         </div>
-      </Card>
-    </div>
-  );
-};
-
-export default BillingSettings;
