@@ -423,14 +423,14 @@ const BillingSettings: React.FC = () => {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
                     <Calendar className="w-5 h-5 text-gray-400 mr-3" />
+                    <div>
+                      <p className="font-medium text-[#1E2A38]">{bill.date}</p>
+                      <p className="text-sm text-gray-600">Invoice: {bill.invoice} • {bill.paymentMethod}</p>
+                    </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <span className="font-bold text-[#1E2A38]">{bill.amount}</span>
-                      <div className="text-xs text-gray-500">
-                        Sub: ${bill.breakdown.subscription}
-                        {bill.breakdown.credits !== 0 && ` | Credits: ${bill.breakdown.credits > 0 ? '+' : ''}$${bill.breakdown.credits}`}
-                      </div>
                     </div>
                     <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">
                       {bill.status}
