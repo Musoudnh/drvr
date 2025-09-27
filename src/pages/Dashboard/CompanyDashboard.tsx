@@ -203,18 +203,21 @@ const CompanyDashboard: React.FC = () => {
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
                 <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
-                  <span className="text-white font-medium text-sm">AI</span>
+                  <span className="text-white font-medium text-sm">P</span>
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">January 2025 Performance Insights</p>
-                  <p className="text-sm text-gray-600">
-                    Revenue exceeding targets by 12.5%. Cash flow healthy at $224K positive, margins improved to 26.4%
-                  </p>
+                  <p className="font-medium text-[#1E2A38]">Performance vs Targets</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-[#1E2A38]">+2.7%</span>
+                    <span className="text-sm text-gray-600">vs budget</span>
+                    <span className="text-lg font-bold text-[#4ADE80]">+12.5%</span>
+                    <span className="text-sm text-gray-600">vs prior</span>
+                  </div>
                 </div>
               </div>
               <div className="flex gap-2">
-                <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Strong</span>
-                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">Healthy</span>
+                <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">On Track</span>
+                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">Exceeding</span>
               </div>
             </div>
             
