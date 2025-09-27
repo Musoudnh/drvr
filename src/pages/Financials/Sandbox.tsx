@@ -1,38 +1,35 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Calculator, 
-  Brain, 
   Send, 
   Save, 
   Download, 
   RefreshCw, 
-  Trash2, 
-  Eye, 
-  Copy, 
-  Link as LinkIcon,
+  Brain, 
+  Calculator, 
   TrendingUp,
   TrendingDown,
   DollarSign,
   Percent,
   BarChart3,
-  PieChart,
   Target,
   Lightbulb,
   CheckCircle,
   AlertTriangle,
   Info,
-  Zap,
   Database,
   FileText,
   Clock,
-  ArrowRight,
   Plus,
   X,
   Settings,
-  History
+  History,
+  Sparkles,
+  ArrowRight,
+  Copy,
+  Share2,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
-import Card from '../../components/UI/Card';
-import Button from '../../components/UI/Button';
 
 interface CalculationResult {
   id: string;
@@ -47,7 +44,6 @@ interface CalculationResult {
   };
   dataLineage: DataSource[];
   saved: boolean;
-  linkedReports: string[];
 }
 
 interface CalculationStep {
@@ -83,62 +79,31 @@ interface DataSource {
   lastUpdated: Date;
 }
 
-interface SavedScenario {
+interface ChatMessage {
   id: string;
-  name: string;
-  description: string;
-  query: string;
-  result: CalculationResult;
-  createdAt: Date;
-  tags: string[];
+  type: 'user' | 'ai';
+  content: string;
+  timestamp: Date;
+  result?: CalculationResult;
 }
 
 const Sandbox: React.FC = () => {
   const [query, setQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [results, setResults] = useState<CalculationResult[]>([]);
-  const [savedScenarios, setSavedScenarios] = useState<SavedScenario[]>([
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      name: 'Q2 Revenue Growth Scenario',
-      description: '15% revenue increase impact analysis',
-      query: 'What if revenue increases 15% next quarter?',
-      result: {
-        id: '1',
-        query: 'What if revenue increases 15% next quarter?',
-        timestamp: new Date(Date.now() - 86400000),
-        results: {
-          summary: 'A 15% revenue increase would generate an additional $127K in quarterly revenue',
-          calculations: [],
-          scenarios: [],
-          impacts: [],
-          recommendations: []
-        },
-        dataLineage: [],
-        saved: true,
-        linkedReports: ['Q2 Forecast', 'Revenue Analysis']
-      },
-      createdAt: new Date(Date.now() - 86400000),
-      tags: ['revenue', 'growth', 'q2']
+      type: 'ai',
+      content: "Hello! I'm your AI Financial Analyst. I can help you with calculations, scenario modeling, and financial analysis. Try asking me something like 'What if revenue increases 15% next quarter?' or 'Calculate loan amortization for $200,000 over 30 years at 6%'.",
+      timestamp: new Date()
     }
   ]);
-  const [showSavedScenarios, setShowSavedScenarios] = useState(false);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [selectedResult, setSelectedResult] = useState<CalculationResult | null>(null);
-  const [saveForm, setSaveForm] = useState({
-    name: '',
-    description: '',
-    tags: ''
-  });
-  const [customFormulas, setCustomFormulas] = useState([
-    { name: 'Customer LTV', formula: 'ARPU * (1 / churn_rate) * gross_margin', description: 'Customer lifetime value calculation' },
-    { name: 'Payback Period', formula: 'CAC / (ARPU * gross_margin)', description: 'Customer acquisition payback period' },
-    { name: 'Rule of 40', formula: 'revenue_growth_rate + profit_margin', description: 'SaaS efficiency metric' }
-  ]);
-  const [showFormulaModal, setShowFormulaModal] = useState(false);
-  const [newFormula, setNewFormula] = useState({ name: '', formula: '', description: '' });
+  const [activeResult, setActiveResult] = useState<CalculationResult | null>(null);
+  const [isRightPanelExpanded, setIsRightPanelExpanded] = useState(false);
+  const [savedScenarios, setSavedScenarios] = useState<any[]>([]);
   
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Mock financial data context
   const financialContext = {
@@ -163,13 +128,39 @@ const Sandbox: React.FC = () => {
     "Calculate ROI for $50K marketing investment with 3:1 return"
   ];
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+
   const processQuery = async (inputQuery: string) => {
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: inputQuery,
+      timestamp: new Date()
+    };
+    
+    setChatMessages(prev => [...prev, userMessage]);
     setIsProcessing(true);
     
     // Simulate AI processing
     setTimeout(() => {
-      const mockResult: CalculationResult = generateMockResult(inputQuery);
-      setResults(prev => [mockResult, ...prev]);
+      const mockResult = generateMockResult(inputQuery);
+      const aiMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: mockResult.results.summary,
+        timestamp: new Date(),
+        result: mockResult
+      };
+      
+      setChatMessages(prev => [...prev, aiMessage]);
+      setActiveResult(mockResult);
       setIsProcessing(false);
     }, 2000);
   };
@@ -264,8 +255,7 @@ const Sandbox: React.FC = () => {
           { field: 'profit_margin', source: 'Financial Summary', value: 26.4, lastUpdated: new Date() },
           { field: 'cash_balance', source: 'Balance Sheet', value: 485000, lastUpdated: new Date() }
         ],
-        saved: false,
-        linkedReports: []
+        saved: false
       };
     }
     
@@ -330,8 +320,7 @@ const Sandbox: React.FC = () => {
         dataLineage: [
           { field: 'cash_flow', source: 'Cash Flow Statement', value: financialContext.cashFlow, lastUpdated: new Date() }
         ],
-        saved: false,
-        linkedReports: []
+        saved: false
       };
     }
 
@@ -363,8 +352,7 @@ const Sandbox: React.FC = () => {
       dataLineage: [
         { field: 'revenue', source: 'P&L Statement', value: financialContext.revenue, lastUpdated: new Date() }
       ],
-      saved: false,
-      linkedReports: []
+      saved: false
     };
   };
 
@@ -373,42 +361,6 @@ const Sandbox: React.FC = () => {
     if (query.trim()) {
       processQuery(query);
       setQuery('');
-    }
-  };
-
-  const handleSaveScenario = () => {
-    if (selectedResult && saveForm.name.trim()) {
-      const scenario: SavedScenario = {
-        id: Date.now().toString(),
-        name: saveForm.name,
-        description: saveForm.description,
-        query: selectedResult.query,
-        result: { ...selectedResult, saved: true },
-        createdAt: new Date(),
-        tags: saveForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
-      };
-      
-      setSavedScenarios(prev => [scenario, ...prev]);
-      setSaveForm({ name: '', description: '', tags: '' });
-      setShowSaveModal(false);
-      setSelectedResult(null);
-    }
-  };
-
-  const handleAddFormula = () => {
-    if (newFormula.name.trim() && newFormula.formula.trim()) {
-      setCustomFormulas(prev => [...prev, newFormula]);
-      setNewFormula({ name: '', formula: '', description: '' });
-      setShowFormulaModal(false);
-    }
-  };
-
-  const getImpactColor = (significance: string) => {
-    switch (significance) {
-      case 'high': return '#F87171';
-      case 'medium': return '#F59E0B';
-      case 'low': return '#4ADE80';
-      default: return '#6B7280';
     }
   };
 
@@ -425,563 +377,492 @@ const Sandbox: React.FC = () => {
     return `${value.toFixed(1)}%`;
   };
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 120) + 'px';
+  const getImpactColor = (significance: string) => {
+    switch (significance) {
+      case 'high': return '#EF4444';
+      case 'medium': return '#F59E0B';
+      case 'low': return '#10B981';
+      default: return '#6B7280';
     }
-  }, [query]);
+  };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Financial Sandbox</h2>
-        <p className="text-gray-600 mt-1">Natural language financial calculations and scenario modeling</p>
+    <div className="h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">Financial Sandbox</h1>
+            <p className="text-sm text-gray-600 mt-1">Natural language financial calculations and scenario modeling</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsRightPanelExpanded(!isRightPanelExpanded)}
+              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title={isRightPanelExpanded ? "Minimize panel" : "Expand panel"}
+            >
+              {isRightPanelExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+              <Save className="w-4 h-4 mr-2" />
+              Save Session
+            </button>
+            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+              <Share2 className="w-4 h-4 mr-2" />
+              Share
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Input Section */}
-      <Card>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Ask a financial question or describe a scenario
-            </label>
-            <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Main Content - Split Screen */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - AI Chat Interface */}
+        <div className={`${isRightPanelExpanded ? 'w-1/3' : 'w-1/2'} bg-white border-r border-gray-200 flex flex-col transition-all duration-300`}>
+          {/* Chat Header */}
+          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                  <Brain className="w-4 h-4 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">AI Financial Assistant</h3>
+                  <p className="text-xs text-gray-600">Ask questions in natural language</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-xs text-gray-600">Online</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Financial Context Bar */}
+          <div className="px-6 py-3 bg-blue-50 border-b border-blue-100">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center">
+                <Database className="w-3 h-3 text-blue-600 mr-2" />
+                <span className="font-medium text-blue-900">Live Financial Data</span>
+              </div>
+              <button className="text-blue-600 hover:text-blue-700 transition-colors">
+                <RefreshCw className="w-3 h-3" />
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-3 mt-2">
+              <div className="text-center">
+                <div className="text-xs text-gray-600">Revenue</div>
+                <div className="font-semibold text-gray-900">{formatCurrency(financialContext.revenue)}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-600">Profit</div>
+                <div className="font-semibold text-gray-900">{formatCurrency(financialContext.profit)}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-600">Margin</div>
+                <div className="font-semibold text-gray-900">{formatPercent(financialContext.margin)}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs text-gray-600">Runway</div>
+                <div className="font-semibold text-gray-900">{financialContext.runway}mo</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            {chatMessages.map((message) => (
+              <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[85%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
+                  <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      message.type === 'user' 
+                        ? 'bg-blue-600' 
+                        : 'bg-gray-100'
+                    }`}>
+                      {message.type === 'user' ? (
+                        <span className="text-white text-sm font-medium">U</span>
+                      ) : (
+                        <Brain className="w-4 h-4 text-gray-600" />
+                      )}
+                    </div>
+                    <div className={`rounded-2xl px-4 py-3 ${
+                      message.type === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-900'
+                    }`}>
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className={`text-xs mt-2 ${
+                        message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
+                      }`}>
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Show result button for AI messages with results */}
+                  {message.result && (
+                    <div className="mt-2 ml-11">
+                      <button
+                        onClick={() => setActiveResult(message.result!)}
+                        className="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors flex items-center"
+                      >
+                        <BarChart3 className="w-4 h-4 mr-2" />
+                        View Detailed Results
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            {isProcessing && (
+              <div className="flex justify-start">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <div className="bg-gray-100 rounded-2xl px-4 py-3">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      </div>
+                      <span className="text-sm text-gray-600">Analyzing...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Example Queries */}
+          <div className="px-6 py-3 border-t border-gray-100 bg-gray-50">
+            <div className="flex items-center mb-2">
+              <Sparkles className="w-4 h-4 text-gray-500 mr-2" />
+              <span className="text-xs font-medium text-gray-700">Try these examples:</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {exampleQueries.slice(0, 3).map((example, index) => (
+                <button
+                  key={index}
+                  onClick={() => setQuery(example)}
+                  className="px-3 py-1 text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded-full hover:bg-blue-100 transition-colors"
+                >
+                  {example.length > 40 ? example.substring(0, 40) + '...' : example}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Input Area */}
+          <div className="px-6 py-4 border-t border-gray-200 bg-white">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
                 <textarea
                   ref={textareaRef}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="e.g., What if revenue increases 15% next quarter? or Calculate loan amortization for $200,000 over 30 years at 6%"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent resize-none"
+                  placeholder="Ask a financial question or describe a scenario..."
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
                   rows={1}
                   style={{ minHeight: '44px', maxHeight: '120px' }}
                   disabled={isProcessing}
+                  onInput={(e) => {
+                    const target = e.target as HTMLTextAreaElement;
+                    target.style.height = 'auto';
+                    target.style.height = Math.min(target.scrollHeight, 120) + 'px';
+                  }}
                 />
-                <div className="absolute bottom-3 right-3 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowFormulaModal(true)}
-                    className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                    title="Custom formulas"
-                  >
-                    <Calculator className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={!query.trim() || isProcessing}
-                    className="p-1 text-[#8B5CF6] hover:text-[#7C3AED] transition-colors disabled:opacity-50"
-                    title="Calculate"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  disabled={!query.trim() || isProcessing}
+                  className="absolute right-3 bottom-3 p-2 text-blue-600 hover:text-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Send query"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
               </div>
-              
-              {/* Example Queries */}
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs text-gray-500 mr-2">Try:</span>
-                {exampleQueries.slice(0, 3).map((example, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => setQuery(example)}
-                    className="px-2 py-1 bg-[#8B5CF6]/10 text-[#8B5CF6] rounded text-xs hover:bg-[#8B5CF6]/20 transition-colors"
-                  >
-                    {example}
-                  </button>
-                ))}
-              </div>
+              <p className="text-xs text-gray-500">
+                Press Enter to send, Shift+Enter for new line
+              </p>
             </form>
           </div>
-
-          {/* Financial Context */}
-          <div className="p-4 bg-[#8B5CF6]/10 rounded-lg">
-            <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-              <Database className="w-4 h-4 mr-2 text-[#8B5CF6]" />
-              Live Financial Context
-            </h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div>
-                <span className="text-gray-600">Revenue:</span>
-                <span className="font-medium text-[#1E2A38] ml-2">{formatCurrency(financialContext.revenue)}</span>
-              </div>
-              <div>
-                <span className="text-gray-600">Profit:</span>
-                <span className="font-medium text-[#1E2A38] ml-2">{formatCurrency(financialContext.profit)}</span>
-              </div>
-              <div>
-                <span className="text-gray-600">Margin:</span>
-                <span className="font-medium text-[#1E2A38] ml-2">{formatPercent(financialContext.margin)}</span>
-              </div>
-              <div>
-                <span className="text-gray-600">Runway:</span>
-                <span className="font-medium text-[#1E2A38] ml-2">{financialContext.runway} months</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </Card>
 
-      {/* Processing Indicator */}
-      {isProcessing && (
-        <Card>
-          <div className="flex items-center justify-center py-8">
-            <div className="text-center">
-              <Brain className="w-12 h-12 text-[#8B5CF6] mx-auto mb-4 animate-pulse" />
-              <h3 className="text-lg font-semibold text-[#1E2A38] mb-2">AI Processing</h3>
-              <p className="text-gray-600">Analyzing your query and running calculations...</p>
-              <div className="flex justify-center mt-4">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-[#8B5CF6] rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-[#8B5CF6] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-2 h-2 bg-[#8B5CF6] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+        {/* Right Panel - Results Display */}
+        <div className={`${isRightPanelExpanded ? 'w-2/3' : 'w-1/2'} bg-gray-50 flex flex-col transition-all duration-300`}>
+          {/* Results Header */}
+          <div className="px-6 py-4 bg-white border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <BarChart3 className="w-5 h-5 text-gray-600 mr-3" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Analysis Results</h3>
+                  <p className="text-xs text-gray-600">Live calculations and scenario modeling</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Results */}
-      {results.map((result, index) => (
-        <Card key={result.id}>
-          <div className="space-y-6">
-            {/* Result Header */}
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <Brain className="w-5 h-5 text-[#8B5CF6] mr-2" />
-                  <h3 className="font-semibold text-[#1E2A38]">Calculation Result</h3>
-                  <span className="ml-2 text-xs text-gray-500">{result.timestamp.toLocaleTimeString()}</span>
-                </div>
-                <p className="text-sm text-gray-600 mb-2">Query: "{result.query}"</p>
-                <p className="text-[#1E2A38] font-medium">{result.results.summary}</p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setSelectedResult(result);
-                    setShowSaveModal(true);
-                  }}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Save scenario"
-                >
-                  <Save className="w-4 h-4 text-gray-400" />
-                </button>
-                <button
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Export results"
-                >
-                  <Download className="w-4 h-4 text-gray-400" />
-                </button>
-              </div>
-            </div>
-
-            {/* Calculation Steps */}
-            {result.results.calculations.length > 0 && (
-              <div>
-                <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-                  <Calculator className="w-4 h-4 mr-2 text-[#3AB7BF]" />
-                  Step-by-Step Calculation
-                </h4>
-                <div className="space-y-3">
-                  {result.results.calculations.map((step, stepIndex) => (
-                    <div key={stepIndex} className="p-4 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
-                            <span className="text-white text-xs font-bold">{step.step}</span>
-                          </div>
-                          <h5 className="font-medium text-[#1E2A38]">{step.description}</h5>
-                        </div>
-                        <span className="font-bold text-[#3AB7BF]">
-                          {typeof step.result === 'number' && step.result > 1000 
-                            ? formatCurrency(step.result)
-                            : step.result.toLocaleString()
-                          }
-                        </span>
-                      </div>
-                      <div className="ml-9">
-                        <p className="text-sm text-gray-700 mb-2">{step.explanation}</p>
-                        <code className="text-xs bg-white px-2 py-1 rounded border text-[#8B5CF6]">
-                          {step.formula}
-                        </code>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Scenario Comparison */}
-            {result.results.scenarios.length > 0 && (
-              <div>
-                <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-                  <Target className="w-4 h-4 mr-2 text-[#F59E0B]" />
-                  Scenario Comparison
-                </h4>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="text-left py-3 px-4 font-semibold text-gray-700">Scenario</th>
-                        <th className="text-right py-3 px-4 font-semibold text-gray-700">Value</th>
-                        <th className="text-right py-3 px-4 font-semibold text-gray-700">Variance</th>
-                        <th className="text-right py-3 px-4 font-semibold text-gray-700">% Change</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {result.results.scenarios.map((scenario, scenarioIndex) => (
-                        <tr key={scenarioIndex} className="border-b border-gray-100">
-                          <td className="py-3 px-4 font-medium text-[#1E2A38]">{scenario.name}</td>
-                          <td className="py-3 px-4 text-right font-medium text-[#1E2A38]">
-                            {formatCurrency(scenario.scenario)}
-                          </td>
-                          <td className="py-3 px-4 text-right">
-                            <span className={`font-medium ${
-                              scenario.variance > 0 ? 'text-[#4ADE80]' : 
-                              scenario.variance < 0 ? 'text-[#F87171]' : 'text-gray-600'
-                            }`}>
-                              {scenario.variance > 0 ? '+' : ''}{formatCurrency(scenario.variance)}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 text-right">
-                            <span className={`font-medium ${
-                              scenario.variancePercent > 0 ? 'text-[#4ADE80]' : 
-                              scenario.variancePercent < 0 ? 'text-[#F87171]' : 'text-gray-600'
-                            }`}>
-                              {scenario.variancePercent > 0 ? '+' : ''}{formatPercent(scenario.variancePercent)}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-
-            {/* Financial Impacts */}
-            {result.results.impacts.length > 0 && (
-              <div>
-                <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-                  <TrendingUp className="w-4 h-4 mr-2 text-[#4ADE80]" />
-                  Financial Impact Analysis
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {result.results.impacts.map((impact, impactIndex) => (
-                    <div key={impactIndex} className="p-4 bg-white border border-gray-200 rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <h5 className="font-medium text-[#1E2A38]">{impact.metric}</h5>
-                        <span 
-                          className="px-2 py-1 rounded-full text-xs font-medium"
-                          style={{ 
-                            backgroundColor: `${getImpactColor(impact.significance)}20`,
-                            color: getImpactColor(impact.significance)
-                          }}
-                        >
-                          {impact.significance} impact
-                        </span>
-                      </div>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Current:</span>
-                          <span className="font-medium text-[#1E2A38]">
-                            {impact.metric.includes('%') || impact.metric.includes('Margin') 
-                              ? formatPercent(impact.currentValue)
-                              : formatCurrency(impact.currentValue)
-                            }
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Projected:</span>
-                          <span className="font-medium text-[#1E2A38]">
-                            {impact.metric.includes('%') || impact.metric.includes('Margin')
-                              ? formatPercent(impact.projectedValue)
-                              : formatCurrency(impact.projectedValue)
-                            }
-                          </span>
-                        </div>
-                        <div className="flex justify-between border-t border-gray-200 pt-2">
-                          <span className="text-gray-600">Impact:</span>
-                          <span 
-                            className="font-bold"
-                            style={{ 
-                              color: impact.impact > 0 ? '#4ADE80' : 
-                                     impact.impact < 0 ? '#F87171' : '#6B7280'
-                            }}
-                          >
-                            {impact.impact > 0 ? '+' : ''}
-                            {impact.metric.includes('%') || impact.metric.includes('Margin')
-                              ? formatPercent(impact.impact)
-                              : formatCurrency(impact.impact)
-                            }
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Recommendations */}
-            {result.results.recommendations.length > 0 && (
-              <div>
-                <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-                  <Lightbulb className="w-4 h-4 mr-2 text-[#F59E0B]" />
-                  AI Recommendations
-                </h4>
-                <div className="space-y-2">
-                  {result.results.recommendations.map((rec, recIndex) => (
-                    <div key={recIndex} className="flex items-start p-3 bg-[#F59E0B]/10 rounded-lg">
-                      <CheckCircle className="w-4 h-4 text-[#F59E0B] mr-3 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">{rec}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Data Lineage */}
-            {result.dataLineage.length > 0 && (
-              <div className="pt-4 border-t border-gray-200">
-                <h4 className="font-medium text-[#1E2A38] mb-3 flex items-center">
-                  <LinkIcon className="w-4 h-4 mr-2 text-gray-400" />
-                  Data Sources
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {result.dataLineage.map((source, sourceIndex) => (
-                    <div key={sourceIndex} className="px-3 py-1 bg-gray-100 rounded-full text-xs">
-                      <span className="text-gray-600">{source.field}:</span>
-                      <span className="font-medium text-[#1E2A38] ml-1">{source.source}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </Card>
-      ))}
-
-      {/* Sidebar Controls */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Saved Scenarios */}
-        <Card title="Saved Scenarios">
-          <div className="space-y-3">
-            {savedScenarios.slice(0, 3).map(scenario => (
-              <div key={scenario.id} className="p-3 border border-gray-200 rounded-lg hover:border-[#8B5CF6] transition-all cursor-pointer">
-                <div className="flex items-start justify-between mb-2">
-                  <h5 className="font-medium text-[#1E2A38] text-sm">{scenario.name}</h5>
-                  <button className="p-1 hover:bg-gray-100 rounded">
-                    <Eye className="w-3 h-3 text-gray-400" />
+              {activeResult && (
+                <div className="flex items-center gap-2">
+                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Copy className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Download className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                    <Save className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-600 mb-2">{scenario.description}</p>
-                <div className="flex flex-wrap gap-1">
-                  {scenario.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className="px-2 py-1 bg-[#8B5CF6]/10 text-[#8B5CF6] rounded text-xs">
-                      {tag}
-                    </span>
-                  ))}
+              )}
+            </div>
+          </div>
+
+          {/* Results Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            {activeResult ? (
+              <div className="space-y-6">
+                {/* Query Summary */}
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Query Analysis</h4>
+                      <p className="text-sm text-gray-600 mb-3">"{activeResult.query}"</p>
+                      <p className="text-gray-800 leading-relaxed">{activeResult.results.summary}</p>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {activeResult.timestamp.toLocaleTimeString()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step-by-Step Calculations */}
+                {activeResult.results.calculations.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <Calculator className="w-4 h-4 mr-2 text-blue-600" />
+                      Step-by-Step Calculation
+                    </h4>
+                    <div className="space-y-4">
+                      {activeResult.results.calculations.map((step, index) => (
+                        <div key={index} className="border border-gray-100 rounded-lg p-4 bg-gray-50">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center">
+                              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                                <span className="text-white text-xs font-bold">{step.step}</span>
+                              </div>
+                              <h5 className="font-medium text-gray-900">{step.description}</h5>
+                            </div>
+                            <span className="font-bold text-blue-600 text-lg">
+                              {typeof step.result === 'number' && step.result > 1000 
+                                ? formatCurrency(step.result)
+                                : step.result.toLocaleString()
+                              }
+                            </span>
+                          </div>
+                          <div className="ml-9">
+                            <p className="text-sm text-gray-700 mb-2">{step.explanation}</p>
+                            <div className="bg-white rounded-lg p-3 border border-gray-200">
+                              <code className="text-xs text-blue-600 font-mono">
+                                {step.formula}
+                              </code>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Scenario Comparison */}
+                {activeResult.results.scenarios.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <Target className="w-4 h-4 mr-2 text-green-600" />
+                      Scenario Comparison
+                    </h4>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-200">
+                            <th className="text-left py-3 px-4 font-semibold text-gray-700 text-sm">Scenario</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">Value</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">Variance</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">% Change</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {activeResult.results.scenarios.map((scenario, index) => (
+                            <tr key={index} className="border-b border-gray-100">
+                              <td className="py-3 px-4 font-medium text-gray-900">{scenario.name}</td>
+                              <td className="py-3 px-4 text-right font-medium text-gray-900">
+                                {formatCurrency(scenario.scenario)}
+                              </td>
+                              <td className="py-3 px-4 text-right">
+                                <span className={`font-medium ${
+                                  scenario.variance > 0 ? 'text-green-600' : 
+                                  scenario.variance < 0 ? 'text-red-600' : 'text-gray-600'
+                                }`}>
+                                  {scenario.variance > 0 ? '+' : ''}{formatCurrency(scenario.variance)}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 text-right">
+                                <span className={`font-medium ${
+                                  scenario.variancePercent > 0 ? 'text-green-600' : 
+                                  scenario.variancePercent < 0 ? 'text-red-600' : 'text-gray-600'
+                                }`}>
+                                  {scenario.variancePercent > 0 ? '+' : ''}{formatPercent(scenario.variancePercent)}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Financial Impact Analysis */}
+                {activeResult.results.impacts.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <TrendingUp className="w-4 h-4 mr-2 text-green-600" />
+                      Financial Impact Analysis
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {activeResult.results.impacts.map((impact, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                          <div className="flex items-center justify-between mb-3">
+                            <h5 className="font-medium text-gray-900">{impact.metric}</h5>
+                            <span 
+                              className="px-2 py-1 rounded-full text-xs font-medium text-white"
+                              style={{ backgroundColor: getImpactColor(impact.significance) }}
+                            >
+                              {impact.significance} impact
+                            </span>
+                          </div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Current:</span>
+                              <span className="font-medium text-gray-900">
+                                {impact.metric.includes('%') || impact.metric.includes('Margin') 
+                                  ? formatPercent(impact.currentValue)
+                                  : formatCurrency(impact.currentValue)
+                                }
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Projected:</span>
+                              <span className="font-medium text-gray-900">
+                                {impact.metric.includes('%') || impact.metric.includes('Margin')
+                                  ? formatPercent(impact.projectedValue)
+                                  : formatCurrency(impact.projectedValue)
+                                }
+                              </span>
+                            </div>
+                            <div className="flex justify-between border-t border-gray-200 pt-2">
+                              <span className="text-gray-600">Impact:</span>
+                              <span 
+                                className="font-bold"
+                                style={{ 
+                                  color: impact.impact > 0 ? '#10B981' : 
+                                         impact.impact < 0 ? '#EF4444' : '#6B7280'
+                                }}
+                              >
+                                {impact.impact > 0 ? '+' : ''}
+                                {impact.metric.includes('%') || impact.metric.includes('Margin')
+                                  ? formatPercent(impact.impact)
+                                  : formatCurrency(impact.impact)
+                                }
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* AI Recommendations */}
+                {activeResult.results.recommendations.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <Lightbulb className="w-4 h-4 mr-2 text-yellow-500" />
+                      AI Recommendations
+                    </h4>
+                    <div className="space-y-3">
+                      {activeResult.results.recommendations.map((rec, index) => (
+                        <div key={index} className="flex items-start p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <CheckCircle className="w-4 h-4 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
+                          <p className="text-sm text-gray-800">{rec}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Data Lineage */}
+                {activeResult.dataLineage.length > 0 && (
+                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                      <Database className="w-4 h-4 mr-2 text-gray-600" />
+                      Data Sources
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {activeResult.dataLineage.map((source, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                          <div>
+                            <span className="text-sm font-medium text-gray-900">{source.field}</span>
+                            <p className="text-xs text-gray-600">{source.source}</p>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-sm font-medium text-gray-900">
+                              {formatCurrency(source.value)}
+                            </span>
+                            <p className="text-xs text-gray-500">
+                              {source.lastUpdated.toLocaleTimeString()}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Empty State */
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center max-w-md">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calculator className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Financial Sandbox</h3>
+                  <p className="text-gray-600 mb-6">
+                    Ask financial questions in natural language and get AI-powered calculations and insights.
+                  </p>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      Connected to live financial data
+                    </p>
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      AI-powered scenario modeling
+                    </p>
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      Step-by-step explanations
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full"
-              onClick={() => setShowSavedScenarios(true)}
-            >
-              <History className="w-4 h-4 mr-2" />
-              View All Scenarios
-            </Button>
+            )}
           </div>
-        </Card>
-
-        {/* Custom Formulas */}
-        <Card title="Custom Formulas">
-          <div className="space-y-3">
-            {customFormulas.slice(0, 3).map((formula, index) => (
-              <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] text-sm">{formula.name}</h5>
-                <p className="text-xs text-gray-600 mb-1">{formula.description}</p>
-                <code className="text-xs bg-white px-2 py-1 rounded border text-[#8B5CF6] block">
-                  {formula.formula}
-                </code>
-              </div>
-            ))}
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="w-full"
-              onClick={() => setShowFormulaModal(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Formula
-            </Button>
-          </div>
-        </Card>
-
-        {/* Quick Actions */}
-        <Card title="Quick Actions">
-          <div className="space-y-2">
-            <Button variant="outline" size="sm" className="w-full justify-start">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Refresh Financial Data
-            </Button>
-            <Button variant="outline" size="sm" className="w-full justify-start">
-              <FileText className="w-4 h-4 mr-2" />
-              Export All Results
-            </Button>
-            <Button variant="outline" size="sm" className="w-full justify-start">
-              <Settings className="w-4 h-4 mr-2" />
-              Calculation Settings
-            </Button>
-            <Button variant="outline" size="sm" className="w-full justify-start">
-              <Zap className="w-4 h-4 mr-2" />
-              Run Batch Analysis
-            </Button>
-          </div>
-        </Card>
+        </div>
       </div>
-
-      {/* Save Scenario Modal */}
-      {showSaveModal && selectedResult && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Save Scenario</h3>
-              <button
-                onClick={() => setShowSaveModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
-                <input
-                  type="text"
-                  value={saveForm.name}
-                  onChange={(e) => setSaveForm({...saveForm, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  placeholder="e.g., Q2 Growth Scenario"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <textarea
-                  value={saveForm.description}
-                  onChange={(e) => setSaveForm({...saveForm, description: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  rows={3}
-                  placeholder="Describe this scenario..."
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
-                <input
-                  type="text"
-                  value={saveForm.tags}
-                  onChange={(e) => setSaveForm({...saveForm, tags: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  placeholder="revenue, growth, q2"
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowSaveModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveScenario}
-                disabled={!saveForm.name.trim()}
-                className="px-4 py-2 bg-[#8B5CF6] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Save Scenario
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Custom Formula Modal */}
-      {showFormulaModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Custom Formula</h3>
-              <button
-                onClick={() => setShowFormulaModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Formula Name</label>
-                <input
-                  type="text"
-                  value={newFormula.name}
-                  onChange={(e) => setNewFormula({...newFormula, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  placeholder="e.g., Customer LTV"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Formula</label>
-                <input
-                  type="text"
-                  value={newFormula.formula}
-                  onChange={(e) => setNewFormula({...newFormula, formula: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent font-mono"
-                  placeholder="e.g., ARPU * (1 / churn_rate) * gross_margin"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <textarea
-                  value={newFormula.description}
-                  onChange={(e) => setNewFormula({...newFormula, description: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent"
-                  rows={2}
-                  placeholder="Describe what this formula calculates..."
-                />
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowFormulaModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddFormula}
-                disabled={!newFormula.name.trim() || !newFormula.formula.trim()}
-                className="px-4 py-2 bg-[#8B5CF6] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Add Formula
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
