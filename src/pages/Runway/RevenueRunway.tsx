@@ -172,6 +172,10 @@ const RevenueRunway: React.FC = () => {
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">Revenue sources</span>
             <div className="w-2 h-2 bg-[#3b82f6] rounded-full"></div>
+          </div>
+        </div>
+
+      <div>
         <h2 className="text-2xl font-bold text-[#1E2A38]">Revenue Scenario Planning</h2>
         <p className="text-gray-600 mt-1">Model revenue growth scenarios and analyze impact</p>
       </div>
