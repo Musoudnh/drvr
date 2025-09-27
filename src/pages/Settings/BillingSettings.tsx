@@ -362,50 +362,6 @@ const BillingSettings: React.FC = () => {
         </div>
       </Card>
 
-      {/* Automated Payouts */}
-      <Card title="Automated Payouts">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-[#1E2A38]">Referral Earnings</h3>
-              <p className="text-sm text-gray-600">Automatic payouts when earnings reach threshold</p>
-            </div>
-            <Button variant="outline" size="sm">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Setup Payout Method
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-[#4ADE80]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#4ADE80]">$40</p>
-              <p className="text-sm text-gray-600">Current Balance</p>
-            </div>
-            <div className="p-4 bg-[#3AB7BF]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#3AB7BF]">$50</p>
-              <p className="text-sm text-gray-600">Payout Threshold</p>
-            </div>
-            <div className="p-4 bg-[#F59E0B]/10 rounded-lg text-center">
-              <p className="text-lg font-bold text-[#F59E0B]">$185</p>
-              <p className="text-sm text-gray-600">Total Earned</p>
-            </div>
-          </div>
-          
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h4 className="font-medium text-[#1E2A38] mb-2">Payout History</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-700">December 2024</span>
-                <span className="font-medium text-[#4ADE80]">$75.00</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-700">November 2024</span>
-                <span className="font-medium text-[#4ADE80]">$70.00</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Card>
 
       {/* Usage Details Modal */}
       {showUsageModal && (
