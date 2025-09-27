@@ -392,14 +392,13 @@ const BillingSettings: React.FC = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-3">
             {[
               { 
                 date: 'Jan 15, 2025', 
                 amount: '$79.00', 
                 status: 'paid', 
                 invoice: 'INV-2025-001',
-                breakdown: { subscription: 79, tax: 0, credits: 0 },
                 paymentMethod: '**** 4532'
               },
               { 
@@ -407,7 +406,6 @@ const BillingSettings: React.FC = () => {
                 amount: '$74.00', 
                 status: 'paid', 
                 invoice: 'INV-2024-012',
-                breakdown: { subscription: 79, tax: 0, credits: -5 },
                 paymentMethod: '**** 4532'
               },
               { 
@@ -415,37 +413,30 @@ const BillingSettings: React.FC = () => {
                 amount: '$79.00', 
                 status: 'paid', 
                 invoice: 'INV-2024-011',
-                breakdown: { subscription: 79, tax: 0, credits: 0 },
                 paymentMethod: '**** 4532'
               }
             ].map((bill, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-[#3AB7BF] transition-all duration-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center">
-                    <CreditCard className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="px-3 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs font-medium">
-                    {bill.status.toUpperCase()}
-                  </span>
-                </div>
-                
-                <div className="space-y-3">
+              <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center">
+                  <CreditCard className="w-5 h-5 text-gray-400 mr-3" />
                   <div>
-                    <p className="text-2xl font-bold text-[#1E2A38]">{bill.amount}</p>
-                    <p className="text-sm text-gray-500">{bill.date}</p>
+                    <p className="font-medium text-[#1E2A38]">{bill.invoice}</p>
+                    <p className="text-sm text-gray-600">{bill.date} • {bill.paymentMethod}</p>
                   </div>
-                  
-                  <div className="space-y-1">
-                    <p className="text-sm text-gray-600">Invoice: {bill.invoice}</p>
-                    <p className="text-sm text-gray-600">Payment: {bill.paymentMethod}</p>
-                  </div>
-                  
-                  <div className="pt-3 border-t border-gray-100">
-                    <Button variant="outline" size="sm" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download PDF
-                    </Button>
-                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-[#1E2A38]">{bill.amount}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    bill.status === 'paid' 
+                      ? 'bg-[#4ADE80]/20 text-[#4ADE80]'
+                      : 'bg-[#F87171]/20 text-[#F87171]'
+                  }`}>
+                    {bill.status}
+                  </span>
+                  <Button variant="outline" size="sm">
+                    <Download className="w-4 h-4 mr-1" />
+                    PDF
+                  </Button>
                 </div>
               </div>
             ))}
