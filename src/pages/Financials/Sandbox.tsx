@@ -868,5 +868,3 @@ const Sandbox: React.FC = () => {
 };
 
 export default Sandbox;
-
-export default Sandbox
