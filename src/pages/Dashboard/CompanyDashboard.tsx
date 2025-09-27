@@ -128,7 +128,7 @@ const CompanyDashboard: React.FC = () => {
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Current</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Previous</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Budget</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Change</th>
+                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Previous</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Budget</th>
                 <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Target</th>
               </tr>
