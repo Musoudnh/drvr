@@ -103,78 +103,106 @@ const AccountProfile: React.FC = () => {
         <p className="text-gray-600 mt-1">Manage your personal information, security settings, and notification preferences</p>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <button
-          onClick={() => setShowNotificationModal(true)}
-          className="p-4 bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-all text-left"
-        >
-          <Bell className="w-6 h-6 text-[#3AB7BF] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Notifications</p>
-          <p className="text-sm text-gray-600">Customize alerts</p>
-        </button>
-        
-        <button
-          onClick={() => setShowSecurityModal(true)}
-          className="p-4 bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-all text-left"
-        >
-          <Shield className="w-6 h-6 text-[#4ADE80] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Security</p>
-          <p className="text-sm text-gray-600">Manage security</p>
-        </button>
-        
-        <button
-          onClick={() => setShowMfaModal(true)}
-          className="p-4 bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20 rounded-lg transition-all text-left"
-        >
-          <Key className="w-6 h-6 text-[#F59E0B] mb-2" />
-          <p className="font-medium text-[#1E2A38]">2FA Settings</p>
-          <p className="text-sm text-gray-600">Multi-factor auth</p>
-        </button>
-        
-        <button className="p-4 bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20 rounded-lg transition-all text-left">
-          <Eye className="w-6 h-6 text-[#8B5CF6] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Privacy</p>
-          <p className="text-sm text-gray-600">Data & privacy</p>
-        </button>
-      </div>
+      {/* Security & Privacy Settings */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Notifications & Alerts */}
+        <Card title="Notifications & Alerts">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-xl border border-[#3AB7BF]/20">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-xl flex items-center justify-center mr-4">
+                  <Bell className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#1E2A38]">Email Notifications</h4>
+                  <p className="text-sm text-gray-600">Financial alerts and system updates</p>
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" defaultChecked />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#3AB7BF] peer-checked:to-[#4ADE80]"></div>
+              </label>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-[#F59E0B]/10 rounded-xl border border-[#F59E0B]/20">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-[#F59E0B] rounded-xl flex items-center justify-center mr-4">
+                  <Smartphone className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#1E2A38]">Push Notifications</h4>
+                  <p className="text-sm text-gray-600">Mobile and desktop alerts</p>
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#F59E0B]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#F59E0B]"></div>
+              </label>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => setShowNotificationModal(true)}
+            >
+              <Settings className="w-4 h-4 mr-2" />
+              Advanced Notification Settings
+            </Button>
+          </div>
+        </Card>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <button
-          onClick={() => setShowNotificationModal(true)}
-          className="p-4 bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-all text-left"
-        >
-          <Bell className="w-6 h-6 text-[#3AB7BF] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Notifications</p>
-          <p className="text-sm text-gray-600">Customize alerts</p>
-        </button>
-        
-        <button
-          onClick={() => setShowSecurityModal(true)}
-          className="p-4 bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-all text-left"
-        >
-          <Shield className="w-6 h-6 text-[#4ADE80] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Security</p>
-          <p className="text-sm text-gray-600">Manage security</p>
-        </button>
-        
-        <button
-          onClick={() => setShowMfaModal(true)}
-          className="p-4 bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20 rounded-lg transition-all text-left"
-        >
-          <Key className="w-6 h-6 text-[#F59E0B] mb-2" />
-          <p className="font-medium text-[#1E2A38]">2FA Settings</p>
-          <p className="text-sm text-gray-600">Multi-factor auth</p>
-        </button>
-        
-        <button className="p-4 bg-[#8B5CF6]/10 hover:bg-[#8B5CF6]/20 rounded-lg transition-all text-left">
-          <Eye className="w-6 h-6 text-[#8B5CF6] mb-2" />
-          <p className="font-medium text-[#1E2A38]">Privacy</p>
-          <p className="text-sm text-gray-600">Data & privacy</p>
-        </button>
+        {/* Security & Privacy */}
+        <Card title="Security & Privacy">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#4ADE80]/10 to-[#3AB7BF]/10 rounded-xl border border-[#4ADE80]/20">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#4ADE80] to-[#3AB7BF] rounded-xl flex items-center justify-center mr-4">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#1E2A38]">Two-Factor Authentication</h4>
+                  <p className="text-sm text-gray-600">Enhanced account security</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-[#4ADE80]" />
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowMfaModal(true)}
+                >
+                  Configure
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-[#8B5CF6]/10 rounded-xl border border-[#8B5CF6]/20">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-[#8B5CF6] rounded-xl flex items-center justify-center mr-4">
+                  <Eye className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-[#1E2A38]">Privacy Controls</h4>
+                  <p className="text-sm text-gray-600">Data sharing and visibility</p>
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" className="sr-only peer" defaultChecked />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#8B5CF6]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8B5CF6]"></div>
+              </label>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => setShowSecurityModal(true)}
+            >
+              <Lock className="w-4 h-4 mr-2" />
+              Advanced Security Settings
+            </Button>
+          </div>
+        </Card>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Photo */}
         <Card title="Profile Photo">
@@ -750,9 +778,6 @@ const AccountProfile: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      </div>
-      </div>
     </div>
   );
 };
