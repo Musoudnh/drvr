@@ -34,6 +34,7 @@ import RunwayPlanning from '../pages/Runway/RunwayPlanning';
 import RevenueRunway from '../pages/Runway/RevenueRunway';
 import OpExRunway from '../pages/Runway/OpExRunway';
 import HiringRunway from '../pages/Runway/HiringRunway';
+import VarianceInsights from '../pages/Forecasting/VarianceInsights';
 import DataIntegration from '../pages/Integrations/DataIntegration';
 import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
 import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
