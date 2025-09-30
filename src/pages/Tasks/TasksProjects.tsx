@@ -199,6 +199,19 @@ const TasksProjects: React.FC = () => {
     setShowAddTaskModal(false);
   };
 
+  const handleTaskUpdate = (taskId: string, updates: { dueDate?: Date; createdAt?: Date }) => {
+    setTasks(prev => prev.map(task =>
+      task.id === taskId
+        ? {
+            ...task,
+            ...(updates.dueDate && { dueDate: updates.dueDate }),
+            ...(updates.createdAt && { createdAt: updates.createdAt }),
+            updatedAt: new Date()
+          }
+        : task
+    ));
+  };
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
@@ -613,6 +626,7 @@ const TasksProjects: React.FC = () => {
                     setSelectedTask(task);
                     setShowTaskDetail(true);
                   }}
+                  onTaskUpdate={handleTaskUpdate}
                 />
               )}
             </div>
