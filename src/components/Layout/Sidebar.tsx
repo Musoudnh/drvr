@@ -119,6 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
+        { path: '/cashflow/advanced', label: 'Cash Flow Management', icon: TrendingDown },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
@@ -140,6 +141,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
+        { path: '/cashflow/advanced', label: 'Cash Flow Management', icon: TrendingDown },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },

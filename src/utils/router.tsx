@@ -41,6 +41,7 @@ import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
 import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import Sandbox from '../pages/Financials/Sandbox';
+import AdvancedCashFlow from '../pages/CashFlow/AdvancedCashFlow';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
@@ -336,6 +337,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Tasks & Projects">
         <TasksProjects />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/cashflow/advanced",
+    element: (
+      <ProtectedRoute title="Advanced Cash Flow">
+        <AdvancedCashFlow />
       </ProtectedRoute>
     )
   }
