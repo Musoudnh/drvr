@@ -1,30 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Maximize2, 
-  Calendar, 
-  User, 
-  MessageSquare, 
-  X, 
-  ChevronRight,
-  Clock,
-  AlertTriangle,
-  CheckCircle,
-  MoreHorizontal,
-  Edit3,
-  Trash2,
-  Eye,
-  Link as LinkIcon,
-  Settings,
-  Zap
-} from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import GanttView from '../../components/Tasks/GanttView';
 
 interface Task {
   id: string;
@@ -628,13 +607,13 @@ const TasksProjects: React.FC = () => {
               {viewMode === 'board' && renderKanbanBoard()}
               {viewMode === 'list' && renderListView()}
               {viewMode === 'gantt' && (
-                <div className="flex items-center justify-center h-96">
-                  <div className="text-center">
-                    <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-500 mb-2">Gantt View</h3>
-                    <p className="text-gray-400">Gantt chart functionality coming soon</p>
-                  </div>
-                </div>
+                <GanttView
+                  tasks={filteredTasks}
+                  onTaskClick={(task) => {
+                    setSelectedTask(task);
+                    setShowTaskDetail(true);
+                  }}
+                />
               )}
             </div>
           )}
