@@ -519,7 +519,7 @@ const TasksProjects: React.FC = () => {
               } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <Grid3X3 className="w-4 h-4 mr-2" />
-              Native Task Board
+              Task Board
             </button>
             {connectedBoards.map(board => (
               <button
