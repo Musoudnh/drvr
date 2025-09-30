@@ -68,19 +68,27 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick }) => {
   const dayWidth = 40;
 
   const getTaskPosition = (task: Task) => {
-    const taskDate = new Date(task.dueDate);
-    taskDate.setHours(0, 0, 0, 0);
+    const taskDueDate = new Date(task.dueDate);
+    taskDueDate.setHours(0, 0, 0, 0);
 
     const taskStartDate = new Date(task.createdAt);
     taskStartDate.setHours(0, 0, 0, 0);
 
-    const startDiff = Math.floor((taskStartDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    const endDiff = Math.floor((taskDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysBetween = Math.floor((taskDueDate.getTime() - taskStartDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    const effectiveStartDate = taskStartDate;
+    const minDuration = 3;
+    const effectiveDuration = Math.max(minDuration, daysBetween);
+
+    const startDiff = Math.floor((effectiveStartDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const endDiff = startDiff + effectiveDuration;
 
     const left = Math.max(0, startDiff * dayWidth);
-    const width = Math.max(dayWidth, (endDiff - startDiff + 1) * dayWidth);
+    const width = Math.max(dayWidth * minDuration, effectiveDuration * dayWidth);
 
-    return { left, width };
+    const dueDatePosition = Math.floor((taskDueDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) * dayWidth;
+
+    return { left, width, dueDatePosition };
   };
 
   const getPriorityColor = (priority: string) => {
@@ -169,7 +177,8 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick }) => {
 
           <div className="relative">
             {sortedTasks.map((task, index) => {
-              const { left, width } = getTaskPosition(task);
+              const { left, width, dueDatePosition } = getTaskPosition(task);
+              const taskDueDateStr = task.dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
               return (
                 <div
@@ -182,7 +191,10 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick }) => {
                         <h4 className="text-sm font-medium text-[#1E2A38] truncate">
                           {task.title}
                         </h4>
-                        <p className="text-xs text-gray-600 truncate">{task.assignee}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-gray-600 truncate">{task.assignee}</p>
+                          <span className="text-xs text-gray-500">Due: {taskDueDateStr}</span>
+                        </div>
                       </div>
                       <span className={`ml-2 w-2 h-2 rounded-full flex-shrink-0 ${getPriorityColor(task.priority)}`} />
                     </div>
@@ -210,14 +222,22 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick }) => {
                         minWidth: '80px'
                       }}
                       onClick={() => onTaskClick?.(task)}
-                      title={`${task.title} - ${task.status.replace('_', ' ')}`}
+                      title={`${task.title} - Due: ${taskDueDateStr} - ${task.status.replace('_', ' ')}`}
                     >
-                      <div className="h-full flex items-center px-2">
+                      <div className="h-full flex items-center justify-between px-2">
                         <span className="text-xs font-medium text-white truncate">
                           {task.title}
                         </span>
                       </div>
                     </div>
+
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-[#1E2A38]"
+                      style={{
+                        left: `${dueDatePosition}px`,
+                      }}
+                      title={`Due Date: ${taskDueDateStr}`}
+                    />
                   </div>
                 </div>
               );
