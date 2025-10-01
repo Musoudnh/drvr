@@ -57,25 +57,16 @@ const Alerts: React.FC = () => {
             }
           ].map((alert) => (
             <div key={alert.id} className="p-2 rounded-lg bg-[#eff1f4]">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start">
-                  <div className={`w-2 h-2 rounded-full mt-1.5 mr-2 flex-shrink-0 ${
-                    alert.type === 'critical' ? 'bg-[#F87171]' :
-                    alert.type === 'warning' ? 'bg-[#F59E0B]' :
-                    'bg-[#4ADE80]'
-                  }`} />
-                  <div>
-                    <h4 className="font-medium text-[#101010] mb-0.5 text-xs">{alert.title}</h4>
-                    <p className="text-gray-600 mb-0.5 text-xs">{alert.message}</p>
-                    <p className="text-xs text-gray-500">{alert.time}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button variant="outline" size="sm">{alert.action}</Button>
-                  <button className="p-1 hover:bg-gray-200 rounded">
-                    <X className="w-3 h-3 text-gray-400" />
-                  </button>
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#4F46E5]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#4F46E5]"></div>
+              <div className="flex items-start">
+                <div className={`w-2 h-2 rounded-full mt-1.5 mr-2 flex-shrink-0 ${
+                  alert.type === 'critical' ? 'bg-[#F87171]' :
+                  alert.type === 'warning' ? 'bg-[#F59E0B]' :
+                  'bg-[#4ADE80]'
+                }`} />
+                <div>
+                  <h4 className="font-medium text-[#101010] mb-0.5 text-xs">{alert.title}</h4>
+                  <p className="text-gray-600 mb-0.5 text-xs">{alert.message}</p>
+                  <p className="text-xs text-gray-500">{alert.time}</p>
                 </div>
               </div>
             </div>
