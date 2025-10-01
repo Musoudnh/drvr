@@ -14,6 +14,7 @@ interface AddRoleModalProps {
 export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps) {
   const [states, setStates] = useState<StateTaxRate[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState(false);
   const [formData, setFormData] = useState<RoleFormData>({
     role_name: '',
     description: '',
@@ -33,12 +34,28 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
   }, [isOpen]);
 
   const loadStates = async () => {
+    setLoadingStates(true);
     try {
-      const stateList = await taxCalculationService.getAllStates();
-      console.log('Loaded states:', stateList);
-      setStates(stateList);
+      const { data, error } = await supabase
+        .from('state_tax_rates')
+        .select('*')
+        .order('state_name');
+
+      console.log('Direct query result:', { data, error });
+
+      if (error) {
+        console.error('Supabase error:', error);
+        return;
+      }
+
+      if (data) {
+        console.log('States loaded successfully:', data.length);
+        setStates(data);
+      }
     } catch (error) {
       console.error('Error loading states:', error);
+    } finally {
+      setLoadingStates(false);
     }
   };
 
@@ -162,14 +179,26 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                 value={formData.location_state}
                 onChange={(e) => setFormData({ ...formData, location_state: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
+                disabled={loadingStates}
               >
-                <option value="">Select state</option>
+                <option value="">
+                  {loadingStates ? 'Loading states...' : 'Select state'}
+                </option>
                 {states.map((state) => (
                   <option key={state.state_code} value={state.state_code}>
                     {state.state_name}
                   </option>
                 ))}
               </select>
+              {loadingStates && (
+                <p className="text-xs text-gray-500 mt-1">Loading state data...</p>
+              )}
+              {!loadingStates && states.length === 0 && (
+                <p className="text-xs text-red-600 mt-1">No states available. Check console for errors.</p>
+              )}
+              {!loadingStates && states.length > 0 && (
+                <p className="text-xs text-gray-500 mt-1">{states.length} states loaded</p>
+              )}
             </div>
 
             <div>
