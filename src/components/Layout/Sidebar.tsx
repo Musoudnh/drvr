@@ -278,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 : 'text-[#101010] hover:text-[#101010]'
             } ${depth > 0 ? 'ml-3' : ''}`}
             style={{
-              backgroundColor: active ? '#EFEFEA' : 'transparent',
+              backgroundColor: active ? '#eff1f4' : 'transparent',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               transform: active ? 'translateX(4px)' : 'translateX(0)',
               color: '#101010',
