@@ -3,7 +3,6 @@ import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, Tr
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
-import { VersionHistoryModal } from '../../components/Forecasting/VersionHistoryModal';
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import { forecastService } from '../../services/forecastService';
 import type { ForecastLineItem } from '../../types/forecast';
@@ -84,12 +83,14 @@ const Forecasting: React.FC = () => {
   });
   const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
   const [showSaveForecastModal, setShowSaveForecastModal] = useState(false);
-  const [showVersionHistoryModal, setShowVersionHistoryModal] = useState(false);
+  const [showVersionHistorySidebar, setShowVersionHistorySidebar] = useState(false);
   const [showVersionComparisonModal, setShowVersionComparisonModal] = useState(false);
   const [comparisonVersions, setComparisonVersions] = useState<[string, string] | null>(null);
   const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
   const [scenarioMenuOpen, setScenarioMenuOpen] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [versionHistory, setVersionHistory] = useState<any[]>([]);
+  const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -421,14 +422,45 @@ const Forecasting: React.FC = () => {
     });
   };
 
-  const handleLoadVersion = (versionId: string) => {
-    setShowVersionHistoryModal(false);
+  const loadVersionHistory = async () => {
+    try {
+      const versions = await forecastService.getVersionHistory(selectedYear);
+      setVersionHistory(versions);
+    } catch (error) {
+      console.error('Failed to load version history:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (showVersionHistorySidebar) {
+      loadVersionHistory();
+    }
+  }, [showVersionHistorySidebar, selectedYear]);
+
+  const handleLoadVersion = async (versionId: string) => {
+    try {
+      await forecastService.setActiveVersion(versionId, selectedYear);
+      setShowVersionHistorySidebar(false);
+    } catch (error) {
+      console.error('Failed to load version:', error);
+    }
   };
 
   const handleCompareVersions = (version1Id: string, version2Id: string) => {
     setComparisonVersions([version1Id, version2Id]);
-    setShowVersionHistoryModal(false);
+    setShowVersionHistorySidebar(false);
     setShowVersionComparisonModal(true);
+  };
+
+  const handleDeleteVersion = async (versionId: string) => {
+    try {
+      await forecastService.deleteVersion(versionId);
+      await loadVersionHistory();
+      setShowDeleteConfirm(null);
+      setSelectedVersionForAction(null);
+    } catch (error) {
+      console.error('Failed to delete version:', error);
+    }
   };
 
   const handleCellSelection = (glCode: string, month: string, isActualized: boolean, event: React.MouseEvent) => {
@@ -952,7 +984,7 @@ const Forecasting: React.FC = () => {
               Applied Scenarios
             </button>
             <button
-              onClick={() => setShowVersionHistoryModal(true)}
+              onClick={() => setShowVersionHistorySidebar(true)}
               className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
             >
               <History className="w-4 h-4 mr-1 inline" />
@@ -1908,13 +1940,6 @@ const Forecasting: React.FC = () => {
         onSave={handleSaveForecast}
       />
 
-      <VersionHistoryModal
-        isOpen={showVersionHistoryModal}
-        onClose={() => setShowVersionHistoryModal(false)}
-        year={selectedYear}
-        onLoadVersion={handleLoadVersion}
-        onCompareVersions={handleCompareVersions}
-      />
 
       {comparisonVersions && (
         <VersionComparisonModal
@@ -2158,6 +2183,145 @@ const Forecasting: React.FC = () => {
         </div>
       )}
 
+      {/* Version History Sidebar */}
+      {showVersionHistorySidebar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+          <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-[#101010]">Version History</h3>
+                  <p className="text-sm text-gray-600 mt-1">View and manage forecast versions for {selectedYear}</p>
+                </div>
+                <button
+                  onClick={() => setShowVersionHistorySidebar(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {versionHistory.length === 0 ? (
+                <div className="text-center py-12">
+                  <History className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500 font-medium">No versions saved yet</p>
+                  <p className="text-sm text-gray-400 mt-2">Saved forecasts will appear here</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {versionHistory.map((version) => (
+                    <div
+                      key={version.id}
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-[#101010] text-sm">{version.name}</h4>
+                            <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded">
+                              v{version.version_number}
+                            </span>
+                            {version.is_active && (
+                              <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#4ADE80]/10 text-[#4ADE80]">
+                                Active
+                              </span>
+                            )}
+                          </div>
+                          {version.description && (
+                            <p className="text-xs text-gray-500 mt-1">{version.description}</p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => setSelectedVersionForAction(selectedVersionForAction === version.id ? null : version.id)}
+                          className="px-3 py-1.5 bg-[#eff1f4] hover:bg-[#e5e7ea] text-gray-700 text-xs font-medium rounded transition-colors"
+                        >
+                          Actions
+                        </button>
+                      </div>
+
+                      {selectedVersionForAction === version.id && (
+                        <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="flex flex-col gap-2">
+                            {!version.is_active && (
+                              <button
+                                onClick={() => handleLoadVersion(version.id)}
+                                className="px-3 py-2 text-sm font-medium bg-[#7B68EE] text-white hover:bg-[#6A5ACD] rounded transition-colors"
+                              >
+                                Load Version
+                              </button>
+                            )}
+                            <button
+                              onClick={() => {
+                                const otherVersion = versionHistory.find(v => v.id !== version.id);
+                                if (otherVersion) {
+                                  handleCompareVersions(version.id, otherVersion.id);
+                                }
+                              }}
+                              disabled={versionHistory.length < 2}
+                              className="px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Compare Versions
+                            </button>
+                            {!version.is_active && (
+                              <button
+                                onClick={() => setShowDeleteConfirm(version.id)}
+                                className="px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                              >
+                                Delete Version
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-600">Total Forecasted:</span>
+                          <span className="font-medium text-[#101010]">
+                            ${version.total_forecasted_amount?.toLocaleString() || '0'}
+                          </span>
+                        </div>
+
+                        <div className="pt-3 mt-3 border-t border-gray-200">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-gray-500">Created {version.created_by ? `by ${version.created_by}` : ''}</span>
+                            <span className="text-gray-400">
+                              {new Date(version.created_at).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>{versionHistory.length}</strong> {versionHistory.length === 1 ? 'version' : 'versions'} saved
+                </p>
+                <button
+                  onClick={() => setShowVersionHistorySidebar(false)}
+                  className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Dialog */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
@@ -2168,14 +2332,19 @@ const Forecasting: React.FC = () => {
                   <X className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#101010]">Remove Scenario</h3>
+                  <h3 className="text-lg font-bold text-[#101010]">
+                    {versionHistory.some(v => v.id === showDeleteConfirm) ? 'Delete Version' : 'Remove Scenario'}
+                  </h3>
                   <p className="text-sm text-gray-600">This action cannot be undone</p>
                 </div>
               </div>
 
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-red-900">
-                  Removing this scenario will permanently delete it and remove any adjustments it made to your forecast. Are you sure you want to continue?
+                  {versionHistory.some(v => v.id === showDeleteConfirm)
+                    ? 'Deleting this version will permanently remove it from your history. Are you sure you want to continue?'
+                    : 'Removing this scenario will permanently delete it and remove any adjustments it made to your forecast. Are you sure you want to continue?'
+                  }
                 </p>
               </div>
 
@@ -2184,16 +2353,23 @@ const Forecasting: React.FC = () => {
                   onClick={() => {
                     setShowDeleteConfirm(null);
                     setScenarioMenuOpen(null);
+                    setSelectedVersionForAction(null);
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={() => removeScenario(showDeleteConfirm)}
+                  onClick={() => {
+                    if (versionHistory.some(v => v.id === showDeleteConfirm)) {
+                      handleDeleteVersion(showDeleteConfirm);
+                    } else {
+                      removeScenario(showDeleteConfirm);
+                    }
+                  }}
                   className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                 >
-                  Remove Scenario
+                  {versionHistory.some(v => v.id === showDeleteConfirm) ? 'Delete Version' : 'Remove Scenario'}
                 </button>
               </div>
             </div>
