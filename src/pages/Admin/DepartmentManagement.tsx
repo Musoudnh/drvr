@@ -1,25 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Building,
-  Plus,
-  Edit3,
-  Trash2,
-  Users,
-  DollarSign,
-  TrendingUp,
-  Target,
-  PieChart,
-  ArrowRight,
-  Download,
-  Upload,
-  Settings,
-  ChevronDown,
-  ChevronRight,
-  BarChart3,
-  AlertCircle,
-  CheckCircle,
-  X
-} from 'lucide-react';
+import { Building, Plus, CreditCard as Edit3, Trash2, Users, DollarSign, TrendingUp, Target, PieChart, ArrowRight, Download, Upload, Settings, ChevronDown, ChevronRight, BarChart3, AlertCircle, CheckCircle, X } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
