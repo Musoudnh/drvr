@@ -1113,9 +1113,6 @@ const Forecasting: React.FC = () => {
                                           {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
                                         </div>
                                       )}
-                                      {isActualized && (
-                                        <div className="absolute top-0 right-0 w-2 h-2 bg-gray-400 rounded-full" title="Actualized" />
-                                      )}
                                     </div>
                                   </td>
                                 );
