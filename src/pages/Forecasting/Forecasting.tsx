@@ -73,6 +73,12 @@ const Forecasting: React.FC = () => {
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [editingCell, setEditingCell] = useState<{glCode: string, month: string, type?: 'ytd' | 'fy'} | null>(null);
   const [editValue, setEditValue] = useState<string>('');
+  const [selectedCells, setSelectedCells] = useState<{glCode: string, month: string}[]>([]);
+  const [showBulkAdjustPanel, setShowBulkAdjustPanel] = useState(false);
+  const [bulkAdjustment, setBulkAdjustment] = useState({
+    type: 'percentage' as 'percentage' | 'fixed' | 'set',
+    value: 0
+  });
   const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
   const [showSaveForecastModal, setShowSaveForecastModal] = useState(false);
   const [showVersionHistoryModal, setShowVersionHistoryModal] = useState(false);
@@ -417,6 +423,94 @@ const Forecasting: React.FC = () => {
     setComparisonVersions([version1Id, version2Id]);
     setShowVersionHistoryModal(false);
     setShowVersionComparisonModal(true);
+  };
+
+  const handleCellSelection = (glCode: string, month: string, isActualized: boolean, event: React.MouseEvent) => {
+    if (isActualized) return;
+
+    const cellKey = { glCode, month };
+    const isSelected = selectedCells.some(cell => cell.glCode === glCode && cell.month === month);
+
+    if (event.ctrlKey || event.metaKey) {
+      if (isSelected) {
+        setSelectedCells(prev => prev.filter(cell => !(cell.glCode === glCode && cell.month === month)));
+      } else {
+        setSelectedCells(prev => [...prev, cellKey]);
+      }
+    } else if (event.shiftKey && selectedCells.length > 0) {
+      const lastSelected = selectedCells[selectedCells.length - 1];
+      const newSelection = expandSelection(lastSelected, cellKey);
+      setSelectedCells(newSelection);
+    } else {
+      setSelectedCells([cellKey]);
+    }
+  };
+
+  const expandSelection = (start: {glCode: string, month: string}, end: {glCode: string, month: string}) => {
+    const selection: {glCode: string, month: string}[] = [];
+    const glCodesList = glCodes.map(gl => gl.code);
+    const startGLIndex = glCodesList.indexOf(start.glCode);
+    const endGLIndex = glCodesList.indexOf(end.glCode);
+    const startMonthIndex = months.indexOf(start.month.split(' ')[0]);
+    const endMonthIndex = months.indexOf(end.month.split(' ')[0]);
+
+    const minGLIndex = Math.min(startGLIndex, endGLIndex);
+    const maxGLIndex = Math.max(startGLIndex, endGLIndex);
+    const minMonthIndex = Math.min(startMonthIndex, endMonthIndex);
+    const maxMonthIndex = Math.max(startMonthIndex, endMonthIndex);
+
+    for (let gi = minGLIndex; gi <= maxGLIndex; gi++) {
+      for (let mi = minMonthIndex; mi <= maxMonthIndex; mi++) {
+        const month = `${months[mi]} ${selectedYear}`;
+        if (!isMonthActualized(month)) {
+          selection.push({ glCode: glCodesList[gi], month });
+        }
+      }
+    }
+
+    return selection;
+  };
+
+  const applyBulkAdjustment = () => {
+    if (selectedCells.length === 0) return;
+
+    setForecastData(prev => prev.map(item => {
+      const isSelected = selectedCells.some(
+        cell => cell.glCode === item.glCode && cell.month === item.month
+      );
+
+      if (isSelected && item.isEditable) {
+        let newAmount = item.forecastedAmount;
+
+        switch (bulkAdjustment.type) {
+          case 'percentage':
+            newAmount = item.forecastedAmount * (1 + bulkAdjustment.value / 100);
+            break;
+          case 'fixed':
+            newAmount = item.forecastedAmount + bulkAdjustment.value;
+            break;
+          case 'set':
+            newAmount = bulkAdjustment.value;
+            break;
+        }
+
+        return { ...item, forecastedAmount: Math.round(newAmount) };
+      }
+
+      return item;
+    }));
+
+    setSelectedCells([]);
+    setShowBulkAdjustPanel(false);
+    setBulkAdjustment({ type: 'percentage', value: 0 });
+  };
+
+  const clearSelection = () => {
+    setSelectedCells([]);
+  };
+
+  const isCellSelected = (glCode: string, month: string) => {
+    return selectedCells.some(cell => cell.glCode === glCode && cell.month === month);
   };
 
   const renderGLSpecificInputs = () => {
@@ -784,6 +878,32 @@ const Forecasting: React.FC = () => {
         </div>
       </div>
 
+      {/* Selection Actions Bar */}
+      {selectedCells.length > 0 && (
+        <div className="bg-[#3AB7BF]/10 border border-[#3AB7BF] rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-[#101010]">
+              {selectedCells.length} cell{selectedCells.length > 1 ? 's' : ''} selected
+            </span>
+            <button
+              onClick={() => setShowBulkAdjustPanel(true)}
+              className="px-3 py-1.5 bg-[#3AB7BF] text-white rounded-lg text-sm font-medium hover:bg-[#2A9BA3] transition-colors"
+            >
+              Adjust Selected
+            </button>
+            <button
+              onClick={clearSelection}
+              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
+            >
+              Clear Selection
+            </button>
+          </div>
+          <span className="text-xs text-gray-600">
+            Tip: Hold Ctrl/Cmd to select multiple cells, Shift for range selection, or double-click to edit
+          </span>
+        </div>
+      )}
+
       {/* Controls */}
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -933,10 +1053,18 @@ const Forecasting: React.FC = () => {
                                 const isActualized = isMonthActualized(`${month} ${selectedYear}`);
                                 const isEditing = editingCell?.glCode === glCode.code && editingCell?.month === `${month} ${selectedYear}`;
                                 
+                                const isSelected = isCellSelected(glCode.code, `${month} ${selectedYear}`);
+
                                 return (
                                   <td key={monthIndex} className="py-3 px-2 text-center text-sm">
                                     <div className="space-y-1 relative">
-                                      <div className={`font-medium ${!isActualized ? 'cursor-pointer hover:bg-blue-50 rounded px-1' : ''}`}>
+                                      <div className={`font-medium rounded px-1 ${
+                                        isSelected
+                                          ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
+                                          : !isActualized
+                                            ? 'cursor-pointer hover:bg-blue-50'
+                                            : ''
+                                      }`}>
                                         {isEditing ? (
                                           <input
                                             type="number"
@@ -952,12 +1080,16 @@ const Forecasting: React.FC = () => {
                                           />
                                         ) : (
                                           <span
-                                            onClick={() => {
+                                            onClick={(e) => {
                                               if (!isActualized && monthData) {
-                                                handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
+                                                if (e.detail === 2) {
+                                                  handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
+                                                } else {
+                                                  handleCellSelection(glCode.code, `${month} ${selectedYear}`, isActualized, e);
+                                                }
                                               }
                                             }}
-                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-blue-600'}
+                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-blue-600 select-none'}
                                           >
                                             ${monthData?.forecastedAmount.toLocaleString() || '0'}
                                           </span>
@@ -1670,6 +1802,92 @@ const Forecasting: React.FC = () => {
           version1Id={comparisonVersions[0]}
           version2Id={comparisonVersions[1]}
         />
+      )}
+
+      {/* Bulk Adjustment Modal */}
+      {showBulkAdjustPanel && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Adjust Selected Cells</h2>
+              <button
+                onClick={() => setShowBulkAdjustPanel(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Apply adjustment to {selectedCells.length} selected cell{selectedCells.length > 1 ? 's' : ''}
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Adjustment Type
+                </label>
+                <select
+                  value={bulkAdjustment.type}
+                  onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, type: e.target.value as 'percentage' | 'fixed' | 'set' })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="percentage">Percentage Change</option>
+                  <option value="fixed">Fixed Amount Change</option>
+                  <option value="set">Set to Specific Value</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {bulkAdjustment.type === 'percentage' && 'Percentage (%)'}
+                  {bulkAdjustment.type === 'fixed' && 'Amount ($)'}
+                  {bulkAdjustment.type === 'set' && 'New Value ($)'}
+                </label>
+                <input
+                  type="number"
+                  value={bulkAdjustment.value}
+                  onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, value: parseFloat(e.target.value) || 0 })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="Enter value"
+                  step={bulkAdjustment.type === 'percentage' ? '0.1' : '1'}
+                />
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-sm text-blue-900">
+                  <strong>Preview:</strong>
+                  {bulkAdjustment.type === 'percentage' && (
+                    <span> All selected values will be {bulkAdjustment.value >= 0 ? 'increased' : 'decreased'} by {Math.abs(bulkAdjustment.value)}%</span>
+                  )}
+                  {bulkAdjustment.type === 'fixed' && (
+                    <span> {bulkAdjustment.value >= 0 ? '+' : ''}{bulkAdjustment.value.toLocaleString()} will be applied to all selected values</span>
+                  )}
+                  {bulkAdjustment.type === 'set' && (
+                    <span> All selected values will be set to ${bulkAdjustment.value.toLocaleString()}</span>
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 p-6 flex gap-3">
+              <button
+                onClick={() => setShowBulkAdjustPanel(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={applyBulkAdjustment}
+                className="flex-1 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors font-medium"
+              >
+                Apply Adjustment
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
     </div>
