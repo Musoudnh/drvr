@@ -56,20 +56,14 @@ const Alerts: React.FC = () => {
               action: 'View Report'
             }
           ].map((alert) => (
-            <div key={alert.id} className={`p-2 rounded-lg border-l-4 ${
-              alert.type === 'critical' ? 'bg-[#F87171]/10 border-[#F87171]' :
-              alert.type === 'warning' ? 'bg-[#F59E0B]/10 border-[#F59E0B]' :
-              'bg-[#3AB7BF]/10 border-[#3AB7BF]'
-            }`}>
+            <div key={alert.id} className="p-2 rounded-lg bg-[#eff1f4]">
               <div className="flex items-start justify-between">
                 <div className="flex items-start">
-                  {alert.type === 'critical' ? (
-                    <AlertTriangle className="w-3 h-3 text-[#F87171] mr-2 mt-0.5" />
-                  ) : alert.type === 'warning' ? (
-                    <Clock className="w-3 h-3 text-[#F59E0B] mr-2 mt-0.5" />
-                  ) : (
-                    <Info className="w-3 h-3 text-[#3AB7BF] mr-2 mt-0.5" />
-                  )}
+                  <div className={`w-2 h-2 rounded-full mt-1.5 mr-2 flex-shrink-0 ${
+                    alert.type === 'critical' ? 'bg-[#F87171]' :
+                    alert.type === 'warning' ? 'bg-[#F59E0B]' :
+                    'bg-[#4ADE80]'
+                  }`} />
                   <div>
                     <h4 className="font-medium text-[#101010] mb-0.5 text-xs">{alert.title}</h4>
                     <p className="text-gray-600 mb-0.5 text-xs">{alert.message}</p>
