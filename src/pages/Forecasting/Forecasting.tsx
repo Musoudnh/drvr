@@ -1881,7 +1881,7 @@ const Forecasting: React.FC = () => {
               </button>
               <button
                 onClick={applyBulkAdjustment}
-                className="flex-1 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors font-medium"
+                className="flex-1 px-4 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6A5ADB] transition-colors font-medium"
               >
                 Apply Adjustment
               </button>
