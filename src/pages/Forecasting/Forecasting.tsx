@@ -87,6 +87,7 @@ const Forecasting: React.FC = () => {
   const [comparisonVersions, setComparisonVersions] = useState<[string, string] | null>(null);
   const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
   const [scenarioMenuOpen, setScenarioMenuOpen] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -472,6 +473,90 @@ const Forecasting: React.FC = () => {
     }
 
     return selection;
+  };
+
+  // Apply or remove scenario adjustments to forecast
+  const applyScenarioToForecast = (scenario: AppliedScenario, shouldApply: boolean) => {
+    setForecastData(prev => prev.map(item => {
+      const itemMonthName = item.month.split(' ')[0];
+      const itemYear = parseInt(item.month.split(' ')[1]);
+
+      // Check if this forecast item matches the scenario's GL code and date range
+      if (item.glCode === scenario.glCode) {
+        const scenarioStartMonth = months.indexOf(scenario.startMonth.split(' ')[0]);
+        const scenarioEndMonth = months.indexOf(scenario.endMonth.split(' ')[0]);
+        const itemMonthIndex = months.indexOf(itemMonthName);
+
+        const scenarioStartYear = parseInt(scenario.startMonth.split(' ')[1]);
+        const scenarioEndYear = parseInt(scenario.endMonth.split(' ')[1]);
+
+        // Check if item is within scenario date range
+        const isInRange = (
+          (itemYear > scenarioStartYear || (itemYear === scenarioStartYear && itemMonthIndex >= scenarioStartMonth)) &&
+          (itemYear < scenarioEndYear || (itemYear === scenarioEndYear && itemMonthIndex <= scenarioEndMonth))
+        );
+
+        if (isInRange) {
+          let adjustedAmount = item.forecastedAmount;
+
+          if (scenario.adjustmentType === 'percentage') {
+            const adjustmentFactor = shouldApply
+              ? (1 + scenario.adjustmentValue / 100)
+              : (1 / (1 + scenario.adjustmentValue / 100));
+            adjustedAmount = item.forecastedAmount * adjustmentFactor;
+          } else {
+            adjustedAmount = shouldApply
+              ? item.forecastedAmount + scenario.adjustmentValue
+              : item.forecastedAmount - scenario.adjustmentValue;
+          }
+
+          return {
+            ...item,
+            forecastedAmount: Math.round(adjustedAmount)
+          };
+        }
+      }
+
+      return item;
+    }));
+  };
+
+  // Toggle scenario active state
+  const toggleScenario = (scenarioId: string) => {
+    const scenario = appliedScenarios.find(s => s.id === scenarioId);
+    if (!scenario) return;
+
+    const newActiveState = !scenario.isActive;
+
+    // Apply or remove the scenario adjustment
+    applyScenarioToForecast(scenario, newActiveState);
+
+    // Update scenario state
+    setAppliedScenarios(prev =>
+      prev.map(s =>
+        s.id === scenarioId
+          ? { ...s, isActive: newActiveState }
+          : s
+      )
+    );
+
+    setScenarioMenuOpen(null);
+  };
+
+  // Remove scenario completely
+  const removeScenario = (scenarioId: string) => {
+    const scenario = appliedScenarios.find(s => s.id === scenarioId);
+    if (!scenario) return;
+
+    // If scenario was active, remove its impact
+    if (scenario.isActive) {
+      applyScenarioToForecast(scenario, false);
+    }
+
+    // Remove scenario from list
+    setAppliedScenarios(prev => prev.filter(s => s.id !== scenarioId));
+    setScenarioMenuOpen(null);
+    setShowDeleteConfirm(null);
   };
 
   const applyBulkAdjustment = () => {
@@ -1948,16 +2033,23 @@ const Forecasting: React.FC = () => {
               ) : (
                 <div className="space-y-4">
                   {appliedScenarios.map((scenario) => (
-                    <div key={scenario.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all">
+                    <div
+                      key={scenario.id}
+                      className={`bg-white border rounded-lg p-4 hover:shadow-md transition-all duration-300 ${
+                        scenario.isActive
+                          ? 'border-[#4ADE80] shadow-sm'
+                          : 'border-gray-200 opacity-75'
+                      }`}
+                    >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
                           <p className="text-xs text-gray-500 mt-1">GL Code: {scenario.glCode}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-300 ${
                             scenario.isActive
-                              ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
+                              ? 'bg-[#4ADE80]/10 text-[#4ADE80] animate-pulse'
                               : 'bg-gray-200 text-gray-600'
                           }`}>
                             {scenario.isActive ? 'Active' : 'Inactive'}
@@ -1972,26 +2064,14 @@ const Forecasting: React.FC = () => {
                             {scenarioMenuOpen === scenario.id && (
                               <div className="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                                 <button
-                                  onClick={() => {
-                                    setAppliedScenarios(prev =>
-                                      prev.map(s =>
-                                        s.id === scenario.id
-                                          ? { ...s, isActive: !s.isActive }
-                                          : s
-                                      )
-                                    );
-                                    setScenarioMenuOpen(null);
-                                  }}
-                                  className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                                  onClick={() => toggleScenario(scenario.id)}
+                                  className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors rounded-t-lg"
                                 >
                                   {scenario.isActive ? 'Deactivate' : 'Activate'}
                                 </button>
                                 <button
-                                  onClick={() => {
-                                    setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
-                                    setScenarioMenuOpen(null);
-                                  }}
-                                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                  onClick={() => setShowDeleteConfirm(scenario.id)}
+                                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors rounded-b-lg border-t border-gray-100"
                                 >
                                   Remove
                                 </button>
@@ -2061,6 +2141,49 @@ const Forecasting: React.FC = () => {
                   className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
                 >
                   Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full transform transition-all">
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                  <X className="w-5 h-5 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#101010]">Remove Scenario</h3>
+                  <p className="text-sm text-gray-600">This action cannot be undone</p>
+                </div>
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <p className="text-sm text-red-900">
+                  Removing this scenario will permanently delete it and remove any adjustments it made to your forecast. Are you sure you want to continue?
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteConfirm(null);
+                    setScenarioMenuOpen(null);
+                  }}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => removeScenario(showDeleteConfirm)}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  Remove Scenario
                 </button>
               </div>
             </div>
