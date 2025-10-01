@@ -84,6 +84,7 @@ const Forecasting: React.FC = () => {
   const [showVersionHistoryModal, setShowVersionHistoryModal] = useState(false);
   const [showVersionComparisonModal, setShowVersionComparisonModal] = useState(false);
   const [comparisonVersions, setComparisonVersions] = useState<[string, string] | null>(null);
+  const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -860,6 +861,13 @@ const Forecasting: React.FC = () => {
             >
               <Save className="w-4 h-4 mr-1 inline" />
               Save Forecast
+            </button>
+            <button
+              onClick={() => setShowScenarioAuditSidebar(true)}
+              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
+            >
+              <History className="w-4 h-4 mr-1 inline" />
+              Applied Scenarios
             </button>
             <button
               onClick={() => setShowVersionHistoryModal(true)}
@@ -1904,6 +1912,113 @@ const Forecasting: React.FC = () => {
               >
                 Apply Adjustment
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Applied Scenarios Audit Sidebar */}
+      {showScenarioAuditSidebar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+          <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-[#101010]">Applied Scenarios</h3>
+                  <p className="text-sm text-gray-600 mt-1">Audit history of all scenario changes</p>
+                </div>
+                <button
+                  onClick={() => setShowScenarioAuditSidebar(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {appliedScenarios.length === 0 ? (
+                <div className="text-center py-12">
+                  <History className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500 font-medium">No scenarios applied yet</p>
+                  <p className="text-sm text-gray-400 mt-2">Applied scenarios will appear here</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {appliedScenarios.map((scenario) => (
+                    <div key={scenario.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
+                          <p className="text-xs text-gray-500 mt-1">GL Code: {scenario.glCode}</p>
+                        </div>
+                        <span className="px-2 py-1 bg-[#4ADE80]/10 text-[#4ADE80] text-xs font-medium rounded-full">
+                          Active
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-gray-600 mb-3">{scenario.description}</p>
+
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-600">Adjustment:</span>
+                          <span className="font-medium text-[#101010]">
+                            {scenario.adjustmentType === 'percentage'
+                              ? `${scenario.adjustmentValue > 0 ? '+' : ''}${scenario.adjustmentValue}%`
+                              : `$${scenario.adjustmentValue.toLocaleString()}`
+                            }
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-600">Period:</span>
+                          <span className="font-medium text-[#101010]">
+                            {scenario.startMonth} - {scenario.endMonth}
+                          </span>
+                        </div>
+
+                        {scenario.bonusImpact && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Bonus Impact:</span>
+                            <span className="font-medium text-[#F59E0B]">
+                              ${scenario.bonusImpact.toLocaleString()}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="pt-3 mt-3 border-t border-gray-200">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-gray-500">Applied by {scenario.createdBy}</span>
+                            <span className="text-gray-400">
+                              {new Date(scenario.appliedAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>{appliedScenarios.length}</strong> {appliedScenarios.length === 1 ? 'scenario' : 'scenarios'} applied
+                </p>
+                <button
+                  onClick={() => setShowScenarioAuditSidebar(false)}
+                  className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
