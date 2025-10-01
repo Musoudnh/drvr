@@ -1307,7 +1307,7 @@ const Forecasting: React.FC = () => {
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
                                 <td colSpan={months.length + 3} className="py-0">
-                                  <div className="bg-gray-200 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
+                                  <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
                                     <h5 className="font-medium text-[#101010] mb-3">Scenarios for {glCode.name}</h5>
 
                                     {/* Add Scenario Button */}
