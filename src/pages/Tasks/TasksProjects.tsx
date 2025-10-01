@@ -556,7 +556,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="px-3 py-1.5 rounded text-sm font-medium transition-colors bg-[#8B5CF6] text-white hover:bg-white hover:text-[#8B5CF6] shadow-sm"
+                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#1E293B] text-white hover:bg-[#334155] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
