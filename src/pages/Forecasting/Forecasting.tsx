@@ -703,12 +703,12 @@ const Forecasting: React.FC = () => {
                     }
                   }}
                   className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
-                    !(glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                      glScenarioForm.startYear === new Date().getFullYear() && 
-                      glScenarioForm.endMonth === 'Dec' && 
+                    !(glScenarioForm.startMonth === months[new Date().getMonth()] &&
+                      glScenarioForm.startYear === new Date().getFullYear() &&
+                      glScenarioForm.endMonth === 'Dec' &&
                       glScenarioForm.endYear === selectedYear)
-                      ? 'border-[#3AB7BF] bg-[#3AB7BF]/5 text-[#3AB7BF]'
-                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
+                      ? 'border-[#9333EA] bg-[#9333EA]/5 text-[#9333EA]'
+                      : 'border-gray-300 hover:border-[#9333EA]/40 text-gray-700'
                   }`}
                 >
                   <div className="font-medium text-sm">Select Month Range</div>
@@ -738,12 +738,12 @@ const Forecasting: React.FC = () => {
                     });
                   }}
                   className={`w-full p-3 border-2 rounded-lg text-left transition-all ${
-                    glScenarioForm.startMonth === months[new Date().getMonth()] && 
-                    glScenarioForm.startYear === new Date().getFullYear() && 
-                    glScenarioForm.endMonth === 'Dec' && 
+                    glScenarioForm.startMonth === months[new Date().getMonth()] &&
+                    glScenarioForm.startYear === new Date().getFullYear() &&
+                    glScenarioForm.endMonth === 'Dec' &&
                     glScenarioForm.endYear === selectedYear
-                      ? 'border-[#4ADE80] bg-[#4ADE80]/5 text-[#4ADE80]'
-                      : 'border-gray-300 hover:border-gray-400 text-gray-700'
+                      ? 'border-[#9333EA] bg-[#9333EA]/5 text-[#9333EA]'
+                      : 'border-gray-300 hover:border-[#9333EA]/40 text-gray-700'
                   }`}
                 >
                   <div className="font-medium text-sm">From This Month Forward</div>
@@ -773,7 +773,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.startMonth}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
                           {months.map(month => (
                             <option key={month} value={month}>{month}</option>
@@ -782,7 +782,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.startYear}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
                           <option value={2024}>2024</option>
                           <option value={2025}>2025</option>
@@ -797,7 +797,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.endMonth}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
                           {months.map(month => (
                             <option key={month} value={month}>{month}</option>
@@ -806,7 +806,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.endYear}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
                           <option value={2024}>2024</option>
                           <option value={2025}>2025</option>
@@ -1657,7 +1657,7 @@ const Forecasting: React.FC = () => {
                  }
                }}
                disabled={!isScenarioValid()}
-               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+               className="px-4 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Apply Scenario
              </button>
