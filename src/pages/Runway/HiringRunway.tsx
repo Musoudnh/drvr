@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Users, UserPlus, Plus, DollarSign, Calendar, Target, BarChart3, TrendingUp, Building, X, Trash2, MoreHorizontal } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import { AddRoleModal } from '../../components/Hiring/AddRoleModal';
+import { RoleCard } from '../../components/Hiring/RoleCard';
+import { HiringRole } from '../../types/hiring';
+import { supabase } from '../../lib/supabase';
 
 const HiringRunway: React.FC = () => {
   const [currentHeadcount] = useState(24);
   const [averageSalary] = useState(85000);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [roles, setRoles] = useState<HiringRole[]>([]);
+  const [loading, setLoading] = useState(true);
   const [hiringPlans, setHiringPlans] = useState([
     { id: 1, role: 'Senior Software Engineer', department: 'Engineering', salary: 120000, startMonth: 'Feb 2025', endMonth: 'Dec 2025', active: true },
     { id: 2, role: 'Sales Manager', department: 'Sales', salary: 95000, startMonth: 'Mar 2025', endMonth: 'Dec 2025', active: true },
@@ -21,6 +27,46 @@ const HiringRunway: React.FC = () => {
     endMonth: 'Dec 2025',
     customDepartment: ''
   });
+
+  useEffect(() => {
+    loadRoles();
+  }, []);
+
+  const loadRoles = async () => {
+    try {
+      setLoading(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('hiring_roles')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('start_date', { ascending: true });
+
+      if (error) throw error;
+      setRoles(data || []);
+    } catch (error) {
+      console.error('Error loading roles:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteRole = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('hiring_roles')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      await loadRoles();
+    } catch (error) {
+      console.error('Error deleting role:', error);
+      alert('Failed to delete role. Please try again.');
+    }
+  };
 
   const months = [
     'Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025',
@@ -160,18 +206,86 @@ const HiringRunway: React.FC = () => {
         </Card>
       </div>
 
-      {/* Hiring Plans Management */}
-      <Card title="Hiring Plans">
+      {/* Comprehensive Role Management */}
+      <Card title="Hiring Roles">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage individual hiring plans and payroll timeline</p>
-          <Button 
-            variant="primary" 
+          <div>
+            <p className="text-sm text-gray-600">Comprehensive role planning with fully-loaded cost calculations</p>
+            <p className="text-xs text-gray-500 mt-1">Includes base compensation, payroll taxes, and benefits</p>
+          </div>
+          <Button
+            variant="primary"
             size="sm"
             onClick={() => setShowAddModal(true)}
-            className="bg-[#8B5CF6] hover:bg-[#7C3AED] focus:ring-[#8B5CF6]"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Hiring Plan
+            Add Role
+          </Button>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Loading roles...</p>
+          </div>
+        ) : roles.length === 0 ? (
+          <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <p className="text-gray-600 font-medium mb-2">No roles added yet</p>
+            <p className="text-sm text-gray-500 mb-4">Add your first role to start planning your hiring budget</p>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setShowAddModal(true)}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Your First Role
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {roles.map((role) => (
+              <RoleCard key={role.id} role={role} onDelete={handleDeleteRole} />
+            ))}
+          </div>
+        )}
+
+        {/* Budget Summary */}
+        {roles.length > 0 && (
+          <div className="bg-gradient-to-br from-[#101010] to-gray-800 rounded-lg p-6 mt-6">
+            <h3 className="text-white font-semibold mb-4">Total Hiring Budget</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-gray-300 text-sm mb-1">Total Roles</p>
+                <p className="text-2xl font-bold text-white">{roles.length}</p>
+              </div>
+              <div>
+                <p className="text-gray-300 text-sm mb-1">Base Compensation</p>
+                <p className="text-2xl font-bold text-white">
+                  ${roles.reduce((sum, role) => sum + role.base_compensation, 0).toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-300 text-sm mb-1">Total Loaded Cost</p>
+                <p className="text-2xl font-bold text-[#4ADE80]">
+                  ${roles.reduce((sum, role) => sum + role.total_loaded_cost, 0).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Card>
+
+      {/* Legacy Hiring Plans Management */}
+      <Card title="Additional Hiring Plans">
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-sm text-gray-600">Quick hiring plans and payroll timeline</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAddModal(true)}
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Quick Plan
           </Button>
         </div>
 
@@ -480,8 +594,15 @@ const HiringRunway: React.FC = () => {
         </div>
       </div>
 
-      {/* Add Hiring Plan Modal */}
-      {showAddModal && (
+      {/* Add Role Modal */}
+      <AddRoleModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onRoleAdded={loadRoles}
+      />
+
+      {/* Legacy Add Hiring Plan Modal */}
+      {false && showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
