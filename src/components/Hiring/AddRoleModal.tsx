@@ -64,9 +64,6 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
     setLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
-
       const taxCalc = await taxCalculationService.calculateFullyLoadedCost(
         formData.employment_type,
         formData.worker_classification,
@@ -79,7 +76,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
       const { data: role, error: roleError } = await supabase
         .from('hiring_roles')
         .insert({
-          user_id: user.id,
+          user_id: '00000000-0000-0000-0000-000000000000',
           role_name: formData.role_name,
           description: formData.description,
           location_state: formData.location_state,

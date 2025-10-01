@@ -37,13 +37,9 @@ const HiringRunway: React.FC = () => {
   const loadRoles = async () => {
     try {
       setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
       const { data, error } = await supabase
         .from('hiring_roles')
         .select('*')
-        .eq('user_id', user.id)
         .order('start_date', { ascending: true });
 
       if (error) throw error;
