@@ -76,7 +76,6 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
       const { data: role, error: roleError } = await supabase
         .from('hiring_roles')
         .insert({
-          user_id: '00000000-0000-0000-0000-000000000000',
           role_name: formData.role_name,
           description: formData.description,
           location_state: formData.location_state,
