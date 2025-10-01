@@ -1157,33 +1157,6 @@ const Analytics: React.FC = () => {
               </div>
             </div>
           </div>
-
-          {/* Summary Statistics */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-[#101010] mb-4">Year-to-Date Performance Summary</h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <p className="text-2xl font-bold" style={{ color: chartColors.actual }}>$2.85M</p>
-                <p className="text-sm text-gray-600">YTD Revenue (Actual)</p>
-                <p className="text-xs text-[#4ADE80]">+7.9% vs Budget</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold" style={{ color: chartColors.actual }}>$990K</p>
-                <p className="text-sm text-gray-600">YTD Profit (Actual)</p>
-                <p className="text-xs text-[#4ADE80]">+15.4% vs Budget</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-[#F87171]">$1.86M</p>
-                <p className="text-sm text-gray-600">YTD Expenses (Actual)</p>
-                <p className="text-xs text-[#4ADE80]">-2.1% vs Budget</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-[#4ADE80]">34.7%</p>
-                <p className="text-sm text-gray-600">YTD Margin (Actual)</p>
-                <p className="text-xs text-[#4ADE80]">+2.8% vs Budget</p>
-              </div>
-            </div>
-          </div>
         </div>
       </Card>
 
