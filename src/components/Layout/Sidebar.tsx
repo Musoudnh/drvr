@@ -348,7 +348,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             >
               <Link
                 to="/chat"
-                className="flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
+                className="flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#eff1f4]"
                 onClick={() => handleChannelSelect(channel.id)}
               >
                 <span className="mr-2 text-gray-400">
@@ -428,7 +428,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <div className="space-y-2">
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -453,7 +453,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -481,7 +481,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <div className="space-y-2">
             <button
               onClick={() => setShowExpertModal(true)}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -506,7 +506,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={() => navigate('/referrals')}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -531,7 +531,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={() => setShowHelpModal(true)}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -556,7 +556,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#F5F5F0]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#eff1f4]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
