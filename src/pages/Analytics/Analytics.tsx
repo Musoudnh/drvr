@@ -495,12 +495,6 @@ const Analytics: React.FC = () => {
       {/* Category Breakdown */}
       {selectedCategory && renderCategoryBreakdown()}
 
-      {/* Main Analytics Section */}
-      <Card title="Key Performance Metrics">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        </div>
-      </Card>
-
       {/* Performance Comparison */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card title="Actual vs Budget (YTD)">
