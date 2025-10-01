@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LineChart, TrendingUp, DollarSign, Percent, MoreHorizontal, User, Clock, Edit3 } from 'lucide-react';
+import { LineChart, TrendingUp, DollarSign, Percent, MoreHorizontal, User, Clock, CreditCard as Edit3 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 
 const ProfitLoss: React.FC = () => {

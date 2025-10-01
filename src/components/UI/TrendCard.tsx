@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import { Divide as LucideIcon } from 'lucide-react';
 
 interface TrendCardProps {
   title: string;

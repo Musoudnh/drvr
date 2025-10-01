@@ -1,23 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Grid3X3, 
-  List, 
-  Hash, 
-  Lock, 
-  Users, 
-  MessageSquare, 
-  Send, 
-  Paperclip, 
-  Smile, 
-  X, 
-  Settings,
-  Zap,
-  CheckCircle,
-  FileText
-} from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Hash, Lock, Users, MessageSquare, Send, Paperclip, Smile, X, Settings, Zap, CheckCircle, FileText } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 

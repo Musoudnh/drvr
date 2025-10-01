@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, CheckCircle, Clock, AlertTriangle, MessageSquare, FileText, Eye, Edit3, X, Send, Plus, ArrowRight } from 'lucide-react';
+import { Users, CheckCircle, Clock, AlertTriangle, MessageSquare, FileText, Eye, CreditCard as Edit3, X, Send, Plus, ArrowRight } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 

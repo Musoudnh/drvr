@@ -1,39 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Target, 
-  Plus, 
-  Copy, 
-  Play, 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  CheckCircle, 
-  X, 
-  Save, 
-  Edit3, 
-  Trash2, 
-  Download,
-  Share2,
-  RefreshCw,
-  Brain,
-  Lightbulb,
-  Calculator,
-  DollarSign,
-  Users,
-  Zap,
-  Eye,
-  Settings,
-  Filter,
-  Calendar,
-  ArrowRight,
-  ArrowUp,
-  ArrowDown,
-  Minus,
-  Info,
-  Lock,
-  Unlock
-} from 'lucide-react';
+import { Target, Plus, Copy, Play, BarChart3, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, X, Save, CreditCard as Edit3, Trash2, Download, Share2, RefreshCw, Brain, Lightbulb, Calculator, DollarSign, Users, Zap, Eye, Settings, Filter, Calendar, ArrowRight, ArrowUp, ArrowDown, Minus, Info, Lock, Unlock } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
