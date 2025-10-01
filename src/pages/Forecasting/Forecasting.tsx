@@ -71,6 +71,7 @@ const Forecasting: React.FC = () => {
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
   const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
   const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
+  const [glDropdownOpen, setGlDropdownOpen] = useState<string | null>(null);
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [editingCell, setEditingCell] = useState<{glCode: string, month: string, type?: 'ytd' | 'fy'} | null>(null);
@@ -1129,42 +1130,57 @@ const Forecasting: React.FC = () => {
                                     <div className="font-semibold text-[#101010]">{glCode.name}</div>
                                     <div className="font-mono text-xs text-gray-500 mt-0.5">{glCode.code}</div>
                                   </div>
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center gap-1 relative">
                                     <button
                                       onClick={() => {
-                                        setSelectedGLCode(glCode);
-                                        setShowGLScenarioModal(true);
+                                        setGlDropdownOpen(glDropdownOpen === glCode.code ? null : glCode.code);
                                       }}
                                       className="p-1 hover:bg-gray-100 rounded transition-colors"
-                                      title="Add scenario"
+                                      title="Scenario options"
                                     >
-                                      <Plus className="w-3 h-3" />
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        const glScenarios = appliedScenarios.filter(s => s.glCode === glCode.code);
-                                        if (glScenarios.length > 0) {
-                                          setExpandedGLCodes(prev =>
-                                            prev.includes(glCode.code)
-                                              ? prev.filter(code => code !== glCode.code)
-                                              : [...prev, glCode.code]
-                                          );
-                                        }
-                                      }}
-                                      className={`p-1 hover:bg-gray-100 rounded transition-colors ${
-                                        appliedScenarios.filter(s => s.glCode === glCode.code).length === 0 
-                                          ? 'opacity-30 cursor-not-allowed' 
-                                          : ''
-                                      }`}
-                                      title={`${appliedScenarios.filter(s => s.glCode === glCode.code).length} scenarios`}
-                                      disabled={appliedScenarios.filter(s => s.glCode === glCode.code).length === 0}
-                                    >
-                                      {expandedGLCodes.includes(glCode.code) ? (
+                                      {glDropdownOpen === glCode.code ? (
                                         <ChevronDown className="w-3 h-3" />
                                       ) : (
                                         <ChevronRight className="w-3 h-3" />
                                       )}
                                     </button>
+
+                                    {glDropdownOpen === glCode.code && (
+                                      <div className="absolute top-full left-0 mt-1 bg-gray-50 rounded shadow-lg border border-gray-200 z-10 min-w-[180px]">
+                                        <button
+                                          onClick={() => {
+                                            setSelectedGLCode(glCode);
+                                            setShowGLScenarioModal(true);
+                                            setGlDropdownOpen(null);
+                                          }}
+                                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                                        >
+                                          <Plus className="w-3 h-3" />
+                                          <span className="text-xs">Add Scenario</span>
+                                        </button>
+                                        {appliedScenarios.filter(s => s.glCode === glCode.code).length > 0 && (
+                                          <>
+                                            <div className="border-t border-gray-200" />
+                                            <button
+                                              onClick={() => {
+                                                setExpandedGLCodes(prev =>
+                                                  prev.includes(glCode.code)
+                                                    ? prev.filter(code => code !== glCode.code)
+                                                    : [...prev, glCode.code]
+                                                );
+                                                setGlDropdownOpen(null);
+                                              }}
+                                              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                                            >
+                                              <Eye className="w-3 h-3" />
+                                              <span className="text-xs">
+                                                {expandedGLCodes.includes(glCode.code) ? 'Hide' : 'Show'} Scenarios ({appliedScenarios.filter(s => s.glCode === glCode.code).length})
+                                              </span>
+                                            </button>
+                                          </>
+                                        )}
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               </td>
