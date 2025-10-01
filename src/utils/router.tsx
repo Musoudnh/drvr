@@ -74,7 +74,7 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const PlaceholderPage: React.FC<{ title: string; description: string }> = ({ title, description }) => (
   <div className="flex items-center justify-center h-96">
     <div className="text-center">
-      <h2 className="text-2xl font-bold text-[#1E2A38] mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold text-[#101010] mb-4">{title}</h2>
       <p className="text-gray-600">{description}</p>
     </div>
   </div>

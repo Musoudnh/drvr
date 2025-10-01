@@ -26,7 +26,7 @@ const Login: React.FC = () => {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <Building2 className="w-12 h-12 text-[#3AB7BF] mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-[#1E2A38]">Welcome to FinanceFlow</h1>
+            <h1 className="text-2xl font-bold text-[#101010]">Welcome to FinanceFlow</h1>
             <p className="text-gray-600 mt-2">Sign in to your account</p>
           </div>
 

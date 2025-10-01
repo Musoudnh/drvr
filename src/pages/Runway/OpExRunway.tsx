@@ -111,7 +111,7 @@ const OpExRunway: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">OpEx Scenario Planning</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">OpEx Scenario Planning</h2>
         <p className="text-gray-600 mt-1">Model operational expense scenarios and optimize costs</p>
       </div>
 
@@ -188,7 +188,7 @@ const OpExRunway: React.FC = () => {
                     }`}
                   />
                   <div>
-                    <h3 className="font-semibold text-[#1E2A38] text-lg">{expense.name}</h3>
+                    <h3 className="font-semibold text-[#101010] text-lg">{expense.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">{expense.category} • ${expense.amount.toLocaleString()}/month</p>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ const OpExRunway: React.FC = () => {
 
         {/* OpEx Timeline Gantt Chart */}
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
-          <h3 className="font-semibold text-[#1E2A38] mb-6 text-lg">OpEx Timeline</h3>
+          <h3 className="font-semibold text-[#101010] mb-6 text-lg">OpEx Timeline</h3>
           <div className="overflow-x-auto">
             <div className="min-w-[800px]">
               <table className="w-full">
@@ -246,7 +246,7 @@ const OpExRunway: React.FC = () => {
                               expense.active ? 'bg-[#4ADE80]' : 'bg-[#9CA3AF]'
                             }`}
                           />
-                          <span className="font-semibold text-[#1E2A38]">{expense.name}</span>
+                          <span className="font-semibold text-[#101010]">{expense.name}</span>
                         </div>
                       </td>
                       <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{expense.category}</td>
@@ -294,7 +294,7 @@ const OpExRunway: React.FC = () => {
           
           {/* Timeline Chart */}
           <div className="bg-white rounded-xl p-6 mt-6 border border-gray-200 shadow-sm">
-            <h4 className="font-bold text-[#1E2A38] mb-6 text-lg">OpEx Timeline</h4>
+            <h4 className="font-bold text-[#101010] mb-6 text-lg">OpEx Timeline</h4>
             <div className="overflow-x-auto">
               <div className="min-w-[1200px]">
                 {/* Timeline Header */}
@@ -312,7 +312,7 @@ const OpExRunway: React.FC = () => {
                 {/* Timeline Rows */}
                 {opexExpenses.map(expense => (
                   <div key={expense.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                    <div className="w-48 text-sm font-medium text-[#1E2A38] p-2 truncate">
+                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate">
                       <div className="flex items-center">
                         <div 
                           className={`w-3 h-3 rounded-full mr-3 ${
@@ -382,7 +382,7 @@ const OpExRunway: React.FC = () => {
             }`}>
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="font-bold text-[#1E2A38] text-lg">{driver.name}</h3>
+                  <h3 className="font-bold text-[#101010] text-lg">{driver.name}</h3>
                   <p className="text-sm text-gray-600 mt-1">Category: {driver.type}</p>
                 </div>
                 <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
@@ -401,7 +401,7 @@ const OpExRunway: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Start Date:</span>
-                  <span className="font-semibold text-[#1E2A38]">{driver.startMonth}</span>
+                  <span className="font-semibold text-[#101010]">{driver.startMonth}</span>
                 </div>
               </div>
             </div>
@@ -525,19 +525,19 @@ const OpExRunway: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
             <DollarSign className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Potential Savings</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Potential Savings</h3>
             <p className="text-sm text-gray-600">Software optimization could save $144K annually</p>
           </div>
           
           <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
             <Building className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Facility Costs</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Facility Costs</h3>
             <p className="text-sm text-gray-600">Lease renewal will increase costs by $96K annually</p>
           </div>
           
           <div className="text-center p-4 bg-[#8B5CF6]/10 rounded-lg">
             <Users className="w-8 h-8 text-[#8B5CF6] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Efficiency Gains</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Efficiency Gains</h3>
             <p className="text-sm text-gray-600">Automation could reduce operational costs by 8%</p>
           </div>
         </div>
@@ -570,7 +570,7 @@ const OpExRunway: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add OpEx Category</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add OpEx Category</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"

@@ -44,7 +44,7 @@ const MessageList: React.FC<MessageListProps> = ({
       <div className="p-4 border-b border-gray-200 bg-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-bold text-lg text-[#1E2A38]">{thread.title}</h2>
+            <h2 className="font-bold text-lg text-[#101010]">{thread.title}</h2>
             <div className="flex items-center text-sm text-gray-500 mt-1">
               <span>{thread.messageCount} messages</span>
               <span className="mx-2">•</span>

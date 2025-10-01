@@ -44,7 +44,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
       {/* Channel Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="font-bold text-lg text-[#1E2A38]">#{channel.name}</h3>
+          <h3 className="font-bold text-lg text-[#101010]">#{channel.name}</h3>
           <button
             onClick={onCreateThread}
             className="p-1 hover:bg-gray-100 rounded text-[#3AB7BF]"
@@ -89,7 +89,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
                 }`}
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-medium text-[#1E2A38] text-sm line-clamp-2">
+                  <h4 className="font-medium text-[#101010] text-sm line-clamp-2">
                     {thread.title}
                   </h4>
                   {thread.isAISummarized && (

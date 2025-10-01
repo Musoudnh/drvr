@@ -9,7 +9,7 @@ const FinancialSummary: React.FC = () => {
       {/* Header with Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Financial Summary</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Financial Summary</h2>
           <p className="text-gray-600 mt-1">Overview of financial data for the current period</p>
         </div>
         <div className="flex gap-3">
@@ -74,7 +74,7 @@ const FinancialSummary: React.FC = () => {
                 { month: 'October 2024', revenue: 342000, expenses: 239000, profit: 103000, margin: 30.1 }
               ].map((row, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-medium text-[#1E2A38]">{row.month}</td>
+                  <td className="py-3 px-4 font-medium text-[#101010]">{row.month}</td>
                   <td className="py-3 px-4 text-right text-[#4ADE80] font-medium">${row.revenue.toLocaleString()}</td>
                   <td className="py-3 px-4 text-right text-[#F87171] font-medium">${row.expenses.toLocaleString()}</td>
                   <td className="py-3 px-4 text-right text-[#3AB7BF] font-medium">${row.profit.toLocaleString()}</td>

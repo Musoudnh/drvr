@@ -154,7 +154,7 @@ const AuditTrail: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Audit Trail & Compliance</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Audit Trail & Compliance</h2>
           <p className="text-gray-600 mt-1">Comprehensive audit logging and compliance monitoring</p>
         </div>
         <div className="flex gap-3">
@@ -301,17 +301,17 @@ const AuditTrail: React.FC = () => {
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-[#1E2A38] text-sm">{entry.userName}</p>
+                        <p className="font-medium text-[#101010] text-sm">{entry.userName}</p>
                         <p className="text-xs text-gray-500">{entry.ipAddress}</p>
                       </div>
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="font-medium text-[#1E2A38] text-sm">{entry.action}</span>
+                    <span className="font-medium text-[#101010] text-sm">{entry.action}</span>
                   </td>
                   <td className="py-3 px-4">
                     <div>
-                      <p className="font-medium text-[#1E2A38] text-sm">{entry.resource}</p>
+                      <p className="font-medium text-[#101010] text-sm">{entry.resource}</p>
                       <p className="text-xs text-gray-500">{entry.resourceId}</p>
                     </div>
                   </td>
@@ -352,7 +352,7 @@ const AuditTrail: React.FC = () => {
                     <Shield className="w-5 h-5 text-[#8B5CF6]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#1E2A38]">{report.name}</h3>
+                    <h3 className="font-semibold text-[#101010]">{report.name}</h3>
                     <p className="text-sm text-gray-600">{report.type.toUpperCase()} Compliance Framework</p>
                   </div>
                 </div>
@@ -371,11 +371,11 @@ const AuditTrail: React.FC = () => {
               <div className="grid grid-cols-4 gap-4 text-sm">
                 <div>
                   <p className="text-gray-600">Last Assessment</p>
-                  <p className="font-medium text-[#1E2A38]">{report.lastAssessment.toLocaleDateString()}</p>
+                  <p className="font-medium text-[#101010]">{report.lastAssessment.toLocaleDateString()}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Next Due</p>
-                  <p className="font-medium text-[#1E2A38]">{report.nextDue.toLocaleDateString()}</p>
+                  <p className="font-medium text-[#101010]">{report.nextDue.toLocaleDateString()}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Findings</p>
@@ -395,7 +395,7 @@ const AuditTrail: React.FC = () => {
       <Card title="Data Retention & Security">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Retention Policies</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Retention Policies</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                 <span className="text-sm font-medium text-gray-700">Audit Logs</span>
@@ -417,7 +417,7 @@ const AuditTrail: React.FC = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Security Measures</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Security Measures</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -460,7 +460,7 @@ const AuditTrail: React.FC = () => {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center">
                   <Activity className="w-4 h-4 text-[#3AB7BF] mr-2" />
-                  <span className="font-medium text-[#1E2A38]">{entry.action}</span>
+                  <span className="font-medium text-[#101010]">{entry.action}</span>
                 </div>
                 <span className="text-sm text-gray-500">{entry.timestamp.toLocaleString()}</span>
               </div>

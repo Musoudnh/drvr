@@ -19,7 +19,7 @@ const CompanyDashboard: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs font-medium text-gray-600 leading-tight">{metric.label}</p>
-                <p className="text-lg font-bold text-[#1E2A38] mt-0.5">{metric.value}</p>
+                <p className="text-lg font-bold text-[#101010] mt-0.5">{metric.value}</p>
                 <p className={`text-xs mt-1 ${metric.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                   {metric.change} from last month
                 </p>
@@ -141,8 +141,8 @@ const CompanyDashboard: React.FC = () => {
                 { metric: 'Net Margin', current: '26.4%', previous: '24.6%', budget: '23.6%', change: '+1.8%', vsBudget: '+2.8%', positive: true, budgetPositive: true }
               ].map((row, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-2 px-3 font-medium text-[#1E2A38] text-sm">{row.metric}</td>
-                  <td className="py-2 px-3 text-right font-medium text-[#1E2A38] text-sm">{row.current}</td>
+                  <td className="py-2 px-3 font-medium text-[#101010] text-sm">{row.metric}</td>
+                  <td className="py-2 px-3 text-right font-medium text-[#101010] text-sm">{row.current}</td>
                   <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.previous}</td>
                   <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.budget}</td>
                   <td className={`py-2 px-3 text-right font-medium text-sm ${row.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
@@ -167,7 +167,7 @@ const CompanyDashboard: React.FC = () => {
                 <span className="text-white text-xs font-bold">AI</span>
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-[#1E2A38] mb-1 text-sm">January 2025 Performance Insights</h4>
+                <h4 className="font-semibold text-[#101010] mb-1 text-sm">January 2025 Performance Insights</h4>
                 <p className="text-xs text-gray-700 leading-relaxed mb-2">
                   Your January performance shows strong momentum with revenue exceeding targets by 12.5%. 
                   Cash flow remains healthy at $224K positive, and profit margins improved to 26.4% - 
@@ -196,13 +196,13 @@ const CompanyDashboard: React.FC = () => {
             
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <span className="text-white font-medium text-sm">P</span>
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Performance vs Targets</p>
+                  <p className="font-medium text-[#101010]">Performance vs Targets</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-[#1E2A38]">+2.7%</span>
+                    <span className="text-lg font-bold text-[#101010]">+2.7%</span>
                     <span className="text-sm text-gray-600">vs budget</span>
                     <span className="text-lg font-bold text-[#4ADE80]">+12.5%</span>
                     <span className="text-sm text-gray-600">vs prior</span>
@@ -217,15 +217,15 @@ const CompanyDashboard: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="p-2 bg-[#4ADE80]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Key Strength</h5>
+                <h5 className="font-medium text-[#101010] mb-0.5 text-xs">Key Strength</h5>
                 <p className="text-xs text-gray-600">Revenue diversification across product lines reducing risk</p>
               </div>
               <div className="p-2 bg-[#F59E0B]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Watch Area</h5>
+                <h5 className="font-medium text-[#101010] mb-0.5 text-xs">Watch Area</h5>
                 <p className="text-xs text-gray-600">Marketing spend up 23% - monitor ROI closely</p>
               </div>
               <div className="p-2 bg-[#3AB7BF]/10 rounded-lg">
-                <h5 className="font-medium text-[#1E2A38] mb-0.5 text-xs">Opportunity</h5>
+                <h5 className="font-medium text-[#101010] mb-0.5 text-xs">Opportunity</h5>
                 <p className="text-xs text-gray-600">Consider pricing optimization for 5-8% margin boost</p>
               </div>
             </div>

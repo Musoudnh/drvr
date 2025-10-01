@@ -253,7 +253,7 @@ const Analytics: React.FC = () => {
           {/* Comparison Chart */}
           <div className="relative h-64 bg-gray-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-[#1E2A38]">Subcategory Comparison</h4>
+              <h4 className="font-semibold text-[#101010]">Subcategory Comparison</h4>
               <button
                 onClick={() => setShowColorPicker(!showColorPicker)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -266,7 +266,7 @@ const Analytics: React.FC = () => {
             {/* Color Picker Panel */}
             {showColorPicker && (
               <div className="absolute top-16 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10">
-                <h5 className="font-medium text-[#1E2A38] mb-3">Chart Colors</h5>
+                <h5 className="font-medium text-[#101010] mb-3">Chart Colors</h5>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-700">Actual (Bars)</span>
@@ -409,7 +409,7 @@ const Analytics: React.FC = () => {
                   
                   return (
                     <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 font-medium text-[#1E2A38]">{item.name}</td>
+                      <td className="py-3 px-4 font-medium text-[#101010]">{item.name}</td>
                       <td className="py-3 px-4 text-right font-medium text-[#3AB7BF]">
                         ${item.actual.toLocaleString()}
                       </td>
@@ -456,7 +456,7 @@ const Analytics: React.FC = () => {
       <Card>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-[#1E2A38]">Chart Customization</h3>
+            <h3 className="font-semibold text-[#101010]">Chart Customization</h3>
             <div className="flex gap-2">
               <select
                 value={selectedTimeframe}
@@ -533,11 +533,11 @@ const Analytics: React.FC = () => {
 
           {/* Revenue Summary Charts */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E2A38]">1. Revenue Summary</h3>
+            <h3 className="text-lg font-semibold text-[#101010]">1. Revenue Summary</h3>
             
             {/* Revenue Bar Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Revenue - Bar Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Revenue - Bar Chart</h4>
               <div className="relative h-64">
                 <div className="relative h-48">
                   {/* Bars Container */}
@@ -684,7 +684,7 @@ const Analytics: React.FC = () => {
 
             {/* Revenue Line Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Revenue - Line Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Revenue - Line Chart</h4>
               <div className="relative h-64">
                 <svg className="w-full h-48">
                   {/* Actual Line (Jan-Jun) */}
@@ -721,11 +721,11 @@ const Analytics: React.FC = () => {
 
           {/* Profit Summary Charts */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E2A38]">2. Profit Summary</h3>
+            <h3 className="text-lg font-semibold text-[#101010]">2. Profit Summary</h3>
             
             {/* Profit Bar Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Profit - Bar Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Profit - Bar Chart</h4>
               <div className="relative h-64">
                 <div className="relative h-48">
                   <div className="flex items-end justify-between h-full">
@@ -844,7 +844,7 @@ const Analytics: React.FC = () => {
 
             {/* Profit Line Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Profit - Line Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Profit - Line Chart</h4>
               <div className="relative h-64">
                 <svg className="w-full h-48">
                   <polyline
@@ -878,11 +878,11 @@ const Analytics: React.FC = () => {
 
           {/* Expense Summary Charts */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E2A38]">3. Expense Summary</h3>
+            <h3 className="text-lg font-semibold text-[#101010]">3. Expense Summary</h3>
             
             {/* Expense Bar Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Expenses - Bar Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Expenses - Bar Chart</h4>
               <div className="relative h-64">
                 <div className="relative h-48">
                   <div className="flex items-end justify-between h-full">
@@ -985,7 +985,7 @@ const Analytics: React.FC = () => {
 
             {/* Expense Line Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Expenses - Line Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Expenses - Line Chart</h4>
               <div className="relative h-64">
                 <svg className="w-full h-48">
                   <polyline
@@ -1019,11 +1019,11 @@ const Analytics: React.FC = () => {
 
           {/* Margin Summary Charts */}
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-[#1E2A38]">4. Margin Summary</h3>
+            <h3 className="text-lg font-semibold text-[#101010]">4. Margin Summary</h3>
             
             {/* Margin Bar Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Profit Margin % - Bar Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Profit Margin % - Bar Chart</h4>
               <div className="relative h-64">
                 <div className="relative h-48">
                   <div className="flex items-end justify-between h-full">
@@ -1126,7 +1126,7 @@ const Analytics: React.FC = () => {
 
             {/* Margin Line Chart */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h4 className="font-medium text-[#1E2A38] mb-4">Profit Margin % - Line Chart</h4>
+              <h4 className="font-medium text-[#101010] mb-4">Profit Margin % - Line Chart</h4>
               <div className="relative h-64">
                 <svg className="w-full h-48">
                   <polyline
@@ -1160,7 +1160,7 @@ const Analytics: React.FC = () => {
 
           {/* Summary Statistics */}
           <div className="bg-gray-50 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-[#1E2A38] mb-4">Year-to-Date Performance Summary</h3>
+            <h3 className="text-lg font-semibold text-[#101010] mb-4">Year-to-Date Performance Summary</h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="text-center">
                 <p className="text-2xl font-bold" style={{ color: chartColors.actual }}>$2.85M</p>
@@ -1199,7 +1199,7 @@ const Analytics: React.FC = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Revenue</p>
+                <p className="font-medium text-[#101010]">Revenue</p>
                 <p className="text-sm text-gray-600">Actual: $3,670K</p>
                 <p className="text-sm text-gray-600">Budget: $3,400K</p>
               </div>
@@ -1213,7 +1213,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Gross Profit</p>
+                <p className="font-medium text-[#101010]">Gross Profit</p>
                 <p className="text-sm text-gray-600">Actual: $2,080K</p>
                 <p className="text-sm text-gray-600">Budget: $1,950K</p>
               </div>
@@ -1227,7 +1227,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Operating Expenses</p>
+                <p className="font-medium text-[#101010]">Operating Expenses</p>
                 <p className="text-sm text-gray-600">Actual: $1,246K</p>
                 <p className="text-sm text-gray-600">Budget: $1,300K</p>
               </div>
@@ -1241,7 +1241,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Net Income</p>
+                <p className="font-medium text-[#101010]">Net Income</p>
                 <p className="text-sm text-gray-600">Actual: $834K</p>
                 <p className="text-sm text-gray-600">Budget: $650K</p>
               </div>
@@ -1259,7 +1259,7 @@ const Analytics: React.FC = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Revenue</p>
+                <p className="font-medium text-[#101010]">Revenue</p>
                 <p className="text-sm text-gray-600">2025: $3,670K</p>
                 <p className="text-sm text-gray-600">2024: $3,180K</p>
               </div>
@@ -1273,7 +1273,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Gross Profit</p>
+                <p className="font-medium text-[#101010]">Gross Profit</p>
                 <p className="text-sm text-gray-600">2025: $2,080K</p>
                 <p className="text-sm text-gray-600">2024: $1,850K</p>
               </div>
@@ -1287,7 +1287,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Operating Expenses</p>
+                <p className="font-medium text-[#101010]">Operating Expenses</p>
                 <p className="text-sm text-gray-600">2025: $1,246K</p>
                 <p className="text-sm text-gray-600">2024: $1,200K</p>
               </div>
@@ -1301,7 +1301,7 @@ const Analytics: React.FC = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-[#1E2A38]">Net Income</p>
+                <p className="font-medium text-[#101010]">Net Income</p>
                 <p className="text-sm text-gray-600">2025: $834K</p>
                 <p className="text-sm text-gray-600">2024: $650K</p>
               </div>
@@ -1337,7 +1337,7 @@ const Analytics: React.FC = () => {
             {prescriptiveActions.slice(0, 3).map((action, index) => (
               <div key={index} className="p-4 bg-gray-50 rounded-lg hover:shadow-md transition-all">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-[#1E2A38]">{action.metric}</h4>
+                  <h4 className="font-semibold text-[#101010]">{action.metric}</h4>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(action.priority)}`}>
                     {action.priority}
                   </span>
@@ -1449,7 +1449,7 @@ const Analytics: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Prescriptive Analytics</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Prescriptive Analytics</h3>
               <button
                 onClick={() => setShowPrescriptiveModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -1463,7 +1463,7 @@ const Analytics: React.FC = () => {
                 <div key={index} className="p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="font-semibold text-[#1E2A38]">{action.metric} Optimization</h4>
+                      <h4 className="font-semibold text-[#101010]">{action.metric} Optimization</h4>
                       <p className="text-sm text-gray-600">
                         Current: {action.currentValue} → Target: {action.targetValue}
                       </p>

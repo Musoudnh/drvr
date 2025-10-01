@@ -13,9 +13,9 @@ export default {
           500: '#8B5CF6',
           600: '#7C3AED',
           700: '#6D28D9',
-          900: '#1E2A38'
+          900: '#101010'
         },
-        'base-black': '#080325'
+        'base-black': '#101010'
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

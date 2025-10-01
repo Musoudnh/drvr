@@ -439,7 +439,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
           <div className="min-w-max">
             <div className="flex border-b border-gray-200">
               <div className="w-64 flex-shrink-0 bg-gray-50 border-r border-gray-200 p-4">
-                <h3 className="font-semibold text-[#1E2A38]">Tasks</h3>
+                <h3 className="font-semibold text-[#101010]">Tasks</h3>
               </div>
 
               <div className="flex-1 overflow-x-auto">
@@ -486,7 +486,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
                     <div className="w-64 flex-shrink-0 p-4 border-r border-gray-200">
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-[#1E2A38] truncate">
+                          <h4 className="text-sm font-medium text-[#101010] truncate">
                             {task.title}
                           </h4>
                           <div className="flex items-center gap-2">

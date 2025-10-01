@@ -85,7 +85,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
             >
               <MessageSquare className="w-8 h-8" style={{ color: serviceColor }} />
             </div>
-            <h3 className="text-xl font-semibold text-[#1E2A38] mb-2">Connect to {serviceName}</h3>
+            <h3 className="text-xl font-semibold text-[#101010] mb-2">Connect to {serviceName}</h3>
             <p className="text-gray-600 mb-6">
               Connect your {serviceName} workspace to chat directly within FinanceFlow.
             </p>
@@ -118,7 +118,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
             >
               <MessageSquare className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-medium text-[#1E2A38]">Connected to {serviceName}</span>
+            <span className="text-sm font-medium text-[#101010]">Connected to {serviceName}</span>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
@@ -148,7 +148,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
   const renderNativeChat = () => (
     <div className="h-full flex bg-white rounded-lg border border-gray-200">
       {/* Left Panel - Channels */}
-      <div className="w-64 bg-[#1E2A38] text-white flex flex-col rounded-l-lg">
+      <div className="w-64 bg-[#101010] text-white flex flex-col rounded-l-lg">
         {/* Header */}
         <div className="p-4 border-b border-gray-600">
           <div className="flex items-center justify-between mb-3">
@@ -225,7 +225,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Hash className="w-5 h-5 text-gray-400 mr-2" />
-              <h2 className="font-bold text-lg text-[#1E2A38]">
+              <h2 className="font-bold text-lg text-[#101010]">
                 {nativeChannels.find(c => c.id === selectedChannelId)?.name || 'General'}
               </h2>
             </div>
@@ -264,7 +264,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                     {/* Author and Timestamp */}
                     {showAvatar && (
                       <div className="flex items-center mb-1">
-                        <span className="font-semibold text-[#1E2A38] text-sm mr-2">
+                        <span className="font-semibold text-[#101010] text-sm mr-2">
                           {message.author}
                         </span>
                         <span className="text-xs text-gray-500">
@@ -347,14 +347,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
         <div className="w-80 bg-white border-l border-gray-200 flex flex-col rounded-r-lg">
           {/* Panel Header */}
           <div className="p-4 border-b border-gray-200">
-            <h3 className="font-semibold text-[#1E2A38]">Channel Info</h3>
+            <h3 className="font-semibold text-[#101010]">Channel Info</h3>
           </div>
 
           {/* Panel Content */}
           <div className="flex-1 overflow-y-auto p-4 space-y-6">
             {/* Pinned Messages */}
             <div>
-              <h4 className="font-medium text-[#1E2A38] mb-3">Pinned Messages</h4>
+              <h4 className="font-medium text-[#101010] mb-3">Pinned Messages</h4>
               <div className="space-y-2">
                 <div className="p-3 bg-gray-50 rounded-lg">
                   <p className="text-sm text-gray-700">Q4 results meeting scheduled for tomorrow at 2 PM</p>
@@ -365,14 +365,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
 
             {/* Shared Files */}
             <div>
-              <h4 className="font-medium text-[#1E2A38] mb-3">Shared Files</h4>
+              <h4 className="font-medium text-[#101010] mb-3">Shared Files</h4>
               <div className="space-y-2">
                 <div className="flex items-center p-2 hover:bg-gray-50 rounded">
                   <div className="w-8 h-8 bg-[#3AB7BF]/10 rounded flex items-center justify-center mr-3">
                     <FileText className="w-4 h-4 text-[#3AB7BF]" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-[#1E2A38]">Q1_Forecast.xlsx</p>
+                    <p className="text-sm font-medium text-[#101010]">Q1_Forecast.xlsx</p>
                     <p className="text-xs text-gray-500">2 hours ago</p>
                   </div>
                 </div>
@@ -381,7 +381,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
 
             {/* Quick Notes */}
             <div>
-              <h4 className="font-medium text-[#1E2A38] mb-3">Quick Notes</h4>
+              <h4 className="font-medium text-[#101010] mb-3">Quick Notes</h4>
               <textarea
                 placeholder="Add your notes here..."
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
@@ -401,7 +401,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
       <div className="bg-white rounded-lg w-[95vw] h-[90vh] max-w-7xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Team Chat</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Team Chat</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -474,7 +474,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Connect Chat</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Connect Chat</h3>
               <button
                 onClick={() => setShowConnectModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -507,7 +507,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                     }`}
                   >
                     <div className="w-8 h-8 bg-[#4A154B] rounded mx-auto mb-2" />
-                    <p className="font-medium text-[#1E2A38]">Slack</p>
+                    <p className="font-medium text-[#101010]">Slack</p>
                   </button>
                   <button
                     onClick={() => setConnectForm({...connectForm, platform: 'teams'})}
@@ -518,7 +518,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                     }`}
                   >
                     <div className="w-8 h-8 bg-[#6264A7] rounded mx-auto mb-2" />
-                    <p className="font-medium text-[#1E2A38]">Teams</p>
+                    <p className="font-medium text-[#101010]">Teams</p>
                   </button>
                   <button
                     onClick={() => setConnectForm({...connectForm, platform: 'google'})}
@@ -529,7 +529,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                     }`}
                   >
                     <div className="w-8 h-8 bg-[#34A853] rounded mx-auto mb-2" />
-                    <p className="font-medium text-[#1E2A38]">Google</p>
+                    <p className="font-medium text-[#101010]">Google</p>
                   </button>
                 </div>
               </div>
@@ -546,7 +546,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                       className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
-                      <p className="font-medium text-[#1E2A38]">Connected as Embedded</p>
+                      <p className="font-medium text-[#101010]">Connected as Embedded</p>
                       <p className="text-sm text-gray-600">Display the chat directly within FinanceFlow</p>
                     </div>
                   </label>
@@ -559,7 +559,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                       className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
-                      <p className="font-medium text-[#1E2A38]">Connected as Link</p>
+                      <p className="font-medium text-[#101010]">Connected as Link</p>
                       <p className="text-sm text-gray-600">Open the chat in a new tab/window</p>
                     </div>
                   </label>

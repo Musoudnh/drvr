@@ -19,7 +19,7 @@ const Integrations: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Integrations</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Integrations</h2>
         <p className="text-gray-600 mt-1">Connect your favorite tools and automate workflows</p>
       </div>
 
@@ -29,13 +29,13 @@ const Integrations: React.FC = () => {
           {integrations.filter(integration => integration.status === 'connected').map((integration, index) => (
             <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <span className="text-white font-medium text-sm">
                     {integration.name === 'QuickBooks' ? 'QB' : integration.name.substring(0, 2)}
                   </span>
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">{integration.name}</p>
+                  <p className="font-medium text-[#101010]">{integration.name}</p>
                   <p className="text-sm text-gray-600">{integration.description}</p>
                 </div>
               </div>
@@ -54,7 +54,7 @@ const Integrations: React.FC = () => {
           {integrations.filter(integration => integration.status === 'available').map((integration, index) => (
             <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center">
                   <span className="text-white font-medium text-sm">
                     {integration.name === 'QuickBooks' ? 'QB' : 
                      integration.name === 'Outlook Calendar' ? 'OC' :
@@ -68,7 +68,7 @@ const Integrations: React.FC = () => {
                   Connect
                 </Button>
               </div>
-              <h3 className="font-medium text-[#1E2A38] mb-1">{integration.name}</h3>
+              <h3 className="font-medium text-[#101010] mb-1">{integration.name}</h3>
               <p className="text-sm text-gray-600">{integration.description}</p>
             </div>
           ))}

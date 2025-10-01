@@ -177,7 +177,7 @@ const RevenueRunway: React.FC = () => {
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Revenue Scenario Planning</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Revenue Scenario Planning</h2>
         <p className="text-gray-600 mt-1">Model revenue growth scenarios and analyze impact</p>
       </div>
 
@@ -189,7 +189,7 @@ const RevenueRunway: React.FC = () => {
             variant="primary" 
             size="sm"
             onClick={() => setShowAddModal(true)}
-            className="!bg-[#1E2A38] !hover:bg-[#2A3441] !focus:ring-[#1E2A38] !text-white"
+            className="!bg-[#101010] !hover:bg-[#2A3441] !focus:ring-[#1E2A38] !text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Revenue Stream
@@ -207,7 +207,7 @@ const RevenueRunway: React.FC = () => {
                     }`}
                   />
                   <div>
-                    <h3 className="font-semibold text-[#1E2A38] text-lg">{stream.name}</h3>
+                    <h3 className="font-semibold text-[#101010] text-lg">{stream.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">{stream.category} • ${stream.amount.toLocaleString()}/month</p>
                   </div>
                 </div>
@@ -264,7 +264,7 @@ const RevenueRunway: React.FC = () => {
                           stream.active ? 'bg-[#4ADE80]' : 'bg-[#9CA3AF]'
                         }`}
                       />
-                      <span className="font-semibold text-[#1E2A38]">{stream.name}</span>
+                      <span className="font-semibold text-[#101010]">{stream.name}</span>
                     </div>
                   </td>
                   <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{stream.category}</td>
@@ -328,7 +328,7 @@ const RevenueRunway: React.FC = () => {
                 {/* Timeline Rows */}
                 {revenueStreams.map(stream => (
                   <div key={stream.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                    <div className="w-48 text-sm font-medium text-[#1E2A38] p-2 truncate">
+                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate">
                       <div className="flex items-center">
                         <div 
                           className={`w-3 h-3 rounded-full mr-3 ${
@@ -483,7 +483,7 @@ const RevenueRunway: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Revenue Stream</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add Revenue Stream</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"

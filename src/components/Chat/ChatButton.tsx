@@ -10,7 +10,7 @@ const ChatButton: React.FC<ChatButtonProps> = ({ onClick, unreadCount = 0 }) => 
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 left-6 w-14 h-14 bg-[#1E2A38] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group z-40"
+      className="fixed bottom-6 left-6 w-14 h-14 bg-[#101010] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group z-40"
       title="Open Team Chat"
     >
       <div className="relative">
@@ -32,10 +32,10 @@ const ChatButton: React.FC<ChatButtonProps> = ({ onClick, unreadCount = 0 }) => 
       )}
       
       {/* Tooltip */}
-      <div className="absolute left-full ml-3 bg-[#1E2A38] text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute left-full ml-3 bg-[#101010] text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         Team Chat
         {unreadCount > 0 && ` (${unreadCount} unread)`}
-        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-[#1E2A38] rotate-45" />
+        <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-[#101010] rotate-45" />
       </div>
     </button>
   );

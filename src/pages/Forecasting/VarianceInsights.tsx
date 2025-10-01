@@ -309,7 +309,7 @@ const VarianceInsights: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-[#1E2A38]">Variance & Insights</h2>
+          <h2 className="text-3xl font-bold text-[#101010]">Variance & Insights</h2>
           <p className="text-gray-600 mt-2">Analyze actual vs forecasted performance with AI-powered explanations</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -439,7 +439,7 @@ const VarianceInsights: React.FC = () => {
                           <Icon className="w-4 h-4" style={{ color }} />
                         </div>
                         <div>
-                          <h4 className="font-bold text-[#1E2A38] text-sm">{insight.title}</h4>
+                          <h4 className="font-bold text-[#101010] text-sm">{insight.title}</h4>
                           <span 
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
@@ -457,7 +457,7 @@ const VarianceInsights: React.FC = () => {
                     <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
                     
                     <div className="space-y-2">
-                      <h5 className="font-medium text-[#1E2A38] text-xs">Action Items:</h5>
+                      <h5 className="font-medium text-[#101010] text-xs">Action Items:</h5>
                       {insight.actionItems.slice(0, 2).map((action, index) => (
                         <div key={index} className="flex items-start text-xs text-gray-600">
                           <div className="w-1 h-1 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0" />
@@ -543,7 +543,7 @@ const VarianceInsights: React.FC = () => {
                           <td className="py-4 px-6">
                             <button
                               onClick={() => toggleVarianceExpansion(variance.metric)}
-                              className="flex items-center font-medium text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                              className="flex items-center font-medium text-[#101010] hover:text-[#3AB7BF] transition-colors"
                             >
                               {isExpanded ? (
                                 <ChevronDown className="w-4 h-4 mr-2" />
@@ -553,7 +553,7 @@ const VarianceInsights: React.FC = () => {
                               {variance.metric}
                             </button>
                           </td>
-                          <td className="py-4 px-6 text-right font-bold text-[#1E2A38]">
+                          <td className="py-4 px-6 text-right font-bold text-[#101010]">
                             {formatVarianceValue(variance.actual, isPercentageMetric)}
                           </td>
                           <td className="py-4 px-6 text-right text-gray-600">
@@ -628,7 +628,7 @@ const VarianceInsights: React.FC = () => {
                               <div className="space-y-4">
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                   <div>
-                                    <h5 className="font-bold text-[#1E2A38] mb-3 flex items-center">
+                                    <h5 className="font-bold text-[#101010] mb-3 flex items-center">
                                       <Info className="w-4 h-4 mr-2 text-[#3AB7BF]" />
                                       Explanation
                                     </h5>
@@ -636,7 +636,7 @@ const VarianceInsights: React.FC = () => {
                                   </div>
                                   
                                   <div>
-                                    <h5 className="font-bold text-[#1E2A38] mb-3 flex items-center">
+                                    <h5 className="font-bold text-[#101010] mb-3 flex items-center">
                                       <Lightbulb className="w-4 h-4 mr-2 text-[#F59E0B]" />
                                       Recommendations
                                     </h5>
@@ -654,11 +654,11 @@ const VarianceInsights: React.FC = () => {
                                 {/* Drill Down Preview */}
                                 {variance.drillDownData && (
                                   <div className="mt-6 pt-4 border-t border-gray-200">
-                                    <h5 className="font-bold text-[#1E2A38] mb-3">Breakdown Analysis</h5>
+                                    <h5 className="font-bold text-[#101010] mb-3">Breakdown Analysis</h5>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                       {variance.drillDownData.map(item => (
                                         <div key={item.id} className="p-3 bg-white rounded-lg border border-gray-200">
-                                          <p className="font-medium text-[#1E2A38] text-sm">{item.name}</p>
+                                          <p className="font-medium text-[#101010] text-sm">{item.name}</p>
                                           <div className="flex justify-between mt-2">
                                             <span className="text-xs text-gray-600">Variance:</span>
                                             <span 
@@ -748,13 +748,13 @@ const VarianceInsights: React.FC = () => {
               return (
                 <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium text-[#1E2A38]">{kpi.label}</p>
+                    <p className="font-medium text-[#101010]">{kpi.label}</p>
                     <p className="text-sm text-gray-600">{kpi.description}</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center justify-end mb-1">
                       <TrendIcon className="w-4 h-4 mr-1" style={{ color: trendColor }} />
-                      <span className="font-bold text-[#1E2A38]">{kpi.value}</span>
+                      <span className="font-bold text-[#101010]">{kpi.value}</span>
                     </div>
                   </div>
                 </div>
@@ -769,7 +769,7 @@ const VarianceInsights: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-8 w-[1000px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-[#1E2A38]">
+              <h3 className="text-2xl font-bold text-[#101010]">
                 Drill Down: {selectedVariance.metric}
               </h3>
               <button
@@ -813,7 +813,7 @@ const VarianceInsights: React.FC = () => {
               {selectedVariance.drillDownData && (
                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                   <div className="p-4 bg-gray-50 border-b border-gray-200">
-                    <h4 className="font-bold text-[#1E2A38]">Component Breakdown</h4>
+                    <h4 className="font-bold text-[#101010]">Component Breakdown</h4>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -832,8 +832,8 @@ const VarianceInsights: React.FC = () => {
                           
                           return (
                             <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-                              <td className="py-3 px-4 font-medium text-[#1E2A38]">{item.name}</td>
-                              <td className="py-3 px-4 text-right font-medium text-[#1E2A38]">
+                              <td className="py-3 px-4 font-medium text-[#101010]">{item.name}</td>
+                              <td className="py-3 px-4 text-right font-medium text-[#101010]">
                                 {formatVarianceValue(item.actual)}
                               </td>
                               <td className="py-3 px-4 text-right text-gray-600">
@@ -865,12 +865,12 @@ const VarianceInsights: React.FC = () => {
               {/* Explanation and Recommendations */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="p-6 bg-[#3AB7BF]/10 rounded-xl">
-                  <h5 className="font-bold text-[#1E2A38] mb-3">Analysis</h5>
+                  <h5 className="font-bold text-[#101010] mb-3">Analysis</h5>
                   <p className="text-sm text-gray-700 leading-relaxed">{selectedVariance.explanation}</p>
                 </div>
                 
                 <div className="p-6 bg-[#4ADE80]/10 rounded-xl">
-                  <h5 className="font-bold text-[#1E2A38] mb-3">Recommendations</h5>
+                  <h5 className="font-bold text-[#101010] mb-3">Recommendations</h5>
                   <ul className="space-y-2">
                     {selectedVariance.recommendations.map((rec, index) => (
                       <li key={index} className="flex items-start text-sm text-gray-700">

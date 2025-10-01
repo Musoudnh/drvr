@@ -371,7 +371,7 @@ const Forecasting: React.FC = () => {
       case '6000': // Payroll & Benefits
         return (
           <div className="space-y-4">
-            <h4 className="font-medium text-[#1E2A38]">Payroll Assumptions</h4>
+            <h4 className="font-medium text-[#101010]">Payroll Assumptions</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Headcount</label>
@@ -398,7 +398,7 @@ const Forecasting: React.FC = () => {
       case '6500': // Travel & Entertainment
         return (
           <div className="space-y-4">
-            <h4 className="font-medium text-[#1E2A38]">Travel Assumptions</h4>
+            <h4 className="font-medium text-[#101010]">Travel Assumptions</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Number of Trips</label>
@@ -525,7 +525,7 @@ const Forecasting: React.FC = () => {
                 glScenarioForm.endMonth === 'Dec' && 
                 glScenarioForm.endYear === selectedYear) && (
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <h5 className="font-medium text-[#1E2A38] mb-3">Custom Date Range</h5>
+                  <h5 className="font-medium text-[#101010] mb-3">Custom Date Range</h5>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
@@ -700,7 +700,7 @@ const Forecasting: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Financial Forecasting</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Financial Forecasting</h2>
           <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
         </div>
         <div className="flex gap-3">
@@ -804,7 +804,7 @@ const Forecasting: React.FC = () => {
                           <td colSpan={months.length + 3} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
-                              className="flex items-center font-bold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                              className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
                             >
                               {expandedCategories.includes(category) ? (
                                 <ChevronDown className="w-4 h-4 mr-2" />
@@ -900,7 +900,7 @@ const Forecasting: React.FC = () => {
                                                 handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
                                               }
                                             }}
-                                            className={isActualized ? 'text-gray-600' : 'text-[#1E2A38] hover:text-blue-600'}
+                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-blue-600'}
                                           >
                                             ${monthData?.forecastedAmount.toLocaleString() || '0'}
                                           </span>
@@ -943,7 +943,7 @@ const Forecasting: React.FC = () => {
                               <tr>
                                 <td colSpan={months.length + 4} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
-                                    <h5 className="font-medium text-[#1E2A38] mb-3">Applied Scenarios for {glCode.name}</h5>
+                                    <h5 className="font-medium text-[#101010] mb-3">Applied Scenarios for {glCode.name}</h5>
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
                                       <p className="text-sm text-gray-600 italic">No scenarios applied to this GL code yet.</p>
                                     ) : (
@@ -952,7 +952,7 @@ const Forecasting: React.FC = () => {
                                           <div key={scenario.id} className="p-3 bg-white rounded border border-gray-200">
                                             <div className="flex items-center justify-between">
                                               <div>
-                                                <h6 className="font-medium text-[#1E2A38]">{scenario.name}</h6>
+                                                <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
                                                 <p className="text-sm text-gray-600">{scenario.description}</p>
                                                 <div className="flex items-center gap-2 mt-1">
                                                   <span className="text-xs text-gray-500">
@@ -1008,7 +1008,7 @@ const Forecasting: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Create Scenario</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Create Scenario</h3>
               <button
                 onClick={() => setShowGLScenarioModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -1116,7 +1116,7 @@ const Forecasting: React.FC = () => {
 
               {newGLScenario.glAccount && (
                 <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-                  <h5 className="font-medium text-[#1E2A38] mb-1">GL Account Impact</h5>
+                  <h5 className="font-medium text-[#101010] mb-1">GL Account Impact</h5>
                   <p className="text-sm text-gray-700">
                     This scenario will apply a {newGLScenario.adjustmentValue}
                     {newGLScenario.adjustmentType === 'percentage' ? '%' : ' dollar'} adjustment to 
@@ -1149,7 +1149,7 @@ const Forecasting: React.FC = () => {
        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
          <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
            <div className="flex items-center justify-between mb-6">
-             <h3 className="text-xl font-semibold text-[#1E2A38]">
+             <h3 className="text-xl font-semibold text-[#101010]">
                Add Scenario for {selectedGLCode.name} ({selectedGLCode.code})
              </h3>
              <button
@@ -1304,7 +1304,7 @@ const Forecasting: React.FC = () => {
             {/* Panel Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#3AB7BF]/5">
               <div>
-                <h3 className="text-xl font-semibold text-[#1E2A38]">Scenario Configuration</h3>
+                <h3 className="text-xl font-semibold text-[#101010]">Scenario Configuration</h3>
                 <p className="text-sm text-gray-600 mt-1">Create and configure budget scenarios</p>
               </div>
               <button
@@ -1498,7 +1498,7 @@ const Forecasting: React.FC = () => {
               {/* Impact Preview */}
               {sidePanelForm.selectedGLCode && sidePanelForm.adjustmentValue !== 0 && (
                 <div className="p-4 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
-                  <h4 className="font-medium text-[#1E2A38] mb-2 flex items-center">
+                  <h4 className="font-medium text-[#101010] mb-2 flex items-center">
                     <Eye className="w-4 h-4 mr-2" />
                     Impact Preview
                   </h4>

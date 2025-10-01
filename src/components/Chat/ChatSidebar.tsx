@@ -118,7 +118,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
   };
 
   return (
-    <div className="w-64 bg-[#1E2A38] text-white flex flex-col h-full">
+    <div className="w-64 bg-[#101010] text-white flex flex-col h-full">
       {/* Header */}
       <div className="p-4 border-b border-gray-600">
         <div className="flex items-center justify-between mb-3">

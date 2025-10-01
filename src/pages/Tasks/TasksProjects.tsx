@@ -261,7 +261,7 @@ const TasksProjects: React.FC = () => {
           }}
         >
           <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-[#1E2A38] text-sm leading-tight">{task.title}</h3>
+            <h3 className="font-semibold text-[#101010] text-sm leading-tight">{task.title}</h3>
             <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
               {task.priority}
             </span>
@@ -323,7 +323,7 @@ const TasksProjects: React.FC = () => {
           return (
             <div key={status} className="flex flex-col">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-[#1E2A38] flex items-center">
+                <h3 className="font-semibold text-[#101010] flex items-center">
                   {statusLabels[status]}
                   <span className="ml-2 px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
                     {statusTasks.length}
@@ -379,7 +379,7 @@ const TasksProjects: React.FC = () => {
               <tr key={task.id} className="border-b border-gray-100 hover:bg-gray-50">
                 <td className="py-3 px-4">
                   <div>
-                    <p className="font-medium text-[#1E2A38]">{task.title}</p>
+                    <p className="font-medium text-[#101010]">{task.title}</p>
                     <p className="text-sm text-gray-600 line-clamp-1">{task.description}</p>
                   </div>
                 </td>
@@ -445,7 +445,7 @@ const TasksProjects: React.FC = () => {
             >
               <LinkIcon className="w-8 h-8" style={{ color: serviceColor }} />
             </div>
-            <h3 className="text-xl font-semibold text-[#1E2A38] mb-2">Connect to {serviceName}</h3>
+            <h3 className="text-xl font-semibold text-[#101010] mb-2">Connect to {serviceName}</h3>
             <p className="text-gray-600 mb-6">
               Connect your {serviceName} workspace to view and manage your tasks directly within FinanceFlow.
             </p>
@@ -478,7 +478,7 @@ const TasksProjects: React.FC = () => {
             >
               <CheckCircle className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-medium text-[#1E2A38]">Connected to {serviceName}</span>
+            <span className="text-sm font-medium text-[#101010]">Connected to {serviceName}</span>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
@@ -556,7 +556,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#1E293B] text-white hover:bg-[#334155] shadow-sm"
+                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#101010] text-white hover:bg-[#2a2a2a] shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
@@ -645,7 +645,7 @@ const TasksProjects: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add New Task</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add New Task</h3>
               <button
                 onClick={() => setShowAddTaskModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -758,7 +758,7 @@ const TasksProjects: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">{selectedTask.title}</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">{selectedTask.title}</h3>
               <button
                 onClick={() => setShowTaskDetail(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -769,13 +769,13 @@ const TasksProjects: React.FC = () => {
             
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-2">Description</h4>
+                <h4 className="font-semibold text-[#101010] mb-2">Description</h4>
                 <p className="text-gray-700">{selectedTask.description}</p>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Assignee</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Assignee</h4>
                   <div className="flex items-center">
                     <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
                       <span className="text-white text-sm font-medium">
@@ -787,7 +787,7 @@ const TasksProjects: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Due Date</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Due Date</h4>
                   <div className="flex items-center">
                     <Calendar className="w-4 h-4 text-gray-400 mr-2" />
                     <span className={`${
@@ -801,14 +801,14 @@ const TasksProjects: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Priority</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
                     {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
                   </span>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Status</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
                     {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                   </span>
@@ -817,7 +817,7 @@ const TasksProjects: React.FC = () => {
               
               {selectedTask.tags.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Tags</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedTask.tags.map(tag => (
                       <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
@@ -829,12 +829,12 @@ const TasksProjects: React.FC = () => {
               )}
               
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-2">Comments</h4>
+                <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
                 <div className="space-y-3 max-h-40 overflow-y-auto">
                   {selectedTask.comments.map(comment => (
                     <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-[#1E2A38] text-sm">{comment.author}</span>
+                        <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
                         <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
                       </div>
                       <p className="text-sm text-gray-700">{comment.content}</p>
@@ -868,7 +868,7 @@ const TasksProjects: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Connect Board</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Connect Board</h3>
               <button
                 onClick={() => setShowConnectModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -901,7 +901,7 @@ const TasksProjects: React.FC = () => {
                     }`}
                   >
                     <div className="w-8 h-8 bg-[#7B68EE] rounded mx-auto mb-2" />
-                    <p className="font-medium text-[#1E2A38]">ClickUp</p>
+                    <p className="font-medium text-[#101010]">ClickUp</p>
                   </button>
                   <button
                     onClick={() => setConnectForm({...connectForm, platform: 'monday'})}
@@ -912,7 +912,7 @@ const TasksProjects: React.FC = () => {
                     }`}
                   >
                     <div className="w-8 h-8 bg-[#FF6B6B] rounded mx-auto mb-2" />
-                    <p className="font-medium text-[#1E2A38]">Monday.com</p>
+                    <p className="font-medium text-[#101010]">Monday.com</p>
                   </button>
                 </div>
               </div>
@@ -929,7 +929,7 @@ const TasksProjects: React.FC = () => {
                       className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
-                      <p className="font-medium text-[#1E2A38]">Connected as Embedded</p>
+                      <p className="font-medium text-[#101010]">Connected as Embedded</p>
                       <p className="text-sm text-gray-600">Display the board directly within FinanceFlow</p>
                     </div>
                   </label>
@@ -942,7 +942,7 @@ const TasksProjects: React.FC = () => {
                       className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
-                      <p className="font-medium text-[#1E2A38]">Connected as Link</p>
+                      <p className="font-medium text-[#101010]">Connected as Link</p>
                       <p className="text-sm text-gray-600">Open the board in a new tab/window</p>
                     </div>
                   </label>

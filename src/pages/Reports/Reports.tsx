@@ -392,7 +392,7 @@ const Reports: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-2">{card.label}</p>
-                    <p className="text-2xl font-bold text-[#1E2A38]">{card.value}</p>
+                    <p className="text-2xl font-bold text-[#101010]">{card.value}</p>
                     <div className="flex items-center mt-2">
                       <TrendIcon className="w-4 h-4 mr-1" style={{ color: trendColor }} />
                       <span className="text-sm font-medium" style={{ color: trendColor }}>
@@ -475,13 +475,13 @@ const Reports: React.FC = () => {
                     <tr className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <button
-                          className="flex items-center font-semibold text-[#1E2A38] hover:text-[#3AB7BF] transition-colors"
+                          className="flex items-center font-semibold text-[#101010] hover:text-[#3AB7BF] transition-colors"
                         >
                           <ChevronRight className="w-4 h-4 mr-2" />
                           {row.category}
                         </button>
                       </td>
-                      <td className="py-3 px-4 text-right font-bold text-[#1E2A38]">
+                      <td className="py-3 px-4 text-right font-bold text-[#101010]">
                         ${Math.abs(row.amount).toLocaleString()}
                       </td>
                       <td className="py-3 px-4 text-right text-gray-600">
@@ -516,7 +516,7 @@ const Reports: React.FC = () => {
         <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
           {/* Sidebar Header */}
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-[#1E2A38] mb-2">Reports</h2>
+            <h2 className="text-xl font-semibold text-[#101010] mb-2">Reports</h2>
             <p className="text-sm text-gray-600">View, export, and analyze your financial performance</p>
           </div>
 
@@ -531,7 +531,7 @@ const Reports: React.FC = () => {
                   >
                     <div className="flex items-center">
                       <category.icon className="w-5 h-5 text-[#3AB7BF] mr-3" />
-                      <span className="font-semibold text-[#1E2A38]">{category.name}</span>
+                      <span className="font-semibold text-[#101010]">{category.name}</span>
                     </div>
                     {category.expanded ? (
                       <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -555,7 +555,7 @@ const Reports: React.FC = () => {
                           <div className="flex items-start">
                             <report.icon className="w-4 h-4 mr-3 mt-0.5 text-gray-400" />
                             <div className="flex-1">
-                              <h4 className="font-medium text-[#1E2A38] text-sm">{report.name}</h4>
+                              <h4 className="font-medium text-[#101010] text-sm">{report.name}</h4>
                               <p className="text-xs text-gray-600 mt-1">{report.description}</p>
                               {report.lastGenerated && (
                                 <p className="text-xs text-gray-500 mt-1">Updated: {report.lastGenerated}</p>
@@ -578,7 +578,7 @@ const Reports: React.FC = () => {
           <div className="bg-white border-b border-gray-200 p-6">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-[#1E2A38]">
+                <h1 className="text-2xl font-bold text-[#101010]">
                   {selectedReport?.name || 'Reports'}
                 </h1>
                 <p className="text-gray-600 mt-1">
@@ -651,7 +651,7 @@ const Reports: React.FC = () => {
             <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
               <div className="p-4 border-b border-gray-200">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-[#1E2A38] flex items-center">
+                  <h3 className="font-semibold text-[#101010] flex items-center">
                     <Brain className="w-4 h-4 mr-2 text-[#8B5CF6]" />
                     AI Insights
                   </h3>
@@ -715,7 +715,7 @@ const Reports: React.FC = () => {
                           <InsightIcon className="w-4 h-4" style={{ color: insightColor }} />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-semibold text-[#1E2A38] text-sm">{insight.title}</h4>
+                          <h4 className="font-semibold text-[#101010] text-sm">{insight.title}</h4>
                           <span 
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
@@ -746,7 +746,7 @@ const Reports: React.FC = () => {
                 
                 {/* Quick Actions */}
                 <div className="pt-4 border-t border-gray-200">
-                  <h4 className="font-semibold text-[#1E2A38] mb-3 text-sm">Quick Actions</h4>
+                  <h4 className="font-semibold text-[#101010] mb-3 text-sm">Quick Actions</h4>
                   <div className="space-y-2">
                     <Button variant="outline" size="sm" className="w-full justify-start">
                       <Zap className="w-3 h-3 mr-2" />
@@ -773,7 +773,7 @@ const Reports: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Export Report</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Export Report</h3>
               <button
                 onClick={() => setShowExportModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -802,7 +802,7 @@ const Reports: React.FC = () => {
                       }`}
                     >
                       <format.icon className="w-6 h-6 mx-auto mb-2 text-[#3AB7BF]" />
-                      <p className="font-medium text-[#1E2A38]">{format.label}</p>
+                      <p className="font-medium text-[#101010]">{format.label}</p>
                     </button>
                   ))}
                 </div>
@@ -888,7 +888,7 @@ const Reports: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Schedule Report</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Schedule Report</h3>
               <button
                 onClick={() => setShowScheduleModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"

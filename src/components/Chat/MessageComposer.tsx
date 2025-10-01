@@ -143,7 +143,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
                 </span>
               </div>
               <div>
-                <p className="text-sm font-medium text-[#1E2A38]">{user.name}</p>
+                <p className="text-sm font-medium text-[#101010]">{user.name}</p>
                 <p className="text-xs text-gray-500">{user.role}</p>
               </div>
             </button>

@@ -67,7 +67,7 @@ const TrendCard: React.FC<TrendCardProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <p className="text-xs font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-lg font-bold text-[#1E2A38] mb-0.5">{value}</p>
+          <p className="text-lg font-bold text-[#101010] mb-0.5">{value}</p>
           <div className="flex items-center">
             <span 
               className="text-xs font-medium"

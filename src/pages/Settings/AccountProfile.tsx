@@ -99,7 +99,7 @@ const AccountProfile: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Account Profile & Security</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Account Profile & Security</h2>
         <p className="text-gray-600 mt-1">Manage your personal information, security settings, and notification preferences</p>
       </div>
 
@@ -110,11 +110,11 @@ const AccountProfile: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <Bell className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Email Notifications</p>
+                  <p className="font-medium text-[#101010]">Email Notifications</p>
                   <p className="text-sm text-gray-600">Financial alerts and system updates</p>
                 </div>
               </div>
@@ -126,11 +126,11 @@ const AccountProfile: React.FC = () => {
             
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <Smartphone className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Push Notifications</p>
+                  <p className="font-medium text-[#101010]">Push Notifications</p>
                   <p className="text-sm text-gray-600">Mobile and desktop alerts</p>
                 </div>
               </div>
@@ -156,11 +156,11 @@ const AccountProfile: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <Shield className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Two-Factor Authentication</p>
+                  <p className="font-medium text-[#101010]">Two-Factor Authentication</p>
                   <p className="text-sm text-gray-600">Enhanced account security</p>
                 </div>
               </div>
@@ -178,11 +178,11 @@ const AccountProfile: React.FC = () => {
             
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <Eye className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Privacy Controls</p>
+                  <p className="font-medium text-[#101010]">Privacy Controls</p>
                   <p className="text-sm text-gray-600">Data sharing and visibility</p>
                 </div>
               </div>
@@ -359,7 +359,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Notification Preferences</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Notification Preferences</h3>
               <button
                 onClick={() => setShowNotificationModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -383,7 +383,7 @@ const AccountProfile: React.FC = () => {
                   <tbody>
                     {notificationPreferences.map(pref => (
                       <tr key={pref.id} className="border-b border-gray-100">
-                        <td className="py-3 px-4 font-medium text-[#1E2A38]">{pref.category}</td>
+                        <td className="py-3 px-4 font-medium text-[#101010]">{pref.category}</td>
                         <td className="py-3 px-4 text-center">
                           <input
                             type="checkbox"
@@ -444,7 +444,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Multi-Factor Authentication</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Multi-Factor Authentication</h3>
               <button
                 onClick={() => setShowMfaModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -456,14 +456,14 @@ const AccountProfile: React.FC = () => {
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-[#4ADE80]/10 rounded-lg">
                 <div>
-                  <p className="font-medium text-[#1E2A38]">MFA Status</p>
+                  <p className="font-medium text-[#101010]">MFA Status</p>
                   <p className="text-sm text-gray-600">Two-factor authentication is enabled</p>
                 </div>
                 <CheckCircle className="w-6 h-6 text-[#4ADE80]" />
               </div>
               
               <div className="space-y-4">
-                <h4 className="font-semibold text-[#1E2A38]">Authentication Methods</h4>
+                <h4 className="font-semibold text-[#101010]">Authentication Methods</h4>
                 {mfaMethods.map((method, index) => (
                   <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                     <div className="flex items-center">
@@ -475,7 +475,7 @@ const AccountProfile: React.FC = () => {
                         {method.type === 'hardware' && <Key className="w-4 h-4 text-white" />}
                       </div>
                       <div>
-                        <p className="font-medium text-[#1E2A38]">{method.name}</p>
+                        <p className="font-medium text-[#101010]">{method.name}</p>
                         {method.primary && (
                           <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">Primary</span>
                         )}
@@ -510,7 +510,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Security Settings</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Security Settings</h3>
               <button
                 onClick={() => setShowSecurityModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -525,7 +525,7 @@ const AccountProfile: React.FC = () => {
                   <div key={setting.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                     <div className="flex-1">
                       <div className="flex items-center">
-                        <p className="font-medium text-[#1E2A38]">{setting.name}</p>
+                        <p className="font-medium text-[#101010]">{setting.name}</p>
                         {setting.required && (
                           <span className="ml-2 px-2 py-1 bg-[#F87171]/20 text-[#F87171] rounded-full text-xs">Required</span>
                         )}
@@ -547,7 +547,7 @@ const AccountProfile: React.FC = () => {
               </div>
               
               <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-2">Security Score</h4>
+                <h4 className="font-medium text-[#101010] mb-2">Security Score</h4>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-[#4ADE80]">92/100</span>
                   <span className="text-sm text-gray-600">Excellent security posture</span>
@@ -572,7 +572,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Notification Preferences</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Notification Preferences</h3>
               <button
                 onClick={() => setShowNotificationModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -596,7 +596,7 @@ const AccountProfile: React.FC = () => {
                   <tbody>
                     {notificationPreferences.map(pref => (
                       <tr key={pref.id} className="border-b border-gray-100">
-                        <td className="py-3 px-4 font-medium text-[#1E2A38]">{pref.category}</td>
+                        <td className="py-3 px-4 font-medium text-[#101010]">{pref.category}</td>
                         <td className="py-3 px-4 text-center">
                           <input
                             type="checkbox"
@@ -657,7 +657,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Multi-Factor Authentication</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Multi-Factor Authentication</h3>
               <button
                 onClick={() => setShowMfaModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -669,14 +669,14 @@ const AccountProfile: React.FC = () => {
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-[#4ADE80]/10 rounded-lg">
                 <div>
-                  <p className="font-medium text-[#1E2A38]">MFA Status</p>
+                  <p className="font-medium text-[#101010]">MFA Status</p>
                   <p className="text-sm text-gray-600">Two-factor authentication is enabled</p>
                 </div>
                 <CheckCircle className="w-6 h-6 text-[#4ADE80]" />
               </div>
               
               <div className="space-y-4">
-                <h4 className="font-semibold text-[#1E2A38]">Authentication Methods</h4>
+                <h4 className="font-semibold text-[#101010]">Authentication Methods</h4>
                 {mfaMethods.map((method, index) => (
                   <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                     <div className="flex items-center">
@@ -688,7 +688,7 @@ const AccountProfile: React.FC = () => {
                         {method.type === 'hardware' && <Key className="w-4 h-4 text-white" />}
                       </div>
                       <div>
-                        <p className="font-medium text-[#1E2A38]">{method.name}</p>
+                        <p className="font-medium text-[#101010]">{method.name}</p>
                         {method.primary && (
                           <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">Primary</span>
                         )}
@@ -723,7 +723,7 @@ const AccountProfile: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Security Settings</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Security Settings</h3>
               <button
                 onClick={() => setShowSecurityModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -738,7 +738,7 @@ const AccountProfile: React.FC = () => {
                   <div key={setting.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                     <div className="flex-1">
                       <div className="flex items-center">
-                        <p className="font-medium text-[#1E2A38]">{setting.name}</p>
+                        <p className="font-medium text-[#101010]">{setting.name}</p>
                         {setting.required && (
                           <span className="ml-2 px-2 py-1 bg-[#F87171]/20 text-[#F87171] rounded-full text-xs">Required</span>
                         )}
@@ -760,7 +760,7 @@ const AccountProfile: React.FC = () => {
               </div>
               
               <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-2">Security Score</h4>
+                <h4 className="font-medium text-[#101010] mb-2">Security Score</h4>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-[#4ADE80]">92/100</span>
                   <span className="text-sm text-gray-600">Excellent security posture</span>

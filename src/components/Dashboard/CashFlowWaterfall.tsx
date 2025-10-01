@@ -100,7 +100,7 @@ const CashFlowWaterfall: React.FC = () => {
                         {/* Value label above bar */}
                         <div className="mb-2 text-center">
                           <span className={`text-xs font-semibold ${
-                            item.type === 'total' ? 'text-[#1E2A38]' : 
+                            item.type === 'total' ? 'text-[#101010]' : 
                             isPositive ? 'text-[#4ADE80]' : 'text-[#F87171]'
                           }`}>
                             {formatCurrency(item.value)}
@@ -170,7 +170,7 @@ const CashFlowWaterfall: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Net Cash Flow Calculation */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Calculator className="w-4 h-4 mr-2" />
               Net Cash Flow Calculation
             </h3>
@@ -187,8 +187,8 @@ const CashFlowWaterfall: React.FC = () => {
                 <span className="text-sm font-medium text-gray-700">Financing Cash Flow</span>
                 <span className="font-bold text-[#F59E0B]">-$36,513</span>
               </div>
-              <div className="flex justify-between items-center p-4 bg-[#1E2A38]/10 rounded-lg border-2 border-[#1E2A38]/20">
-                <span className="font-bold text-[#1E2A38]">Net Cash Flow</span>
+              <div className="flex justify-between items-center p-4 bg-[#101010]/10 rounded-lg border-2 border-[#101010]/20">
+                <span className="font-bold text-[#101010]">Net Cash Flow</span>
                 <span className="font-bold text-[#F87171] text-lg">-$171,248</span>
               </div>
             </div>
@@ -196,47 +196,47 @@ const CashFlowWaterfall: React.FC = () => {
 
           {/* Balance Changes */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <DollarSign className="w-4 h-4 mr-2" />
               Balance Sheet Changes
             </h3>
             <div className="space-y-4">
               {/* Cash on Hand */}
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-3">Change in Cash on Hand</h4>
+                <h4 className="font-medium text-[#101010] mb-3">Change in Cash on Hand</h4>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">Opening Balance</span>
-                  <span className="font-medium text-[#1E2A38]">$98,364</span>
+                  <span className="font-medium text-[#101010]">$98,364</span>
                 </div>
                 <div className="flex items-center justify-center my-2">
                   <ArrowRight className="w-4 h-4 text-gray-400" />
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">Closing Balance</span>
-                  <span className="font-medium text-[#1E2A38]">$56,399</span>
+                  <span className="font-medium text-[#101010]">$56,399</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-gray-200">
-                  <span className="font-medium text-[#1E2A38]">Net Change</span>
+                  <span className="font-medium text-[#101010]">Net Change</span>
                   <span className="font-bold text-[#F87171]">-$41,965</span>
                 </div>
               </div>
 
               {/* Debt */}
               <div className="p-4 bg-gray-50 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-3">Change in Debt</h4>
+                <h4 className="font-medium text-[#101010] mb-3">Change in Debt</h4>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">Opening Balance</span>
-                  <span className="font-medium text-[#1E2A38]">$99,482</span>
+                  <span className="font-medium text-[#101010]">$99,482</span>
                 </div>
                 <div className="flex items-center justify-center my-2">
                   <ArrowRight className="w-4 h-4 text-gray-400" />
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">Closing Balance</span>
-                  <span className="font-medium text-[#1E2A38]">$111,717</span>
+                  <span className="font-medium text-[#101010]">$111,717</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-gray-200">
-                  <span className="font-medium text-[#1E2A38]">Net Change</span>
+                  <span className="font-medium text-[#101010]">Net Change</span>
                   <span className="font-bold text-[#4ADE80]">+$12,234</span>
                 </div>
               </div>
@@ -250,19 +250,19 @@ const CashFlowWaterfall: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
             <TrendingUp className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Strong Operations</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Strong Operations</h3>
             <p className="text-sm text-gray-600">Operating cash flow of $316K shows healthy core business performance</p>
           </div>
           
           <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
             <TrendingDown className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Investment Phase</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Investment Phase</h3>
             <p className="text-sm text-gray-600">Heavy capital investments of $451K indicate growth phase</p>
           </div>
           
           <div className="text-center p-4 bg-[#3AB7BF]/10 rounded-lg">
             <DollarSign className="w-8 h-8 text-[#3AB7BF] mx-auto mb-3" />
-            <h3 className="font-semibold text-[#1E2A38] mb-2">Financing Strategy</h3>
+            <h3 className="font-semibold text-[#101010] mb-2">Financing Strategy</h3>
             <p className="text-sm text-gray-600">Modest debt increase helps fund growth while maintaining leverage ratios</p>
           </div>
         </div>
@@ -283,11 +283,11 @@ const CashFlowWaterfall: React.FC = () => {
             <tbody>
               {/* Operating Activities */}
               <tr className="bg-[#4ADE80]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#1E2A38] text-base">OPERATING ACTIVITIES</td>
+                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">OPERATING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'operating' && item.type !== 'total').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-2 px-4 font-medium text-[#1E2A38]">{item.label}</td>
+                  <td className="py-2 px-4 font-medium text-[#101010]">{item.label}</td>
                   <td className={`py-2 px-4 text-right font-medium ${item.value >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                     {formatCurrency(item.value)}
                   </td>
@@ -304,7 +304,7 @@ const CashFlowWaterfall: React.FC = () => {
                 </tr>
               ))}
               <tr className="border-b-2 border-gray-300 bg-[#4ADE80]/5">
-                <td className="py-3 px-4 font-bold text-[#1E2A38]">OPERATING CASH FLOW</td>
+                <td className="py-3 px-4 font-bold text-[#101010]">OPERATING CASH FLOW</td>
                 <td className="py-3 px-4 text-right font-bold text-[#4ADE80]">$315,990</td>
                 <td className="py-3 px-4 text-right font-bold text-gray-600">37.3%</td>
                 <td className="py-3 px-4 text-center">
@@ -314,11 +314,11 @@ const CashFlowWaterfall: React.FC = () => {
 
               {/* Investing Activities */}
               <tr className="bg-[#F87171]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#1E2A38] text-base">INVESTING ACTIVITIES</td>
+                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">INVESTING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'investing').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-2 px-4 font-medium text-[#1E2A38]">{item.label}</td>
+                  <td className="py-2 px-4 font-medium text-[#101010]">{item.label}</td>
                   <td className="py-2 px-4 text-right font-medium text-[#F87171]">
                     {formatCurrency(item.value)}
                   </td>
@@ -331,7 +331,7 @@ const CashFlowWaterfall: React.FC = () => {
                 </tr>
               ))}
               <tr className="border-b-2 border-gray-300 bg-[#F87171]/5">
-                <td className="py-3 px-4 font-bold text-[#1E2A38]">FREE CASH FLOW</td>
+                <td className="py-3 px-4 font-bold text-[#101010]">FREE CASH FLOW</td>
                 <td className="py-3 px-4 text-right font-bold text-[#F87171]">-$134,735</td>
                 <td className="py-3 px-4 text-right font-bold text-gray-600">-15.9%</td>
                 <td className="py-3 px-4 text-center">
@@ -341,11 +341,11 @@ const CashFlowWaterfall: React.FC = () => {
 
               {/* Financing Activities */}
               <tr className="bg-[#F59E0B]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#1E2A38] text-base">FINANCING ACTIVITIES</td>
+                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">FINANCING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'financing').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-2 px-4 font-medium text-[#1E2A38]">{item.label}</td>
+                  <td className="py-2 px-4 font-medium text-[#101010]">{item.label}</td>
                   <td className={`py-2 px-4 text-right font-medium ${item.value >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                     {formatCurrency(item.value)}
                   </td>
@@ -363,8 +363,8 @@ const CashFlowWaterfall: React.FC = () => {
               ))}
 
               {/* Final Net Cash Flow */}
-              <tr className="border-b-2 border-gray-500 bg-[#1E2A38]/5">
-                <td className="py-4 px-4 font-bold text-[#1E2A38] text-lg">NET CASH FLOW</td>
+              <tr className="border-b-2 border-gray-500 bg-[#101010]/5">
+                <td className="py-4 px-4 font-bold text-[#101010] text-lg">NET CASH FLOW</td>
                 <td className="py-4 px-4 text-right font-bold text-[#F87171] text-lg">-$171,248</td>
                 <td className="py-4 px-4 text-right font-bold text-gray-600">-20.2%</td>
                 <td className="py-4 px-4 text-center">

@@ -374,7 +374,7 @@ const Benchmarks: React.FC = () => {
         return (
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38] mb-2">Company Profile</h3>
+              <h3 className="text-xl font-semibold text-[#101010] mb-2">Company Profile</h3>
               <p className="text-gray-600">Tell us about your company to get personalized benchmarks</p>
             </div>
             
@@ -517,7 +517,7 @@ const Benchmarks: React.FC = () => {
         {/* Page Title */}
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-3xl font-bold text-[#1E2A38]">Industry Benchmarks</h2>
+            <h2 className="text-3xl font-bold text-[#101010]">Industry Benchmarks</h2>
             <p className="text-gray-600 mt-2 text-lg">Compare your performance against industry peers and identify growth opportunities</p>
           </div>
           <div className="flex gap-3">
@@ -550,27 +550,27 @@ const Benchmarks: React.FC = () => {
             {/* Company Profile Snapshot */}
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1E2A38] mb-3">Your Company Profile</h3>
+                <h3 className="text-lg font-semibold text-[#101010] mb-3">Your Company Profile</h3>
                 <div className="flex items-center gap-6 text-sm">
                   <div className="flex items-center">
                     <Building2 className="w-4 h-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Industry:</span>
-                    <span className="font-medium text-[#1E2A38] ml-1">{companyProfile.industry}</span>
+                    <span className="font-medium text-[#101010] ml-1">{companyProfile.industry}</span>
                   </div>
                   <div className="flex items-center">
                     <DollarSign className="w-4 h-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Revenue:</span>
-                    <span className="font-medium text-[#1E2A38] ml-1">{companyProfile.revenueRange}</span>
+                    <span className="font-medium text-[#101010] ml-1">{companyProfile.revenueRange}</span>
                   </div>
                   <div className="flex items-center">
                     <Users className="w-4 h-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Employees:</span>
-                    <span className="font-medium text-[#1E2A38] ml-1">{companyProfile.employeeCount}</span>
+                    <span className="font-medium text-[#101010] ml-1">{companyProfile.employeeCount}</span>
                   </div>
                   <div className="flex items-center">
                     <Globe className="w-4 h-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Region:</span>
-                    <span className="font-medium text-[#1E2A38] ml-1">{companyProfile.region}</span>
+                    <span className="font-medium text-[#101010] ml-1">{companyProfile.region}</span>
                   </div>
                 </div>
               </div>
@@ -670,7 +670,7 @@ const Benchmarks: React.FC = () => {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#1E2A38] mb-2">Key Performance Insight</h3>
+                  <h3 className="text-xl font-bold text-[#101010] mb-2">Key Performance Insight</h3>
                   <p className="text-lg text-gray-700">{headlineInsight.text}</p>
                   <p className="text-sm text-gray-500 mt-2">Based on {selectedIndustry.toUpperCase()} industry data for {selectedRevenueRange} companies</p>
                 </div>
@@ -695,7 +695,7 @@ const Benchmarks: React.FC = () => {
               <div key={metric.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-200">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-[#1E2A38] mb-1">{metric.name}</h3>
+                    <h3 className="font-semibold text-[#101010] mb-1">{metric.name}</h3>
                     <p className="text-xs text-gray-500">{metric.description}</p>
                   </div>
                   <div className="flex items-center">
@@ -719,7 +719,7 @@ const Benchmarks: React.FC = () => {
                 {/* Company Value */}
                 <div className="mb-4">
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-bold text-[#1E2A38]">
+                    <span className="text-2xl font-bold text-[#101010]">
                       {formatValue(metric.companyValue, metric.unit)}
                     </span>
                     <span className="text-sm text-gray-500 ml-2">Your Company</span>
@@ -793,7 +793,7 @@ const Benchmarks: React.FC = () => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
                 <Brain className="w-5 h-5 text-[#8B5CF6] mr-2" />
-                <span className="font-medium text-[#1E2A38]">Intelligent Analysis</span>
+                <span className="font-medium text-[#101010]">Intelligent Analysis</span>
               </div>
               <Button 
                 variant="outline" 
@@ -823,7 +823,7 @@ const Benchmarks: React.FC = () => {
                           <InsightIcon className="w-4 h-4" style={{ color: insightColor }} />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-[#1E2A38]">{insight.title}</h4>
+                          <h4 className="font-semibold text-[#101010]">{insight.title}</h4>
                           <span 
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
@@ -863,7 +863,7 @@ const Benchmarks: React.FC = () => {
           >
             <div className="flex items-center">
               <TrendingUp className="w-5 h-5 text-[#4ADE80] mr-3" />
-              <h3 className="text-lg font-semibold text-[#1E2A38]">Revenue Drivers Analysis</h3>
+              <h3 className="text-lg font-semibold text-[#101010]">Revenue Drivers Analysis</h3>
             </div>
             {expandedSections.includes('revenue-drivers') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -876,7 +876,7 @@ const Benchmarks: React.FC = () => {
             <div className="px-4 pb-4 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">ARPU (Annual)</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">ARPU (Annual)</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Your Company</span>
@@ -894,7 +894,7 @@ const Benchmarks: React.FC = () => {
                 </div>
                 
                 <div className="p-4 bg-[#F87171]/10 rounded-lg">
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Churn Rate</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Churn Rate</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Your Company</span>
@@ -912,7 +912,7 @@ const Benchmarks: React.FC = () => {
                 </div>
                 
                 <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-                  <h4 className="font-semibold text-[#1E2A38] mb-2">Sales Efficiency</h4>
+                  <h4 className="font-semibold text-[#101010] mb-2">Sales Efficiency</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Your Company</span>
@@ -932,7 +932,7 @@ const Benchmarks: React.FC = () => {
               
               {/* Interactive Chart */}
               <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="font-semibold text-[#1E2A38] mb-4">Revenue Growth Distribution</h4>
+                <h4 className="font-semibold text-[#101010] mb-4">Revenue Growth Distribution</h4>
                 <div className="relative h-48">
                   <svg className="w-full h-full">
                     {/* Bell curve visualization */}
@@ -964,7 +964,7 @@ const Benchmarks: React.FC = () => {
           >
             <div className="flex items-center">
               <PieChart className="w-5 h-5 text-[#F87171] mr-3" />
-              <h3 className="text-lg font-semibold text-[#1E2A38]">Expense Breakdown Analysis</h3>
+              <h3 className="text-lg font-semibold text-[#101010]">Expense Breakdown Analysis</h3>
             </div>
             {expandedSections.includes('expense-breakdown') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -977,7 +977,7 @@ const Benchmarks: React.FC = () => {
             <div className="px-4 pb-4 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-4">Expense Categories vs Industry</h4>
+                  <h4 className="font-semibold text-[#101010] mb-4">Expense Categories vs Industry</h4>
                   <div className="space-y-4">
                     {[
                       { category: 'Payroll & Benefits', company: 38.5, industry: 35.2, topQuartile: 28.9 },
@@ -988,7 +988,7 @@ const Benchmarks: React.FC = () => {
                       <div key={index} className="space-y-2">
                         <div className="flex justify-between">
                           <span className="text-sm font-medium text-gray-700">{expense.category}</span>
-                          <span className="text-sm font-bold text-[#1E2A38]">{expense.company}%</span>
+                          <span className="text-sm font-bold text-[#101010]">{expense.company}%</span>
                         </div>
                         <div className="relative">
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -1014,22 +1014,22 @@ const Benchmarks: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-[#1E2A38] mb-4">Cost Optimization Opportunities</h4>
+                  <h4 className="font-semibold text-[#101010] mb-4">Cost Optimization Opportunities</h4>
                   <div className="space-y-3">
                     <div className="p-3 bg-[#F59E0B]/10 rounded-lg border border-[#F59E0B]/20">
-                      <h5 className="font-medium text-[#1E2A38] mb-1">Payroll Optimization</h5>
+                      <h5 className="font-medium text-[#101010] mb-1">Payroll Optimization</h5>
                       <p className="text-sm text-gray-600">3.3% above industry average. Consider automation or process improvements.</p>
                       <p className="text-xs text-[#F59E0B] mt-1">Potential savings: $180K annually</p>
                     </div>
                     
                     <div className="p-3 bg-[#4ADE80]/10 rounded-lg border border-[#4ADE80]/20">
-                      <h5 className="font-medium text-[#1E2A38] mb-1">Technology Investment</h5>
+                      <h5 className="font-medium text-[#101010] mb-1">Technology Investment</h5>
                       <p className="text-sm text-gray-600">Below industry average. Room for strategic tech investments.</p>
                       <p className="text-xs text-[#4ADE80] mt-1">Investment opportunity: $85K annually</p>
                     </div>
                     
                     <div className="p-3 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
-                      <h5 className="font-medium text-[#1E2A38] mb-1">Marketing Underinvestment</h5>
+                      <h5 className="font-medium text-[#101010] mb-1">Marketing Underinvestment</h5>
                       <p className="text-sm text-gray-600">2.5% below average. Potential growth opportunity.</p>
                       <p className="text-xs text-[#3AB7BF] mt-1">Growth potential: $2.3M revenue</p>
                     </div>
@@ -1048,7 +1048,7 @@ const Benchmarks: React.FC = () => {
           >
             <div className="flex items-center">
               <Users className="w-5 h-5 text-[#8B5CF6] mr-3" />
-              <h3 className="text-lg font-semibold text-[#1E2A38]">Productivity & Efficiency Metrics</h3>
+              <h3 className="text-lg font-semibold text-[#101010]">Productivity & Efficiency Metrics</h3>
             </div>
             {expandedSections.includes('productivity-metrics') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -1067,11 +1067,11 @@ const Benchmarks: React.FC = () => {
                   { metric: 'Customer per Employee', company: '12.5', industry: '11.8', topQuartile: '15.2', performance: 'average' }
                 ].map((metric, index) => (
                   <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                    <h4 className="font-medium text-[#1E2A38] mb-2">{metric.metric}</h4>
+                    <h4 className="font-medium text-[#101010] mb-2">{metric.metric}</h4>
                     <div className="space-y-1">
                       <div className="flex justify-between">
                         <span className="text-xs text-gray-600">You</span>
-                        <span className="font-bold text-[#1E2A38]">{metric.company}</span>
+                        <span className="font-bold text-[#101010]">{metric.company}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-xs text-gray-600">Industry</span>
@@ -1087,19 +1087,19 @@ const Benchmarks: React.FC = () => {
               </div>
               
               <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#3AB7BF]/10 rounded-lg p-6">
-                <h4 className="font-semibold text-[#1E2A38] mb-3">Productivity Insights</h4>
+                <h4 className="font-semibold text-[#101010] mb-3">Productivity Insights</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-[#1E2A38]">Strong Revenue Efficiency</p>
+                      <p className="text-sm font-medium text-[#101010]">Strong Revenue Efficiency</p>
                       <p className="text-xs text-gray-600">Revenue per employee exceeds industry average by 12%</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <AlertTriangle className="w-4 h-4 text-[#F59E0B] mr-2 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-[#1E2A38]">Scaling Opportunity</p>
+                      <p className="text-sm font-medium text-[#101010]">Scaling Opportunity</p>
                       <p className="text-xs text-gray-600">Customer-to-employee ratio suggests room for growth</p>
                     </div>
                   </div>
@@ -1141,7 +1141,7 @@ const Benchmarks: React.FC = () => {
           <div className="bg-white rounded-lg w-[600px] max-w-[90vw] max-h-[90vh] overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Export Benchmark Report</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Export Benchmark Report</h3>
               <button
                 onClick={() => setShowExportModal(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -1160,7 +1160,7 @@ const Benchmarks: React.FC = () => {
             {/* Header */}
             <div className="px-6 py-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-[#1E2A38]">Update Company Profile</h3>
+                <h3 className="text-xl font-semibold text-[#101010]">Update Company Profile</h3>
                 <button
                   onClick={() => setShowProfileModal(false)}
                   className="text-gray-400 hover:text-gray-600"

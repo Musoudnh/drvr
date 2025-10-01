@@ -197,7 +197,7 @@ const WorkflowManagement: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Workflow Management</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Workflow Management</h2>
           <p className="text-gray-600 mt-1">Manage approval workflows and collaboration</p>
         </div>
         <Button 
@@ -266,7 +266,7 @@ const WorkflowManagement: React.FC = () => {
             <div key={workflow.id} className="p-4 border border-gray-200 rounded-lg hover:border-[#8B5CF6] transition-all">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-[#1E2A38]">{workflow.name}</h3>
+                  <h3 className="font-semibold text-[#101010]">{workflow.name}</h3>
                   <p className="text-sm text-gray-600">{workflow.description}</p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -325,7 +325,7 @@ const WorkflowManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">{selectedWorkflow.name}</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">{selectedWorkflow.name}</h3>
               <button
                 onClick={() => setShowWorkflowDetail(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -349,7 +349,7 @@ const WorkflowManagement: React.FC = () => {
                           }`}
                         />
                         <div>
-                          <h4 className="font-semibold text-[#1E2A38]">{step.name}</h4>
+                          <h4 className="font-semibold text-[#101010]">{step.name}</h4>
                           <p className="text-sm text-gray-600">Assigned to: {step.assignee}</p>
                         </div>
                       </div>
@@ -383,7 +383,7 @@ const WorkflowManagement: React.FC = () => {
                         {step.comments.map(comment => (
                           <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium text-[#1E2A38] text-sm">{comment.author}</span>
+                              <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
                               <span className="text-xs text-gray-500">{comment.createdAt.toLocaleDateString()}</span>
                             </div>
                             <p className="text-sm text-gray-700">{comment.content}</p>
@@ -447,7 +447,7 @@ const WorkflowManagement: React.FC = () => {
             <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all cursor-pointer">
               <div className="flex items-center mb-3">
                 <template.icon className="w-5 h-5 text-[#8B5CF6] mr-3" />
-                <h3 className="font-semibold text-[#1E2A38]">{template.name}</h3>
+                <h3 className="font-semibold text-[#101010]">{template.name}</h3>
               </div>
               <p className="text-sm text-gray-600 mb-3">{template.description}</p>
               <div className="space-y-1">

@@ -588,7 +588,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 max-w-[90vw]">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-[#1E2A38]">Create New Channel</h3>
+              <h3 className="text-lg font-semibold text-[#101010]">Create New Channel</h3>
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -663,7 +663,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             showContactSupport ? 'w-[500px]' : 'w-[450px]'
           }`}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">
+              <h3 className="text-xl font-semibold text-[#101010]">
                 {showContactSupport ? 'Contact Support' : 'Help Center'}
               </h3>
               <button
@@ -782,7 +782,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       <MessageCircle className="w-4 h-4 text-[#3AB7BF]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-[#1E2A38] mb-1">Contact Support</h4>
+                      <h4 className="font-semibold text-[#101010] mb-1">Contact Support</h4>
                       <p className="text-sm text-gray-600 mb-2">Get direct help from our support team</p>
                     </div>
                   </div>
@@ -798,7 +798,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       <FileText className="w-4 h-4 text-[#4ADE80]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-[#1E2A38] mb-1">Help Desk</h4>
+                      <h4 className="font-semibold text-[#101010] mb-1">Help Desk</h4>
                       <p className="text-sm text-gray-600 mb-2">Browse our knowledge base and articles</p>
                     </div>
                   </div>
@@ -845,7 +845,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             showExpertContact ? 'w-[500px]' : 'w-[450px]'
           }`}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">
+              <h3 className="text-xl font-semibold text-[#101010]">
                 {showExpertContact ? 'Contact Expert' : 'Talk to Expert'}
               </h3>
               <button
@@ -872,7 +872,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       <DollarSign className="w-8 h-8 text-white" />
                     )}
                   </div>
-                  <h4 className="text-lg font-semibold text-[#1E2A38]">
+                  <h4 className="text-lg font-semibold text-[#101010]">
                     {selectedExpertType === 'tax' ? 'Tax Expert' : 'Finance Expert'}
                   </h4>
                   <p className="text-sm text-gray-600">
@@ -992,7 +992,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       <Calculator className="w-6 h-6 text-[#F59E0B]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-[#1E2A38] mb-1">Tax Expert</h4>
+                      <h4 className="font-semibold text-[#101010] mb-1">Tax Expert</h4>
                       <p className="text-sm text-gray-600 mb-2">Get help with tax planning, compliance, and optimization strategies</p>
                       <div className="flex items-center text-xs text-gray-500">
                         <span className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></span>
@@ -1012,7 +1012,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       <DollarSign className="w-6 h-6 text-[#3AB7BF]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-[#1E2A38] mb-1">Finance Expert</h4>
+                      <h4 className="font-semibold text-[#101010] mb-1">Finance Expert</h4>
                       <p className="text-sm text-gray-600 mb-2">Expert guidance on financial planning, analysis, and business strategy</p>
                       <div className="flex items-center text-xs text-gray-500">
                         <span className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></span>

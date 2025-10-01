@@ -6,7 +6,7 @@ const CashFlow: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Cash Flow Analysis</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Cash Flow Analysis</h2>
         <p className="text-gray-600 mt-1">Track your cash inflows and outflows</p>
       </div>
 
@@ -78,7 +78,7 @@ const CashFlow: React.FC = () => {
             ].map((item, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
-                  <p className="font-medium text-[#1E2A38]">{item.source}</p>
+                  <p className="font-medium text-[#101010]">{item.source}</p>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                     <div 
                       className="bg-[#4ADE80] h-2 rounded-full" 
@@ -105,7 +105,7 @@ const CashFlow: React.FC = () => {
             ].map((item, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
-                  <p className="font-medium text-[#1E2A38]">{item.category}</p>
+                  <p className="font-medium text-[#101010]">{item.category}</p>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                     <div 
                       className="bg-[#F87171] h-2 rounded-full" 

@@ -135,7 +135,7 @@ const PredictiveAnalytics: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Predictive Analytics</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Predictive Analytics</h2>
           <p className="text-gray-600 mt-1">AI-powered forecasting and anomaly detection</p>
         </div>
         <Button 
@@ -173,7 +173,7 @@ const PredictiveAnalytics: React.FC = () => {
                 <Brain className="w-5 h-5 text-[#8B5CF6]" />
                 <span className="text-lg font-bold text-[#8B5CF6]">{model.accuracy}%</span>
               </div>
-              <h3 className="font-semibold text-[#1E2A38] mb-1">{model.name}</h3>
+              <h3 className="font-semibold text-[#101010] mb-1">{model.name}</h3>
               <p className="text-xs text-gray-500">Last trained: {model.lastTrained}</p>
             </div>
           ))}
@@ -191,7 +191,7 @@ const PredictiveAnalytics: React.FC = () => {
                     <Brain className="w-5 h-5 text-[#8B5CF6]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-[#1E2A38]">{prediction.title}</h3>
+                    <h3 className="font-semibold text-[#101010]">{prediction.title}</h3>
                     <p className="text-sm text-gray-600">{prediction.timeframe}</p>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ const PredictiveAnalytics: React.FC = () => {
               </div>
               
               <div className="mb-3">
-                <h4 className="font-medium text-[#1E2A38] mb-2">Key Factors</h4>
+                <h4 className="font-medium text-[#101010] mb-2">Key Factors</h4>
                 <div className="flex flex-wrap gap-2">
                   {prediction.factors.map((factor, index) => (
                     <span key={index} className="px-2 py-1 bg-[#8B5CF6]/10 text-[#8B5CF6] rounded-full text-xs">
@@ -246,7 +246,7 @@ const PredictiveAnalytics: React.FC = () => {
                     anomaly.severity === 'warning' ? 'text-[#F59E0B]' : 'text-[#3AB7BF]'
                   }`} />
                   <div>
-                    <h3 className="font-semibold text-[#1E2A38]">{anomaly.metric}</h3>
+                    <h3 className="font-semibold text-[#101010]">{anomaly.metric}</h3>
                     <p className="text-sm text-gray-600">Detected {anomaly.detectedAt.toLocaleTimeString()}</p>
                   </div>
                 </div>
@@ -264,7 +264,7 @@ const PredictiveAnalytics: React.FC = () => {
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="text-gray-600">Actual</p>
-                  <p className="font-bold text-[#1E2A38]">{anomaly.value.toLocaleString()}</p>
+                  <p className="font-bold text-[#101010]">{anomaly.value.toLocaleString()}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">Expected</p>
@@ -291,7 +291,7 @@ const PredictiveAnalytics: React.FC = () => {
             <div className="p-4 bg-[#4ADE80]/10 rounded-lg border border-[#4ADE80]/20">
               <div className="flex items-center mb-2">
                 <TrendingUp className="w-5 h-5 text-[#4ADE80] mr-2" />
-                <h3 className="font-semibold text-[#1E2A38]">Growth Opportunity</h3>
+                <h3 className="font-semibold text-[#101010]">Growth Opportunity</h3>
               </div>
               <p className="text-sm text-gray-700">
                 AI analysis suggests Q2 revenue could increase by 18% with optimized pricing strategy. 
@@ -302,7 +302,7 @@ const PredictiveAnalytics: React.FC = () => {
             <div className="p-4 bg-[#F59E0B]/10 rounded-lg border border-[#F59E0B]/20">
               <div className="flex items-center mb-2">
                 <AlertTriangle className="w-5 h-5 text-[#F59E0B] mr-2" />
-                <h3 className="font-semibold text-[#1E2A38]">Risk Alert</h3>
+                <h3 className="font-semibold text-[#101010]">Risk Alert</h3>
               </div>
               <p className="text-sm text-gray-700">
                 Customer acquisition cost trending upward. Model predicts 25% increase if current 
@@ -315,7 +315,7 @@ const PredictiveAnalytics: React.FC = () => {
             <div className="p-4 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
               <div className="flex items-center mb-2">
                 <Target className="w-5 h-5 text-[#3AB7BF] mr-2" />
-                <h3 className="font-semibold text-[#1E2A38]">Optimization</h3>
+                <h3 className="font-semibold text-[#101010]">Optimization</h3>
               </div>
               <p className="text-sm text-gray-700">
                 Expense optimization model identifies $45K monthly savings opportunity through 
@@ -326,7 +326,7 @@ const PredictiveAnalytics: React.FC = () => {
             <div className="p-4 bg-[#8B5CF6]/10 rounded-lg border border-[#8B5CF6]/20">
               <div className="flex items-center mb-2">
                 <Lightbulb className="w-5 h-5 text-[#8B5CF6] mr-2" />
-                <h3 className="font-semibold text-[#1E2A38]">Strategic Insight</h3>
+                <h3 className="font-semibold text-[#101010]">Strategic Insight</h3>
               </div>
               <p className="text-sm text-gray-700">
                 Seasonal analysis reveals untapped revenue potential in Q3. Consider launching 
@@ -341,7 +341,7 @@ const PredictiveAnalytics: React.FC = () => {
       <Card title="Model Configuration">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Training Data</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Training Data</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Historical Period</span>
@@ -367,7 +367,7 @@ const PredictiveAnalytics: React.FC = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Prediction Settings</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Prediction Settings</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Forecast Horizon</span>
@@ -396,7 +396,7 @@ const PredictiveAnalytics: React.FC = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Anomaly Detection</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Anomaly Detection</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Sensitivity</span>

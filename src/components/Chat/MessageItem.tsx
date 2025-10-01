@@ -50,7 +50,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
             <FileText className="w-4 h-4 text-gray-400 mr-2" />
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-[#1E2A38] truncate">{attachment.name}</p>
+            <p className="text-sm font-medium text-[#101010] truncate">{attachment.name}</p>
             <p className="text-xs text-gray-500">{formatFileSize(attachment.size)}</p>
           </div>
           <button className="ml-2 p-1 hover:bg-gray-200 rounded">
@@ -106,7 +106,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
           {/* Author and Timestamp */}
           {showAvatar && (
             <div className="flex items-center mb-1">
-              <span className="font-semibold text-[#1E2A38] text-sm mr-2">
+              <span className="font-semibold text-[#101010] text-sm mr-2">
                 {message.authorName}
               </span>
               <span className="text-xs text-gray-500">

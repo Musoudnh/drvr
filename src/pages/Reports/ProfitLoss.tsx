@@ -55,7 +55,7 @@ const ProfitLoss: React.FC = () => {
 
     return (
       <div className="mt-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h5 className="font-medium text-[#1E2A38] mb-3 flex items-center">
+        <h5 className="font-medium text-[#101010] mb-3 flex items-center">
           <Clock className="w-4 h-4 mr-2" />
           Recent Activity
         </h5>
@@ -71,13 +71,13 @@ const ProfitLoss: React.FC = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-[#1E2A38]">{activity.user}</p>
+                  <p className="text-sm font-medium text-[#101010]">{activity.user}</p>
                   <p className="text-sm text-gray-600">{activity.action}</p>
                   <p className="text-xs text-gray-500 mt-1">{activity.date}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium text-[#1E2A38]">{activity.amount}</p>
+                <p className="text-sm font-medium text-[#101010]">{activity.amount}</p>
                 {activity.previousAmount !== '$0' && (
                   <p className="text-xs text-gray-500">was {activity.previousAmount}</p>
                 )}
@@ -109,7 +109,7 @@ const ProfitLoss: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Profit & Loss Statement</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Profit & Loss Statement</h2>
         <p className="text-gray-600 mt-1">Revenue and expense breakdown</p>
       </div>
 
@@ -182,7 +182,7 @@ const ProfitLoss: React.FC = () => {
                     row.type === 'Forecast' ? 'bg-blue-50/30' : ''
                   }`}
                 >
-                  <td className="py-3 px-4 font-medium text-[#1E2A38]">{row.month}</td>
+                  <td className="py-3 px-4 font-medium text-[#101010]">{row.month}</td>
                   <td className={`py-3 px-4 text-right font-medium ${
                     row.type === 'Forecast' ? 'text-[#4ADE80]/70' : 'text-[#4ADE80]'
                   }`}>
@@ -220,23 +220,23 @@ const ProfitLoss: React.FC = () => {
         <div className="space-y-6">
           {/* Revenue Section */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 text-lg">Revenue</h3>
+            <h3 className="font-semibold text-[#101010] mb-4 text-lg">Revenue</h3>
             <div className="space-y-2 ml-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Product Sales</span>
-                <span className="font-medium text-[#1E2A38]">$5,076,000</span>
+                <span className="font-medium text-[#101010]">$5,076,000</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Service Revenue</span>
-                <span className="font-medium text-[#1E2A38]">$1,124,500</span>
+                <span className="font-medium text-[#101010]">$1,124,500</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Other Income</span>
-                <span className="font-medium text-[#1E2A38]">$394,500</span>
+                <span className="font-medium text-[#101010]">$394,500</span>
               </div>
               <div className="flex justify-between font-bold border-t pt-2 text-lg">
                 <div className="flex items-center">
-                  <span className="text-[#1E2A38]">Total Revenue</span>
+                  <span className="text-[#101010]">Total Revenue</span>
                   {renderActivityButton('total-revenue')}
                 </div>
                 <span className="text-[#4ADE80]">$6,595,000</span>
@@ -247,23 +247,23 @@ const ProfitLoss: React.FC = () => {
 
           {/* Cost of Goods Sold */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 text-lg">Cost of Goods Sold</h3>
+            <h3 className="font-semibold text-[#101010] mb-4 text-lg">Cost of Goods Sold</h3>
             <div className="space-y-2 ml-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Materials & Supplies</span>
-                <span className="font-medium text-[#1E2A38]">$1,690,400</span>
+                <span className="font-medium text-[#101010]">$1,690,400</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Direct Labor</span>
-                <span className="font-medium text-[#1E2A38]">$913,600</span>
+                <span className="font-medium text-[#101010]">$913,600</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Manufacturing Overhead</span>
-                <span className="font-medium text-[#1E2A38]">$469,000</span>
+                <span className="font-medium text-[#101010]">$469,000</span>
               </div>
               <div className="flex justify-between font-bold border-t pt-2">
                 <div className="flex items-center">
-                  <span className="text-[#1E2A38]">Total COGS</span>
+                  <span className="text-[#101010]">Total COGS</span>
                   {renderActivityButton('total-cogs')}
                 </div>
                 <span className="text-[#F87171]">($3,073,000)</span>
@@ -276,7 +276,7 @@ const ProfitLoss: React.FC = () => {
           <div className="bg-[#4ADE80]/10 p-4 rounded-lg">
             <div className="flex justify-between font-bold text-lg">
               <div className="flex items-center">
-                <span className="text-[#1E2A38]">Gross Profit</span>
+                <span className="text-[#101010]">Gross Profit</span>
                 {renderActivityButton('gross-profit')}
               </div>
               <span className="text-[#4ADE80]">$3,522,000</span>
@@ -287,35 +287,35 @@ const ProfitLoss: React.FC = () => {
 
           {/* Operating Expenses */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 text-lg">Operating Expenses</h3>
+            <h3 className="font-semibold text-[#101010] mb-4 text-lg">Operating Expenses</h3>
             <div className="space-y-2 ml-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Salaries & Benefits</span>
-                <span className="font-medium text-[#1E2A38]">$970,400</span>
+                <span className="font-medium text-[#101010]">$970,400</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Marketing & Advertising</span>
-                <span className="font-medium text-[#1E2A38]">$313,600</span>
+                <span className="font-medium text-[#101010]">$313,600</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Rent & Utilities</span>
-                <span className="font-medium text-[#1E2A38]">$249,000</span>
+                <span className="font-medium text-[#101010]">$249,000</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Technology & Software</span>
-                <span className="font-medium text-[#1E2A38]">$178,600</span>
+                <span className="font-medium text-[#101010]">$178,600</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Professional Services</span>
-                <span className="font-medium text-[#1E2A38]">$134,400</span>
+                <span className="font-medium text-[#101010]">$134,400</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Other Operating Expenses</span>
-                <span className="font-medium text-[#1E2A38]">$175,400</span>
+                <span className="font-medium text-[#101010]">$175,400</span>
               </div>
               <div className="flex justify-between font-bold border-t pt-2">
                 <div className="flex items-center">
-                  <span className="text-[#1E2A38]">Total Operating Expenses</span>
+                  <span className="text-[#101010]">Total Operating Expenses</span>
                   {renderActivityButton('total-opex')}
                 </div>
                 <span className="text-[#F87171]">($2,021,400)</span>
@@ -328,7 +328,7 @@ const ProfitLoss: React.FC = () => {
           <div className="bg-[#3AB7BF]/10 p-4 rounded-lg">
             <div className="flex justify-between font-bold text-lg">
               <div className="flex items-center">
-                <span className="text-[#1E2A38]">Operating Income</span>
+                <span className="text-[#101010]">Operating Income</span>
                 {renderActivityButton('operating-income')}
               </div>
               <span className="text-[#3AB7BF]">$1,500,600</span>
@@ -339,7 +339,7 @@ const ProfitLoss: React.FC = () => {
 
           {/* Other Income/Expenses */}
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 text-lg">Other Income & Expenses</h3>
+            <h3 className="font-semibold text-[#101010] mb-4 text-lg">Other Income & Expenses</h3>
             <div className="space-y-2 ml-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Interest Income</span>
@@ -360,7 +360,7 @@ const ProfitLoss: React.FC = () => {
           <div className="bg-[#F59E0B]/10 p-4 rounded-lg">
             <div className="flex justify-between font-bold text-lg">
               <div className="flex items-center">
-                <span className="text-[#1E2A38]">Income Before Tax</span>
+                <span className="text-[#101010]">Income Before Tax</span>
                 {renderActivityButton('income-before-tax')}
               </div>
               <span className="text-[#F59E0B]">$1,486,600</span>
@@ -380,7 +380,7 @@ const ProfitLoss: React.FC = () => {
           <div className="bg-[#4ADE80]/20 p-6 rounded-lg border-2 border-[#4ADE80]/30">
             <div className="flex justify-between font-bold text-xl">
               <div className="flex items-center">
-                <span className="text-[#1E2A38]">Net Income</span>
+                <span className="text-[#101010]">Net Income</span>
                 {renderActivityButton('net-income')}
               </div>
               <span className="text-[#4ADE80]">$975,000</span>

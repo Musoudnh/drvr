@@ -48,7 +48,7 @@ const BillingSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Subscription & Billing</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Subscription & Billing</h2>
         <p className="text-gray-600 mt-1">Manage your plan, billing, and usage with automated alerts</p>
       </div>
 
@@ -59,13 +59,13 @@ const BillingSettings: React.FC = () => {
           {/* Plan Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                 <span className="text-white font-medium text-sm">P</span>
               </div>
               <div>
-                <h3 className="font-medium text-[#1E2A38]">Professional Plan</h3>
+                <h3 className="font-medium text-[#101010]">Professional Plan</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-[#1E2A38]">$79</span>
+                  <span className="text-lg font-bold text-[#101010]">$79</span>
                   <span className="text-sm text-gray-600">per month</span>
                 </div>
               </div>
@@ -81,12 +81,12 @@ const BillingSettings: React.FC = () => {
             <div className="flex items-center">
               <Calendar className="w-5 h-5 text-gray-400 mr-3" />
               <div>
-                <p className="font-medium text-[#1E2A38]">Next Billing Date</p>
+                <p className="font-medium text-[#101010]">Next Billing Date</p>
                 <p className="text-sm text-gray-600">February 15, 2025</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="font-bold text-[#1E2A38]">$79.00</p>
+              <p className="font-bold text-[#101010]">$79.00</p>
               <p className="text-xs text-gray-500">Auto-renewal</p>
             </div>
           </div>
@@ -111,11 +111,11 @@ const BillingSettings: React.FC = () => {
           {paymentMethods.map(method => (
             <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
-                <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+                <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="font-medium text-[#1E2A38]">
+                  <p className="font-medium text-[#101010]">
                     {method.type === 'card' ? `**** **** **** ${method.last4}` : `Bank ****${method.last4}`}
                   </p>
                   <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ const BillingSettings: React.FC = () => {
           
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
-              <p className="font-medium text-[#1E2A38]">Automatic Payments</p>
+              <p className="font-medium text-[#101010]">Automatic Payments</p>
               <p className="text-sm text-gray-600">Automatically charge your default payment method</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -165,7 +165,7 @@ const BillingSettings: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Detailed Usage Analytics</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Detailed Usage Analytics</h3>
               <button
                 onClick={() => setShowUsageModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -176,7 +176,7 @@ const BillingSettings: React.FC = () => {
             
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-4">API Usage by Feature</h4>
+                <h4 className="font-semibold text-[#101010] mb-4">API Usage by Feature</h4>
                 <div className="space-y-3">
                   {[
                     { feature: 'Financial Reports', calls: 3250, percentage: 38.5 },
@@ -203,7 +203,7 @@ const BillingSettings: React.FC = () => {
               </div>
               
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-4">Usage Trends (Last 30 Days)</h4>
+                <h4 className="font-semibold text-[#101010] mb-4">Usage Trends (Last 30 Days)</h4>
                 <div className="relative h-32">
                   <svg className="w-full h-full">
                     <polyline
@@ -248,11 +248,11 @@ const BillingSettings: React.FC = () => {
           
           <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                 <span className="text-white font-medium text-sm">QB</span>
               </div>
               <div>
-                <p className="font-medium text-[#1E2A38]">QuickBooks Online</p>
+                <p className="font-medium text-[#101010]">QuickBooks Online</p>
                 <p className="text-sm text-gray-600">Last sync: 2 hours ago</p>
               </div>
             </div>
@@ -264,11 +264,11 @@ const BillingSettings: React.FC = () => {
           
           <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#1E2A38] rounded flex items-center justify-center mr-4">
+              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
                 <CreditCard className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="font-medium text-[#1E2A38]">Stripe</p>
+                <p className="font-medium text-[#101010]">Stripe</p>
                 <p className="text-sm text-gray-600">Last transaction: 1 hour ago</p>
               </div>
             </div>
@@ -280,7 +280,7 @@ const BillingSettings: React.FC = () => {
           
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
-              <p className="font-medium text-[#1E2A38]">Available Integrations</p>
+              <p className="font-medium text-[#101010]">Available Integrations</p>
               <p className="text-sm text-gray-600">Connect Xero, Slack, Zapier and more</p>
             </div>
             <Button variant="outline" size="sm">Browse All</Button>

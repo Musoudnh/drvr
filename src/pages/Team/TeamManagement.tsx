@@ -184,7 +184,7 @@ const TeamManagement: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Team Management</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Team Management</h2>
           <p className="text-gray-600 mt-1">Manage your team members and accounting firm partnerships</p>
         </div>
         <div className="flex gap-3">
@@ -260,7 +260,7 @@ const TeamManagement: React.FC = () => {
                       </span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-[#1E2A38]">{member.name}</h3>
+                      <h3 className="font-semibold text-[#101010]">{member.name}</h3>
                       <p className="text-sm text-gray-600">{member.email}</p>
                     </div>
                   </div>
@@ -324,7 +324,7 @@ const TeamManagement: React.FC = () => {
                         <Building2 className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-[#1E2A38]">{firm.name}</h3>
+                        <h3 className="font-semibold text-[#101010]">{firm.name}</h3>
                         <p className="text-sm text-gray-600">{firm.email}</p>
                       </div>
                     </div>
@@ -373,7 +373,7 @@ const TeamManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Team Member</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add Team Member</h3>
               <button
                 onClick={handleCancelAddMember}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -487,7 +487,7 @@ const TeamManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Accounting Firm</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add Accounting Firm</h3>
               <button
                 onClick={handleCancelAddFirm}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -596,7 +596,7 @@ const TeamManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Edit Team Member</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Edit Team Member</h3>
               <button
                 onClick={handleCancelEdit}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -718,7 +718,7 @@ const TeamManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[700px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Edit Accounting Firm</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Edit Accounting Firm</h3>
               <button
                 onClick={handleCancelFirmEdit}
                 className="p-1 hover:bg-gray-100 rounded"

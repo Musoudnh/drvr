@@ -23,7 +23,7 @@ const AdminSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Admin Settings</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Admin Settings</h2>
         <p className="text-gray-600 mt-1">Configure system-wide settings and preferences</p>
       </div>
 
@@ -31,7 +31,7 @@ const AdminSettings: React.FC = () => {
       <Card title="Appearance">
         <div className="space-y-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Palette className="w-4 h-4 mr-2" />
               Navigation Color
             </h3>
@@ -62,7 +62,7 @@ const AdminSettings: React.FC = () => {
       <Card title="System Configuration">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Monitor className="w-4 h-4 mr-2" />
               Display Settings
             </h3>
@@ -81,7 +81,7 @@ const AdminSettings: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Bell className="w-4 h-4 mr-2" />
               Notifications
             </h3>

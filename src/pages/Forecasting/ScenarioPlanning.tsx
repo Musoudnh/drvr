@@ -421,7 +421,7 @@ const ScenarioPlanning: React.FC = () => {
               <Icon className="w-5 h-5" style={{ color }} />
             </div>
             <div>
-              <h3 className="font-bold text-[#1E2A38] text-lg">{scenario.name}</h3>
+              <h3 className="font-bold text-[#101010] text-lg">{scenario.name}</h3>
               <p className="text-sm text-gray-600">{scenario.description}</p>
             </div>
           </div>
@@ -501,7 +501,7 @@ const ScenarioPlanning: React.FC = () => {
     return (
       <div className="bg-white rounded-xl p-6 border border-gray-200">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-bold text-[#1E2A38] text-lg">Scenario Comparison</h3>
+          <h3 className="font-bold text-[#101010] text-lg">Scenario Comparison</h3>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={() => setShowComparisonModal(true)}>
               <Settings className="w-4 h-4 mr-2" />
@@ -597,7 +597,7 @@ const ScenarioPlanning: React.FC = () => {
     return (
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-200 bg-gray-50">
-          <h3 className="font-bold text-[#1E2A38] text-lg">Detailed Comparison</h3>
+          <h3 className="font-bold text-[#101010] text-lg">Detailed Comparison</h3>
           <p className="text-sm text-gray-600 mt-1">Side-by-side analysis of selected scenarios</p>
         </div>
         
@@ -623,7 +623,7 @@ const ScenarioPlanning: React.FC = () => {
             <tbody>
               {comparisonMetricOptions.filter(metric => comparisonMetrics.includes(metric.key)).map(metric => (
                 <tr key={metric.key} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-6 font-medium text-[#1E2A38]">{metric.label}</td>
+                  <td className="py-4 px-6 font-medium text-[#101010]">{metric.label}</td>
                   {selectedScenarioData.map((scenario, index) => {
                     const value = scenario.results[metric.key];
                     const isBase = index === 0;
@@ -687,7 +687,7 @@ const ScenarioPlanning: React.FC = () => {
     <div className="space-y-2">
       <div className="flex justify-between items-center">
         <label className="text-sm font-medium text-gray-700">{label}</label>
-        <span className="text-sm font-bold text-[#1E2A38]">{value}{suffix}</span>
+        <span className="text-sm font-bold text-[#101010]">{value}{suffix}</span>
       </div>
       <input
         type="range"
@@ -710,7 +710,7 @@ const ScenarioPlanning: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-[#1E2A38]">Scenario Planning</h2>
+          <h2 className="text-3xl font-bold text-[#101010]">Scenario Planning</h2>
           <p className="text-gray-600 mt-2">Model different business scenarios and compare outcomes with real-time calculations</p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -820,7 +820,7 @@ const ScenarioPlanning: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-6 bg-[#4ADE80]/10 rounded-xl">
             <CheckCircle className="w-12 h-12 text-[#4ADE80] mx-auto mb-4" />
-            <h3 className="font-bold text-[#1E2A38] mb-2 text-lg">Base Case</h3>
+            <h3 className="font-bold text-[#101010] mb-2 text-lg">Base Case</h3>
             <p className="text-sm text-gray-600 mb-3">85% probability of achievement based on historical performance</p>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div className="bg-[#4ADE80] h-2 rounded-full" style={{ width: '85%' }} />
@@ -829,7 +829,7 @@ const ScenarioPlanning: React.FC = () => {
           
           <div className="text-center p-6 bg-[#F59E0B]/10 rounded-xl">
             <AlertTriangle className="w-12 h-12 text-[#F59E0B] mx-auto mb-4" />
-            <h3 className="font-bold text-[#1E2A38] mb-2 text-lg">Market Volatility</h3>
+            <h3 className="font-bold text-[#101010] mb-2 text-lg">Market Volatility</h3>
             <p className="text-sm text-gray-600 mb-3">External factors could impact growth by ±15% from projections</p>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div className="bg-[#F59E0B] h-2 rounded-full" style={{ width: '65%' }} />
@@ -838,7 +838,7 @@ const ScenarioPlanning: React.FC = () => {
           
           <div className="text-center p-6 bg-[#F87171]/10 rounded-xl">
             <TrendingDown className="w-12 h-12 text-[#F87171] mx-auto mb-4" />
-            <h3 className="font-bold text-[#1E2A38] mb-2 text-lg">Downside Risk</h3>
+            <h3 className="font-bold text-[#101010] mb-2 text-lg">Downside Risk</h3>
             <p className="text-sm text-gray-600 mb-3">Economic downturn scenario requires immediate cost optimization</p>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div className="bg-[#F87171] h-2 rounded-full" style={{ width: '25%' }} />
@@ -852,7 +852,7 @@ const ScenarioPlanning: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-8 w-[900px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-[#1E2A38]">
+              <h3 className="text-2xl font-bold text-[#101010]">
                 {editingScenario ? 'Edit Scenario' : 'Create New Scenario'}
               </h3>
               <button
@@ -900,7 +900,7 @@ const ScenarioPlanning: React.FC = () => {
 
                 {/* Financial Assumptions */}
                 <div className="space-y-4">
-                  <h4 className="font-bold text-[#1E2A38] text-lg">Financial Assumptions</h4>
+                  <h4 className="font-bold text-[#101010] text-lg">Financial Assumptions</h4>
                   
                   {renderAssumptionSlider(
                     'Revenue Growth Rate',
@@ -949,7 +949,7 @@ const ScenarioPlanning: React.FC = () => {
 
                 {/* Market Conditions */}
                 <div className="space-y-4">
-                  <h4 className="font-bold text-[#1E2A38] text-lg">Market Conditions</h4>
+                  <h4 className="font-bold text-[#101010] text-lg">Market Conditions</h4>
                   <div className="grid grid-cols-1 gap-3">
                     {[
                       { key: 'newProductLaunch', label: 'New Product Launch', description: 'Major product release driving growth' },
@@ -971,7 +971,7 @@ const ScenarioPlanning: React.FC = () => {
                           className="w-5 h-5 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#3AB7BF] mr-4 mt-0.5"
                         />
                         <div>
-                          <p className="font-medium text-[#1E2A38]">{condition.label}</p>
+                          <p className="font-medium text-[#101010]">{condition.label}</p>
                           <p className="text-sm text-gray-600">{condition.description}</p>
                         </div>
                       </label>
@@ -983,7 +983,7 @@ const ScenarioPlanning: React.FC = () => {
               {/* Right Panel - Live Results */}
               <div className="space-y-6">
                 <div className="bg-gradient-to-br from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-xl p-6 border border-[#3AB7BF]/20">
-                  <h4 className="font-bold text-[#1E2A38] text-lg mb-4 flex items-center">
+                  <h4 className="font-bold text-[#101010] text-lg mb-4 flex items-center">
                     <Zap className="w-5 h-5 mr-2 text-[#3AB7BF]" />
                     Live Results Preview
                   </h4>
@@ -1025,7 +1025,7 @@ const ScenarioPlanning: React.FC = () => {
 
                 {/* Impact Analysis */}
                 <div className="bg-white rounded-xl p-6 border border-gray-200">
-                  <h4 className="font-bold text-[#1E2A38] text-lg mb-4">Impact Analysis</h4>
+                  <h4 className="font-bold text-[#101010] text-lg mb-4">Impact Analysis</h4>
                   {(() => {
                     const baseScenario = scenarios.find(s => s.type === 'target');
                     const currentAssumptions = editingScenario ? editingScenario.assumptions : newScenario.assumptions;
@@ -1043,7 +1043,7 @@ const ScenarioPlanning: React.FC = () => {
                           
                           return (
                             <div key={metric.key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                              <span className="font-medium text-[#1E2A38]">{metric.label}</span>
+                              <span className="font-medium text-[#101010]">{metric.label}</span>
                               <div className="flex items-center">
                                 <VarianceIcon 
                                   className="w-4 h-4 mr-2" 
@@ -1099,7 +1099,7 @@ const ScenarioPlanning: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-8 w-[800px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="text-2xl font-bold text-[#1E2A38] flex items-center">
+              <h3 className="text-2xl font-bold text-[#101010] flex items-center">
                 <Brain className="w-6 h-6 mr-3 text-[#8B5CF6]" />
                 AI Scenario Insights
               </h3>
@@ -1128,7 +1128,7 @@ const ScenarioPlanning: React.FC = () => {
                           style: { color: getScenarioColor(scenario.type) } 
                         })}
                       </div>
-                      <h4 className="font-bold text-[#1E2A38] text-lg">{scenario.name}</h4>
+                      <h4 className="font-bold text-[#101010] text-lg">{scenario.name}</h4>
                     </div>
                     
                     <div className="space-y-4">
@@ -1136,7 +1136,7 @@ const ScenarioPlanning: React.FC = () => {
                         <div className="flex items-start">
                           <Lightbulb className="w-5 h-5 text-[#8B5CF6] mr-3 mt-0.5" />
                           <div>
-                            <h5 className="font-medium text-[#1E2A38] mb-2">AI Summary</h5>
+                            <h5 className="font-medium text-[#101010] mb-2">AI Summary</h5>
                             <p className="text-sm text-gray-700">{scenario.aiSummary}</p>
                           </div>
                         </div>
@@ -1144,7 +1144,7 @@ const ScenarioPlanning: React.FC = () => {
                       
                       <div className="grid grid-cols-2 gap-4">
                         <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
-                          <h6 className="font-medium text-[#1E2A38] mb-1">Key Strengths</h6>
+                          <h6 className="font-medium text-[#101010] mb-1">Key Strengths</h6>
                           <p className="text-xs text-gray-600">
                             {scenario.type === 'optimistic' ? 'High growth potential with strong market position' :
                              scenario.type === 'pessimistic' ? 'Resilient cost structure and cash preservation' :
@@ -1152,7 +1152,7 @@ const ScenarioPlanning: React.FC = () => {
                           </p>
                         </div>
                         <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
-                          <h6 className="font-medium text-[#1E2A38] mb-1">Key Risks</h6>
+                          <h6 className="font-medium text-[#101010] mb-1">Key Risks</h6>
                           <p className="text-xs text-gray-600">
                             {scenario.type === 'optimistic' ? 'High execution risk and market dependency' :
                              scenario.type === 'pessimistic' ? 'Limited growth and competitive disadvantage' :
@@ -1187,7 +1187,7 @@ const ScenarioPlanning: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-[#1E2A38]">Customize Comparison</h3>
+              <h3 className="text-xl font-bold text-[#101010]">Customize Comparison</h3>
               <button
                 onClick={() => setShowComparisonModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -1218,7 +1218,7 @@ const ScenarioPlanning: React.FC = () => {
                         className="w-3 h-3 rounded-full mr-3"
                         style={{ backgroundColor: metric.color }}
                       />
-                      <span className="font-medium text-[#1E2A38]">{metric.label}</span>
+                      <span className="font-medium text-[#101010]">{metric.label}</span>
                     </div>
                   </label>
                 ))}

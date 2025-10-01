@@ -10,7 +10,7 @@ const Alerts: React.FC = () => {
       {/* Active Alerts */}
       <Card className="mt-8">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-[#1E2A38]">Active Alerts</h3>
+          <h3 className="text-lg font-semibold text-[#101010]">Active Alerts</h3>
         </div>
         <div className="p-2 pt-6">
         <div className="space-y-4">
@@ -71,7 +71,7 @@ const Alerts: React.FC = () => {
                     <Info className="w-3 h-3 text-[#3AB7BF] mr-2 mt-0.5" />
                   )}
                   <div>
-                    <h4 className="font-medium text-[#1E2A38] mb-0.5 text-xs">{alert.title}</h4>
+                    <h4 className="font-medium text-[#101010] mb-0.5 text-xs">{alert.title}</h4>
                     <p className="text-gray-600 mb-0.5 text-xs">{alert.message}</p>
                     <p className="text-xs text-gray-500">{alert.time}</p>
                   </div>
@@ -94,7 +94,7 @@ const Alerts: React.FC = () => {
       <Card title="Notification Settings">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Alert Types</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Alert Types</h3>
             <div className="space-y-3">
               {[
                 { name: 'Cash Flow Warnings', enabled: true },
@@ -114,7 +114,7 @@ const Alerts: React.FC = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Delivery Methods</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Delivery Methods</h3>
             <div className="space-y-3">
               {[
                 { name: 'Email Notifications', enabled: true },

@@ -176,7 +176,7 @@ const Setup: React.FC = () => {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <h3 className="text-lg font-semibold text-[#1E2A38] mb-2">Choose Your Plan</h3>
+              <h3 className="text-lg font-semibold text-[#101010] mb-2">Choose Your Plan</h3>
               <p className="text-gray-600">Select the plan that best fits your needs</p>
             </div>
 
@@ -199,7 +199,7 @@ const Setup: React.FC = () => {
                     formData.plan === plan.id ? 'border-[#3AB7BF] bg-[#3AB7BF]/5' : 'border-gray-200 hover:border-gray-300'
                   }`}>
                     <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-semibold text-[#1E2A38]">{plan.name}</h4>
+                      <h4 className="font-semibold text-[#101010]">{plan.name}</h4>
                       <span className="text-lg font-bold text-[#3AB7BF]">{plan.price}</span>
                     </div>
                     <ul className="text-sm text-gray-600 space-y-1">
@@ -225,7 +225,7 @@ const Setup: React.FC = () => {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <Building2 className="w-12 h-12 text-[#3AB7BF] mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-[#1E2A38]">Get Started</h1>
+            <h1 className="text-2xl font-bold text-[#101010]">Get Started</h1>
             <p className="text-gray-600 mt-2">Step {step} of 3</p>
           </div>
 

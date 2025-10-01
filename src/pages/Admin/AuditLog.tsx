@@ -139,7 +139,7 @@ const AuditLog: React.FC = () => {
               <div className="absolute top-full mt-2 right-0 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                 <div className="p-3 border-b border-gray-200">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-[#1E2A38]">Filter by User</h4>
+                    <h4 className="font-medium text-[#101010]">Filter by User</h4>
                     {selectedUsers.length > 0 && (
                       <button
                         onClick={clearUserFilter}
@@ -189,7 +189,7 @@ const AuditLog: React.FC = () => {
               <div className="absolute top-full mt-2 right-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-medium text-[#1E2A38]">Select Date Range</h4>
+                    <h4 className="font-medium text-[#101010]">Select Date Range</h4>
                     {(dateRange.startDate || dateRange.endDate) && (
                       <button
                         onClick={clearDateFilter}
@@ -275,10 +275,10 @@ const AuditLog: React.FC = () => {
                       <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
                         <User className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium text-[#1E2A38]">{log.user}</span>
+                      <span className="font-medium text-[#101010]">{log.user}</span>
                     </div>
                   </td>
-                  <td className="py-3 px-4 font-medium text-[#1E2A38]">{log.action}</td>
+                  <td className="py-3 px-4 font-medium text-[#101010]">{log.action}</td>
                   <td className="py-3 px-4 text-gray-600">{log.resource}</td>
                   <td className="py-3 px-4 text-sm text-gray-600">{log.ip}</td>
                   <td className="py-3 px-4">

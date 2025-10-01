@@ -198,7 +198,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
     <div className="mt-4 space-y-4">
       {/* Financial Summary */}
       <div className="bg-[#3AB7BF]/10 rounded-lg p-4">
-        <h4 className="font-semibold text-[#1E2A38] mb-3 flex items-center">
+        <h4 className="font-semibold text-[#101010] mb-3 flex items-center">
           <BarChart3 className="w-4 h-4 mr-2" />
           Financial Summary
         </h4>
@@ -224,7 +224,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
 
       {/* Risk Assessment */}
       <div className="bg-white border border-gray-200 rounded-lg p-4">
-        <h4 className="font-semibold text-[#1E2A38] mb-3 flex items-center">
+        <h4 className="font-semibold text-[#101010] mb-3 flex items-center">
           <AlertTriangle className="w-4 h-4 mr-2" />
           Risk Assessment
         </h4>
@@ -243,7 +243,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
 
       {/* Key Ratios */}
       <div className="bg-white border border-gray-200 rounded-lg p-4">
-        <h4 className="font-semibold text-[#1E2A38] mb-3 flex items-center">
+        <h4 className="font-semibold text-[#101010] mb-3 flex items-center">
           <TrendingUp className="w-4 h-4 mr-2" />
           Key Financial Ratios
         </h4>
@@ -252,7 +252,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
             <div key={index} className="flex items-center justify-between">
               <span className="text-sm text-gray-600">{ratio.name}</span>
               <div className="flex items-center">
-                <span className="font-medium text-[#1E2A38] mr-2">{ratio.value}</span>
+                <span className="font-medium text-[#101010] mr-2">{ratio.value}</span>
                 <div className={`w-2 h-2 rounded-full ${
                   ratio.trend === 'up' ? 'bg-[#4ADE80]' :
                   ratio.trend === 'down' ? 'bg-[#F87171]' : 'bg-gray-400'
@@ -265,7 +265,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
 
       {/* Recommendations */}
       <div className="bg-[#4ADE80]/10 rounded-lg p-4">
-        <h4 className="font-semibold text-[#1E2A38] mb-3 flex items-center">
+        <h4 className="font-semibold text-[#101010] mb-3 flex items-center">
           <Target className="w-4 h-4 mr-2" />
           Recommendations
         </h4>
@@ -304,7 +304,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
               <Bot className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-[#1E2A38]">AI Financial Analyst</h3>
+              <h3 className="font-semibold text-[#101010]">AI Financial Analyst</h3>
               <p className="text-sm text-gray-600">Your Fractional CFO on-demand</p>
             </div>
           </div>
@@ -324,7 +324,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
                 <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
                     message.type === 'user' 
-                      ? 'bg-[#1E2A38]' 
+                      ? 'bg-[#101010]' 
                       : 'bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80]'
                   }`}>
                     {message.type === 'user' ? (
@@ -358,7 +358,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
                 {message.attachments && message.attachments.length > 0 && (
                   <div className="mt-2 ml-10">
                     <div className="bg-white border border-gray-200 rounded-lg p-3">
-                      <h5 className="font-medium text-[#1E2A38] mb-2">Analyzed Documents:</h5>
+                      <h5 className="font-medium text-[#101010] mb-2">Analyzed Documents:</h5>
                       {message.attachments.map((file, index) => (
                         <div key={index} className="flex items-center text-sm text-gray-600">
                           <FileText className="w-4 h-4 mr-2" />

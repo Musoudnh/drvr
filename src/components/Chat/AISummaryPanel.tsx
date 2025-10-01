@@ -105,7 +105,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-[#1E2A38] flex items-center">
+          <h3 className="font-semibold text-[#101010] flex items-center">
             <Sparkles className="w-4 h-4 mr-2 text-[#F59E0B]" />
             AI Summary
           </h3>
@@ -134,7 +134,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
           <div className="space-y-6">
             {/* Key Points */}
             <div>
-              <h4 className="font-semibold text-[#1E2A38] mb-3 text-sm">Key Points</h4>
+              <h4 className="font-semibold text-[#101010] mb-3 text-sm">Key Points</h4>
               <ul className="space-y-2">
                 {summary.keyPoints.map((point, index) => (
                   <li key={index} className="flex items-start text-sm">
@@ -148,7 +148,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
             {/* Decisions */}
             {summary.decisions.length > 0 && (
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-3 text-sm">Decisions Made</h4>
+                <h4 className="font-semibold text-[#101010] mb-3 text-sm">Decisions Made</h4>
                 <ul className="space-y-2">
                   {summary.decisions.map((decision, index) => (
                     <li key={index} className="flex items-start text-sm">
@@ -163,12 +163,12 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
             {/* Action Items */}
             {summary.actionItems.length > 0 && (
               <div>
-                <h4 className="font-semibold text-[#1E2A38] mb-3 text-sm">Action Items</h4>
+                <h4 className="font-semibold text-[#101010] mb-3 text-sm">Action Items</h4>
                 <div className="space-y-3">
                   {summary.actionItems.map((item, index) => (
                     <div key={index} className="p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-start justify-between mb-2">
-                        <p className="text-sm font-medium text-[#1E2A38] flex-1">{item.task}</p>
+                        <p className="text-sm font-medium text-[#101010] flex-1">{item.task}</p>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center ${getPriorityColor(item.priority)}`}>
                           {getPriorityIcon(item.priority)}
                           <span className="ml-1">{item.priority}</span>
@@ -192,7 +192,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
 
             {/* Topics */}
             <div>
-              <h4 className="font-semibold text-[#1E2A38] mb-3 text-sm">Topics Discussed</h4>
+              <h4 className="font-semibold text-[#101010] mb-3 text-sm">Topics Discussed</h4>
               <div className="flex flex-wrap gap-2">
                 {summary.topics.map((topic, index) => (
                   <span

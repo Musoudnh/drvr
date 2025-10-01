@@ -49,7 +49,7 @@ const Security: React.FC = () => {
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-[#4ADE80] mr-3" />
               <div>
-                <p className="font-medium text-[#1E2A38]">Two-Factor Authentication</p>
+                <p className="font-medium text-[#101010]">Two-Factor Authentication</p>
                 <p className="text-sm text-gray-600">Enhanced security for all admin accounts</p>
               </div>
             </div>
@@ -60,7 +60,7 @@ const Security: React.FC = () => {
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 text-[#4ADE80] mr-3" />
               <div>
-                <p className="font-medium text-[#1E2A38]">SSL Certificate</p>
+                <p className="font-medium text-[#101010]">SSL Certificate</p>
                 <p className="text-sm text-gray-600">Valid until March 2026</p>
               </div>
             </div>
@@ -71,7 +71,7 @@ const Security: React.FC = () => {
             <div className="flex items-center">
               <AlertTriangle className="w-5 h-5 text-yellow-500 mr-3" />
               <div>
-                <p className="font-medium text-[#1E2A38]">Password Policy</p>
+                <p className="font-medium text-[#101010]">Password Policy</p>
                 <p className="text-sm text-gray-600">Requires review and updates</p>
               </div>
             </div>
@@ -84,7 +84,7 @@ const Security: React.FC = () => {
       <Card title="SOX Compliance">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Compliance Status</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Compliance Status</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-700">Data Retention Policy</span>
@@ -105,7 +105,7 @@ const Security: React.FC = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Recent Activities</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Recent Activities</h3>
             <div className="space-y-3">
               <div className="text-sm">
                 <p className="font-medium text-gray-700">Quarterly Review Completed</p>

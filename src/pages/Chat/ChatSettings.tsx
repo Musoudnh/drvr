@@ -76,7 +76,7 @@ const ChatSettings: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Chat Settings</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Chat Settings</h2>
         <p className="text-gray-600 mt-1">Customize your chat experience and notification preferences</p>
       </div>
 
@@ -85,7 +85,7 @@ const ChatSettings: React.FC = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+              <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
                 <Bell className="w-4 h-4 mr-2" />
                 Notification Types
               </h3>
@@ -122,7 +122,7 @@ const ChatSettings: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+              <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Message Alerts
               </h3>
@@ -154,7 +154,7 @@ const ChatSettings: React.FC = () => {
 
           {/* Quiet Hours */}
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Moon className="w-4 h-4 mr-2" />
               Quiet Hours
             </h3>
@@ -197,7 +197,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Appearance">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Palette className="w-4 h-4 mr-2" />
               Display Options
             </h3>
@@ -242,7 +242,7 @@ const ChatSettings: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Eye className="w-4 h-4 mr-2" />
               Message Display
             </h3>
@@ -277,7 +277,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Privacy & Status">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Lock className="w-4 h-4 mr-2" />
               Privacy Controls
             </h3>
@@ -314,7 +314,7 @@ const ChatSettings: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Users className="w-4 h-4 mr-2" />
               Message Preferences
             </h3>
@@ -347,7 +347,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Channel Preferences">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Hash className="w-4 h-4 mr-2" />
               Channel Behavior
             </h3>
@@ -384,7 +384,7 @@ const ChatSettings: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Volume2 className="w-4 h-4 mr-2" />
               Sound & Alerts
             </h3>
@@ -413,7 +413,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
-                <p className="text-sm font-medium text-[#1E2A38] mb-1">Test Notifications</p>
+                <p className="text-sm font-medium text-[#101010] mb-1">Test Notifications</p>
                 <p className="text-xs text-gray-600 mb-2">Send a test notification to verify your settings</p>
                 <Button variant="outline" size="sm">Send Test</Button>
               </div>
@@ -426,7 +426,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Advanced Settings">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Clock className="w-4 h-4 mr-2" />
               Message History
             </h3>
@@ -457,7 +457,7 @@ const ChatSettings: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4 flex items-center">
+            <h3 className="font-semibold text-[#101010] mb-4 flex items-center">
               <Smartphone className="w-4 h-4 mr-2" />
               Mobile Settings
             </h3>
@@ -488,7 +488,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Keyboard Shortcuts">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Message Actions</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Message Actions</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Send message</span>
@@ -509,7 +509,7 @@ const ChatSettings: React.FC = () => {
             </div>
           </div>
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Navigation</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Navigation</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Next channel</span>
@@ -536,7 +536,7 @@ const ChatSettings: React.FC = () => {
       <Card title="Data & Storage">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Storage Usage</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Storage Usage</h3>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
@@ -559,14 +559,14 @@ const ChatSettings: React.FC = () => {
               <div className="pt-2 border-t border-gray-200">
                 <div className="flex justify-between items-center">
                   <span className="font-medium text-gray-700">Total Used</span>
-                  <span className="font-bold text-[#1E2A38]">4.2 GB / 10 GB</span>
+                  <span className="font-bold text-[#101010]">4.2 GB / 10 GB</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Data Management</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Data Management</h3>
             <div className="space-y-3">
               <Button variant="outline" className="w-full justify-start">
                 <Mail className="w-4 h-4 mr-2" />

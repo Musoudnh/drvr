@@ -32,7 +32,7 @@ const AdminDashboard: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">{metric.label}</p>
-                <p className="text-2xl font-bold text-[#1E2A38] mt-1">{metric.value}</p>
+                <p className="text-2xl font-bold text-[#101010] mt-1">{metric.value}</p>
                 <p className="text-sm mt-2 text-[#4ADE80]">
                   +{metric.change}
                 </p>
@@ -52,7 +52,7 @@ const AdminDashboard: React.FC = () => {
             {recentCompanies.map((company, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div>
-                  <p className="font-medium text-[#1E2A38]">{company.name}</p>
+                  <p className="font-medium text-[#101010]">{company.name}</p>
                   <p className="text-sm text-gray-500">{company.plan} • {company.joined}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -94,17 +94,17 @@ const AdminDashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button className="p-4 bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-colors text-left">
             <UserPlus className="w-6 h-6 text-[#3AB7BF] mb-2" />
-            <p className="font-medium text-[#1E2A38]">Add New Company</p>
+            <p className="font-medium text-[#101010]">Add New Company</p>
             <p className="text-sm text-gray-600">Onboard a new client</p>
           </button>
           <button className="p-4 bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-colors text-left">
             <BarChart3 className="w-6 h-6 text-[#4ADE80] mb-2" />
-            <p className="font-medium text-[#1E2A38]">System Report</p>
+            <p className="font-medium text-[#101010]">System Report</p>
             <p className="text-sm text-gray-600">Generate platform analytics</p>
           </button>
           <button className="p-4 bg-[#F87171]/10 hover:bg-[#F87171]/20 rounded-lg transition-colors text-left">
             <AlertCircle className="w-6 h-6 text-[#F87171] mb-2" />
-            <p className="font-medium text-[#1E2A38]">Review Alerts</p>
+            <p className="font-medium text-[#101010]">Review Alerts</p>
             <p className="text-sm text-gray-600">Check system notifications</p>
           </button>
         </div>

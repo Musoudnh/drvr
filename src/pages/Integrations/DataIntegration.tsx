@@ -171,7 +171,7 @@ const DataIntegration: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-[#1E2A38]">Data Integration</h2>
+          <h2 className="text-2xl font-bold text-[#101010]">Data Integration</h2>
           <p className="text-gray-600 mt-1">Connect and sync data from external systems</p>
         </div>
         <Button 
@@ -246,7 +246,7 @@ const DataIntegration: React.FC = () => {
                       <TypeIcon className="w-5 h-5 text-[#3AB7BF]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-[#1E2A38]">{integration.name}</h3>
+                      <h3 className="font-semibold text-[#101010]">{integration.name}</h3>
                       <p className="text-sm text-gray-600">{integration.type.toUpperCase()} • {integration.recordsCount.toLocaleString()} records</p>
                     </div>
                   </div>
@@ -308,7 +308,7 @@ const DataIntegration: React.FC = () => {
       <Card title="Data Mapping Configuration">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Field Mapping</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Field Mapping</h3>
             <div className="space-y-3">
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between items-center">
@@ -332,7 +332,7 @@ const DataIntegration: React.FC = () => {
           </div>
           
           <div>
-            <h3 className="font-semibold text-[#1E2A38] mb-4">Sync Settings</h3>
+            <h3 className="font-semibold text-[#101010] mb-4">Sync Settings</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Default Sync Frequency</label>
@@ -364,7 +364,7 @@ const DataIntegration: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Add Integration</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Add Integration</h3>
               <button
                 onClick={() => setShowAddModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -447,7 +447,7 @@ const DataIntegration: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Configure Data Mapping</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Configure Data Mapping</h3>
               <button
                 onClick={() => setShowMappingModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -458,14 +458,14 @@ const DataIntegration: React.FC = () => {
             
             <div className="space-y-4">
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-                <h4 className="font-medium text-[#1E2A38] mb-2">{selectedIntegration.name}</h4>
+                <h4 className="font-medium text-[#101010] mb-2">{selectedIntegration.name}</h4>
                 <p className="text-sm text-gray-600">Map external system fields to FinanceFlow data points</p>
               </div>
               
               <div className="space-y-3">
                 {Object.entries(selectedIntegration.dataMapping).map(([internal, external]) => (
                   <div key={internal} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium text-[#1E2A38]">{internal}</span>
+                    <span className="font-medium text-[#101010]">{internal}</span>
                     <span className="text-[#3AB7BF]">→</span>
                     <span className="text-gray-600">{external}</span>
                   </div>

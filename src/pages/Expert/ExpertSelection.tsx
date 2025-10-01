@@ -219,7 +219,7 @@ const ExpertSelection: React.FC = () => {
   return (
     <div className="space-y-6 pt-6">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-[#1E2A38] mb-4">Talk to an Expert</h2>
+        <h2 className="text-3xl font-bold text-[#101010] mb-4">Talk to an Expert</h2>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Get personalized advice from our certified financial and tax professionals. 
           Choose the type of expertise you need for your business.
@@ -230,27 +230,27 @@ const ExpertSelection: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         <Card>
           <div className="text-center">
-            <h3 className="text-xl font-bold text-[#1E2A38] mb-4">How it works</h3>
+            <h3 className="text-xl font-bold text-[#101010] mb-4">How it works</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="w-12 h-12 bg-[#3AB7BF]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <span className="text-[#3AB7BF] font-bold text-lg">1</span>
                 </div>
-                <h4 className="font-semibold text-[#1E2A38] mb-2">Choose Your Expert</h4>
+                <h4 className="font-semibold text-[#101010] mb-2">Choose Your Expert</h4>
                 <p className="text-sm text-gray-600">Select the type of expertise you need for your specific situation</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-[#4ADE80]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <span className="text-[#4ADE80] font-bold text-lg">2</span>
                 </div>
-                <h4 className="font-semibold text-[#1E2A38] mb-2">Share Your Details</h4>
+                <h4 className="font-semibold text-[#101010] mb-2">Share Your Details</h4>
                 <p className="text-sm text-gray-600">Provide context about your business and specific questions or challenges</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-[#F59E0B]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <span className="text-[#F59E0B] font-bold text-lg">3</span>
                 </div>
-                <h4 className="font-semibold text-[#1E2A38] mb-2">Get Expert Advice</h4>
+                <h4 className="font-semibold text-[#101010] mb-2">Get Expert Advice</h4>
                 <p className="text-sm text-gray-600">Receive personalized guidance and actionable recommendations</p>
               </div>
             </div>
@@ -265,7 +265,7 @@ const ExpertSelection: React.FC = () => {
               <div className="w-16 h-16 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full flex items-center justify-center mx-auto mb-4">
                 <expert.icon className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-[#1E2A38] mb-2">{expert.title}</h3>
+              <h3 className="text-2xl font-bold text-[#101010] mb-2">{expert.title}</h3>
               <p className="text-gray-600">{expert.description}</p>
             </div>
 
@@ -294,7 +294,7 @@ const ExpertSelection: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <h4 className="font-semibold text-[#1E2A38] mb-3">What you'll get:</h4>
+              <h4 className="font-semibold text-[#101010] mb-3">What you'll get:</h4>
               <ul className="space-y-2">
                 {expert.features.map((feature, index) => (
                   <li key={index} className="flex items-start text-sm text-gray-700">
@@ -325,7 +325,7 @@ const ExpertSelection: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[900px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">
+              <h3 className="text-xl font-semibold text-[#101010]">
                 {selectedExpertType === 'tax' ? 'Tax' : 'Finance'} Experts
               </h3>
               <button
@@ -345,7 +345,7 @@ const ExpertSelection: React.FC = () => {
                         <User className="w-8 h-8 text-white" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-bold text-[#1E2A38]">{expert.name}</h4>
+                        <h4 className="text-lg font-bold text-[#101010]">{expert.name}</h4>
                         <p className="text-gray-600 mb-2">{expert.title}</p>
                         <div className="flex items-center gap-4 text-sm">
                           <div className="flex items-center">
@@ -371,7 +371,7 @@ const ExpertSelection: React.FC = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <h5 className="font-medium text-[#1E2A38] mb-2">Specializations</h5>
+                      <h5 className="font-medium text-[#101010] mb-2">Specializations</h5>
                       <div className="flex flex-wrap gap-1">
                         {expert.specializations.map((spec, index) => (
                           <span key={index} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-xs">
@@ -381,7 +381,7 @@ const ExpertSelection: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <h5 className="font-medium text-[#1E2A38] mb-2">Certifications</h5>
+                      <h5 className="font-medium text-[#101010] mb-2">Certifications</h5>
                       <div className="flex flex-wrap gap-1">
                         {expert.certifications.map((cert, index) => (
                           <span key={index} className="px-2 py-1 bg-[#4ADE80]/10 text-[#4ADE80] rounded text-xs">
@@ -441,7 +441,7 @@ const ExpertSelection: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw]">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Book Session with {selectedExpert.name}</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Book Session with {selectedExpert.name}</h3>
               <button
                 onClick={() => setShowBookingModal(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -534,7 +534,7 @@ const ExpertSelection: React.FC = () => {
               
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium text-[#1E2A38]">Estimated Cost:</span>
+                  <span className="font-medium text-[#101010]">Estimated Cost:</span>
                   <span className="text-lg font-bold text-[#3AB7BF]">
                     ${(selectedExpert.hourlyRate * parseInt(bookingForm.duration) / 60).toFixed(0)}
                   </span>
@@ -569,7 +569,7 @@ const ExpertSelection: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#1E2A38]">Expert Session History</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">Expert Session History</h3>
               <button
                 onClick={() => setShowSessionHistory(false)}
                 className="p-1 hover:bg-gray-100 rounded"
@@ -583,7 +583,7 @@ const ExpertSelection: React.FC = () => {
                 <div key={session.id} className="p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h4 className="font-semibold text-[#1E2A38]">{session.topic}</h4>
+                      <h4 className="font-semibold text-[#101010]">{session.topic}</h4>
                       <p className="text-sm text-gray-600">with {session.expertName}</p>
                       <p className="text-sm text-gray-500">
                         {session.date.toLocaleDateString()} • {session.duration} minutes
@@ -610,12 +610,12 @@ const ExpertSelection: React.FC = () => {
                   
                   <div className="space-y-3">
                     <div>
-                      <h5 className="font-medium text-[#1E2A38] mb-1">Session Notes:</h5>
+                      <h5 className="font-medium text-[#101010] mb-1">Session Notes:</h5>
                       <p className="text-sm text-gray-700">{session.notes}</p>
                     </div>
                     
                     <div>
-                      <h5 className="font-medium text-[#1E2A38] mb-2">Recommendations:</h5>
+                      <h5 className="font-medium text-[#101010] mb-2">Recommendations:</h5>
                       <ul className="space-y-1">
                         {session.recommendations.map((rec, index) => (
                           <li key={index} className="flex items-start text-sm text-gray-700">
@@ -628,7 +628,7 @@ const ExpertSelection: React.FC = () => {
                     
                     {session.documents.length > 0 && (
                       <div>
-                        <h5 className="font-medium text-[#1E2A38] mb-2">Shared Documents:</h5>
+                        <h5 className="font-medium text-[#101010] mb-2">Shared Documents:</h5>
                         <div className="flex flex-wrap gap-2">
                           {session.documents.map((doc, index) => (
                             <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
@@ -661,7 +661,7 @@ const ExpertSelection: React.FC = () => {
           <div className="p-4 bg-gradient-to-r from-[#8B5CF6]/10 to-[#3AB7BF]/10 rounded-lg">
             <div className="flex items-center mb-3">
               <Brain className="w-5 h-5 text-[#8B5CF6] mr-2" />
-              <h4 className="font-semibold text-[#1E2A38]">Smart Expert Recommendations</h4>
+              <h4 className="font-semibold text-[#101010]">Smart Expert Recommendations</h4>
             </div>
             <p className="text-sm text-gray-700 mb-3">
               Based on your business profile, recent questions, and industry, we recommend:
@@ -669,14 +669,14 @@ const ExpertSelection: React.FC = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between p-3 bg-white rounded border border-gray-200">
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Jennifer Martinez, CPA</p>
+                  <p className="font-medium text-[#101010]">Jennifer Martinez, CPA</p>
                   <p className="text-sm text-gray-600">Best match for your R&D tax credit questions</p>
                 </div>
                 <span className="text-sm font-bold text-[#8B5CF6]">94% match</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-white rounded border border-gray-200">
                 <div>
-                  <p className="font-medium text-[#1E2A38]">Sarah Thompson, CFA</p>
+                  <p className="font-medium text-[#101010]">Sarah Thompson, CFA</p>
                   <p className="text-sm text-gray-600">Ideal for financial modeling and forecasting</p>
                 </div>
                 <span className="text-sm font-bold text-[#8B5CF6]">91% match</span>
@@ -691,7 +691,7 @@ const ExpertSelection: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-[#1E2A38]">Encrypted Document Portal</h3>
+              <h3 className="font-semibold text-[#101010]">Encrypted Document Portal</h3>
               <p className="text-sm text-gray-600">Share sensitive financial documents securely with experts</p>
             </div>
             <div className="flex items-center">
@@ -702,7 +702,7 @@ const ExpertSelection: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-medium text-[#1E2A38] mb-2">Recent Uploads</h4>
+              <h4 className="font-medium text-[#101010] mb-2">Recent Uploads</h4>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-700">Financial_Statements_Q4.pdf</span>
@@ -716,7 +716,7 @@ const ExpertSelection: React.FC = () => {
             </div>
             
             <div className="p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-medium text-[#1E2A38] mb-2">Access Permissions</h4>
+              <h4 className="font-medium text-[#101010] mb-2">Access Permissions</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-700">Jennifer Martinez</span>

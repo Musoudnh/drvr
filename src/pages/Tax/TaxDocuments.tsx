@@ -7,7 +7,7 @@ const TaxDocuments: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1E2A38]">Tax Documents</h2>
+        <h2 className="text-2xl font-bold text-[#101010]">Tax Documents</h2>
         <p className="text-gray-600 mt-1">Tax forms, documents, and compliance tools</p>
       </div>
 
@@ -72,7 +72,7 @@ const TaxDocuments: React.FC = () => {
               <div className="flex items-center">
                 <FileText className="w-5 h-5 text-gray-400 mr-3" />
                 <div>
-                  <p className="font-medium text-[#1E2A38]">{doc.name}</p>
+                  <p className="font-medium text-[#101010]">{doc.name}</p>
                   <p className="text-sm text-gray-600">{doc.date}</p>
                 </div>
               </div>
@@ -101,15 +101,15 @@ const TaxDocuments: React.FC = () => {
         <Card title="Tax Planning Opportunities">
           <div className="space-y-4">
             <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
-              <h4 className="font-medium text-[#1E2A38] mb-2">Equipment Depreciation</h4>
+              <h4 className="font-medium text-[#101010] mb-2">Equipment Depreciation</h4>
               <p className="text-sm text-gray-600">Potential $12,500 deduction available</p>
             </div>
             <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
-              <h4 className="font-medium text-[#1E2A38] mb-2">R&D Tax Credits</h4>
+              <h4 className="font-medium text-[#101010] mb-2">R&D Tax Credits</h4>
               <p className="text-sm text-gray-600">Eligible for $8,900 in credits</p>
             </div>
             <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
-              <h4 className="font-medium text-[#1E2A38] mb-2">Retirement Contributions</h4>
+              <h4 className="font-medium text-[#101010] mb-2">Retirement Contributions</h4>
               <p className="text-sm text-gray-600">Maximize $15,000 annual contribution</p>
             </div>
           </div>
@@ -130,7 +130,7 @@ const TaxDocuments: React.FC = () => {
                     deadline.priority === 'medium' ? 'bg-[#F59E0B]' : 'bg-[#4ADE80]'
                   }`} />
                   <div>
-                    <p className="font-medium text-[#1E2A38]">{deadline.task}</p>
+                    <p className="font-medium text-[#101010]">{deadline.task}</p>
                     <p className="text-sm text-gray-600">{deadline.date}</p>
                   </div>
                 </div>
