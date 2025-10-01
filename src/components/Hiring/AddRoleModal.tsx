@@ -27,12 +27,19 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
   });
 
   useEffect(() => {
-    loadStates();
-  }, []);
+    if (isOpen) {
+      loadStates();
+    }
+  }, [isOpen]);
 
   const loadStates = async () => {
-    const stateList = await taxCalculationService.getAllStates();
-    setStates(stateList);
+    try {
+      const stateList = await taxCalculationService.getAllStates();
+      console.log('Loaded states:', stateList);
+      setStates(stateList);
+    } catch (error) {
+      console.error('Error loading states:', error);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
