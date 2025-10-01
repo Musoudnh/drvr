@@ -4,19 +4,34 @@
 
 @layer base {
   * {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 14px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
-  
-  h1 { font-size: 1.5rem; line-height: 1.3; }
-  h2 { font-size: 1.25rem; line-height: 1.3; }
-  h3 { font-size: 1.125rem; line-height: 1.3; }
-  h4 { font-size: 1rem; line-height: 1.3; }
-  h5 { font-size: 0.875rem; line-height: 1.3; }
-  h6 { font-size: 0.75rem; line-height: 1.3; }
-  
-  body { font-size: 0.875rem; line-height: 1.4; }
+
+  html {
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #1e293b;
+  }
+
+  h1 { font-size: 1.5rem; line-height: 1.3; font-weight: 600; }
+  h2 { font-size: 1.25rem; line-height: 1.3; font-weight: 600; }
+  h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 600; }
+  h4 { font-size: 1rem; line-height: 1.3; font-weight: 500; }
+  h5 { font-size: 0.875rem; line-height: 1.3; font-weight: 500; }
+  h6 { font-size: 0.75rem; line-height: 1.3; font-weight: 500; }
+
   small { font-size: 0.75rem; }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
 }
 
 /* Custom slider styling for the financial dashboard */
