@@ -1363,13 +1363,13 @@ const Forecasting: React.FC = () => {
                                                 <div className="flex gap-2">
                                                   <button
                                                     onClick={() => toggleScenario(scenario.id)}
-                                                    className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
+                                                    className="flex-1 px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                                                   >
                                                     {scenario.isActive ? 'Deactivate' : 'Activate'}
                                                   </button>
                                                   <button
                                                     onClick={() => setShowDeleteConfirm(scenario.id)}
-                                                    className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                    className="flex-1 px-2.5 py-1.5 text-xs font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
                                                   >
                                                     Remove
                                                   </button>
