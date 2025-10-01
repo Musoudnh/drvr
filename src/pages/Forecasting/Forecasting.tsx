@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
+import { VersionHistoryModal } from '../../components/Forecasting/VersionHistoryModal';
+import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
+import { forecastService } from '../../services/forecastService';
+import type { ForecastLineItem } from '../../types/forecast';
 
 interface GLCode {
   code: string;
@@ -69,6 +74,10 @@ const Forecasting: React.FC = () => {
   const [editingCell, setEditingCell] = useState<{glCode: string, month: string} | null>(null);
   const [editValue, setEditValue] = useState<string>('');
   const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
+  const [showSaveForecastModal, setShowSaveForecastModal] = useState(false);
+  const [showVersionHistoryModal, setShowVersionHistoryModal] = useState(false);
+  const [showVersionComparisonModal, setShowVersionComparisonModal] = useState(false);
+  const [comparisonVersions, setComparisonVersions] = useState<[string, string] | null>(null);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -369,6 +378,45 @@ const Forecasting: React.FC = () => {
     } else {
       return variance <= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]';
     }
+  };
+
+  const handleSaveForecast = async (name: string, description: string) => {
+    const lineItems: Omit<ForecastLineItem, 'id' | 'version_id' | 'created_at'>[] = [];
+
+    forecastData.forEach(item => {
+      const glCode = glCodes.find(gl => gl.code === item.glCode);
+      if (glCode) {
+        lineItems.push({
+          gl_code: item.glCode,
+          gl_name: glCode.name,
+          gl_type: glCode.type,
+          month: item.month,
+          year: selectedYear,
+          forecasted_amount: item.forecastedAmount,
+          actual_amount: item.actualAmount,
+          variance: item.variance,
+          is_actualized: !item.isEditable,
+          notes: undefined,
+        });
+      }
+    });
+
+    await forecastService.saveForecast({
+      year: selectedYear,
+      name,
+      description,
+      lineItems,
+    });
+  };
+
+  const handleLoadVersion = (versionId: string) => {
+    setShowVersionHistoryModal(false);
+  };
+
+  const handleCompareVersions = (version1Id: string, version2Id: string) => {
+    setComparisonVersions([version1Id, version2Id]);
+    setShowVersionHistoryModal(false);
+    setShowVersionComparisonModal(true);
   };
 
   const renderGLSpecificInputs = () => {
@@ -715,7 +763,18 @@ const Forecasting: React.FC = () => {
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
-          <Button variant="primary" className="bg-[#3AB7BF] hover:bg-[#2A9BA3]">
+          <Button
+            variant="outline"
+            onClick={() => setShowVersionHistoryModal(true)}
+          >
+            <History className="w-4 h-4 mr-2" />
+            Version History
+          </Button>
+          <Button
+            variant="primary"
+            className="bg-[#3AB7BF] hover:bg-[#2A9BA3]"
+            onClick={() => setShowSaveForecastModal(true)}
+          >
             <Save className="w-4 h-4 mr-2" />
             Save Forecast
           </Button>
@@ -1529,6 +1588,32 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
         </>
+      )}
+
+      <SaveForecastModal
+        isOpen={showSaveForecastModal}
+        onClose={() => setShowSaveForecastModal(false)}
+        onSave={handleSaveForecast}
+      />
+
+      <VersionHistoryModal
+        isOpen={showVersionHistoryModal}
+        onClose={() => setShowVersionHistoryModal(false)}
+        year={selectedYear}
+        onLoadVersion={handleLoadVersion}
+        onCompareVersions={handleCompareVersions}
+      />
+
+      {comparisonVersions && (
+        <VersionComparisonModal
+          isOpen={showVersionComparisonModal}
+          onClose={() => {
+            setShowVersionComparisonModal(false);
+            setComparisonVersions(null);
+          }}
+          version1Id={comparisonVersions[0]}
+          version2Id={comparisonVersions[1]}
+        />
       )}
 
     </div>
