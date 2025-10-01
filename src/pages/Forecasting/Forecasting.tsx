@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -481,16 +481,16 @@ const Forecasting: React.FC = () => {
       const itemMonthName = item.month.split(' ')[0];
       const itemYear = parseInt(item.month.split(' ')[1]);
 
-      // Check if this forecast item matches the scenario's GL code and date range
       if (item.glCode === scenario.glCode) {
-        const scenarioStartMonth = months.indexOf(scenario.startMonth.split(' ')[0]);
-        const scenarioEndMonth = months.indexOf(scenario.endMonth.split(' ')[0]);
+        const scenarioStartMonthName = scenario.startMonth.split(' ')[0];
+        const scenarioEndMonthName = scenario.endMonth.split(' ')[0];
+        const scenarioStartMonth = months.indexOf(scenarioStartMonthName);
+        const scenarioEndMonth = months.indexOf(scenarioEndMonthName);
         const itemMonthIndex = months.indexOf(itemMonthName);
 
-        const scenarioStartYear = parseInt(scenario.startMonth.split(' ')[1]);
-        const scenarioEndYear = parseInt(scenario.endMonth.split(' ')[1]);
+        const scenarioStartYear = parseInt(scenario.startMonth.split(' ')[1] || selectedYear.toString());
+        const scenarioEndYear = parseInt(scenario.endMonth.split(' ')[1] || selectedYear.toString());
 
-        // Check if item is within scenario date range
         const isInRange = (
           (itemYear > scenarioStartYear || (itemYear === scenarioStartYear && itemMonthIndex >= scenarioStartMonth)) &&
           (itemYear < scenarioEndYear || (itemYear === scenarioEndYear && itemMonthIndex <= scenarioEndMonth))
@@ -500,14 +500,17 @@ const Forecasting: React.FC = () => {
           let adjustedAmount = item.forecastedAmount;
 
           if (scenario.adjustmentType === 'percentage') {
-            const adjustmentFactor = shouldApply
-              ? (1 + scenario.adjustmentValue / 100)
-              : (1 / (1 + scenario.adjustmentValue / 100));
-            adjustedAmount = item.forecastedAmount * adjustmentFactor;
+            if (shouldApply) {
+              adjustedAmount = item.forecastedAmount * (1 + scenario.adjustmentValue / 100);
+            } else {
+              adjustedAmount = item.forecastedAmount / (1 + scenario.adjustmentValue / 100);
+            }
           } else {
-            adjustedAmount = shouldApply
-              ? item.forecastedAmount + scenario.adjustmentValue
-              : item.forecastedAmount - scenario.adjustmentValue;
+            if (shouldApply) {
+              adjustedAmount = item.forecastedAmount + scenario.adjustmentValue;
+            } else {
+              adjustedAmount = item.forecastedAmount - scenario.adjustmentValue;
+            }
           }
 
           return {
@@ -891,7 +894,8 @@ const Forecasting: React.FC = () => {
         adjustmentType: sidePanelForm.adjustmentType,
         adjustmentValue: sidePanelForm.adjustmentValue,
         appliedAt: new Date(),
-        createdBy: 'Current User' // Replace with actual user context
+        createdBy: 'Current User',
+        isActive: true
       };
       
       setAppliedScenarios(prev => [...prev, newScenario]);
@@ -1572,7 +1576,8 @@ const Forecasting: React.FC = () => {
                      adjustmentType: glScenarioForm.adjustmentType,
                      adjustmentValue: glScenarioForm.adjustmentValue,
                      appliedAt: new Date(),
-                     createdBy: 'Current User'
+                     createdBy: 'Current User',
+                     isActive: true
                    };
                    setAppliedScenarios(prev => [...prev, newScenario]);
                    
@@ -2035,51 +2040,49 @@ const Forecasting: React.FC = () => {
                   {appliedScenarios.map((scenario) => (
                     <div
                       key={scenario.id}
-                      className={`bg-white border rounded-lg p-4 hover:shadow-md transition-all duration-300 ${
-                        scenario.isActive
-                          ? 'border-[#4ADE80] shadow-sm'
-                          : 'border-gray-200 opacity-75'
-                      }`}
+                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
+                            <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
+                              scenario.isActive
+                                ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
+                                : 'bg-gray-200 text-gray-600'
+                            }`}>
+                              {scenario.isActive ? 'Active' : 'Inactive'}
+                            </span>
+                          </div>
                           <p className="text-xs text-gray-500 mt-1">GL Code: {scenario.glCode}</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 text-xs font-medium rounded-full transition-all duration-300 ${
-                            scenario.isActive
-                              ? 'bg-[#4ADE80]/10 text-[#4ADE80] animate-pulse'
-                              : 'bg-gray-200 text-gray-600'
-                          }`}>
-                            {scenario.isActive ? 'Active' : 'Inactive'}
-                          </span>
-                          <div className="relative">
+                        <button
+                          onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
+                          className="px-3 py-1.5 bg-[#eff1f4] hover:bg-[#e5e7ea] text-gray-700 text-xs font-medium rounded transition-colors flex items-center gap-1.5"
+                        >
+                          <Edit2 className="w-3.5 h-3.5" />
+                          Edit
+                        </button>
+                      </div>
+
+                      {scenarioMenuOpen === scenario.id && (
+                        <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                          <div className="flex gap-2">
                             <button
-                              onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
-                              className="p-1 hover:bg-gray-100 rounded transition-colors"
+                              onClick={() => toggleScenario(scenario.id)}
+                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                             >
-                              <MoreVertical className="w-4 h-4 text-gray-500" />
+                              {scenario.isActive ? 'Deactivate' : 'Activate'}
                             </button>
-                            {scenarioMenuOpen === scenario.id && (
-                              <div className="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                                <button
-                                  onClick={() => toggleScenario(scenario.id)}
-                                  className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors rounded-t-lg"
-                                >
-                                  {scenario.isActive ? 'Deactivate' : 'Activate'}
-                                </button>
-                                <button
-                                  onClick={() => setShowDeleteConfirm(scenario.id)}
-                                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors rounded-b-lg border-t border-gray-100"
-                                >
-                                  Remove
-                                </button>
-                              </div>
-                            )}
+                            <button
+                              onClick={() => setShowDeleteConfirm(scenario.id)}
+                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
-                      </div>
+                      )}
 
                       <p className="text-sm text-gray-600 mb-3">{scenario.description}</p>
 
