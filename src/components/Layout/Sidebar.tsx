@@ -28,7 +28,6 @@ import {
   Lock,
   Plus,
   Trash2,
-  Activity,
   X,
   MessageCircle,
   Gift,
@@ -102,7 +101,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
     { path: '/admin/team', label: 'Team Management', icon: Users },
-    { path: '/admin/departments', label: 'Departments', icon: Building2 },
     { path: '/admin/billing', label: 'Subscription', icon: CreditCard },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
     { path: '/admin/security', label: 'Security & SOX', icon: Shield },
@@ -113,7 +111,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/analytics/health', label: 'Financial Health', icon: Activity },
     {
       path: '/financials',
       label: 'Financials',
@@ -122,7 +119,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
-        { path: '/cashflow/advanced', label: 'Cash Flow Management', icon: TrendingDown },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
@@ -144,7 +140,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
         { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
-        { path: '/cashflow/advanced', label: 'Cash Flow Management', icon: TrendingDown },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
