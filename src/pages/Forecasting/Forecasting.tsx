@@ -71,7 +71,7 @@ const Forecasting: React.FC = () => {
   const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
-  const [editingCell, setEditingCell] = useState<{glCode: string, month: string} | null>(null);
+  const [editingCell, setEditingCell] = useState<{glCode: string, month: string, type?: 'ytd' | 'fy'} | null>(null);
   const [editValue, setEditValue] = useState<string>('');
   const [showScenarioSidePanel, setShowScenarioSidePanel] = useState(false);
   const [showSaveForecastModal, setShowSaveForecastModal] = useState(false);
@@ -758,26 +758,29 @@ const Forecasting: React.FC = () => {
           <h2 className="text-2xl font-bold text-[#101010]">Financial Forecasting</h2>
           <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setShowVersionHistoryModal(true)}
-          >
-            <History className="w-4 h-4 mr-2" />
-            Version History
-          </Button>
-          <Button
-            variant="primary"
-            className="bg-[#3AB7BF] hover:bg-[#2A9BA3]"
-            onClick={() => setShowSaveForecastModal(true)}
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Save Forecast
-          </Button>
+        <div className="flex items-center gap-1">
+          <div className="flex bg-gray-100 rounded-lg p-0.5">
+            <button
+              onClick={() => setShowSaveForecastModal(true)}
+              className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#3AB7BF] shadow-sm"
+            >
+              <Save className="w-4 h-4 mr-1 inline" />
+              Save Forecast
+            </button>
+            <button
+              onClick={() => setShowVersionHistoryModal(true)}
+              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
+            >
+              <History className="w-4 h-4 mr-1 inline" />
+              Version History
+            </button>
+            <button
+              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
+            >
+              <Download className="w-4 h-4 mr-1 inline" />
+              Export
+            </button>
+          </div>
         </div>
       </div>
 
@@ -978,17 +981,70 @@ const Forecasting: React.FC = () => {
                                 );
                               })}
                               <td className="py-3 px-4 text-right text-sm font-medium">
-                                ${forecastData
-                                  .filter(item => item.glCode === glCode.code)
-                                  .slice(0, new Date().getMonth() + 1)
-                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                  .toLocaleString()}
+                                {editingCell?.glCode === glCode.code && editingCell?.type === 'ytd' ? (
+                                  <input
+                                    type="number"
+                                    value={editValue}
+                                    onChange={(e) => setEditValue(e.target.value)}
+                                    onBlur={handleCellSave}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleCellSave();
+                                      if (e.key === 'Escape') handleCellCancel();
+                                    }}
+                                    className="w-full px-2 py-1 text-right border border-blue-300 rounded text-sm"
+                                    autoFocus
+                                  />
+                                ) : (
+                                  <span
+                                    onClick={() => {
+                                      const ytdTotal = forecastData
+                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                        .slice(0, new Date().getMonth() + 1)
+                                        .reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                      setEditingCell({ glCode: glCode.code, month: 'YTD', type: 'ytd' });
+                                      setEditValue(ytdTotal.toString());
+                                    }}
+                                    className="cursor-pointer hover:bg-blue-50 rounded px-2 py-1 inline-block"
+                                  >
+                                    ${forecastData
+                                      .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                      .slice(0, new Date().getMonth() + 1)
+                                      .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                      .toLocaleString()}
+                                  </span>
+                                )}
                               </td>
                               <td className="py-3 px-4 text-right text-sm font-medium">
-                                ${forecastData
-                                  .filter(item => item.glCode === glCode.code)
-                                  .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                  .toLocaleString()}
+                                {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
+                                  <input
+                                    type="number"
+                                    value={editValue}
+                                    onChange={(e) => setEditValue(e.target.value)}
+                                    onBlur={handleCellSave}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') handleCellSave();
+                                      if (e.key === 'Escape') handleCellCancel();
+                                    }}
+                                    className="w-full px-2 py-1 text-right border border-blue-300 rounded text-sm"
+                                    autoFocus
+                                  />
+                                ) : (
+                                  <span
+                                    onClick={() => {
+                                      const fyTotal = forecastData
+                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                        .reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                      setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
+                                      setEditValue(fyTotal.toString());
+                                    }}
+                                    className="cursor-pointer hover:bg-blue-50 rounded px-2 py-1 inline-block"
+                                  >
+                                    ${forecastData
+                                      .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                      .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                      .toLocaleString()}
+                                  </span>
+                                )}
                               </td>
                             </tr>
                             
