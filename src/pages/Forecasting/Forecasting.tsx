@@ -1311,39 +1311,53 @@ const Forecasting: React.FC = () => {
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
                                           <div key={scenario.id} className="p-3 bg-white rounded border border-gray-200">
                                             <div className="flex items-center justify-between">
-                                              <div>
-                                                <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
-                                                <p className="text-sm text-gray-600">{scenario.description}</p>
-                                                <div className="flex items-center gap-2 mt-1">
-                                                  <span className="text-xs text-gray-500">
-                                                    Added by {scenario.createdBy} • {scenario.appliedAt.toLocaleDateString()}
+                                              <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
+                                                  <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
+                                                    scenario.isActive
+                                                      ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
+                                                      : 'bg-gray-200 text-gray-600'
+                                                  }`}>
+                                                    {scenario.isActive ? 'Active' : 'Inactive'}
                                                   </span>
                                                 </div>
-                                                <p className="text-xs text-gray-500">
-                                                  {scenario.startMonth} - {scenario.endMonth} • 
-                                                  {scenario.adjustmentType === 'percentage' ? 
-                                                    ` ${scenario.adjustmentValue}% change` : 
+                                                <p className="text-sm text-gray-600 mt-1">{scenario.description}</p>
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                  {scenario.startMonth} - {scenario.endMonth} •
+                                                  {scenario.adjustmentType === 'percentage' ?
+                                                    ` ${scenario.adjustmentValue}% change` :
                                                     ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
                                                   }
                                                 </p>
                                               </div>
-                                              <div className="flex items-center gap-2">
-                                                <span className="px-2 py-1 bg-[#3AB7BF]/20 text-[#3AB7BF] rounded-full text-xs">
-                                                  Active
-                                                </span>
-                                                <button
-                                                  onClick={() => {
-                                                    setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
-                                                    // Recalculate forecast data after removing scenario
-                                                    // This would trigger a recalculation in a real implementation
-                                                  }}
-                                                  className="p-1 hover:bg-red-100 rounded text-red-500 transition-colors"
-                                                  title="Remove scenario"
-                                                >
-                                                  <X className="w-3 h-3" />
-                                                </button>
-                                              </div>
+                                              <button
+                                                onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
+                                                className="px-3 py-1.5 bg-[#eff1f4] hover:bg-[#e5e7ea] text-gray-700 text-xs font-medium rounded transition-colors flex items-center gap-1.5"
+                                              >
+                                                <Edit2 className="w-3.5 h-3.5" />
+                                                Edit
+                                              </button>
                                             </div>
+
+                                            {scenarioMenuOpen === scenario.id && (
+                                              <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                                <div className="flex gap-2">
+                                                  <button
+                                                    onClick={() => toggleScenario(scenario.id)}
+                                                    className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
+                                                  >
+                                                    {scenario.isActive ? 'Deactivate' : 'Activate'}
+                                                  </button>
+                                                  <button
+                                                    onClick={() => setShowDeleteConfirm(scenario.id)}
+                                                    className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                  >
+                                                    Remove
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            )}
                                           </div>
                                         ))}
                                       </div>
