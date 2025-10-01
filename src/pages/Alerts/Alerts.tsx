@@ -56,7 +56,7 @@ const Alerts: React.FC = () => {
               action: 'View Report'
             }
           ].map((alert) => (
-            <div key={alert.id} className="p-2 rounded-lg bg-[#eff1f4]">
+            <div key={alert.id} className="p-2 rounded-lg bg-[#f8f9fb]">
               <div className="flex items-start">
                 <div className={`w-2 h-2 rounded-full mt-1.5 mr-2 flex-shrink-0 ${
                   alert.type === 'critical' ? 'bg-[#F87171]' :
