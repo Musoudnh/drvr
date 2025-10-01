@@ -935,8 +935,8 @@ const Forecasting: React.FC = () => {
           <h2 className="text-2xl font-bold text-[#101010]">Financial Forecasting</h2>
           <p className="text-gray-600 mt-1">Monthly GL code forecasting with scenario planning</p>
         </div>
-        <div className="flex items-center gap-1">
-          <div className="flex bg-gray-100 rounded-lg p-0.5">
+        <div className="flex items-center gap-3">
+          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
             <button
               onClick={() => setShowSaveForecastModal(true)}
               className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm"
