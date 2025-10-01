@@ -28,6 +28,7 @@ import {
   Lock,
   Plus,
   Trash2,
+  Activity,
   X,
   MessageCircle,
   Gift,
@@ -101,7 +102,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
     { path: '/admin/team', label: 'Team Management', icon: Users },
-    { path: '/admin/departments', label: 'Departments', icon: Building },
+    { path: '/admin/departments', label: 'Departments', icon: Building2 },
     { path: '/admin/billing', label: 'Subscription', icon: CreditCard },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
     { path: '/admin/security', label: 'Security & SOX', icon: Shield },
