@@ -61,6 +61,15 @@ const TasksProjects: React.FC = () => {
     connected: boolean;
   }>>([]);
 
+  const [tabs, setTabs] = useState<Array<{
+    id: string;
+    name: string;
+    type: 'native' | 'board';
+    platform?: 'clickup' | 'monday';
+  }>>([
+    { id: 'native', name: 'Task Board', type: 'native' }
+  ]);
+
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: '1',
@@ -160,11 +169,11 @@ const TasksProjects: React.FC = () => {
 
   const handleDragEnd = (result: DropResult) => {
     setIsDraggingTask(false);
-    
-    const { source, destination, draggableId } = result;
+
+    const { source, destination, draggableId, type } = result;
 
     if (!destination) return;
-    
+
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
@@ -172,8 +181,16 @@ const TasksProjects: React.FC = () => {
       return;
     }
 
-    setTasks(prev => prev.map(task => 
-      task.id === draggableId 
+    if (type === 'TAB') {
+      const newTabs = Array.from(tabs);
+      const [removed] = newTabs.splice(source.index, 1);
+      newTabs.splice(destination.index, 0, removed);
+      setTabs(newTabs);
+      return;
+    }
+
+    setTasks(prev => prev.map(task =>
+      task.id === draggableId
         ? { ...task, status: destination.droppableId as Task['status'] }
         : task
     ));
@@ -508,43 +525,65 @@ const TasksProjects: React.FC = () => {
       {/* Tab Navigation */}
       <div className="bg-white rounded-lg shadow-sm">
         <div className="border-b border-gray-200">
-          <nav className="flex space-x-6 px-4" aria-label="Task Navigation">
-            <button
-              onClick={() => setActiveTab('native')}
-              disabled={isDraggingTask}
-              className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === 'native'
-                  ? 'border-[#4F46E5] text-[#4F46E5]'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <Grid3X3 className="w-4 h-4 mr-2" />
-              Task Board
-            </button>
-            {connectedBoards.map(board => (
-              <button
-                key={board.id}
-                onClick={() => setActiveTab(board.id)}
-                disabled={isDraggingTask}
-                className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === board.id
-                    ? `border-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}] text-[${board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B'}]`
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <div className={`w-4 h-4 rounded mr-2`} style={{ backgroundColor: board.platform === 'clickup' ? '#7B68EE' : '#FF6B6B' }} />
-                {board.name}
-              </button>
-            ))}
-            <button
-              onClick={() => setShowConnectModal(true)}
-              disabled={isDraggingTask}
-              className={`flex items-center py-3 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Connect Board
-            </button>
-          </nav>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="tabs" direction="horizontal" type="TAB">
+              {(provided, snapshot) => (
+                <nav
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={`flex space-x-2 px-4 ${snapshot.isDraggingOver ? 'bg-gray-50' : ''}`}
+                  aria-label="Task Navigation"
+                >
+                  {tabs.map((tab, index) => (
+                    <Draggable key={tab.id} draggableId={tab.id} index={index}>
+                      {(provided, snapshot) => (
+                        <button
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          onClick={() => setActiveTab(tab.id)}
+                          disabled={isDraggingTask}
+                          className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-colors ${
+                            activeTab === tab.id
+                              ? tab.platform === 'clickup'
+                                ? 'border-[#7B68EE] text-[#7B68EE]'
+                                : tab.platform === 'monday'
+                                ? 'border-[#FF6B6B] text-[#FF6B6B]'
+                                : 'border-[#4F46E5] text-[#4F46E5]'
+                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                          } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''} ${
+                            snapshot.isDragging ? 'bg-white shadow-lg z-50' : ''
+                          }`}
+                          style={{
+                            ...provided.draggableProps.style,
+                          }}
+                        >
+                          {tab.type === 'native' ? (
+                            <Grid3X3 className="w-4 h-4 mr-2" />
+                          ) : (
+                            <div
+                              className="w-4 h-4 rounded mr-2"
+                              style={{ backgroundColor: tab.platform === 'clickup' ? '#7B68EE' : '#FF6B6B' }}
+                            />
+                          )}
+                          {tab.name}
+                        </button>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                  <button
+                    onClick={() => setShowConnectModal(true)}
+                    disabled={isDraggingTask}
+                    className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Connect Board
+                  </button>
+                </nav>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
 
         {/* Tab Content */}
@@ -618,13 +657,14 @@ const TasksProjects: React.FC = () => {
             </div>
           )}
 
-          {connectedBoards.map(board => (
-            activeTab === board.id && (
-              <div key={board.id}>
+          {tabs.filter(tab => tab.type === 'board').map(tab => {
+            const board = connectedBoards.find(b => b.id === tab.id);
+            return activeTab === tab.id && board ? (
+              <div key={tab.id}>
                 {renderIntegrationTab(board.platform)}
               </div>
-            )
-          ))}
+            ) : null;
+          })}
         </div>
       </div>
         
@@ -979,6 +1019,12 @@ const TasksProjects: React.FC = () => {
                       connected: true
                     };
                     setConnectedBoards(prev => [...prev, newBoard]);
+                    setTabs(prev => [...prev, {
+                      id: newBoard.id,
+                      name: newBoard.name,
+                      type: 'board',
+                      platform: newBoard.platform
+                    }]);
                     setActiveTab(newBoard.id);
                     setConnectForm({ tabName: '', platform: 'clickup' });
                     setShowConnectModal(false);
