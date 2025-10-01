@@ -1316,9 +1316,9 @@ const Forecasting: React.FC = () => {
                                         setSelectedGLCode(glCode);
                                         setShowGLScenarioModal(true);
                                       }}
-                                      className="w-full flex items-center gap-2 px-3 py-2 mb-3 text-sm text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
+                                      className="flex items-center gap-1.5 px-2.5 py-1.5 mb-3 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
                                     >
-                                      <Plus className="w-3.5 h-3.5" />
+                                      <Plus className="w-3 h-3" />
                                       <span className="text-xs">Add Scenario</span>
                                     </button>
 
