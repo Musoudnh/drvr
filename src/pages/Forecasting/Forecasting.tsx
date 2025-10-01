@@ -1327,7 +1327,7 @@ const Forecasting: React.FC = () => {
                                     ) : (
                                       <div className="space-y-2">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className="p-3 bg-white rounded border border-gray-200">
+                                          <div key={scenario.id} className="p-3 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200">
                                             <div className="flex items-center justify-between">
                                               <div className="flex-1">
                                                 <div className="flex items-center gap-2">
