@@ -2054,7 +2054,9 @@ const Forecasting: React.FC = () => {
                               {scenario.isActive ? 'Active' : 'Inactive'}
                             </span>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">GL Code: {scenario.glCode}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Account: {glCodes.find(gl => gl.code === scenario.glCode)?.name || scenario.glCode}
+                          </p>
                         </div>
                         <button
                           onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
