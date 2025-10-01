@@ -274,29 +274,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             to={item.path}
             className={`flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 flex-1 ${
               active
-                ? 'text-[#4F46E5] shadow-md'
-                : 'text-white hover:text-[#4F46E5]'
+                ? 'text-[#101010] shadow-sm'
+                : 'text-[#101010] hover:text-[#101010]'
             } ${depth > 0 ? 'ml-3' : ''}`}
             style={{
-              backgroundColor: active ? '#F7F8FD' : 'transparent',
+              backgroundColor: active ? '#EFEFEA' : 'transparent',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               transform: active ? 'translateX(4px)' : 'translateX(0)',
-              color: active ? '#4F46E5' : 'white',
+              color: '#101010',
               fontSize: '12px',
               fontWeight: 'var(--font-heavy)'
             }}
             onMouseEnter={(e) => {
               if (!active) {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
-                e.currentTarget.style.color = '#4F46E5';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }
             }}
             onMouseLeave={(e) => {
               if (!active) {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }
@@ -308,7 +308,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           {hasChildren && !isCollapsed && (
             <button
               onClick={() => toggleExpanded(item.path)}
-              className="p-0.5 text-white hover:text-white transition-colors ml-1"
+              className="p-0.5 text-[#101010] hover:text-[#101010] transition-colors ml-1"
             >
               {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
             </button>
@@ -348,7 +348,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             >
               <Link
                 to="/chat"
-                className="flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+                className="flex items-center px-2 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
                 onClick={() => handleChannelSelect(channel.id)}
               >
                 <span className="mr-2 text-gray-400">
@@ -416,7 +416,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   }, [isFinancialPage]);
 
   return (
-    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: navigationColor }}>
+    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: '#FBFBF5' }}>
       <nav className="flex-1 overflow-y-auto mt-8">
         <div className="space-y-4">
           {navItems.map(item => renderNavItem(item))}
@@ -428,7 +428,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <div className="space-y-2">
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -436,14 +436,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
-                e.currentTarget.style.color = '#4F46E5';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -453,7 +453,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -461,14 +461,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
                 e.currentTarget.style.color = '#F87171';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(248, 113, 113, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -481,7 +481,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           <div className="space-y-2">
             <button
               onClick={() => setShowExpertModal(true)}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -489,14 +489,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
-                e.currentTarget.style.color = '#4F46E5';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -506,7 +506,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={() => navigate('/referrals')}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -514,14 +514,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
-                e.currentTarget.style.color = '#4F46E5';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -531,7 +531,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={() => setShowHelpModal(true)}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#101010] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -539,14 +539,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
-                e.currentTarget.style.color = '#4F46E5';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 70, 229, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
@@ -556,7 +556,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
             <button
               onClick={logout}
-              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#F87171] hover:bg-[#F7F8FD]"
+              className="w-full flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-all duration-200 text-[#101010] hover:text-[#F87171] hover:bg-[#F5F5F0]"
               style={{
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'translateX(0)',
@@ -564,14 +564,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F7F8FD';
+                e.currentTarget.style.backgroundColor = '#F5F5F0';
                 e.currentTarget.style.color = '#F87171';
                 e.currentTarget.style.transform = 'translateX(4px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(248, 113, 113, 0.15)';
+                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
