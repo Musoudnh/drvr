@@ -416,7 +416,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   }, [isFinancialPage]);
 
   return (
-    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: '#FBFBF5' }}>
+    <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: '#f8f9fb' }}>
       <nav className="flex-1 overflow-y-auto mt-8">
         <div className="space-y-4">
           {navItems.map(item => renderNavItem(item))}
