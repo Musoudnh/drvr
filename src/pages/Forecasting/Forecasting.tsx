@@ -781,8 +781,7 @@ const Forecasting: React.FC = () => {
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-32 sticky left-0 bg-white">GL Code</th>
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-48 sticky left-32 bg-white">Description</th>
+                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
                     {months.map((month, index) => (
                       <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
                         {month} {selectedYear}
@@ -796,12 +795,12 @@ const Forecasting: React.FC = () => {
                   {['Revenue', 'COGS', 'OPEX', 'Other'].map(category => {
                     const categoryGLCodes = filteredGLCodes.filter(gl => gl.category === category);
                     if (categoryGLCodes.length === 0) return null;
-                    
+
                     return (
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={months.length + 3} className="py-3 px-4">
+                          <td colSpan={months.length + 2} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -824,12 +823,12 @@ const Forecasting: React.FC = () => {
                         {expandedCategories.includes(category) && categoryGLCodes.map(glCode => (
                           <React.Fragment key={glCode.code}>
                             <tr className="border-b border-gray-100 hover:bg-gray-50 group">
-                              <td className="py-3 px-4 font-mono text-sm sticky left-0 bg-white group-hover:bg-gray-50">
-                                {glCode.code}
-                              </td>
-                              <td className="py-3 px-4 text-sm sticky left-32 bg-white group-hover:bg-gray-50">
+                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
-                                  <span>{glCode.name}</span>
+                                  <div>
+                                    <div className="font-semibold text-[#101010]">{glCode.name}</div>
+                                    <div className="font-mono text-xs text-gray-500 mt-0.5">{glCode.code}</div>
+                                  </div>
                                   <div className="flex items-center gap-1">
                                     <button
                                       onClick={() => {
@@ -941,7 +940,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={months.length + 4} className="py-0">
+                                <td colSpan={months.length + 3} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
                                     <h5 className="font-medium text-[#101010] mb-3">Applied Scenarios for {glCode.name}</h5>
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
