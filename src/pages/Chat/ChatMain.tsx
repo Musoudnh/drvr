@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Hash, Lock, Users, MessageSquare, Send, Paperclip, Smile, X, Settings, Zap, CheckCircle, FileText } from 'lucide-react';
+import { Plus, Search, Hash, MessageSquare, Send, Paperclip, Smile, X, Zap, CheckCircle, FileText } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
@@ -23,7 +23,6 @@ const ChatMain: React.FC = () => {
   // Native chat state
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>('general');
   const [newMessage, setNewMessage] = useState('');
-  const [showRightPanel, setShowRightPanel] = useState(true);
 
   const nativeChannels = [
     { id: 'general', name: 'General', type: 'team', unreadCount: 3 },
@@ -217,19 +216,11 @@ const ChatMain: React.FC = () => {
       <div className="flex-1 flex flex-col">
         {/* Chat Header */}
         <div className="p-4 border-b border-gray-200 bg-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Hash className="w-5 h-5 text-gray-400 mr-2" />
-              <h2 className="font-bold text-lg text-[#101010]">
-                {nativeChannels.find(c => c.id === selectedChannelId)?.name || 'General'}
-              </h2>
-            </div>
-            <button
-              onClick={() => setShowRightPanel(!showRightPanel)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <Settings className="w-4 h-4 text-gray-400" />
-            </button>
+          <div className="flex items-center">
+            <Hash className="w-5 h-5 text-gray-400 mr-2" />
+            <h2 className="font-bold text-lg text-[#101010]">
+              {nativeChannels.find(c => c.id === selectedChannelId)?.name || 'General'}
+            </h2>
           </div>
         </div>
 
@@ -337,55 +328,6 @@ const ChatMain: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Panel */}
-      {showRightPanel && (
-        <div className="w-80 bg-white border-l border-gray-200 flex flex-col rounded-r-lg">
-          {/* Panel Header */}
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="font-semibold text-[#101010]">Channel Info</h3>
-          </div>
-
-          {/* Panel Content */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-6">
-            {/* Pinned Messages */}
-            <div>
-              <h4 className="font-medium text-[#101010] mb-3">Pinned Messages</h4>
-              <div className="space-y-2">
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-700">Q4 results meeting scheduled for tomorrow at 2 PM</p>
-                  <p className="text-xs text-gray-500 mt-1">Pinned by Sarah Johnson</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Shared Files */}
-            <div>
-              <h4 className="font-medium text-[#101010] mb-3">Shared Files</h4>
-              <div className="space-y-2">
-                <div className="flex items-center p-2 hover:bg-gray-50 rounded">
-                  <div className="w-8 h-8 bg-[#3AB7BF]/10 rounded flex items-center justify-center mr-3">
-                    <FileText className="w-4 h-4 text-[#3AB7BF]" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-[#101010]">Q1_Forecast.xlsx</p>
-                    <p className="text-xs text-gray-500">2 hours ago</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Notes */}
-            <div>
-              <h4 className="font-medium text-[#101010] mb-3">Quick Notes</h4>
-              <textarea
-                placeholder="Add your notes here..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
-                rows={4}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 
