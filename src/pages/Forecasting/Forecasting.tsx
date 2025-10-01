@@ -7,6 +7,8 @@ import { VersionHistoryModal } from '../../components/Forecasting/VersionHistory
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import { forecastService } from '../../services/forecastService';
 import type { ForecastLineItem } from '../../types/forecast';
+import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
+import type { PayrollResult } from '../../services/payrollService';
 
 interface GLCode {
   code: string;
@@ -611,27 +613,16 @@ const Forecasting: React.FC = () => {
       case '6000': // Payroll & Benefits
         return (
           <div className="space-y-4">
-            <h4 className="font-medium text-[#101010]">Payroll Assumptions</h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Headcount</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.headcount}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, headcount: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Avg Salary</label>
-                <input
-                  type="number"
-                  value={glScenarioForm.averageSalary}
-                  onChange={(e) => setGLScenarioForm({...glScenarioForm, averageSalary: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                />
-              </div>
-            </div>
+            <h4 className="font-medium text-[#101010] mb-4">Payroll Calculator</h4>
+            <PayrollCalculator
+              onCalculate={(result: PayrollResult) => {
+                setGLScenarioForm({
+                  ...glScenarioForm,
+                  headcount: 1,
+                  averageSalary: Math.round(result.grossPay)
+                });
+              }}
+            />
           </div>
         );
       
