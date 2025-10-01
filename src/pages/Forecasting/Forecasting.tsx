@@ -1067,9 +1067,16 @@ const Forecasting: React.FC = () => {
                                       }`}>
                                         {isEditing ? (
                                           <input
-                                            type="number"
+                                            type="text"
+                                            inputMode="numeric"
                                             value={editValue}
-                                            onChange={(e) => setEditValue(e.target.value)}
+                                            onChange={(e) => {
+                                              // Allow only numbers, minus sign, and empty string
+                                              const value = e.target.value;
+                                              if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                                setEditValue(value);
+                                              }
+                                            }}
                                             onBlur={handleCellSave}
                                             onKeyDown={(e) => {
                                               if (e.key === 'Enter') handleCellSave();
@@ -1077,6 +1084,7 @@ const Forecasting: React.FC = () => {
                                             }}
                                             className="w-full px-1 py-0.5 text-center border border-blue-300 rounded text-xs"
                                             autoFocus
+                                            onFocus={(e) => e.target.select()}
                                           />
                                         ) : (
                                           <span
@@ -1115,9 +1123,15 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-right text-sm font-medium">
                                 {editingCell?.glCode === glCode.code && editingCell?.type === 'ytd' ? (
                                   <input
-                                    type="number"
+                                    type="text"
+                                    inputMode="numeric"
                                     value={editValue}
-                                    onChange={(e) => setEditValue(e.target.value)}
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                        setEditValue(value);
+                                      }
+                                    }}
                                     onBlur={handleCellSave}
                                     onKeyDown={(e) => {
                                       if (e.key === 'Enter') handleCellSave();
@@ -1125,6 +1139,7 @@ const Forecasting: React.FC = () => {
                                     }}
                                     className="w-full px-2 py-1 text-right border border-blue-300 rounded text-sm"
                                     autoFocus
+                                    onFocus={(e) => e.target.select()}
                                   />
                                 ) : (
                                   <span
@@ -1149,9 +1164,15 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-right text-sm font-medium">
                                 {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                   <input
-                                    type="number"
+                                    type="text"
+                                    inputMode="numeric"
                                     value={editValue}
-                                    onChange={(e) => setEditValue(e.target.value)}
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                        setEditValue(value);
+                                      }
+                                    }}
                                     onBlur={handleCellSave}
                                     onKeyDown={(e) => {
                                       if (e.key === 'Enter') handleCellSave();
@@ -1159,6 +1180,7 @@ const Forecasting: React.FC = () => {
                                     }}
                                     className="w-full px-2 py-1 text-right border border-blue-300 rounded text-sm"
                                     autoFocus
+                                    onFocus={(e) => e.target.select()}
                                   />
                                 ) : (
                                   <span
