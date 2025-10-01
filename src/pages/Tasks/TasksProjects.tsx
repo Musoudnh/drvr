@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
@@ -529,7 +529,7 @@ const TasksProjects: React.FC = () => {
                 <nav
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className={`flex space-x-2 px-4 ${snapshot.isDraggingOver ? 'bg-gray-50' : ''}`}
+                  className={`flex space-x-2 px-4 transition-all duration-200 ${snapshot.isDraggingOver ? 'bg-blue-50' : ''}`}
                   aria-label="Task Navigation"
                 >
                   {tabs.map((tab, index) => (
@@ -541,7 +541,7 @@ const TasksProjects: React.FC = () => {
                           {...provided.dragHandleProps}
                           onClick={() => setActiveTab(tab.id)}
                           disabled={isDraggingTask}
-                          className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-colors ${
+                          className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-all duration-200 group cursor-grab active:cursor-grabbing ${
                             activeTab === tab.id
                               ? tab.platform === 'clickup'
                                 ? 'border-[#7B68EE] text-[#7B68EE]'
@@ -550,12 +550,13 @@ const TasksProjects: React.FC = () => {
                                 : 'border-[#4F46E5] text-[#4F46E5]'
                               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                           } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''} ${
-                            snapshot.isDragging ? 'bg-white shadow-lg z-50' : ''
+                            snapshot.isDragging ? 'bg-white shadow-xl ring-2 ring-blue-400 z-50 scale-105' : ''
                           }`}
                           style={{
                             ...provided.draggableProps.style,
                           }}
                         >
+                          <GripVertical className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-40 transition-opacity" />
                           {tab.type === 'native' ? (
                             <Grid3X3 className="w-4 h-4 mr-2" />
                           ) : (
