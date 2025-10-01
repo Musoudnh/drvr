@@ -327,7 +327,6 @@ const TasksProjects: React.FC = () => {
   );
 
   const renderKanbanBoard = () => (
-    <DragDropContext onDragStart={() => setIsDraggingTask(true)} onDragEnd={handleDragEnd}>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
@@ -374,7 +373,6 @@ const TasksProjects: React.FC = () => {
           );
         })}
       </div>
-    </DragDropContext>
   );
 
   const renderListView = () => (
@@ -521,11 +519,11 @@ const TasksProjects: React.FC = () => {
   };
 
   return (
-    <div className="p-4 space-y-4">
-      {/* Tab Navigation */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="border-b border-gray-200">
-          <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="p-4 space-y-4">
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="border-b border-gray-200">
             <Droppable droppableId="tabs" direction="horizontal" type="TAB">
               {(provided, snapshot) => (
                 <nav
@@ -583,8 +581,7 @@ const TasksProjects: React.FC = () => {
                 </nav>
               )}
             </Droppable>
-          </DragDropContext>
-        </div>
+          </div>
 
         {/* Tab Content */}
         <div className="p-4">
@@ -1055,7 +1052,8 @@ const TasksProjects: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </DragDropContext>
   );
 };
 
