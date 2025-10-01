@@ -358,10 +358,17 @@ const Forecasting: React.FC = () => {
     }
   };
 
-  const getVarianceColor = (variance: number) => {
-    if (Math.abs(variance) < 5) return 'text-[#4ADE80]';
-    if (Math.abs(variance) < 15) return 'text-[#F59E0B]';
-    return 'text-[#F87171]';
+  const getVarianceColor = (variance: number, glCodeValue: string) => {
+    const glCodeData = glCodes.find(gl => gl.code === glCodeValue);
+    if (!glCodeData) return 'text-gray-600';
+
+    const isRevenue = glCodeData.type === 'revenue';
+
+    if (isRevenue) {
+      return variance >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]';
+    } else {
+      return variance <= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]';
+    }
   };
 
   const renderGLSpecificInputs = () => {
@@ -900,7 +907,7 @@ const Forecasting: React.FC = () => {
                                         </div>
                                       )}
                                       {monthData?.variance && (
-                                        <div className={`text-xs ${getVarianceColor(monthData.variance)}`}>
+                                        <div className={`text-xs font-medium ${getVarianceColor(monthData.variance, glCode.code)}`}>
                                           {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
                                         </div>
                                       )}
