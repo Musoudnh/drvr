@@ -1,53 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Target, 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Users, 
-  Calendar, 
-  Plus, 
-  Edit3, 
-  Copy, 
-  Lock, 
-  Unlock, 
-  Archive, 
-  Download, 
-  Share2, 
-  Save, 
-  RotateCcw, 
-  RotateCw,
-  Settings,
-  MessageSquare,
-  FileText,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  BarChart3,
-  LineChart,
-  PieChart,
-  Zap,
-  X,
-  ChevronDown,
-  ChevronRight,
-  Filter,
-  Search,
-  Eye,
-  EyeOff,
-  GripVertical,
-  ArrowUp,
-  ArrowDown,
-  Percent,
-  Hash,
-  Building2,
-  UserPlus,
-  Layers,
-  TrendingUp as TrendIcon,
-  Send,
-  AtSign,
-  Paperclip,
-  MoreHorizontal
-} from 'lucide-react';
+import { Target, TrendingUp, TrendingDown, DollarSign, Users, Calendar, Plus, CreditCard as Edit3, Copy, Lock, Unlock, Archive, Download, Share2, Save, RotateCcw, RotateCw, Settings, MessageSquare, FileText, AlertTriangle, CheckCircle, Clock, BarChart3, LineChart, PieChart, Zap, X, ChevronDown, ChevronRight, Filter, Search, Eye, EyeOff, GripVertical, ArrowUp, ArrowDown, Percent, Hash, Building2, UserPlus, Layers, TrendingUp as TrendIcon, Send, AtSign, Paperclip, MoreHorizontal } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 
@@ -722,7 +674,7 @@ const RunwayPlanning: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       <GripVertical className="w-4 h-4 text-gray-400" />
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        driver.scope === 'global' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'
+                        driver.scope === 'global' ? 'bg-purple-100 text-purple-800' : 'bg-indigo-100 text-indigo-800'
                       }`}>
                         {getDriverTypeLabel(driver.type)}
                       </span>

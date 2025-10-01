@@ -340,7 +340,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
                   }`}>
                     <p className="text-xs leading-relaxed">{message.content}</p>
                     <p className={`text-xs mt-1 ${
-                      message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
+                      message.type === 'user' ? 'text-purple-100' : 'text-gray-500'
                     }`}>
                       {message.timestamp.toLocaleTimeString()}
                     </p>

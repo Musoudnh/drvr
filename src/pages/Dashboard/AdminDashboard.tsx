@@ -22,7 +22,7 @@ const AdminDashboard: React.FC = () => {
       {/* Admin Header */}
       <div className="bg-gradient-to-r from-[#1E2A38] to-[#3AB7BF] rounded-lg p-6 text-white">
         <h2 className="text-2xl font-bold mb-2">Admin Dashboard</h2>
-        <p className="text-blue-100">Manage your SaaS platform and monitor system performance.</p>
+        <p className="text-purple-100">Manage your SaaS platform and monitor system performance.</p>
       </div>
 
       {/* Key Metrics */}
