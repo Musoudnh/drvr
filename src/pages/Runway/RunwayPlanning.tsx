@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Target, TrendingUp, TrendingDown, DollarSign, Users, Calendar, Plus, CreditCard as Edit3, Copy, Lock, Unlock, Archive, Download, Share2, Save, RotateCcw, RotateCw, Settings, MessageSquare, FileText, AlertTriangle, CheckCircle, Clock, BarChart3, LineChart, PieChart, Zap, X, ChevronDown, ChevronRight, Filter, Search, Eye, EyeOff, GripVertical, ArrowUp, ArrowDown, Percent, Hash, Building2, UserPlus, Layers, TrendingUp as TrendIcon, Send, AtSign, Paperclip, MoreHorizontal } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import { AddRoleModal } from '../../components/Hiring/AddRoleModal';
+import { HiringRole } from '../../types/hiring';
+import { supabase } from '../../lib/supabase';
 
 interface Scenario {
   id: string;
@@ -264,6 +267,31 @@ const RunwayPlanning: React.FC = () => {
       color: '#F59E0B'
     }
   ]);
+
+  const [showAddRoleModal, setShowAddRoleModal] = useState(false);
+  const [comprehensiveRoles, setComprehensiveRoles] = useState<HiringRole[]>([]);
+
+  useEffect(() => {
+    loadComprehensiveRoles();
+  }, []);
+
+  const loadComprehensiveRoles = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('hiring_roles')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('start_date', { ascending: true });
+
+      if (error) throw error;
+      setComprehensiveRoles(data || []);
+    } catch (error) {
+      console.error('Error loading comprehensive roles:', error);
+    }
+  };
 
   const [comments, setComments] = useState<Comment[]>([
     {
@@ -1006,7 +1034,11 @@ const RunwayPlanning: React.FC = () => {
                     {showHiringGantt ? 'Hide' : 'Show'} Gantt View
                   </button>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAddRoleModal(true)}
+                >
                   <UserPlus className="w-4 h-4 mr-2" />
                   Add Role
                 </Button>
@@ -1628,6 +1660,13 @@ const RunwayPlanning: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Comprehensive Add Role Modal */}
+      <AddRoleModal
+        isOpen={showAddRoleModal}
+        onClose={() => setShowAddRoleModal(false)}
+        onRoleAdded={loadComprehensiveRoles}
+      />
     </div>
   );
 };
