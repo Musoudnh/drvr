@@ -253,34 +253,34 @@ const TasksProjects: React.FC = () => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+          className={`bg-white rounded-lg border border-gray-200 p-3 mb-2 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
             snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
             ...provided.draggableProps.style,
           }}
         >
-          <div className="flex items-start justify-between mb-3">
+          <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-[#1E2A38] text-sm leading-tight">{task.title}</h3>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
+            <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
               {task.priority}
             </span>
           </div>
-          
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+
+          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
             {task.description}
           </p>
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
-                <span className="text-white text-xs font-medium">
+              <div className="w-5 h-5 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-1.5">
+                <span className="text-white text-[10px] font-medium">
                   {task.assignee.split(' ').map(n => n[0]).join('')}
                 </span>
               </div>
               <span className="text-xs text-gray-600">{task.assignee}</span>
             </div>
-            
+
             <div className="flex items-center">
               <Calendar className="w-3 h-3 text-gray-400 mr-1" />
               <span className={`text-xs ${
