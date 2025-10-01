@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -47,6 +47,7 @@ interface AppliedScenario {
   adjustmentValue: number;
   appliedAt: Date;
   createdBy: string;
+  isActive: boolean;
 }
 
 const Forecasting: React.FC = () => {
@@ -85,6 +86,7 @@ const Forecasting: React.FC = () => {
   const [showVersionComparisonModal, setShowVersionComparisonModal] = useState(false);
   const [comparisonVersions, setComparisonVersions] = useState<[string, string] | null>(null);
   const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
+  const [scenarioMenuOpen, setScenarioMenuOpen] = useState<string | null>(null);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -1952,9 +1954,51 @@ const Forecasting: React.FC = () => {
                           <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
                           <p className="text-xs text-gray-500 mt-1">GL Code: {scenario.glCode}</p>
                         </div>
-                        <span className="px-2 py-1 bg-[#4ADE80]/10 text-[#4ADE80] text-xs font-medium rounded-full">
-                          Active
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            scenario.isActive
+                              ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
+                              : 'bg-gray-200 text-gray-600'
+                          }`}>
+                            {scenario.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                          <div className="relative">
+                            <button
+                              onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
+                              className="p-1 hover:bg-gray-100 rounded transition-colors"
+                            >
+                              <MoreVertical className="w-4 h-4 text-gray-500" />
+                            </button>
+                            {scenarioMenuOpen === scenario.id && (
+                              <div className="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                                <button
+                                  onClick={() => {
+                                    setAppliedScenarios(prev =>
+                                      prev.map(s =>
+                                        s.id === scenario.id
+                                          ? { ...s, isActive: !s.isActive }
+                                          : s
+                                      )
+                                    );
+                                    setScenarioMenuOpen(null);
+                                  }}
+                                  className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                                >
+                                  {scenario.isActive ? 'Deactivate' : 'Activate'}
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setAppliedScenarios(prev => prev.filter(s => s.id !== scenario.id));
+                                    setScenarioMenuOpen(null);
+                                  }}
+                                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
 
                       <p className="text-sm text-gray-600 mb-3">{scenario.description}</p>
