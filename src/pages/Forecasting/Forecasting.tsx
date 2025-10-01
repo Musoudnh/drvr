@@ -856,7 +856,7 @@ const Forecasting: React.FC = () => {
           <div className="flex bg-gray-100 rounded-lg p-0.5">
             <button
               onClick={() => setShowSaveForecastModal(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#3AB7BF] shadow-sm"
+              className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm"
             >
               <Save className="w-4 h-4 mr-1 inline" />
               Save Forecast
