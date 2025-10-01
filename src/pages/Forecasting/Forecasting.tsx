@@ -887,7 +887,7 @@ const Forecasting: React.FC = () => {
             </span>
             <button
               onClick={() => setShowBulkAdjustPanel(true)}
-              className="px-3 py-1.5 bg-[#3AB7BF] text-white rounded-lg text-sm font-medium hover:bg-[#2A9BA3] transition-colors"
+              className="px-3 py-1.5 bg-[#101010] text-white rounded-lg text-sm font-medium hover:bg-[#2a2a2a] transition-colors"
             >
               Adjust Selected
             </button>
