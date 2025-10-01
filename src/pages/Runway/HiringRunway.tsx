@@ -13,20 +13,22 @@ const HiringRunway: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [roles, setRoles] = useState<HiringRole[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hiringPlans, setHiringPlans] = useState([
-    { id: 1, role: 'Senior Software Engineer', department: 'Engineering', salary: 120000, startMonth: 'Feb 2025', endMonth: 'Dec 2025', active: true },
-    { id: 2, role: 'Sales Manager', department: 'Sales', salary: 95000, startMonth: 'Mar 2025', endMonth: 'Dec 2025', active: true },
-    { id: 3, role: 'Marketing Specialist', department: 'Marketing', salary: 70000, startMonth: 'Apr 2025', endMonth: 'Dec 2025', active: false },
-    { id: 4, role: 'Financial Analyst', department: 'Finance', salary: 75000, startMonth: 'May 2025', endMonth: 'Dec 2025', active: true }
-  ]);
-  const [newHire, setNewHire] = useState({
-    role: '',
-    department: 'Engineering',
-    salary: '',
-    startMonth: 'Jan 2025',
+
+  const getMonthYearFromDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${months[date.getMonth()]} ${date.getFullYear()}`;
+  };
+
+  const hiringPlans = roles.map(role => ({
+    id: role.id,
+    role: role.role_name,
+    department: role.location_state,
+    salary: role.base_compensation,
+    startMonth: getMonthYearFromDate(role.start_date),
     endMonth: 'Dec 2025',
-    customDepartment: ''
-  });
+    active: true
+  }));
 
   useEffect(() => {
     loadRoles();
@@ -79,28 +81,6 @@ const HiringRunway: React.FC = () => {
     { id: 3, name: 'Customer Success Hire', hires: 1, startMonth: 'May 2025', active: false, department: 'Customer Success', avgSalary: 70000 },
     { id: 4, name: 'Finance Team Addition', hires: 1, startMonth: 'Jun 2025', active: true, department: 'Finance', avgSalary: 80000 }
   ];
-
-  const handleAddHire = () => {
-    if (newHire.role.trim() && newHire.salary) {
-      const finalDepartment = newHire.department === 'Custom' ? newHire.customDepartment : newHire.department;
-      const hire = {
-        id: Math.max(...hiringPlans.map(h => h.id)) + 1,
-        role: newHire.role,
-        department: finalDepartment,
-        salary: parseInt(newHire.salary),
-        startMonth: newHire.startMonth,
-        endMonth: newHire.endMonth,
-        active: true
-      };
-      setHiringPlans(prev => [...prev, hire]);
-      setNewHire({ role: '', department: 'Engineering', salary: '', startMonth: 'Jan 2025', endMonth: 'Dec 2025', customDepartment: '' });
-      setShowAddModal(false);
-    }
-  };
-
-  const handleDeleteHire = (id: number) => {
-    setHiringPlans(prev => prev.filter(h => h.id !== id));
-  };
 
   const getMonthIndex = (month: string) => {
     return months.indexOf(month);
@@ -310,7 +290,7 @@ const HiringRunway: React.FC = () => {
                     {plan.active ? 'Active' : 'Planned'}
                   </span>
                   <button
-                    onClick={() => handleDeleteHire(plan.id)}
+                    onClick={() => handleDeleteRole(plan.id)}
                     className="p-2 hover:bg-red-100 rounded-lg text-red-500 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -380,13 +360,7 @@ const HiringRunway: React.FC = () => {
                             </button>
                             <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 min-w-[120px]">
                               <button
-                                onClick={() => setHiringPlans(prev => prev.map(p => p.id === plan.id ? {...p, active: !p.active} : p))}
-                                className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
-                              >
-                                {plan.active ? 'Deactivate' : 'Activate'}
-                              </button>
-                              <button
-                                onClick={() => handleDeleteHire(plan.id)}
+                                onClick={() => handleDeleteRole(plan.id)}
                                 className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
                               >
                                 Delete
@@ -600,123 +574,6 @@ const HiringRunway: React.FC = () => {
         onClose={() => setShowAddModal(false)}
         onRoleAdded={loadRoles}
       />
-
-      {/* Legacy Add Hiring Plan Modal */}
-      {false && showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#101010]">Add Hiring Plan</h3>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role Title</label>
-                <input
-                  type="text"
-                  value={newHire.role}
-                  onChange={(e) => setNewHire({...newHire, role: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                  placeholder="e.g., Senior Software Engineer"
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
-                  <select
-                    value={newHire.department}
-                    onChange={(e) => setNewHire({...newHire, department: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                  >
-                    <option value="Engineering">Engineering</option>
-                    <option value="Sales">Sales</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Operations">Operations</option>
-                    <option value="Customer Success">Customer Success</option>
-                    <option value="Custom">Custom (Enter your own)</option>
-                  </select>
-                </div>
-                
-                {newHire.department === 'Custom' && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Custom Department Name</label>
-                    <input
-                      type="text"
-                      value={newHire.customDepartment}
-                      onChange={(e) => setNewHire({...newHire, customDepartment: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                      placeholder="Enter custom department name"
-                    />
-                  </div>
-                )}
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Annual Salary ($)</label>
-                  <input
-                    type="number"
-                    value={newHire.salary}
-                    onChange={(e) => setNewHire({...newHire, salary: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                    placeholder="85000"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
-                  <select
-                    value={newHire.startMonth}
-                    onChange={(e) => setNewHire({...newHire, startMonth: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                  >
-                    {months.map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
-                  <select
-                    value={newHire.endMonth}
-                    onChange={(e) => setNewHire({...newHire, endMonth: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4ADE80] focus:border-transparent"
-                  >
-                    {months.map(month => (
-                      <option key={month} value={month}>{month}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddHire}
-                disabled={!newHire.role.trim() || !newHire.salary || (newHire.department === 'Custom' && !newHire.customDepartment.trim())}
-                className="px-4 py-2 bg-[#4ADE80] text-white rounded-lg hover:bg-[#3BC66F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                Add Hire
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
