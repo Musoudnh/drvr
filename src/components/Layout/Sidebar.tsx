@@ -436,7 +436,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
@@ -461,7 +461,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#F87171';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
@@ -489,7 +489,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
@@ -514,7 +514,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
@@ -539,7 +539,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#101010';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
@@ -564,7 +564,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 fontWeight: 'var(--font-heavy)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F5F0';
+                e.currentTarget.style.backgroundColor = '#eff1f4';
                 e.currentTarget.style.color = '#F87171';
                 e.currentTarget.style.transform = 'translateX(4px)';
                 e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
