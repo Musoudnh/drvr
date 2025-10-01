@@ -101,6 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User },
     { path: '/admin/team', label: 'Team Management', icon: Users },
+    { path: '/admin/departments', label: 'Departments', icon: Building },
     { path: '/admin/billing', label: 'Subscription', icon: CreditCard },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
     { path: '/admin/security', label: 'Security & SOX', icon: Shield },
@@ -111,6 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
+    { path: '/analytics/health', label: 'Financial Health', icon: Activity },
     {
       path: '/financials',
       label: 'Financials',

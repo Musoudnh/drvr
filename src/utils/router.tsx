@@ -42,6 +42,8 @@ import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import Sandbox from '../pages/Financials/Sandbox';
 import AdvancedCashFlow from '../pages/CashFlow/AdvancedCashFlow';
+import DepartmentManagement from '../pages/Admin/DepartmentManagement';
+import FinancialHealth from '../pages/Analytics/FinancialHealth';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
@@ -155,6 +157,10 @@ export const router = createBrowserRouter([
         element: <TeamManagement />
       },
       {
+        path: "departments",
+        element: <DepartmentManagement />
+      },
+      {
         path: "profile",
         element: <AccountProfile />
       }
@@ -201,6 +207,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Analysis">
         <Analytics />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/analytics/health",
+    element: (
+      <ProtectedRoute title="Financial Health Score">
+        <FinancialHealth />
       </ProtectedRoute>
     )
   },
