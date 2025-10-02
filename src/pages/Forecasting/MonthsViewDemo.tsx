@@ -5,12 +5,12 @@ import Button from '../../components/UI/Button';
 
 const MonthsViewDemo: React.FC = () => {
   const [revenueMonths, setRevenueMonths] = useState([
-    { month: 'Jan', value: 125000, percentage: 5.2, isActual: true, isSelected: false },
-    { month: 'Feb', value: 132000, percentage: 5.6, isActual: true, isSelected: false },
-    { month: 'Mar', value: 145000, percentage: 9.8, isActual: true, isSelected: false },
-    { month: 'Apr', value: 138000, percentage: -4.8, isActual: true, isSelected: false },
-    { month: 'May', value: 150000, percentage: 8.7, isActual: false, isSelected: false },
-    { month: 'Jun', value: 165000, percentage: 10.0, isActual: false, isSelected: false },
+    { month: 'Jan', value: 125000, actualValue: 128000, percentage: 5.2, isActual: true, isSelected: false },
+    { month: 'Feb', value: 132000, actualValue: 130000, percentage: 5.6, isActual: true, isSelected: false },
+    { month: 'Mar', value: 145000, actualValue: 152000, percentage: 9.8, isActual: true, isSelected: false },
+    { month: 'Apr', value: 138000, actualValue: 135000, percentage: -4.8, isActual: true, isSelected: false },
+    { month: 'May', value: 150000, actualValue: 148000, percentage: 8.7, isActual: false, isSelected: false },
+    { month: 'Jun', value: 165000, actualValue: 170000, percentage: 10.0, isActual: false, isSelected: false },
     { month: 'Jul', value: 172000, percentage: 4.2, isActual: false, isSelected: false },
     { month: 'Aug', value: 168000, percentage: -2.3, isActual: false, isSelected: false },
     { month: 'Sep', value: 175000, percentage: 4.2, isActual: false, isSelected: false },
@@ -20,12 +20,12 @@ const MonthsViewDemo: React.FC = () => {
   ]);
 
   const [expenseMonths, setExpenseMonths] = useState([
-    { month: 'Jan', value: 85000, percentage: 3.2, isActual: true, isSelected: false },
-    { month: 'Feb', value: 88000, percentage: 3.5, isActual: true, isSelected: false },
-    { month: 'Mar', value: 92000, percentage: 4.5, isActual: true, isSelected: false },
-    { month: 'Apr', value: 90000, percentage: -2.2, isActual: true, isSelected: false },
-    { month: 'May', value: 95000, percentage: 5.6, isActual: false, isSelected: false },
-    { month: 'Jun', value: 98000, percentage: 3.2, isActual: false, isSelected: false },
+    { month: 'Jan', value: 85000, actualValue: 87000, percentage: 3.2, isActual: true, isSelected: false },
+    { month: 'Feb', value: 88000, actualValue: 86500, percentage: 3.5, isActual: true, isSelected: false },
+    { month: 'Mar', value: 92000, actualValue: 94000, percentage: 4.5, isActual: true, isSelected: false },
+    { month: 'Apr', value: 90000, actualValue: 89000, percentage: -2.2, isActual: true, isSelected: false },
+    { month: 'May', value: 95000, actualValue: 96500, percentage: 5.6, isActual: false, isSelected: false },
+    { month: 'Jun', value: 98000, actualValue: 99200, percentage: 3.2, isActual: false, isSelected: false },
     { month: 'Jul', value: 102000, percentage: 4.1, isActual: false, isSelected: false },
     { month: 'Aug', value: 105000, percentage: 2.9, isActual: false, isSelected: false },
     { month: 'Sep', value: 108000, percentage: 2.9, isActual: false, isSelected: false },

@@ -4,6 +4,7 @@ import { Lock, Check, CreditCard as Edit2 } from 'lucide-react';
 interface MonthData {
   month: string;
   value: number;
+  actualValue?: number;
   percentage: number;
   isActual: boolean;
   isSelected: boolean;
@@ -54,6 +55,11 @@ const MonthsView: React.FC<MonthsViewProps> = ({
 
   const formatPercentage = (percentage: number): string => {
     return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(1)}%`;
+  };
+
+  const calculateVariance = (actual: number, budget: number): number => {
+    if (budget === 0) return 0;
+    return ((actual - budget) / budget) * 100;
   };
 
   const handleCellClick = (month: string, field: 'value' | 'percentage', monthData: MonthData) => {
@@ -169,69 +175,58 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                     )}
                   </div>
 
-                  <div
-                    className={`relative mb-2 ${
-                      !monthData.isActual ? 'cursor-pointer group' : 'cursor-not-allowed'
-                    }`}
-                    onClick={() => !monthData.isActual && handleCellClick(monthData.month, 'value', monthData)}
-                  >
-                    {isEditingValue ? (
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={editValue}
-                        onChange={handleInputChange}
-                        onBlur={handleInputBlur}
-                        onKeyDown={handleInputKeyDown}
-                        className="w-full px-2 py-1 text-sm font-semibold text-gray-900 border-2 border-blue-500 rounded focus:outline-none"
-                      />
-                    ) : (
-                      <div
-                        className={`px-2 py-1 rounded text-sm font-semibold ${
-                          monthData.isActual
-                            ? 'text-gray-700 bg-gray-100'
-                            : 'text-gray-900 group-hover:bg-blue-50 group-hover:ring-2 group-hover:ring-blue-200'
-                        }`}
-                      >
-                        {formatValue(monthData.value)}
-                        {!monthData.isActual && (
-                          <Edit2 className="w-3 h-3 text-gray-400 absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  <div className="space-y-1">
+                    <div className="text-[10px] text-gray-500 font-medium mb-1">Budget</div>
+                    <div
+                      className={`relative mb-2 ${
+                        !monthData.isActual ? 'cursor-pointer group' : 'cursor-not-allowed'
+                      }`}
+                      onClick={() => !monthData.isActual && handleCellClick(monthData.month, 'value', monthData)}
+                    >
+                      {isEditingValue ? (
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={editValue}
+                          onChange={handleInputChange}
+                          onBlur={handleInputBlur}
+                          onKeyDown={handleInputKeyDown}
+                          className="w-full px-2 py-1 text-sm font-semibold text-gray-900 border-2 border-blue-500 rounded focus:outline-none"
+                        />
+                      ) : (
+                        <div
+                          className={`px-2 py-1 rounded text-sm font-semibold ${
+                            monthData.isActual
+                              ? 'text-gray-700 bg-gray-100'
+                              : 'text-gray-900 group-hover:bg-blue-50 group-hover:ring-2 group-hover:ring-blue-200'
+                          }`}
+                        >
+                          {formatValue(monthData.value)}
+                          {!monthData.isActual && (
+                            <Edit2 className="w-3 h-3 text-gray-400 absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          )}
+                        </div>
+                      )}
+                    </div>
 
-                  <div
-                    className={`relative ${
-                      !monthData.isActual ? 'cursor-pointer group' : 'cursor-not-allowed'
-                    }`}
-                    onClick={() => !monthData.isActual && handleCellClick(monthData.month, 'percentage', monthData)}
-                  >
-                    {isEditingPercentage ? (
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={editValue}
-                        onChange={handleInputChange}
-                        onBlur={handleInputBlur}
-                        onKeyDown={handleInputKeyDown}
-                        className="w-full px-2 py-1 text-xs font-medium border-2 border-blue-500 rounded focus:outline-none"
-                      />
-                    ) : (
-                      <div
-                        className={`px-2 py-1 rounded text-xs font-medium ${
-                          monthData.isActual
-                            ? 'text-gray-600 bg-gray-100'
-                            : monthData.percentage >= 0
-                            ? 'text-green-600 group-hover:bg-green-50 group-hover:ring-2 group-hover:ring-green-200'
-                            : 'text-red-600 group-hover:bg-red-50 group-hover:ring-2 group-hover:ring-red-200'
-                        }`}
-                      >
-                        {formatPercentage(monthData.percentage)}
-                        {!monthData.isActual && (
-                          <Edit2 className="w-3 h-3 text-gray-400 absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        )}
-                      </div>
+                    {monthData.actualValue !== undefined && (
+                      <>
+                        <div className="text-[10px] text-gray-500 font-medium mb-1">Actuals</div>
+                        <div className="px-2 py-1 rounded text-sm font-semibold bg-blue-50 text-blue-900 mb-2">
+                          {formatValue(monthData.actualValue)}
+                        </div>
+
+                        <div className="text-[10px] text-gray-500 font-medium mb-1">% vs Budget</div>
+                        <div
+                          className={`px-2 py-1 rounded text-xs font-medium ${
+                            calculateVariance(monthData.actualValue, monthData.value) >= 0
+                              ? 'bg-green-50 text-green-700'
+                              : 'bg-red-50 text-red-700'
+                          }`}
+                        >
+                          {formatPercentage(calculateVariance(monthData.actualValue, monthData.value))}
+                        </div>
+                      </>
                     )}
                   </div>
 
