@@ -71,7 +71,7 @@ const BillingSettings: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">Change Plan</Button>
+              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Change Plan</button>
               <Button variant="danger" size="sm">Cancel</Button>
             </div>
           </div>
@@ -98,14 +98,13 @@ const BillingSettings: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-600">Manage your payment methods and autopay settings</p>
-            <Button 
-              variant="outline" 
-              size="sm"
+            <button
               onClick={() => setShowPaymentModal(true)}
+              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Payment Method
-            </Button>
+            </button>
           </div>
           
           {paymentMethods.map(method => (
@@ -134,9 +133,9 @@ const BillingSettings: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">Edit</Button>
+                <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Edit</button>
                 {!method.isDefault && (
-                  <Button variant="outline" size="sm">Set Default</Button>
+                  <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Set Default</button>
                 )}
               </div>
             </div>
@@ -258,10 +257,10 @@ const BillingSettings: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
-              <Button variant="outline" size="sm">Configure</Button>
+              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Configure</button>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
               <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
@@ -274,7 +273,7 @@ const BillingSettings: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
-              <Button variant="outline" size="sm">Configure</Button>
+              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Configure</button>
             </div>
           </div>
           
@@ -283,7 +282,7 @@ const BillingSettings: React.FC = () => {
               <p className="font-medium text-[#101010]">Available Integrations</p>
               <p className="text-sm text-gray-600">Connect Xero, Slack, Zapier and more</p>
             </div>
-            <Button variant="outline" size="sm">Browse All</Button>
+            <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Browse All</button>
           </div>
         </div>
       </Card>
