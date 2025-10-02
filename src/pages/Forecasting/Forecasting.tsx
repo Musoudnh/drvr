@@ -1235,7 +1235,7 @@ const Forecasting: React.FC = () => {
                           dateViewMode === 'months'
                             ? 'text-center px-2 min-w-[120px]'
                             : dateViewMode === 'quarters'
-                            ? 'text-left px-0.5 w-[95px]'
+                            ? 'text-left px-2 min-w-[120px]'
                             : 'text-left px-2 min-w-[100px]'
                         }`}
                       >
@@ -1334,7 +1334,7 @@ const Forecasting: React.FC = () => {
                                       dateViewMode === 'months'
                                         ? 'text-center px-2'
                                         : dateViewMode === 'quarters'
-                                        ? 'text-left px-0.5'
+                                        ? 'text-left px-2'
                                         : 'text-left px-2'
                                     }`}
                                   >
