@@ -2281,7 +2281,7 @@ const Forecasting: React.FC = () => {
 
       {/* Alerts Sidebar */}
       {showAlertsSidebar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
