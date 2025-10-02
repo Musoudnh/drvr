@@ -304,19 +304,19 @@ const TasksProjects: React.FC = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
-      default: return 'bg-gray-200 text-gray-700';
+      case 'high': return 'border border-[#F87171] text-[#F87171]';
+      case 'medium': return 'border border-[#FBBF24] text-[#FBBF24]';
+      case 'low': return 'border border-[#34D399] text-[#34D399]';
+      default: return 'border border-gray-300 text-gray-700';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
-      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
-      case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
+      case 'todo': return 'border border-[#94A3B8] text-[#94A3B8]';
+      case 'in_progress': return 'border border-[#3AB7BF] text-[#3AB7BF]';
+      case 'done': return 'border border-[#4ADE80] text-[#4ADE80]';
+      default: return 'border border-gray-300 text-gray-700';
     }
   };
 
@@ -363,7 +363,7 @@ const TasksProjects: React.FC = () => {
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
             <div className="flex items-center gap-1 flex-shrink-0">
-              <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
+              <span className={`px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
                 {task.priority}
               </span>
               <button
@@ -519,12 +519,12 @@ const TasksProjects: React.FC = () => {
                   </span>
                 </td>
                 <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
                     {task.priority}
                   </span>
                 </td>
                 <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
+                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(task.status)}`}>
                     {task.status.replace('_', ' ')}
                   </span>
                 </td>
