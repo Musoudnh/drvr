@@ -698,7 +698,7 @@ const RunwayPlanning: React.FC = () => {
                     <div className="flex items-center space-x-2">
                       <GripVertical className="w-4 h-4 text-gray-400" />
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        driver.scope === 'global' ? 'bg-purple-100 text-purple-800' : 'bg-indigo-100 text-indigo-800'
+                        driver.scope === 'global' ? 'bg-[#EDE9FE] text-[#5B21B6]' : 'bg-[#E0E7FF] text-[#3730A3]'
                       }`}>
                         {getDriverTypeLabel(driver.type)}
                       </span>

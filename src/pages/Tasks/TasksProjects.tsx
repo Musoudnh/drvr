@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
+import ListView from '../../components/Tasks/ListView';
 
 interface Task {
   id: string;
@@ -27,6 +28,16 @@ interface Comment {
   createdAt: Date;
 }
 
+interface ActivityLogEntry {
+  id: string;
+  user: string;
+  action: 'created' | 'updated' | 'commented' | 'status_changed';
+  taskTitle: string;
+  taskId: string;
+  details: string;
+  timestamp: Date;
+}
+
 interface Project {
   id: string;
   name: string;
@@ -44,6 +55,8 @@ const TasksProjects: React.FC = () => {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetail, setShowTaskDetail] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isEditingTask, setIsEditingTask] = useState(false);
+  const [editTaskForm, setEditTaskForm] = useState<Task | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotesPanel, setShowNotesPanel] = useState(false);
   const [clickupConnected, setClickupConnected] = useState(false);
@@ -60,6 +73,10 @@ const TasksProjects: React.FC = () => {
     platform: 'clickup' | 'monday';
     connected: boolean;
   }>>([]);
+  const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
+  const [showActivityLog, setShowActivityLog] = useState(false);
+  const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
+  const [newComment, setNewComment] = useState('');
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -146,11 +163,68 @@ const TasksProjects: React.FC = () => {
 
   const teamMembers = [
     'Sarah Johnson',
-    'Michael Chen', 
+    'Michael Chen',
     'Emily Rodriguez',
     'David Kim',
     'Lisa Thompson'
   ];
+
+  const [activityLog, setActivityLog] = useState<ActivityLogEntry[]>([
+    {
+      id: 'a1',
+      user: 'Sarah Johnson',
+      action: 'created',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Created task',
+      timestamp: new Date('2025-01-10T09:30:00')
+    },
+    {
+      id: 'a2',
+      user: 'Michael Chen',
+      action: 'commented',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Added comment about marketing budget',
+      timestamp: new Date('2025-01-15T14:20:00')
+    },
+    {
+      id: 'a3',
+      user: 'Sarah Johnson',
+      action: 'status_changed',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Changed status from To Do to In Progress',
+      timestamp: new Date('2025-01-15T16:45:00')
+    },
+    {
+      id: 'a4',
+      user: 'Emily Rodriguez',
+      action: 'created',
+      taskTitle: 'Financial Report Generation',
+      taskId: '2',
+      details: 'Created task',
+      timestamp: new Date('2025-01-12T10:15:00')
+    },
+    {
+      id: 'a5',
+      user: 'David Kim',
+      action: 'updated',
+      taskTitle: 'Expense Categorization',
+      taskId: '3',
+      details: 'Updated task description',
+      timestamp: new Date('2025-01-16T11:30:00')
+    },
+    {
+      id: 'a6',
+      user: 'David Kim',
+      action: 'status_changed',
+      taskTitle: 'Expense Categorization',
+      taskId: '3',
+      details: 'Changed status from In Progress to Done',
+      timestamp: new Date('2025-01-18T15:00:00')
+    }
+  ]);
 
   const filteredTasks = tasks.filter(task =>
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -231,19 +305,19 @@ const TasksProjects: React.FC = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
-      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
-      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
-      default: return 'bg-gray-200 text-gray-700';
+      case 'high': return 'border border-[#F87171] text-[#F87171]';
+      case 'medium': return 'border border-[#FBBF24] text-[#FBBF24]';
+      case 'low': return 'border border-[#34D399] text-[#34D399]';
+      default: return 'border border-gray-300 text-gray-700';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
-      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
-      case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
-      default: return 'bg-gray-200 text-gray-700';
+      case 'todo': return 'border border-[#94A3B8] text-[#94A3B8]';
+      case 'in_progress': return 'border border-[#3AB7BF] text-[#3AB7BF]';
+      case 'done': return 'border border-[#4ADE80] text-[#4ADE80]';
+      default: return 'border border-gray-300 text-gray-700';
     }
   };
 
@@ -263,6 +337,16 @@ const TasksProjects: React.FC = () => {
     setIsDraggingTask(false);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (taskMenuOpen) {
+        setTaskMenuOpen(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [taskMenuOpen]);
+
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -278,10 +362,22 @@ const TasksProjects: React.FC = () => {
           }}
         >
           <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-[#101010] text-sm leading-tight">{task.title}</h3>
-            <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
-              {task.priority}
-            </span>
+            <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <span className={`px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                {task.priority}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
+                }}
+                className="p-1 hover:bg-gray-100 rounded relative"
+                title="More options"
+              >
+                <MoreVertical className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
           </div>
 
           <p className="text-xs text-gray-600 mb-2 line-clamp-2">
@@ -290,11 +386,6 @@ const TasksProjects: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-5 h-5 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-1.5">
-                <span className="text-white text-[10px] font-medium">
-                  {task.assignee.split(' ').map(n => n[0]).join('')}
-                </span>
-              </div>
               <span className="text-xs text-gray-600">{task.assignee}</span>
             </div>
 
@@ -307,20 +398,40 @@ const TasksProjects: React.FC = () => {
               </span>
             </div>
           </div>
-          
-          
-          {/* View Details Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedTask(task);
-              setShowTaskDetail(true);
-            }}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
-            title="View details"
-          >
-            <Eye className="w-4 h-4 text-gray-400" />
-          </button>
+
+
+          {/* Dropdown Menu - positioned relative to button in header */}
+          {taskMenuOpen === task.id && (
+            <div className="absolute top-8 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedTask(task);
+                  setEditTaskForm(task);
+                  setIsEditingTask(true);
+                  setShowTaskDetail(true);
+                  setTaskMenuOpen(null);
+                }}
+                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <Edit3 className="w-4 h-4 mr-2" />
+                Edit
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm(`Delete task "${task.title}"?`)) {
+                    setTasks(prev => prev.filter(t => t.id !== task.id));
+                  }
+                  setTaskMenuOpen(null);
+                }}
+                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       )}
     </Draggable>
@@ -375,74 +486,32 @@ const TasksProjects: React.FC = () => {
       </div>
   );
 
-  const renderListView = () => (
-    <div className="bg-white rounded-lg border border-gray-200">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Task</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Assignee</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Due Date</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Priority</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-              <th className="text-center py-3 px-4 font-semibold text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTasks.map(task => (
-              <tr key={task.id} className="border-b border-gray-100 hover:bg-gray-50">
-                <td className="py-3 px-4">
-                  <div>
-                    <p className="font-medium text-[#101010]">{task.title}</p>
-                    <p className="text-sm text-gray-600 line-clamp-1">{task.description}</p>
-                  </div>
-                </td>
-                <td className="py-3 px-4">
-                  <div className="flex items-center">
-                    <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
-                      <span className="text-white text-xs font-medium">
-                        {task.assignee.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-700">{task.assignee}</span>
-                  </div>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`text-sm ${
-                    isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
-                  }`}>
-                    {formatDate(task.dueDate)}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
-                    {task.status.replace('_', ' ')}
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-center">
-                  <button
-                    onClick={() => {
-                      setSelectedTask(task);
-                      setShowTaskDetail(true);
-                    }}
-                    className="p-1 hover:bg-gray-100 rounded"
-                  >
-                    <Eye className="w-4 h-4 text-gray-400" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+  const handleTaskUpdateWrapper = (taskId: string, updates: Partial<Task>) => {
+    setTasks(prev => prev.map(task =>
+      task.id === taskId
+        ? { ...task, ...updates, updatedAt: new Date() }
+        : task
+    ));
+
+    if (updates.status) {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        setActivityLog(prev => [{
+          id: `a${Date.now()}`,
+          user: 'Current User',
+          action: 'status_changed',
+          taskTitle: task.title,
+          taskId: task.id,
+          details: `Changed status to ${updates.status}`,
+          timestamp: new Date()
+        }, ...prev]);
+      }
+    }
+  };
+
+  const handleTaskDeleteWrapper = (taskId: string) => {
+    setTasks(prev => prev.filter(t => t.id !== taskId));
+  };
 
   const renderIntegrationTab = (type: 'clickup' | 'monday') => {
     const isConnected = type === 'clickup' ? clickupConnected : mondayConnected;
@@ -593,7 +662,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#101010] text-white hover:bg-[#2a2a2a] shadow-sm"
+                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
@@ -606,7 +675,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('board')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'board'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -617,7 +686,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('list')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'list'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -628,7 +697,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('gantt')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'gantt'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -636,12 +705,30 @@ const TasksProjects: React.FC = () => {
                       Gantt
                     </button>
                   </div>
+
+                  <button
+                    onClick={() => setShowActivityLog(true)}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium flex items-center"
+                  >
+                    <Activity className="w-4 h-4 mr-1.5" />
+                    Activity Log
+                  </button>
                 </div>
               </div>
 
               {/* Task View */}
               {viewMode === 'board' && renderKanbanBoard()}
-              {viewMode === 'list' && renderListView()}
+              {viewMode === 'list' && (
+                <ListView
+                  tasks={filteredTasks}
+                  onTaskClick={(task) => {
+                    setSelectedTask(task);
+                    setShowTaskDetail(true);
+                  }}
+                  onTaskUpdate={handleTaskUpdateWrapper}
+                  onTaskDelete={handleTaskDeleteWrapper}
+                />
+              )}
               {viewMode === 'gantt' && (
                 <GanttView
                   tasks={filteredTasks}
@@ -795,107 +882,279 @@ const TasksProjects: React.FC = () => {
       {showTaskDetail && selectedTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#101010]">{selectedTask.title}</h3>
+            <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-[#101010]">
+                {isEditingTask ? 'Edit Task' : selectedTask.title}
+              </h3>
               <button
-                onClick={() => setShowTaskDetail(false)}
+                onClick={() => {
+                  setShowTaskDetail(false);
+                  setIsEditingTask(false);
+                  setEditTaskForm(null);
+                }}
                 className="p-1 hover:bg-gray-100 rounded"
               >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
             </div>
             
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-[#101010] mb-2">Description</h4>
-                <p className="text-gray-700">{selectedTask.description}</p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+            {isEditingTask && editTaskForm ? (
+              <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Assignee</h4>
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white text-sm font-medium">
-                        {selectedTask.assignee.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                    <span className="text-gray-700">{selectedTask.assignee}</span>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                  <input
+                    type="text"
+                    value={editTaskForm.title}
+                    onChange={(e) => setEditTaskForm({...editTaskForm, title: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <textarea
+                    value={editTaskForm.description}
+                    onChange={(e) => setEditTaskForm({...editTaskForm, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Assignee</label>
+                    <input
+                      type="text"
+                      value={editTaskForm.assignee}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, assignee: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+                    <input
+                      type="date"
+                      value={editTaskForm.dueDate.toISOString().split('T')[0]}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
                   </div>
                 </div>
-                
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                    <select
+                      value={editTaskForm.priority}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select
+                      value={editTaskForm.status}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, status: e.target.value as Task['status']})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value="todo">To Do</option>
+                      <option value="in_progress">In Progress</option>
+                      <option value="review">Review</option>
+                      <option value="done">Done</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Due Date</h4>
-                  <div className="flex items-center">
-                    <Calendar className="w-4 h-4 text-gray-400 mr-2" />
-                    <span className={`${
-                      isOverdue(selectedTask.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
-                    }`}>
-                      {formatDate(selectedTask.dueDate)}
+                  <h4 className="font-semibold text-[#101010] mb-2">Description</h4>
+                  <p className="text-gray-700">{selectedTask.description}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Assignee</h4>
+                    <p className="text-gray-700">{selectedTask.assignee}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Due Date</h4>
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 text-gray-400 mr-2" />
+                      <span className={`${
+                        isOverdue(selectedTask.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
+                      }`}>
+                        {formatDate(selectedTask.dueDate)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
+                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                      {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
+                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
+                      {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                     </span>
                   </div>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+
+
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
-                    {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
-                  </span>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
-                    {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
-                  </span>
-                </div>
-              </div>
-              
-              {selectedTask.tags.length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTask.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
-                        {tag}
-                      </span>
+                  <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
+                  <div className="space-y-3 max-h-40 overflow-y-auto mb-3">
+                    {selectedTask.comments.map(comment => (
+                      <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
+                          <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
+                        </div>
+                        <p className="text-sm text-gray-700">{comment.content}</p>
+                      </div>
                     ))}
+                    {selectedTask.comments.length === 0 && (
+                      <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Add a comment..."
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && newComment.trim()) {
+                          const updatedTask = {
+                            ...selectedTask,
+                            comments: [
+                              ...selectedTask.comments,
+                              {
+                                id: `c${Date.now()}`,
+                                author: 'Current User',
+                                content: newComment,
+                                createdAt: new Date()
+                              }
+                            ]
+                          };
+                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+                          setSelectedTask(updatedTask);
+                          setNewComment('');
+
+                          setActivityLog(prev => [{
+                            id: `a${Date.now()}`,
+                            user: 'Current User',
+                            action: 'commented',
+                            taskTitle: selectedTask.title,
+                            taskId: selectedTask.id,
+                            details: `Added comment: "${newComment}"`,
+                            timestamp: new Date()
+                          }, ...prev]);
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        if (newComment.trim()) {
+                          const updatedTask = {
+                            ...selectedTask,
+                            comments: [
+                              ...selectedTask.comments,
+                              {
+                                id: `c${Date.now()}`,
+                                author: 'Current User',
+                                content: newComment,
+                                createdAt: new Date()
+                              }
+                            ]
+                          };
+                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+                          setSelectedTask(updatedTask);
+                          setNewComment('');
+
+                          setActivityLog(prev => [{
+                            id: `a${Date.now()}`,
+                            user: 'Current User',
+                            action: 'commented',
+                            taskTitle: selectedTask.title,
+                            taskId: selectedTask.id,
+                            details: `Added comment: "${newComment}"`,
+                            timestamp: new Date()
+                          }, ...prev]);
+                        }
+                      }}
+                      disabled={!newComment.trim()}
+                      className="px-3 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-              )}
-              
-              <div>
-                <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
-                <div className="space-y-3 max-h-40 overflow-y-auto">
-                  {selectedTask.comments.map(comment => (
-                    <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
-                        <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
-                      </div>
-                      <p className="text-sm text-gray-700">{comment.content}</p>
-                    </div>
-                  ))}
-                  {selectedTask.comments.length === 0 && (
-                    <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
-                  )}
-                </div>
               </div>
-            </div>
+            )}
             
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline">
-                <Edit3 className="w-4 h-4 mr-2" />
-                Edit Task
-              </Button>
-              <button
-                onClick={() => setShowTaskDetail(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
+              {isEditingTask ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsEditingTask(false);
+                      setEditTaskForm(null);
+                    }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (editTaskForm) {
+                        setTasks(prev => prev.map(t => t.id === editTaskForm.id ? editTaskForm : t));
+                        setSelectedTask(editTaskForm);
+                        setIsEditingTask(false);
+                      }
+                    }}
+                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      setEditTaskForm(selectedTask);
+                      setIsEditingTask(true);
+                    }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Edit Task
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowTaskDetail(false);
+                      setIsEditingTask(false);
+                      setEditTaskForm(null);
+                    }}
+                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+                  >
+                    Close
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -1052,6 +1311,83 @@ const TasksProjects: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Activity Log Sidebar */}
+      {showActivityLog && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowActivityLog(false)}
+          />
+          <div className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-50 flex flex-col">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-[#101010] flex items-center">
+                  <Activity className="w-5 h-5 mr-2 text-[#4F46E5]" />
+                  Activity Log
+                </h3>
+                <button
+                  onClick={() => setShowActivityLog(false)}
+                  className="p-1 hover:bg-gray-100 rounded"
+                >
+                  <X className="w-4 h-4 text-gray-400" />
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Filter by User</label>
+                <select
+                  value={activityLogFilter}
+                  onChange={(e) => setActivityLogFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                >
+                  <option value="all">All Users</option>
+                  {teamMembers.map(member => (
+                    <option key={member} value={member}>{member}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-3">
+                {activityLog
+                  .filter(entry => activityLogFilter === 'all' || entry.user === activityLogFilter)
+                  .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                  .map((entry) => {
+                    return (
+                      <div
+                        key={entry.id}
+                        className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer"
+                        onClick={() => {
+                          const task = tasks.find(t => t.id === entry.taskId);
+                          if (task) {
+                            setSelectedTask(task);
+                            setShowTaskDetail(true);
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
+                          <span className="text-xs text-gray-500">
+                            {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-1">
+                          <span className="font-medium text-[#101010]">{entry.taskTitle}</span>
+                        </p>
+                        <p className="text-sm text-gray-700">{entry.details}</p>
+                        <p className="text-xs text-gray-400 mt-2">
+                          {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </p>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
       </div>
     </DragDropContext>
