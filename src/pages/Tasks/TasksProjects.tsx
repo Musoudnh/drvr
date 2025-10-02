@@ -4,6 +4,7 @@ import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, Us
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
+import ListView from '../../components/Tasks/ListView';
 
 interface Task {
   id: string;
@@ -485,101 +486,32 @@ const TasksProjects: React.FC = () => {
       </div>
   );
 
-  const renderListView = () => (
-    <div className="bg-white rounded-lg border border-gray-200">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Task</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Assignee</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Due Date</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Priority</th>
-              <th className="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
-              <th className="text-center py-3 px-4 font-semibold text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTasks.map(task => (
-              <tr key={task.id} className="border-b border-gray-100 hover:bg-gray-50">
-                <td className="py-3 px-4">
-                  <div>
-                    <p className="font-medium text-[#101010]">{task.title}</p>
-                    <p className="text-sm text-gray-600 line-clamp-1">{task.description}</p>
-                  </div>
-                </td>
-                <td className="py-3 px-4">
-                  <span className="text-sm text-gray-700">{task.assignee}</span>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`text-sm ${
-                    isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
-                  }`}>
-                    {formatDate(task.dueDate)}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(task.status)}`}>
-                    {task.status.replace('_', ' ')}
-                  </span>
-                </td>
-                <td className="py-3 px-4 text-center">
-                  <div className="relative inline-block">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
-                      }}
-                      className="p-1 hover:bg-gray-100 rounded"
-                    >
-                      <MoreVertical className="w-4 h-4 text-gray-600" />
-                    </button>
+  const handleTaskUpdateWrapper = (taskId: string, updates: Partial<Task>) => {
+    setTasks(prev => prev.map(task =>
+      task.id === taskId
+        ? { ...task, ...updates, updatedAt: new Date() }
+        : task
+    ));
 
-                    {taskMenuOpen === task.id && (
-                      <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedTask(task);
-                            setEditTaskForm(task);
-                            setIsEditingTask(true);
-                            setShowTaskDetail(true);
-                            setTaskMenuOpen(null);
-                          }}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
-                        >
-                          <Edit3 className="w-4 h-4 mr-2" />
-                          Edit
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (window.confirm(`Delete task "${task.title}"?`)) {
-                              setTasks(prev => prev.filter(t => t.id !== task.id));
-                            }
-                            setTaskMenuOpen(null);
-                          }}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
-                        >
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+    if (updates.status) {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        setActivityLog(prev => [{
+          id: `a${Date.now()}`,
+          user: 'Current User',
+          action: 'status_changed',
+          taskTitle: task.title,
+          taskId: task.id,
+          details: `Changed status to ${updates.status}`,
+          timestamp: new Date()
+        }, ...prev]);
+      }
+    }
+  };
+
+  const handleTaskDeleteWrapper = (taskId: string) => {
+    setTasks(prev => prev.filter(t => t.id !== taskId));
+  };
 
   const renderIntegrationTab = (type: 'clickup' | 'monday') => {
     const isConnected = type === 'clickup' ? clickupConnected : mondayConnected;
@@ -786,7 +718,17 @@ const TasksProjects: React.FC = () => {
 
               {/* Task View */}
               {viewMode === 'board' && renderKanbanBoard()}
-              {viewMode === 'list' && renderListView()}
+              {viewMode === 'list' && (
+                <ListView
+                  tasks={filteredTasks}
+                  onTaskClick={(task) => {
+                    setSelectedTask(task);
+                    setShowTaskDetail(true);
+                  }}
+                  onTaskUpdate={handleTaskUpdateWrapper}
+                  onTaskDelete={handleTaskDeleteWrapper}
+                />
+              )}
               {viewMode === 'gantt' && (
                 <GanttView
                   tasks={filteredTasks}
