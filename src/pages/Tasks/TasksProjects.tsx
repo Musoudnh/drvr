@@ -76,6 +76,8 @@ const TasksProjects: React.FC = () => {
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
   const [newComment, setNewComment] = useState('');
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
+  const [priorityDropdownOpen, setPriorityDropdownOpen] = useState<string | null>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -341,10 +343,30 @@ const TasksProjects: React.FC = () => {
       if (taskMenuOpen) {
         setTaskMenuOpen(null);
       }
+      if (statusDropdownOpen) {
+        setStatusDropdownOpen(null);
+      }
+      if (priorityDropdownOpen) {
+        setPriorityDropdownOpen(null);
+      }
     };
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [taskMenuOpen]);
+  }, [taskMenuOpen, statusDropdownOpen, priorityDropdownOpen]);
+
+  const handleStatusChange = (taskId: string, newStatus: Task['status']) => {
+    setTasks(prev => prev.map(task =>
+      task.id === taskId ? { ...task, status: newStatus, updatedAt: new Date() } : task
+    ));
+    setStatusDropdownOpen(null);
+  };
+
+  const handlePriorityChange = (taskId: string, newPriority: Task['priority']) => {
+    setTasks(prev => prev.map(task =>
+      task.id === taskId ? { ...task, priority: newPriority, updatedAt: new Date() } : task
+    ));
+    setPriorityDropdownOpen(null);
+  };
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -352,56 +374,172 @@ const TasksProjects: React.FC = () => {
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`bg-white rounded-lg border border-gray-200 p-3 mb-2 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
-            snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
+          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 group relative ${
+            snapshot.isDragging ? 'shadow-lg cursor-grabbing' : ''
           }`}
           style={{
             ...provided.draggableProps.style,
           }}
         >
-          <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
-            <div className="flex items-center gap-1 flex-shrink-0">
-              <span className={`px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                {task.priority}
-              </span>
+          {/* Drag Handle */}
+          <div
+            {...provided.dragHandleProps}
+            className="absolute left-2 top-4 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
+          >
+            <GripVertical className="w-4 h-4 text-gray-400" />
+          </div>
+
+          <div className="pl-6">
+            {/* Title and More Menu */}
+            <div className="flex items-start justify-between mb-3">
+              <h3
+                className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2 cursor-pointer hover:text-[#3AB7BF] transition-colors"
+                onClick={() => {
+                  setSelectedTask(task);
+                  setShowTaskDetail(true);
+                }}
+              >
+                {task.title}
+              </h3>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
                 }}
-                className="p-1 hover:bg-gray-100 rounded relative"
+                className="p-1 hover:bg-gray-100 rounded relative opacity-0 group-hover:opacity-100 transition-opacity"
                 title="More options"
               >
                 <MoreVertical className="w-4 h-4 text-gray-600" />
               </button>
             </div>
-          </div>
 
-          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
-            {task.description}
-          </p>
+            {/* Status and Priority Row */}
+            <div className="flex items-center gap-2 mb-3">
+              {/* Status Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id);
+                    setPriorityDropdownOpen(null);
+                  }}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium ${getStatusColor(task.status)} hover:opacity-80 transition-opacity cursor-pointer`}
+                >
+                  {task.status === 'in_progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                </button>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <span className="text-xs text-gray-600">{task.assignee}</span>
+                {statusDropdownOpen === task.id && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[130px]">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleStatusChange(task.id, 'todo');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>To Do</span>
+                      {task.status === 'todo' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleStatusChange(task.id, 'in_progress');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>In Progress</span>
+                      {task.status === 'in_progress' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleStatusChange(task.id, 'done');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>Done</span>
+                      {task.status === 'done' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Priority Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPriorityDropdownOpen(priorityDropdownOpen === task.id ? null : task.id);
+                    setStatusDropdownOpen(null);
+                  }}
+                  className={`px-3 py-1 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)} hover:opacity-80 transition-opacity cursor-pointer`}
+                >
+                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                </button>
+
+                {priorityDropdownOpen === task.id && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[100px]">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePriorityChange(task.id, 'high');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>High</span>
+                      {task.priority === 'high' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePriorityChange(task.id, 'medium');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>Medium</span>
+                      {task.priority === 'medium' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePriorityChange(task.id, 'low');
+                      }}
+                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>Low</span>
+                      {task.priority === 'low' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="flex items-center">
-              <Calendar className="w-3 h-3 text-gray-400 mr-1" />
-              <span className={`text-xs ${
-                isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-600'
-              }`}>
-                {formatDate(task.dueDate)}
-              </span>
+            {/* Description */}
+            <p className="text-xs text-gray-600 mb-3 line-clamp-2">
+              {task.description}
+            </p>
+
+            {/* Footer: Assignee and Due Date */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1">
+                <User className="w-3 h-3 text-gray-400" />
+                <span className="text-gray-600">{task.assignee}</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-gray-400" />
+                <span className={`${
+                  isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-600'
+                }`}>
+                  {formatDate(task.dueDate)}
+                </span>
+              </div>
             </div>
           </div>
 
-
-          {/* Dropdown Menu - positioned relative to button in header */}
+          {/* More Options Menu */}
           {taskMenuOpen === task.id && (
-            <div className="absolute top-8 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+            <div className="absolute top-12 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -436,46 +574,52 @@ const TasksProjects: React.FC = () => {
     </Draggable>
   );
 
-  const renderKanbanBoard = () => (
+  const renderKanbanBoard = () => {
+    const statusConfig = {
+      todo: { label: 'To Do', color: 'border-gray-300' },
+      in_progress: { label: 'In Progress', color: 'border-[#3AB7BF]' },
+      done: { label: 'Done', color: 'border-[#4ADE80]' }
+    };
+
+    return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
-          const statusLabels = {
-            todo: 'To Do',
-            in_progress: 'In Progress', 
-            done: 'Done'
-          };
-          
+          const config = statusConfig[status];
+
           return (
             <div key={status} className="flex flex-col">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-[#101010] flex items-center">
-                  {statusLabels[status]}
-                  <span className="ml-2 px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+              {/* Column Header */}
+              <div className={`border-t-4 ${config.color} bg-white rounded-t-lg px-4 py-3 mb-2`}>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-[#101010] text-sm">
+                    {config.label}
+                  </h3>
+                  <span className="px-2.5 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
                     {statusTasks.length}
                   </span>
-                </h3>
+                </div>
               </div>
-              
+
+              {/* Droppable Column Area */}
               <Droppable droppableId={status}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[400px] p-2 rounded-lg transition-all duration-200 ${
-                      snapshot.isDraggingOver 
-                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed' 
-                        : 'bg-gray-50 border-2 border-transparent'
+                    className={`flex-1 min-h-[500px] p-3 rounded-lg transition-all duration-200 ${
+                      snapshot.isDraggingOver
+                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed'
+                        : 'bg-gray-50/50 border-2 border-transparent'
                     }`}
                   >
-                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
-                    {provided.placeholder}
-                    {/* Drop zone indicator when dragging over */}
-                    {snapshot.isDraggingOver && (
-                      <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
-                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
+                    {statusTasks.length === 0 && !snapshot.isDraggingOver && (
+                      <div className="text-center py-8 text-gray-400 text-sm">
+                        No tasks
                       </div>
                     )}
+                    {statusTasks.map((task, index) => renderTaskCard(task, index))}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
@@ -483,7 +627,8 @@ const TasksProjects: React.FC = () => {
           );
         })}
       </div>
-  );
+    );
+  };
 
   const renderListView = () => (
     <div className="bg-white rounded-lg border border-gray-200">
