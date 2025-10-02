@@ -1427,6 +1427,27 @@ const Forecasting: React.FC = () => {
                                           </span>
                                         )}
                                       </div>
+                                      {dateViewMode === 'months' && (() => {
+                                        const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
+                                        if (monthData?.actualAmount !== undefined) {
+                                          const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
+                                          return (
+                                            <>
+                                              <div className="text-[10px] text-blue-900 font-semibold bg-blue-50 rounded px-1 py-0.5">
+                                                ${monthData.actualAmount.toLocaleString()}
+                                              </div>
+                                              <div className={`text-[10px] font-medium rounded px-1 py-0.5 ${
+                                                variance >= 0
+                                                  ? 'bg-green-50 text-green-700'
+                                                  : 'bg-red-50 text-red-700'
+                                              }`}>
+                                                {variance >= 0 ? '+' : ''}{variance.toFixed(1)}%
+                                              </div>
+                                            </>
+                                          );
+                                        }
+                                        return null;
+                                      })()}
                                     </div>
                                   </td>
                                 );
