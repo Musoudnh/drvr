@@ -234,58 +234,6 @@ const BillingSettings: React.FC = () => {
           </div>
         </div>
       )}
-
-      <Card title="Integrations">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">Manage your connected services and data sync</p>
-            <Button variant="outline" size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Integration
-            </Button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-            <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                <span className="text-white font-medium text-sm">QB</span>
-              </div>
-              <div>
-                <p className="font-medium text-[#101010]">QuickBooks Online</p>
-                <p className="text-sm text-gray-600">Last sync: 2 hours ago</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
-              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Configure</button>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-            <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                <CreditCard className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="font-medium text-[#101010]">Stripe</p>
-                <p className="text-sm text-gray-600">Last transaction: 1 hour ago</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Connected</span>
-              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Configure</button>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium text-[#101010]">Available Integrations</p>
-              <p className="text-sm text-gray-600">Connect Xero, Slack, Zapier and more</p>
-            </div>
-            <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Browse All</button>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 };
