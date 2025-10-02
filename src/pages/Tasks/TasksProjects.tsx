@@ -60,6 +60,7 @@ const TasksProjects: React.FC = () => {
     platform: 'clickup' | 'monday';
     connected: boolean;
   }>>([]);
+  const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -263,6 +264,16 @@ const TasksProjects: React.FC = () => {
     setIsDraggingTask(false);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (taskMenuOpen) {
+        setTaskMenuOpen(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [taskMenuOpen]);
+
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided, snapshot) => (
@@ -307,20 +318,52 @@ const TasksProjects: React.FC = () => {
               </span>
             </div>
           </div>
-          
-          
-          {/* View Details Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedTask(task);
-              setShowTaskDetail(true);
-            }}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded"
-            title="View details"
-          >
-            <Eye className="w-4 h-4 text-gray-400" />
-          </button>
+
+
+          {/* Task Options Menu */}
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
+              }}
+              className="p-1 hover:bg-gray-100 rounded"
+              title="More options"
+            >
+              <MoreHorizontal className="w-4 h-4 text-gray-400" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {taskMenuOpen === task.id && (
+              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedTask(task);
+                    setShowTaskDetail(true);
+                    setTaskMenuOpen(null);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                >
+                  <Edit3 className="w-4 h-4 mr-2" />
+                  Edit
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (window.confirm(`Delete task "${task.title}"?`)) {
+                      setTasks(prev => prev.filter(t => t.id !== task.id));
+                    }
+                    setTaskMenuOpen(null);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </Draggable>
@@ -426,15 +469,47 @@ const TasksProjects: React.FC = () => {
                   </span>
                 </td>
                 <td className="py-3 px-4 text-center">
-                  <button
-                    onClick={() => {
-                      setSelectedTask(task);
-                      setShowTaskDetail(true);
-                    }}
-                    className="p-1 hover:bg-gray-100 rounded"
-                  >
-                    <Eye className="w-4 h-4 text-gray-400" />
-                  </button>
+                  <div className="relative inline-block">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
+                      }}
+                      className="p-1 hover:bg-gray-100 rounded"
+                    >
+                      <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                    </button>
+
+                    {taskMenuOpen === task.id && (
+                      <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedTask(task);
+                            setShowTaskDetail(true);
+                            setTaskMenuOpen(null);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                        >
+                          <Edit3 className="w-4 h-4 mr-2" />
+                          Edit
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm(`Delete task "${task.title}"?`)) {
+                              setTasks(prev => prev.filter(t => t.id !== task.id));
+                            }
+                            setTaskMenuOpen(null);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
