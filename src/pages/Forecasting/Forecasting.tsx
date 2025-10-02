@@ -265,6 +265,40 @@ const Forecasting: React.FC = () => {
 
   const datePeriods = getDatePeriods();
 
+  const getQuarterMonths = (quarter: string): string[] => {
+    const quarterMap: { [key: string]: string[] } = {
+      'Q1': ['Jan', 'Feb', 'Mar'],
+      'Q2': ['Apr', 'May', 'Jun'],
+      'Q3': ['Jul', 'Aug', 'Sep'],
+      'Q4': ['Oct', 'Nov', 'Dec']
+    };
+    return quarterMap[quarter] || [];
+  };
+
+  const getAggregatedAmount = (glCode: string, period: string): number => {
+    if (dateViewMode === 'months') {
+      const monthData = forecastData.find(
+        item => item.glCode === glCode && item.month === `${period} ${selectedYear}`
+      );
+      return monthData?.forecastedAmount || 0;
+    } else if (dateViewMode === 'quarters') {
+      const quarterMonths = getQuarterMonths(period);
+      return quarterMonths.reduce((sum, month) => {
+        const monthData = forecastData.find(
+          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
+        );
+        return sum + (monthData?.forecastedAmount || 0);
+      }, 0);
+    } else {
+      return months.reduce((sum, month) => {
+        const monthData = forecastData.find(
+          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
+        );
+        return sum + (monthData?.forecastedAmount || 0);
+      }, 0);
+    }
+  };
+
   // Generate forecast data
   const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
     const data: MonthlyForecast[] = [];
@@ -1186,11 +1220,25 @@ const Forecasting: React.FC = () => {
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
                     {datePeriods.map((period, index) => (
                       <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
-                        {getDateLabel(period, index)}
+                        {dateViewMode === 'years' ? (
+                          <div className="flex flex-col">
+                            <span className="text-base">FY{getDateLabel(period, index)}</span>
+                            <span className="text-xs font-normal text-gray-500">Jan-Dec</span>
+                          </div>
+                        ) : (
+                          getDateLabel(period, index)
+                        )}
                       </th>
                     ))}
-                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
-                    <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
+                    {dateViewMode !== 'years' && (
+                      <>
+                        <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
+                        <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
+                      </>
+                    )}
+                    {dateViewMode === 'years' && (
+                      <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">Total</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -1202,7 +1250,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={datePeriods.length + 3} className="py-3 px-4">
+                          <td colSpan={dateViewMode === 'years' ? datePeriods.length + 2 : datePeriods.length + 3} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1254,22 +1302,20 @@ const Forecasting: React.FC = () => {
                                   </div>
                                 </div>
                               </td>
-                              {months.map((month, monthIndex) => {
-                                const monthData = forecastData.find(
-                                  item => item.glCode === glCode.code && item.month === `${month} ${selectedYear}`
-                                );
-                                const isActualized = isMonthActualized(`${month} ${selectedYear}`);
-                                const isEditing = editingCell?.glCode === glCode.code && editingCell?.month === `${month} ${selectedYear}`;
-                                
-                                const isSelected = isCellSelected(glCode.code, `${month} ${selectedYear}`);
+                              {datePeriods.map((period, periodIndex) => {
+                                const aggregatedAmount = getAggregatedAmount(glCode.code, period);
+                                const periodKey = dateViewMode === 'months' ? `${period} ${selectedYear}` : period;
+                                const isActualized = dateViewMode === 'months' ? isMonthActualized(periodKey) : false;
+                                const isEditing = dateViewMode === 'months' && editingCell?.glCode === glCode.code && editingCell?.month === periodKey;
+                                const isSelected = dateViewMode === 'months' && isCellSelected(glCode.code, periodKey);
 
                                 return (
-                                  <td key={monthIndex} className="py-3 px-2 text-center text-sm">
+                                  <td key={periodIndex} className="py-3 px-2 text-center text-sm">
                                     <div className="space-y-1 relative">
                                       <div className={`font-medium rounded px-1 ${
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
-                                          : !isActualized
+                                          : !isActualized && dateViewMode === 'months'
                                             ? 'cursor-pointer hover:bg-purple-50'
                                             : ''
                                       }`}>
@@ -1279,7 +1325,6 @@ const Forecasting: React.FC = () => {
                                             inputMode="numeric"
                                             value={editValue}
                                             onChange={(e) => {
-                                              // Allow only numbers, minus sign, and empty string
                                               const value = e.target.value;
                                               if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
                                                 setEditValue(value);
@@ -1297,120 +1342,124 @@ const Forecasting: React.FC = () => {
                                         ) : (
                                           <span
                                             onClick={(e) => {
-                                              if (!isActualized && monthData) {
+                                              if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
                                                 if (e.detail === 2) {
-                                                  handleCellEdit(glCode.code, `${month} ${selectedYear}`, monthData.forecastedAmount);
+                                                  handleCellEdit(glCode.code, periodKey, aggregatedAmount);
                                                 } else {
-                                                  handleCellSelection(glCode.code, `${month} ${selectedYear}`, isActualized, e);
+                                                  handleCellSelection(glCode.code, periodKey, isActualized, e);
                                                 }
                                               }
                                             }}
                                             className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-purple-600 select-none'}
                                           >
-                                            ${monthData?.forecastedAmount.toLocaleString() || '0'}
+                                            ${aggregatedAmount.toLocaleString()}
                                           </span>
                                         )}
                                       </div>
-                                      {monthData?.actualAmount && (
-                                        <div className="text-xs text-gray-500 bg-gray-100 rounded px-1">
-                                          Act: ${monthData.actualAmount.toLocaleString()}
-                                        </div>
-                                      )}
-                                      {monthData?.variance && (
-                                        <div className={`text-xs font-medium ${getVarianceColor(monthData.variance, glCode.code)}`}>
-                                          {monthData.variance > 0 ? '+' : ''}{monthData.variance.toFixed(1)}%
-                                        </div>
-                                      )}
                                     </div>
                                   </td>
                                 );
                               })}
-                              <td className="py-3 px-4 text-right text-sm font-medium">
-                                {editingCell?.glCode === glCode.code && editingCell?.type === 'ytd' ? (
-                                  <input
-                                    type="text"
-                                    inputMode="numeric"
-                                    value={editValue}
-                                    onChange={(e) => {
-                                      const value = e.target.value;
-                                      if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                        setEditValue(value);
-                                      }
-                                    }}
-                                    onBlur={handleCellSave}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') handleCellSave();
-                                      if (e.key === 'Escape') handleCellCancel();
-                                    }}
-                                    className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
-                                    autoFocus
-                                    onFocus={(e) => e.target.select()}
-                                  />
-                                ) : (
-                                  <span
-                                    onClick={() => {
-                                      const ytdTotal = forecastData
-                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                        .slice(0, new Date().getMonth() + 1)
-                                        .reduce((sum, item) => sum + item.forecastedAmount, 0);
-                                      setEditingCell({ glCode: glCode.code, month: 'YTD', type: 'ytd' });
-                                      setEditValue(ytdTotal.toString());
-                                    }}
-                                    className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
-                                  >
+                              {dateViewMode !== 'years' && (
+                                <>
+                                  <td className="py-3 px-4 text-right text-sm font-medium">
+                                    {editingCell?.glCode === glCode.code && editingCell?.type === 'ytd' ? (
+                                      <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={editValue}
+                                        onChange={(e) => {
+                                          const value = e.target.value;
+                                          if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                            setEditValue(value);
+                                          }
+                                        }}
+                                        onBlur={handleCellSave}
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') handleCellSave();
+                                          if (e.key === 'Escape') handleCellCancel();
+                                        }}
+                                        className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
+                                        autoFocus
+                                        onFocus={(e) => e.target.select()}
+                                      />
+                                    ) : (
+                                      <span
+                                        onClick={() => {
+                                          const ytdTotal = forecastData
+                                            .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                            .slice(0, new Date().getMonth() + 1)
+                                            .reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                          setEditingCell({ glCode: glCode.code, month: 'YTD', type: 'ytd' });
+                                          setEditValue(ytdTotal.toString());
+                                        }}
+                                        className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
+                                      >
+                                        ${forecastData
+                                          .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                          .slice(0, new Date().getMonth() + 1)
+                                          .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                          .toLocaleString()}
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td className="py-3 px-4 text-right text-sm font-medium">
+                                    {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
+                                      <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={editValue}
+                                        onChange={(e) => {
+                                          const value = e.target.value;
+                                          if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                            setEditValue(value);
+                                          }
+                                        }}
+                                        onBlur={handleCellSave}
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') handleCellSave();
+                                          if (e.key === 'Escape') handleCellCancel();
+                                        }}
+                                        className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
+                                        autoFocus
+                                        onFocus={(e) => e.target.select()}
+                                      />
+                                    ) : (
+                                      <span
+                                        onClick={() => {
+                                          const fyTotal = forecastData
+                                            .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                            .reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                          setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
+                                          setEditValue(fyTotal.toString());
+                                        }}
+                                        className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
+                                      >
+                                        ${forecastData
+                                          .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                          .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                          .toLocaleString()}
+                                      </span>
+                                    )}
+                                  </td>
+                                </>
+                              )}
+                              {dateViewMode === 'years' && (
+                                <td className="py-3 px-4 text-right text-sm font-medium">
+                                  <span>
                                     ${forecastData
                                       .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                      .slice(0, new Date().getMonth() + 1)
                                       .reduce((sum, item) => sum + item.forecastedAmount, 0)
                                       .toLocaleString()}
                                   </span>
-                                )}
-                              </td>
-                              <td className="py-3 px-4 text-right text-sm font-medium">
-                                {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
-                                  <input
-                                    type="text"
-                                    inputMode="numeric"
-                                    value={editValue}
-                                    onChange={(e) => {
-                                      const value = e.target.value;
-                                      if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                        setEditValue(value);
-                                      }
-                                    }}
-                                    onBlur={handleCellSave}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') handleCellSave();
-                                      if (e.key === 'Escape') handleCellCancel();
-                                    }}
-                                    className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
-                                    autoFocus
-                                    onFocus={(e) => e.target.select()}
-                                  />
-                                ) : (
-                                  <span
-                                    onClick={() => {
-                                      const fyTotal = forecastData
-                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                        .reduce((sum, item) => sum + item.forecastedAmount, 0);
-                                      setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
-                                      setEditValue(fyTotal.toString());
-                                    }}
-                                    className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
-                                  >
-                                    ${forecastData
-                                      .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                      .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                      .toLocaleString()}
-                                  </span>
-                                )}
-                              </td>
+                                </td>
+                              )}
                             </tr>
                             
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={datePeriods.length + 3} className="py-0">
+                                <td colSpan={dateViewMode === 'years' ? datePeriods.length + 2 : datePeriods.length + 3} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
