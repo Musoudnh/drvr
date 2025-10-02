@@ -443,59 +443,98 @@ const Insights: React.FC = () => {
             <span className="text-sm text-gray-600">Budget to Actual Bridge</span>
           </div>
         </div>
-        <div className="relative h-96">
-          <div className="absolute inset-0 flex items-end justify-around px-4">
-            {waterfallData.map((item, index) => {
-              const position = getWaterfallPosition(index);
-              const maxValue = Math.max(...waterfallData.map(d =>
-                d.type === 'starting' || d.type === 'ending' ? d.value : position + Math.abs(d.value)
-              ));
-              const baseHeight = (position / maxValue) * 100;
-              const barHeight = item.type === 'starting' || item.type === 'ending'
-                ? (item.value / maxValue) * 100
-                : (Math.abs(item.value) / maxValue) * 100;
+        <div className="space-y-3">
+          {waterfallData.map((item, index) => {
+            const position = getWaterfallPosition(index);
+            const maxValue = Math.max(...waterfallData.map(d =>
+              d.type === 'starting' || d.type === 'ending' ? d.value : position + Math.abs(d.value)
+            ));
+            const barWidth = item.type === 'starting' || item.type === 'ending'
+              ? (item.value / maxValue) * 100
+              : (Math.abs(item.value) / maxValue) * 100;
+            const baseWidth = (position / maxValue) * 100;
 
-              return (
-                <div key={index} className="flex flex-col items-center flex-1 max-w-[120px]">
-                  <div className="relative w-full h-80 flex flex-col justify-end">
-                    {item.type === 'increase' && (
+            return (
+              <div key={index} className="flex items-center gap-4">
+                <div className="w-48 flex-shrink-0 text-sm font-medium text-gray-900">
+                  {item.label}
+                </div>
+                <div className="flex-1 relative h-12 flex items-center">
+                  <div className="absolute inset-0 flex items-center">
+                    {item.type === 'starting' && (
                       <div
-                        className="w-full bg-gray-200"
-                        style={{ height: `${baseHeight}%` }}
-                      />
+                        className="h-10 bg-blue-500 rounded flex items-center justify-end pr-3"
+                        style={{ width: `${barWidth}%` }}
+                      >
+                        <span className="text-xs font-semibold text-white">
+                          {formatCurrency(item.value)}
+                        </span>
+                      </div>
+                    )}
+                    {item.type === 'ending' && (
+                      <div
+                        className="h-10 bg-green-500 rounded flex items-center justify-end pr-3"
+                        style={{ width: `${barWidth}%` }}
+                      >
+                        <span className="text-xs font-semibold text-white">
+                          {formatCurrency(item.value)}
+                        </span>
+                      </div>
+                    )}
+                    {item.type === 'increase' && (
+                      <>
+                        <div
+                          className="h-10 bg-gray-200 rounded-l"
+                          style={{ width: `${baseWidth}%` }}
+                        />
+                        <div
+                          className="h-10 bg-green-400 rounded-r flex items-center justify-end pr-3"
+                          style={{ width: `${barWidth}%` }}
+                        >
+                          <span className="text-xs font-semibold text-white">
+                            {formatCurrency(item.value)}
+                          </span>
+                        </div>
+                      </>
                     )}
                     {item.type === 'decrease' && (
-                      <div
-                        className="w-full bg-gray-200"
-                        style={{ height: `${baseHeight + barHeight}%` }}
-                      />
+                      <>
+                        <div
+                          className="h-10 bg-gray-200 rounded-l"
+                          style={{ width: `${baseWidth}%` }}
+                        />
+                        <div
+                          className="h-10 bg-red-400 rounded-r flex items-center justify-end pr-3"
+                          style={{ width: `${barWidth}%` }}
+                        >
+                          <span className="text-xs font-semibold text-white">
+                            {formatCurrency(item.value)}
+                          </span>
+                        </div>
+                      </>
                     )}
-                    <div
-                      className={`w-full ${
-                        item.type === 'starting'
-                          ? 'bg-blue-500'
-                          : item.type === 'ending'
-                          ? 'bg-green-500'
-                          : item.type === 'increase'
-                          ? 'bg-green-400'
-                          : 'bg-red-400'
-                      }`}
-                      style={{
-                        height: `${barHeight}%`,
-                        marginTop: item.type === 'decrease' ? `-${barHeight}%` : '0'
-                      }}
-                    >
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full mb-1 text-xs font-medium whitespace-nowrap">
-                        {formatCurrency(item.value)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-2 text-xs text-center text-gray-700 font-medium max-w-full break-words">
-                    {item.label}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-6 flex items-center justify-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-blue-500 rounded" />
+            <span className="text-xs text-gray-600">Starting Balance</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-green-400 rounded" />
+            <span className="text-xs text-gray-600">Increase</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-red-400 rounded" />
+            <span className="text-xs text-gray-600">Decrease</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-green-500 rounded" />
+            <span className="text-xs text-gray-600">Ending Balance</span>
           </div>
         </div>
       </Card>
