@@ -30,6 +30,7 @@ import ChatInterface from '../components/Chat/ChatInterface';
 import ChatSettings from '../pages/Chat/ChatSettings';
 import ExpertSelection from '../pages/Expert/ExpertSelection';
 import ReferralProgram from '../pages/Referrals/ReferralProgram';
+import Insights from '../pages/Insights/Insights';
 import ScenarioPlanning from '../pages/ScenarioPlanning/ScenarioPlanning';
 import RunwayPlanning from '../pages/Runway/RunwayPlanning';
 import RevenueRunway from '../pages/Runway/RevenueRunway';
@@ -277,6 +278,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Financial Sandbox">
         <Sandbox />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/insights",
+    element: (
+      <ProtectedRoute title="Business Insights">
+        <Insights />
       </ProtectedRoute>
     )
   },

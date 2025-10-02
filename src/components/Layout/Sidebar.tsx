@@ -117,12 +117,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       icon: DollarSign,
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
-        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+        { path: '/insights', label: 'Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
-    { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
+    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
   ];
@@ -137,12 +137,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       icon: DollarSign,
       children: [
         { path: '/forecasting', label: 'Forecasting', icon: Target },
-        { path: '/forecasting/variance-insights', label: 'Variance & Insights', icon: BarChart3 },
+        { path: '/insights', label: 'Insights', icon: BarChart3 },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
     },
-    { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
+    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
   ];
