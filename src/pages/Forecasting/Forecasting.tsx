@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -92,6 +92,7 @@ const Forecasting: React.FC = () => {
   const [editingScenario, setEditingScenario] = useState<AppliedScenario | null>(null);
   const [showEditScenarioModal, setShowEditScenarioModal] = useState(false);
   const [scenarioSearchTerm, setScenarioSearchTerm] = useState('');
+  const [showAlertsSidebar, setShowAlertsSidebar] = useState(false);
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
@@ -1070,6 +1071,13 @@ const Forecasting: React.FC = () => {
             >
               <Save className="w-4 h-4 mr-1 inline" />
               Save Forecast
+            </button>
+            <button
+              onClick={() => setShowAlertsSidebar(true)}
+              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
+            >
+              <Bell className="w-4 h-4 mr-1 inline" />
+              Alerts
             </button>
             <button
               onClick={() => setShowScenarioAuditSidebar(true)}
@@ -2230,6 +2238,178 @@ const Forecasting: React.FC = () => {
               >
                 Apply Adjustment
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Alerts Sidebar */}
+      {showAlertsSidebar && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+          <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-[#101010]">Forecast Alerts</h3>
+                  <p className="text-sm text-gray-600 mt-1">Monitor budget variances and anomalies</p>
+                </div>
+                <button
+                  onClick={() => setShowAlertsSidebar(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              {/* Alert Filter Tabs */}
+              <div className="flex gap-2">
+                <button className="px-3 py-1.5 bg-[#3AB7BF] text-white rounded-lg text-xs font-medium">
+                  All Alerts
+                </button>
+                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                  Critical
+                </button>
+                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                  Warnings
+                </button>
+                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                  Info
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-4">
+                {/* Critical Alert */}
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-red-100 rounded-lg">
+                      <AlertTriangle className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
+                        <span className="text-xs text-red-600 font-medium">Critical</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        Payroll & Benefits (GL 6000) shows a 35% variance above forecast for Q3
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">Affected Period: Jul - Sep 2025</span>
+                        <span className="text-gray-400">2 hours ago</span>
+                      </div>
+                      <button className="mt-3 px-3 py-1.5 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
+                        Review Forecast
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Warning Alert */}
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-amber-100 rounded-lg">
+                      <AlertTriangle className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
+                        <span className="text-xs text-amber-600 font-medium">Warning</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        Marketing expenses at 85% of annual budget with 3 months remaining
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">GL 6200 - Marketing</span>
+                        <span className="text-gray-400">5 hours ago</span>
+                      </div>
+                      <button className="mt-3 px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-medium hover:bg-amber-700 transition-colors">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Alert */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <Info className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
+                        <span className="text-xs text-blue-600 font-medium">Info</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        "Q4 Expansion Plan" scenario has been applied to Revenue accounts
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">Applied by John Doe</span>
+                        <span className="text-gray-400">1 day ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Success Alert */}
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
+                        <span className="text-xs text-green-600 font-medium">Success</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        Travel & Entertainment expenses are 15% below forecast YTD
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">GL 6400 - Travel</span>
+                        <span className="text-gray-400">2 days ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Alert */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <Info className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
+                        <span className="text-xs text-blue-600 font-medium">Info</span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">
+                        Version "2025 Annual Budget v3" has been saved successfully
+                      </p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">Saved by Current User</span>
+                        <span className="text-gray-400">3 days ago</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-gray-200 bg-gray-50">
+              <div className="text-center">
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>5</strong> active alerts
+                </p>
+                <button
+                  onClick={() => setShowAlertsSidebar(false)}
+                  className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
