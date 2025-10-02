@@ -2,7 +2,47 @@ import React from 'react';
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import Card from '../../components/UI/Card';
 
+interface WaterfallItem {
+  label: string;
+  value: number;
+  type: 'starting' | 'increase' | 'decrease' | 'ending';
+}
+
 const CashFlow: React.FC = () => {
+  const waterfallData: WaterfallItem[] = [
+    { label: 'Budget', value: 1200000, type: 'starting' },
+    { label: 'Subscription Growth', value: 70000, type: 'increase' },
+    { label: 'Services Revenue', value: 15000, type: 'increase' },
+    { label: 'COGS Increase', value: -15000, type: 'decrease' },
+    { label: 'Marketing Overrun', value: -45000, type: 'decrease' },
+    { label: 'G&A Variance', value: -8000, type: 'decrease' },
+    { label: 'R&D Savings', value: 5000, type: 'increase' },
+    { label: 'Actual', value: 1285000, type: 'ending' }
+  ];
+
+  const getWaterfallPosition = (index: number): number => {
+    let position = 0;
+    for (let i = 0; i < index; i++) {
+      if (waterfallData[i].type === 'starting') {
+        position = waterfallData[i].value;
+      } else if (waterfallData[i].type === 'increase') {
+        position += waterfallData[i].value;
+      } else if (waterfallData[i].type === 'decrease') {
+        position += waterfallData[i].value;
+      }
+    }
+    return position;
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -55,16 +95,92 @@ const CashFlow: React.FC = () => {
         </Card>
       </div>
 
-      {/* Cash Flow Chart */}
-      <Card title="Cash Flow Trend">
-        <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
-          <div className="text-center">
-            <TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">Cash Flow Chart Visualization</p>
-            <p className="text-gray-400 text-sm">Interactive chart showing monthly trends</p>
+      <div className="bg-[#0A1929] rounded-lg p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-white">Cash Flow Waterfall</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">Budget to Actual Bridge</span>
           </div>
         </div>
-      </Card>
+        <div className="space-y-1">
+          {waterfallData.map((item, index) => {
+            const position = getWaterfallPosition(index);
+            const maxValue = 1500000;
+            const startPercent = (position / maxValue) * 100;
+            const valuePercent = (Math.abs(item.value) / maxValue) * 100;
+            const isTotal = item.type === 'starting' || item.type === 'ending';
+
+            return (
+              <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2' : 'py-1'}`}>
+                <div className="w-56 flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    {!isTotal && (
+                      <span className="text-xs text-gray-500 uppercase font-medium">
+                        {item.type === 'increase' ? 'ADD' : 'LESS'}
+                      </span>
+                    )}
+                    <span className={`text-sm ${isTotal ? 'font-bold text-white' : 'text-gray-300'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-1 relative h-10 flex items-center">
+                  {isTotal ? (
+                    <div
+                      className={`h-8 rounded flex items-center justify-center ${
+                        item.type === 'starting' ? 'bg-blue-500' : 'bg-green-500'
+                      }`}
+                      style={{
+                        width: `${(item.value / maxValue) * 100}%`,
+                        minWidth: '60px'
+                      }}
+                    >
+                      <span className="text-xs font-bold text-white">
+                        {formatCurrency(item.value)}
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        className="h-8 bg-transparent"
+                        style={{
+                          width: `${startPercent}%`,
+                          minWidth: startPercent > 0 ? '1px' : '0'
+                        }}
+                      />
+                      <div
+                        className={`h-8 rounded flex items-center justify-center ${
+                          item.type === 'increase' ? 'bg-green-500' : 'bg-red-500'
+                        }`}
+                        style={{
+                          width: `${valuePercent}%`,
+                          minWidth: '50px'
+                        }}
+                      >
+                        <span className="text-xs font-bold text-white">
+                          {item.type === 'increase' ? '+' : ''}{formatCurrency(item.value)}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-6 pt-4 border-t border-gray-700">
+          <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-green-500 rounded" />
+              <span className="text-xs text-gray-300">Cash Received</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-red-500 rounded" />
+              <span className="text-xs text-gray-300">Cash Spent</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Cash Flow Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

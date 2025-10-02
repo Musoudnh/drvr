@@ -436,19 +436,17 @@ const Insights: React.FC = () => {
         </div>
       </Card>
 
-      <Card className="p-6">
+      <div className="bg-[#0A1929] rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-[#101010]">Variance Waterfall</h2>
+          <h2 className="text-xl font-bold text-white">Variance Waterfall</h2>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Budget to Actual Bridge</span>
+            <span className="text-sm text-gray-400">Budget to Actual Bridge</span>
           </div>
         </div>
         <div className="space-y-1">
           {waterfallData.map((item, index) => {
             const position = getWaterfallPosition(index);
-            const nextPosition = index < waterfallData.length - 1 ? getWaterfallPosition(index + 1) : position;
             const maxValue = 1500000;
-
             const startPercent = (position / maxValue) * 100;
             const valuePercent = (Math.abs(item.value) / maxValue) * 100;
             const isTotal = item.type === 'starting' || item.type === 'ending';
@@ -462,7 +460,7 @@ const Insights: React.FC = () => {
                         {item.type === 'increase' ? 'ADD' : 'LESS'}
                       </span>
                     )}
-                    <span className={`text-sm ${isTotal ? 'font-bold text-gray-900' : 'text-gray-700'}`}>
+                    <span className={`text-sm ${isTotal ? 'font-bold text-white' : 'text-gray-300'}`}>
                       {item.label}
                     </span>
                   </div>
@@ -485,7 +483,7 @@ const Insights: React.FC = () => {
                   ) : (
                     <>
                       <div
-                        className="h-8 bg-transparent border-l-2 border-gray-300"
+                        className="h-8 bg-transparent"
                         style={{
                           width: `${startPercent}%`,
                           minWidth: startPercent > 0 ? '1px' : '0'
@@ -511,19 +509,19 @@ const Insights: React.FC = () => {
             );
           })}
         </div>
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-gray-700">
           <div className="flex items-center justify-center gap-8">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-green-500 rounded" />
-              <span className="text-xs text-gray-600">Cash Received</span>
+              <span className="text-xs text-gray-300">Cash Received</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-red-500 rounded" />
-              <span className="text-xs text-gray-600">Cash Spent</span>
+              <span className="text-xs text-gray-300">Cash Spent</span>
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6">

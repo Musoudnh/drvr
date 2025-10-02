@@ -36,7 +36,8 @@ import {
   Database,
   GitBranch,
   Brain,
-  CheckCircle
+  CheckCircle,
+  Wallet
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -122,6 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       ]
     },
     { path: '/insights', label: 'Insights', icon: BarChart3 },
+    { path: '/reports/cashflow', label: 'Cash Flow', icon: Wallet },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
@@ -142,6 +144,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       ]
     },
     { path: '/insights', label: 'Insights', icon: BarChart3 },
+    { path: '/reports/cashflow', label: 'Cash Flow', icon: Wallet },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
