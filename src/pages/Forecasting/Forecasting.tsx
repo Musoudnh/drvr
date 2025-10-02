@@ -241,25 +241,30 @@ const Forecasting: React.FC = () => {
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+  const availableYears = [2023, 2024, 2025, 2026, 2027];
+
   const getDatePeriods = () => {
     if (dateViewMode === 'months') {
       return months;
     } else if (dateViewMode === 'quarters') {
-      return ['Q1', 'Q2', 'Q3', 'Q4'];
+      return availableYears.flatMap(year =>
+        ['Q1', 'Q2', 'Q3', 'Q4'].map(q => ({ period: q, year }))
+      );
     } else {
-      return [selectedYear.toString()];
+      return availableYears.map(year => ({ period: 'FY', year }));
     }
   };
 
-  const getDateLabel = (period: string, index: number) => {
+  const getDateLabel = (period: any, index: number) => {
     if (dateViewMode === 'months') {
       return period;
     } else if (dateViewMode === 'quarters') {
-      const yearAbbr = selectedYear.toString().slice(-2);
-      return `${period} ${yearAbbr}'`;
+      const yearAbbr = period.year.toString().slice(-2);
+      const isSelectedYear = period.year === selectedYear;
+      return { label: `${period.period} ${yearAbbr}'`, isSelectedYear, year: period.year };
     } else {
-      const yearAbbr = selectedYear.toString().slice(-2);
-      return `${yearAbbr}'`;
+      const isSelectedYear = period.year === selectedYear;
+      return { label: `${period.year}`, isSelectedYear, year: period.year };
     }
   };
 
@@ -285,77 +290,84 @@ const Forecasting: React.FC = () => {
     return labelMap[quarter] || '';
   };
 
-  const getAggregatedAmount = (glCode: string, period: string): number => {
+  const getAggregatedAmount = (glCode: string, period: any): number => {
     if (dateViewMode === 'months') {
       const monthData = forecastData.find(
         item => item.glCode === glCode && item.month === `${period} ${selectedYear}`
       );
       return monthData?.forecastedAmount || 0;
     } else if (dateViewMode === 'quarters') {
-      const quarterMonths = getQuarterMonths(period);
+      const quarterMonths = getQuarterMonths(period.period);
+      const year = period.year;
       return quarterMonths.reduce((sum, month) => {
         const monthData = forecastData.find(
-          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
+          item => item.glCode === glCode && item.month === `${month} ${year}`
         );
         return sum + (monthData?.forecastedAmount || 0);
       }, 0);
     } else {
+      const year = period.year;
       return months.reduce((sum, month) => {
         const monthData = forecastData.find(
-          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
+          item => item.glCode === glCode && item.month === `${month} ${year}`
         );
         return sum + (monthData?.forecastedAmount || 0);
       }, 0);
     }
   };
 
-  // Generate forecast data
+  // Generate forecast data for all years
   const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
     const data: MonthlyForecast[] = [];
     const currentMonth = new Date().getMonth();
-    
+    const currentYear = new Date().getFullYear();
+
     glCodes.forEach(glCode => {
-      let cumulativeYTD = 0;
-      let previousAmount = 0;
-      
-      months.forEach((month, index) => {
-        const isHistorical = index <= currentMonth;
-        const baseAmount = getBaseAmount(glCode.code);
-        const seasonalFactor = getSeasonalFactor(month);
-        const growthFactor = Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
-        
-        let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
-        
-        // Apply scenario assumptions
-        if (glCode.code === '6000') { // Payroll
-          forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
-        } else if (glCode.code === '6100') { // Marketing
-          forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
-        } else if (glCode.code === '6200') { // Rent
-          forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
-        }
-        
-        cumulativeYTD += forecastedAmount;
-        const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
-        
-        const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
-        const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
-        
-        data.push({
-          glCode: glCode.code,
-          month: `${month} ${selectedYear}`,
-          forecastedAmount: Math.round(forecastedAmount),
-          actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
-          variance,
-          changeVsPrior: index > 0 ? changeVsPrior : undefined,
-          cumulativeYTD: Math.round(cumulativeYTD),
-          isEditable: !isHistorical
+      availableYears.forEach(year => {
+        let cumulativeYTD = 0;
+        let previousAmount = 0;
+        const yearOffset = (year - 2025);
+
+        months.forEach((month, index) => {
+          const isHistorical = year < currentYear || (year === currentYear && index <= currentMonth);
+          const baseAmount = getBaseAmount(glCode.code);
+          const seasonalFactor = getSeasonalFactor(month);
+          const annualGrowth = Math.pow(1 + (scenarioAssumptions[0].value / 100), yearOffset);
+          const growthFactor = annualGrowth * Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
+
+          let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
+
+          // Apply scenario assumptions
+          if (glCode.code === '6000') { // Payroll
+            forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
+          } else if (glCode.code === '6100') { // Marketing
+            forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
+          } else if (glCode.code === '6200') { // Rent
+            forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
+          }
+
+          cumulativeYTD += forecastedAmount;
+          const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
+
+          const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
+          const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
+
+          data.push({
+            glCode: glCode.code,
+            month: `${month} ${year}`,
+            forecastedAmount: Math.round(forecastedAmount),
+            actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
+            variance,
+            changeVsPrior: index > 0 ? changeVsPrior : undefined,
+            cumulativeYTD: Math.round(cumulativeYTD),
+            isEditable: !isHistorical
+          });
+
+          previousAmount = forecastedAmount;
         });
-        
-        previousAmount = forecastedAmount;
       });
     });
-    
+
     return data;
   });
 
@@ -1222,39 +1234,56 @@ const Forecasting: React.FC = () => {
 
         {/* Main Forecast Table */}
         <div className="w-full">
-          <Card title={`${selectedYear} Monthly Forecast by GL Code`}>
+          <Card title={
+            dateViewMode === 'months'
+              ? `${selectedYear} Monthly Forecast by GL Code`
+              : dateViewMode === 'quarters'
+              ? `Quarterly Forecast by GL Code (All Years)`
+              : `Yearly Forecast by GL Code (All Years)`
+          }>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
-                    {datePeriods.map((period, index) => (
-                      <th
-                        key={index}
-                        className={`py-3 font-bold text-gray-800 ${
-                          dateViewMode === 'months'
-                            ? 'text-center px-2 min-w-[120px]'
-                            : dateViewMode === 'quarters'
-                            ? 'text-left px-2 min-w-[120px]'
-                            : 'text-left px-2 min-w-[100px]'
-                        }`}
-                      >
-                        {dateViewMode === 'years' ? (
-                          <div className="flex flex-col">
-                            <span className="text-base">FY{getDateLabel(period, index)}</span>
-                            <span className="text-xs font-normal text-gray-500">Jan-Dec</span>
-                          </div>
-                        ) : dateViewMode === 'quarters' ? (
-                          <div className="flex flex-col">
-                            <span className="text-base">{getDateLabel(period, index)}</span>
-                            <span className="text-xs font-normal text-gray-500">{getQuarterLabel(period)}</span>
-                          </div>
-                        ) : (
-                          getDateLabel(period, index)
-                        )}
-                      </th>
-                    ))}
-                    {dateViewMode !== 'years' && (
+                    {datePeriods.map((period, index) => {
+                      const labelData = getDateLabel(period, index);
+                      const isOuterYear = dateViewMode !== 'months' && labelData.year !== selectedYear;
+
+                      return (
+                        <th
+                          key={index}
+                          className={`py-3 font-bold ${
+                            isOuterYear ? 'text-gray-500 bg-gray-50' : 'text-gray-800'
+                          } ${
+                            dateViewMode === 'months'
+                              ? 'text-center px-2 min-w-[120px]'
+                              : dateViewMode === 'quarters'
+                              ? 'text-center px-2 min-w-[100px]'
+                              : 'text-center px-2 min-w-[100px]'
+                          }`}
+                        >
+                          {dateViewMode === 'years' ? (
+                            <div className="flex flex-col">
+                              <span className={`text-base ${
+                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
+                              }`}>FY{labelData.label}</span>
+                              <span className="text-xs font-normal text-gray-400">Jan-Dec</span>
+                            </div>
+                          ) : dateViewMode === 'quarters' ? (
+                            <div className="flex flex-col">
+                              <span className={`text-sm ${
+                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
+                              }`}>{labelData.label}</span>
+                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
+                            </div>
+                          ) : (
+                            period
+                          )}
+                        </th>
+                      );
+                    })}
+                    {dateViewMode === 'months' && (
                       <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
                     )}
                   </tr>
@@ -1268,7 +1297,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-3 px-4">
+                          <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1322,6 +1351,8 @@ const Forecasting: React.FC = () => {
                               </td>
                               {datePeriods.map((period, periodIndex) => {
                                 const aggregatedAmount = getAggregatedAmount(glCode.code, period);
+                                const labelData = dateViewMode !== 'months' ? getDateLabel(period, periodIndex) : null;
+                                const isOuterYear = dateViewMode !== 'months' && labelData && labelData.year !== selectedYear;
                                 const periodKey = dateViewMode === 'months' ? `${period} ${selectedYear}` : period;
                                 const isActualized = dateViewMode === 'months' ? isMonthActualized(periodKey) : false;
                                 const isEditing = dateViewMode === 'months' && editingCell?.glCode === glCode.code && editingCell?.month === periodKey;
@@ -1331,15 +1362,17 @@ const Forecasting: React.FC = () => {
                                   <td
                                     key={periodIndex}
                                     className={`py-3 text-sm ${
+                                      isOuterYear ? 'bg-gray-50/50' : ''
+                                    } ${
                                       dateViewMode === 'months'
                                         ? 'text-center px-2'
-                                        : dateViewMode === 'quarters'
-                                        ? 'text-left px-2'
-                                        : 'text-left px-2'
+                                        : 'text-center px-2'
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      <div className={`font-medium rounded px-1 ${
+                                      <div className={`rounded px-1 ${
+                                        isOuterYear ? 'font-normal text-gray-500 text-xs' : 'font-medium'
+                                      } ${
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
                                           : !isActualized && dateViewMode === 'months'
@@ -1387,7 +1420,7 @@ const Forecasting: React.FC = () => {
                                   </td>
                                 );
                               })}
-                              {dateViewMode !== 'years' && (
+                              {dateViewMode === 'months' && (
                                 <td className="py-3 px-4 text-right text-sm font-medium">
                                   {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                     <input
@@ -1433,7 +1466,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-0">
+                                <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
