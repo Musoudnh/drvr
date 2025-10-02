@@ -304,11 +304,11 @@ const TasksProjects: React.FC = () => {
   };
 
   const getPriorityColor = (priority: string) => {
-    return 'border border-[#94A3B8] text-[#94A3B8]';
+    return 'bg-gray-100 text-gray-700 border border-gray-200';
   };
 
   const getStatusColor = (status: string) => {
-    return 'border border-[#94A3B8] text-[#94A3B8]';
+    return 'bg-gray-100 text-gray-700 border border-gray-200';
   };
 
   const formatDate = (date: Date) => {
