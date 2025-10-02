@@ -140,7 +140,6 @@ const MonthsView: React.FC<MonthsViewProps> = ({
           {localMonths.map((monthData) => {
             const isEditing = editingCell?.month === monthData.month;
             const isEditingValue = isEditing && editingCell.field === 'value';
-            const isEditingPercentage = isEditing && editingCell.field === 'percentage';
 
             return (
               <div
