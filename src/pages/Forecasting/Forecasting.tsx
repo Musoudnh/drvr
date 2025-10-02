@@ -89,6 +89,8 @@ const Forecasting: React.FC = () => {
   const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
   const [scenarioMenuOpen, setScenarioMenuOpen] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [editingScenario, setEditingScenario] = useState<AppliedScenario | null>(null);
+  const [showEditScenarioModal, setShowEditScenarioModal] = useState(false);
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
@@ -1522,6 +1524,26 @@ const Forecasting: React.FC = () => {
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                                                 <div className="flex gap-2">
                                                   <button
+                                                    onClick={() => {
+                                                      setEditingScenario(scenario);
+                                                      setGLScenarioForm({
+                                                        ...glScenarioForm,
+                                                        title: scenario.name,
+                                                        description: scenario.description,
+                                                        adjustmentType: scenario.adjustmentType,
+                                                        adjustmentValue: scenario.adjustmentValue,
+                                                        startMonth: scenario.startMonth.split(' ')[0],
+                                                        endMonth: scenario.endMonth.split(' ')[0]
+                                                      });
+                                                      setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                                      setShowEditScenarioModal(true);
+                                                      setScenarioMenuOpen(null);
+                                                    }}
+                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
+                                                  >
+                                                    Adjust
+                                                  </button>
+                                                  <button
                                                     onClick={() => toggleScenario(scenario.id)}
                                                     className="px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                                                   >
@@ -1697,6 +1719,165 @@ const Forecasting: React.FC = () => {
                className="px-4 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Apply Scenario
+             </button>
+           </div>
+         </div>
+       </div>
+     )}
+
+     {/* Edit Scenario Modal */}
+     {showEditScenarioModal && editingScenario && selectedGLCode && (
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end z-50">
+         <div className="bg-white shadow-2xl p-6 w-[600px] max-w-[90vw] h-full overflow-y-auto">
+           <div className="flex items-center justify-between mb-6">
+             <h3 className="text-xl font-semibold text-[#101010]">
+               Adjust Scenario: {editingScenario.name}
+             </h3>
+             <button
+               onClick={() => {
+                 setShowEditScenarioModal(false);
+                 setEditingScenario(null);
+                 setSelectedGLCode(null);
+               }}
+               className="p-1 hover:bg-gray-100 rounded"
+             >
+               <X className="w-4 h-4 text-gray-400" />
+             </button>
+           </div>
+
+           <div className="space-y-4">
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+               <input
+                 type="text"
+                 value={glScenarioForm.title}
+                 onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
+                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 placeholder="e.g., Q2 Marketing Campaign"
+               />
+             </div>
+
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+               <textarea
+                 value={glScenarioForm.description}
+                 onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
+                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 rows={3}
+                 placeholder="Describe the scenario and its impact"
+               />
+             </div>
+
+             {renderGLSpecificInputs()}
+
+             <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
+               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
+             </div>
+           </div>
+
+           <div className="flex justify-end gap-3 mt-6">
+             <button
+               onClick={() => {
+                 setShowEditScenarioModal(false);
+                 setEditingScenario(null);
+                 setSelectedGLCode(null);
+               }}
+               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+             >
+               Cancel
+             </button>
+             <button
+               onClick={() => {
+                 if (editingScenario && isScenarioValid()) {
+                   // Remove old scenario impact if it was active
+                   if (editingScenario.isActive) {
+                     applyScenarioToForecast(editingScenario, false);
+                   }
+
+                   // Update scenario with new values
+                   const updatedScenario: AppliedScenario = {
+                     ...editingScenario,
+                     name: glScenarioForm.title,
+                     description: glScenarioForm.description,
+                     startMonth: glScenarioForm.startMonth,
+                     endMonth: glScenarioForm.endMonth,
+                     adjustmentType: glScenarioForm.adjustmentType,
+                     adjustmentValue: glScenarioForm.adjustmentValue,
+                   };
+
+                   // Apply new scenario impact if active
+                   if (updatedScenario.isActive) {
+                     const startMonthIndex = months.indexOf(updatedScenario.startMonth);
+                     const endMonthIndex = months.indexOf(updatedScenario.endMonth);
+
+                     setForecastData(prev => prev.map(item => {
+                       if (item.glCode === updatedScenario.glCode) {
+                         const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
+                         if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
+                           let adjustedAmount = item.forecastedAmount;
+                           if (updatedScenario.adjustmentType === 'percentage') {
+                             adjustedAmount = item.forecastedAmount * (1 + updatedScenario.adjustmentValue / 100);
+                           } else {
+                             adjustedAmount = item.forecastedAmount + updatedScenario.adjustmentValue;
+                           }
+                           return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+                         }
+                       }
+                       return item;
+                     }));
+                   }
+
+                   // Update scenario in list
+                   setAppliedScenarios(prev =>
+                     prev.map(s => s.id === editingScenario.id ? updatedScenario : s)
+                   );
+
+                   setShowEditScenarioModal(false);
+                   setEditingScenario(null);
+                   setSelectedGLCode(null);
+                   setGLScenarioForm({
+                     title: '',
+                     description: '',
+                     owner: 'Current User',
+                     startMonth: 'Jan',
+                     endMonth: 'Dec',
+                     startYear: selectedYear,
+                     endYear: selectedYear,
+                     scenarioType: 'custom',
+                     revenueGrowthPercent: 0,
+                     salesVolumeAssumption: 0,
+                     pricingAssumption: 0,
+                     churnRatePercent: 0,
+                     marketExpansion: 0,
+                     marketingSpendPercent: 0,
+                     cogsPercent: 0,
+                     rdPercent: 0,
+                     overheadCosts: 0,
+                     variableFixedSplit: 50,
+                     headcount: 0,
+                     headcountGrowthPercent: 0,
+                     averageSalary: 0,
+                     payrollTaxRate: 15.3,
+                     benefitsRate: 25,
+                     hiringPlan: 0,
+                     attritionRatePercent: 15,
+                     numberOfTrips: 0,
+                     averageTripCost: 0,
+                     campaignBudget: 0,
+                     numberOfCampaigns: 0,
+                     squareFootage: 0,
+                     pricePerSqFt: 0,
+                     numberOfLicenses: 0,
+                     costPerLicense: 0,
+                     adjustmentType: 'percentage',
+                     adjustmentValue: 0
+                   });
+                 }
+               }}
+               disabled={!isScenarioValid()}
+               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2EA5AD] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+             >
+               Update Scenario
              </button>
            </div>
          </div>
