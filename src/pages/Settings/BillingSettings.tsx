@@ -122,9 +122,9 @@ const BillingSettings: React.FC = () => {
                       <span className="text-sm text-gray-600">Expires {method.expiryMonth}/{method.expiryYear}</span>
                     )}
                     {method.isDefault && (
-                      <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Default</span>
+                      <span className="px-4 py-2 bg-[#4ADE80]/20 text-[#4ADE80] rounded-lg text-sm font-medium shadow-sm">Default</span>
                     )}
-                    <span className={`px-2 py-1 rounded-full text-xs ${
+                    <span className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm ${
                       method.isValid ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-[#F87171]/20 text-[#F87171]'
                     }`}>
                       {method.isValid ? 'Valid' : 'Invalid'}
