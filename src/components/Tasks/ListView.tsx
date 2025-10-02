@@ -261,41 +261,43 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
       <div key={status} className="flex-1 min-w-0">
         <div className="bg-white rounded-t-lg">
           <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="font-semibold text-[#101010] text-sm flex items-center">
-              <span className={`px-3 py-1.5 rounded-md text-xs font-medium ${settings.color} ${settings.textColor} border border-gray-200`}>
-                {settings.label}
-              </span>
-              <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
-                {columnTasks.length}
-              </span>
-            </h3>
-            <div className="relative">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setColumnMenuOpen(columnMenuOpen === status ? null : status);
-                }}
-                className="p-1 hover:bg-gray-100 rounded transition-colors"
-              >
-                <MoreVertical className="w-4 h-4 text-gray-600" />
-              </button>
-              {columnMenuOpen === status && (
-                <div className="absolute top-full right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[160px]">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowColumnSettingsModal(status);
-                      setTempColumnLabel(settings.label);
-                      setTempColumnColor(settings.color);
-                      setColumnMenuOpen(null);
-                    }}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Customize Column
-                  </button>
-                </div>
-              )}
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setColumnMenuOpen(columnMenuOpen === status ? null : status);
+                  }}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                >
+                  <MoreVertical className="w-4 h-4 text-gray-600" />
+                </button>
+                {columnMenuOpen === status && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[160px]">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowColumnSettingsModal(status);
+                        setTempColumnLabel(settings.label);
+                        setTempColumnColor(settings.color);
+                        setColumnMenuOpen(null);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Customize Column
+                    </button>
+                  </div>
+                )}
+              </div>
+              <h3 className="font-semibold text-[#101010] text-sm flex items-center">
+                <span className={`px-3 py-1.5 rounded-md text-xs font-medium ${settings.color} ${settings.textColor} border border-gray-200`}>
+                  {settings.label}
+                </span>
+                <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                  {columnTasks.length}
+                </span>
+              </h3>
             </div>
           </div>
 
