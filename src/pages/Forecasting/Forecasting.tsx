@@ -1177,13 +1177,13 @@ const Forecasting: React.FC = () => {
         <div className="mt-4 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">View:</label>
-            <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+            <div className="flex bg-blue-500/10 backdrop-blur-sm rounded-lg p-0.5 gap-1 border border-blue-200/30">
               <button
                 onClick={() => setDateViewMode('months')}
                 className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'months'
-                    ? 'bg-white text-[#7B68EE] shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-white/90 text-[#7B68EE] shadow-sm backdrop-blur-sm'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/40'
                 }`}
               >
                 Months
@@ -1192,8 +1192,8 @@ const Forecasting: React.FC = () => {
                 onClick={() => setDateViewMode('quarters')}
                 className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'quarters'
-                    ? 'bg-white text-[#7B68EE] shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-white/90 text-[#7B68EE] shadow-sm backdrop-blur-sm'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/40'
                 }`}
               >
                 Quarters
@@ -1202,8 +1202,8 @@ const Forecasting: React.FC = () => {
                 onClick={() => setDateViewMode('years')}
                 className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'years'
-                    ? 'bg-white text-[#7B68EE] shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'bg-white/90 text-[#7B68EE] shadow-sm backdrop-blur-sm'
+                    : 'text-gray-700 hover:text-gray-900 hover:bg-white/40'
                 }`}
               >
                 Years
