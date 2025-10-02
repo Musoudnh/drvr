@@ -1307,8 +1307,8 @@ const Forecasting: React.FC = () => {
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
                                 <td colSpan={months.length + 3} className="py-0">
-                                  <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-4 mx-4 mb-2 rounded">
-                                    <h5 className="font-medium text-[#101010] mb-3">Scenarios for {glCode.name}</h5>
+                                  <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mx-4 mb-2 rounded">
+                                    <h5 className="text-sm font-semibold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
                                     {/* Add Scenario Button */}
                                     <button
@@ -1316,7 +1316,7 @@ const Forecasting: React.FC = () => {
                                         setSelectedGLCode(glCode);
                                         setShowGLScenarioModal(true);
                                       }}
-                                      className="flex items-center gap-1.5 px-2.5 py-1.5 mb-3 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
+                                      className="flex items-center gap-1.5 px-2.5 py-1.5 mb-2 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
                                     >
                                       <Plus className="w-3 h-3" />
                                       <span className="text-xs">Add Scenario</span>
@@ -1325,9 +1325,9 @@ const Forecasting: React.FC = () => {
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
                                       <p className="text-sm text-gray-600 italic">No scenarios applied yet.</p>
                                     ) : (
-                                      <div className="space-y-2">
+                                      <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className="p-3 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200">
+                                          <div key={scenario.id} className="p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200">
                                             <div className="flex items-center justify-between">
                                               <div className="flex-1">
                                                 <div className="flex items-center gap-2">
