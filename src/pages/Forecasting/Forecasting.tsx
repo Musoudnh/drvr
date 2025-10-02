@@ -2452,8 +2452,8 @@ const Forecasting: React.FC = () => {
 
       {/* Applied Scenarios Audit Sidebar */}
       {showScenarioAuditSidebar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-          <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-end">
+          <div className="w-[500px] bg-white/95 backdrop-blur-md h-full shadow-2xl flex flex-col">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -2512,7 +2512,7 @@ const Forecasting: React.FC = () => {
                     {filteredScenarios.map((scenario) => (
                     <div
                       key={scenario.id}
-                      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
+                      className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 hover:shadow-md transition-all duration-300 shadow-lg"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
