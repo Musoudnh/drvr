@@ -2297,17 +2297,17 @@ const Forecasting: React.FC = () => {
               </div>
 
               {/* Alert Filter Tabs */}
-              <div className="flex gap-2">
-                <button className="px-3 py-1.5 bg-[#3AB7BF] text-white rounded-lg text-xs font-medium">
+              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+                <button className="px-3 py-1.5 bg-white text-[#7B68EE] shadow-sm rounded text-xs font-medium">
                   All Alerts
                 </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
                   Critical
                 </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
                   Warnings
                 </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
+                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
                   Info
                 </button>
               </div>
