@@ -25,7 +25,7 @@ interface VarianceItem {
 interface WaterfallItem {
   label: string;
   value: number;
-  type: 'starting' | 'increase' | 'decrease' | 'ending';
+  type: 'starting' | 'increase' | 'decrease' | 'ending' | 'subtotal';
 }
 
 interface MarginAnalysis {
@@ -185,14 +185,17 @@ const Insights: React.FC = () => {
     { label: 'Change in Inventory', value: 31220, type: 'increase' },
     { label: 'Change in Work in Progress', value: 0, type: 'decrease' },
     { label: 'Change in Other Current Assets', value: 0, type: 'decrease' },
+    { label: 'OPERATING CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Change in Fixed Assets (ex. Depreciation and Amortization)', value: -34246, type: 'decrease' },
     { label: 'Change in Intangible Assets', value: 0, type: 'decrease' },
     { label: 'Change in Investments or Other Non-Current Assets', value: 4227, type: 'increase' },
+    { label: 'FREE CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Net Interest (after tax)', value: -27680, type: 'decrease' },
     { label: 'Change in Other Non-Current Liabilities', value: 0, type: 'increase' },
     { label: 'Dividends', value: 0, type: 'decrease' },
     { label: 'Change in Retained Earnings and Other Equity', value: 0, type: 'increase' },
-    { label: 'Adjustments', value: 0, type: 'decrease' }
+    { label: 'Adjustments', value: 0, type: 'decrease' },
+    { label: 'NET CASH FLOW', value: 0, type: 'ending' }
   ];
 
   const marginAnalysis: MarginAnalysis[] = [
@@ -268,9 +271,15 @@ const Insights: React.FC = () => {
         position += waterfallData[i].value;
       } else if (waterfallData[i].type === 'decrease') {
         position += waterfallData[i].value;
+      } else if (waterfallData[i].type === 'subtotal' || waterfallData[i].type === 'ending') {
+        // Subtotals and ending don't move the position
       }
     }
     return position;
+  };
+
+  const getCalculatedValue = (index: number): number => {
+    return getWaterfallPosition(index + 1);
   };
 
   return (

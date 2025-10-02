@@ -5,7 +5,7 @@ import Card from '../../components/UI/Card';
 interface WaterfallItem {
   label: string;
   value: number;
-  type: 'starting' | 'increase' | 'decrease' | 'ending';
+  type: 'starting' | 'increase' | 'decrease' | 'ending' | 'subtotal';
 }
 
 const CashFlow: React.FC = () => {
@@ -21,14 +21,17 @@ const CashFlow: React.FC = () => {
     { label: 'Change in Inventory', value: 31220, type: 'increase' },
     { label: 'Change in Work in Progress', value: 0, type: 'decrease' },
     { label: 'Change in Other Current Assets', value: 0, type: 'decrease' },
+    { label: 'OPERATING CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Change in Fixed Assets (ex. Depreciation and Amortization)', value: -34246, type: 'decrease' },
     { label: 'Change in Intangible Assets', value: 0, type: 'decrease' },
     { label: 'Change in Investments or Other Non-Current Assets', value: 4227, type: 'increase' },
+    { label: 'FREE CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Net Interest (after tax)', value: -27680, type: 'decrease' },
     { label: 'Change in Other Non-Current Liabilities', value: 0, type: 'increase' },
     { label: 'Dividends', value: 0, type: 'decrease' },
     { label: 'Change in Retained Earnings and Other Equity', value: 0, type: 'increase' },
-    { label: 'Adjustments', value: 0, type: 'decrease' }
+    { label: 'Adjustments', value: 0, type: 'decrease' },
+    { label: 'NET CASH FLOW', value: 0, type: 'ending' }
   ];
 
   const getWaterfallPosition = (index: number): number => {
@@ -40,9 +43,15 @@ const CashFlow: React.FC = () => {
         position += waterfallData[i].value;
       } else if (waterfallData[i].type === 'decrease') {
         position += waterfallData[i].value;
+      } else if (waterfallData[i].type === 'subtotal' || waterfallData[i].type === 'ending') {
+        // Subtotals and ending don't move the position
       }
     }
     return position;
+  };
+
+  const getCalculatedValue = (index: number): number => {
+    return getWaterfallPosition(index + 1);
   };
 
   const formatCurrency = (value: number) => {
@@ -115,14 +124,18 @@ const CashFlow: React.FC = () => {
         </div>
         <div className="space-y-1">
           {waterfallData.map((item, index) => {
-            const position = getWaterfallPosition(index);
+            const startPosition = getWaterfallPosition(index);
+            const endPosition = getCalculatedValue(index);
+            const displayValue = item.type === 'subtotal' || item.type === 'ending' ? endPosition : item.value;
             const maxValue = 1600000;
-            const startPercent = (position / maxValue) * 100;
-            const valuePercent = (Math.abs(item.value) / maxValue) * 100;
-            const isTotal = item.type === 'starting' || item.type === 'ending';
+            const minValue = 0;
+            const range = maxValue - minValue;
+
+            const isTotal = item.type === 'starting' || item.type === 'ending' || item.type === 'subtotal';
+            const isSubtotal = item.type === 'subtotal';
 
             return (
-              <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2' : 'py-1'}`}>
+              <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2 border-t border-gray-200' : 'py-1'}`}>
                 <div className="w-80 flex-shrink-0">
                   <div className="flex items-center gap-2">
                     {!isTotal && (
@@ -138,16 +151,18 @@ const CashFlow: React.FC = () => {
                 <div className="flex-1 relative h-10 flex items-center">
                   {isTotal ? (
                     <div
-                      className={`h-8 rounded flex items-center justify-center ${
-                        item.type === 'starting' ? 'bg-blue-500' : 'bg-green-500'
+                      className={`h-8 flex items-center justify-center ${
+                        item.type === 'starting' ? 'bg-[#10B981] rounded' :
+                        isSubtotal ? 'bg-[#3B82F6] rounded' :
+                        'bg-[#10B981] rounded'
                       }`}
                       style={{
-                        width: `${(item.value / maxValue) * 100}%`,
-                        minWidth: '60px'
+                        width: `${(endPosition / range) * 100}%`,
+                        minWidth: '80px'
                       }}
                     >
                       <span className="text-xs font-bold text-white">
-                        {formatCurrency(item.value)}
+                        {formatCurrency(displayValue)}
                       </span>
                     </div>
                   ) : (
@@ -155,21 +170,20 @@ const CashFlow: React.FC = () => {
                       <div
                         className="h-8 bg-transparent"
                         style={{
-                          width: `${startPercent}%`,
-                          minWidth: startPercent > 0 ? '1px' : '0'
+                          width: `${(Math.min(startPosition, endPosition) / range) * 100}%`
                         }}
                       />
                       <div
-                        className={`h-8 rounded flex items-center justify-center ${
-                          item.type === 'increase' ? 'bg-green-500' : 'bg-red-500'
+                        className={`h-8 flex items-center justify-center ${
+                          item.type === 'increase' ? 'bg-[#10B981]' : 'bg-[#EF4444]'
                         }`}
                         style={{
-                          width: `${valuePercent}%`,
-                          minWidth: '50px'
+                          width: `${(Math.abs(item.value) / range) * 100}%`,
+                          minWidth: '60px'
                         }}
                       >
                         <span className="text-xs font-bold text-white">
-                          {item.value !== 0 ? (item.type === 'increase' ? '+' : '') + formatCurrency(item.value) : formatCurrency(0)}
+                          {item.value !== 0 ? (item.type === 'increase' ? '+' : '') + formatCurrency(item.value) : '$0'}
                         </span>
                       </div>
                     </>
@@ -182,12 +196,16 @@ const CashFlow: React.FC = () => {
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-500 rounded" />
+              <div className="w-4 h-4 bg-[#10B981] rounded" />
               <span className="text-xs text-gray-600">Cash Received</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-red-500 rounded" />
+              <div className="w-4 h-4 bg-[#EF4444] rounded" />
               <span className="text-xs text-gray-600">Cash Spent</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-[#3B82F6] rounded" />
+              <span className="text-xs text-gray-600">Subtotals</span>
             </div>
           </div>
         </div>
