@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
@@ -25,16 +25,6 @@ interface Comment {
   author: string;
   content: string;
   createdAt: Date;
-}
-
-interface ActivityLogEntry {
-  id: string;
-  user: string;
-  action: 'created' | 'updated' | 'commented' | 'status_changed';
-  taskTitle: string;
-  taskId: string;
-  details: string;
-  timestamp: Date;
 }
 
 interface Project {
@@ -73,11 +63,6 @@ const TasksProjects: React.FC = () => {
     connected: boolean;
   }>>([]);
   const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
-  const [showActivityLog, setShowActivityLog] = useState(false);
-  const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
-  const [newComment, setNewComment] = useState('');
-  const [statusDropdownOpen, setStatusDropdownOpen] = useState<string | null>(null);
-  const [priorityDropdownOpen, setPriorityDropdownOpen] = useState<string | null>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -164,68 +149,11 @@ const TasksProjects: React.FC = () => {
 
   const teamMembers = [
     'Sarah Johnson',
-    'Michael Chen',
+    'Michael Chen', 
     'Emily Rodriguez',
     'David Kim',
     'Lisa Thompson'
   ];
-
-  const [activityLog, setActivityLog] = useState<ActivityLogEntry[]>([
-    {
-      id: 'a1',
-      user: 'Sarah Johnson',
-      action: 'created',
-      taskTitle: 'Q1 Budget Review',
-      taskId: '1',
-      details: 'Created task',
-      timestamp: new Date('2025-01-10T09:30:00')
-    },
-    {
-      id: 'a2',
-      user: 'Michael Chen',
-      action: 'commented',
-      taskTitle: 'Q1 Budget Review',
-      taskId: '1',
-      details: 'Added comment about marketing budget',
-      timestamp: new Date('2025-01-15T14:20:00')
-    },
-    {
-      id: 'a3',
-      user: 'Sarah Johnson',
-      action: 'status_changed',
-      taskTitle: 'Q1 Budget Review',
-      taskId: '1',
-      details: 'Changed status from To Do to In Progress',
-      timestamp: new Date('2025-01-15T16:45:00')
-    },
-    {
-      id: 'a4',
-      user: 'Emily Rodriguez',
-      action: 'created',
-      taskTitle: 'Financial Report Generation',
-      taskId: '2',
-      details: 'Created task',
-      timestamp: new Date('2025-01-12T10:15:00')
-    },
-    {
-      id: 'a5',
-      user: 'David Kim',
-      action: 'updated',
-      taskTitle: 'Expense Categorization',
-      taskId: '3',
-      details: 'Updated task description',
-      timestamp: new Date('2025-01-16T11:30:00')
-    },
-    {
-      id: 'a6',
-      user: 'David Kim',
-      action: 'status_changed',
-      taskTitle: 'Expense Categorization',
-      taskId: '3',
-      details: 'Changed status from In Progress to Done',
-      timestamp: new Date('2025-01-18T15:00:00')
-    }
-  ]);
 
   const filteredTasks = tasks.filter(task =>
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -306,19 +234,19 @@ const TasksProjects: React.FC = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'border border-[#F87171] text-[#F87171]';
-      case 'medium': return 'border border-[#FBBF24] text-[#FBBF24]';
-      case 'low': return 'border border-[#34D399] text-[#34D399]';
-      default: return 'border border-gray-300 text-gray-700';
+      case 'high': return 'bg-[#F87171]/20 text-[#F87171]';
+      case 'medium': return 'bg-[#FBBF24]/20 text-[#FBBF24]';
+      case 'low': return 'bg-[#34D399]/20 text-[#34D399]';
+      default: return 'bg-gray-200 text-gray-700';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'todo': return 'border border-[#94A3B8] text-[#94A3B8]';
-      case 'in_progress': return 'border border-[#3AB7BF] text-[#3AB7BF]';
-      case 'done': return 'border border-[#4ADE80] text-[#4ADE80]';
-      default: return 'border border-gray-300 text-gray-700';
+      case 'todo': return 'bg-[#94A3B8]/20 text-[#94A3B8]';
+      case 'in_progress': return 'bg-[#3AB7BF]/20 text-[#3AB7BF]';
+      case 'done': return 'bg-[#4ADE80]/20 text-[#4ADE80]';
+      default: return 'bg-gray-200 text-gray-700';
     }
   };
 
@@ -343,30 +271,10 @@ const TasksProjects: React.FC = () => {
       if (taskMenuOpen) {
         setTaskMenuOpen(null);
       }
-      if (statusDropdownOpen) {
-        setStatusDropdownOpen(null);
-      }
-      if (priorityDropdownOpen) {
-        setPriorityDropdownOpen(null);
-      }
     };
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [taskMenuOpen, statusDropdownOpen, priorityDropdownOpen]);
-
-  const handleStatusChange = (taskId: string, newStatus: Task['status']) => {
-    setTasks(prev => prev.map(task =>
-      task.id === taskId ? { ...task, status: newStatus, updatedAt: new Date() } : task
-    ));
-    setStatusDropdownOpen(null);
-  };
-
-  const handlePriorityChange = (taskId: string, newPriority: Task['priority']) => {
-    setTasks(prev => prev.map(task =>
-      task.id === taskId ? { ...task, priority: newPriority, updatedAt: new Date() } : task
-    ));
-    setPriorityDropdownOpen(null);
-  };
+  }, [taskMenuOpen]);
 
   const renderTaskCard = (task: Task, index: number) => (
     <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -374,172 +282,56 @@ const TasksProjects: React.FC = () => {
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className={`bg-white rounded-lg border border-gray-200 p-4 mb-3 shadow-sm hover:shadow-md transition-all duration-200 group relative ${
-            snapshot.isDragging ? 'shadow-lg cursor-grabbing' : ''
+          {...provided.dragHandleProps}
+          className={`bg-white rounded-lg border border-gray-200 p-3 mb-2 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab group relative ${
+            snapshot.isDragging ? 'rotate-2 shadow-lg cursor-grabbing' : ''
           }`}
           style={{
             ...provided.draggableProps.style,
           }}
         >
-          {/* Drag Handle */}
-          <div
-            {...provided.dragHandleProps}
-            className="absolute left-2 top-4 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing"
-          >
-            <GripVertical className="w-4 h-4 text-gray-400" />
-          </div>
-
-          <div className="pl-6">
-            {/* Title and More Menu */}
-            <div className="flex items-start justify-between mb-3">
-              <h3
-                className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2 cursor-pointer hover:text-[#3AB7BF] transition-colors"
-                onClick={() => {
-                  setSelectedTask(task);
-                  setShowTaskDetail(true);
-                }}
-              >
-                {task.title}
-              </h3>
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                {task.priority}
+              </span>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
                 }}
-                className="p-1 hover:bg-gray-100 rounded relative opacity-0 group-hover:opacity-100 transition-opacity"
+                className="p-1 hover:bg-gray-100 rounded relative"
                 title="More options"
               >
                 <MoreVertical className="w-4 h-4 text-gray-600" />
               </button>
             </div>
+          </div>
 
-            {/* Status and Priority Row */}
-            <div className="flex items-center gap-2 mb-3">
-              {/* Status Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setStatusDropdownOpen(statusDropdownOpen === task.id ? null : task.id);
-                    setPriorityDropdownOpen(null);
-                  }}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium ${getStatusColor(task.status)} hover:opacity-80 transition-opacity cursor-pointer`}
-                >
-                  {task.status === 'in_progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
-                </button>
+          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+            {task.description}
+          </p>
 
-                {statusDropdownOpen === task.id && (
-                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[130px]">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStatusChange(task.id, 'todo');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>To Do</span>
-                      {task.status === 'todo' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStatusChange(task.id, 'in_progress');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>In Progress</span>
-                      {task.status === 'in_progress' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStatusChange(task.id, 'done');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>Done</span>
-                      {task.status === 'done' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Priority Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPriorityDropdownOpen(priorityDropdownOpen === task.id ? null : task.id);
-                    setStatusDropdownOpen(null);
-                  }}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)} hover:opacity-80 transition-opacity cursor-pointer`}
-                >
-                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-                </button>
-
-                {priorityDropdownOpen === task.id && (
-                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[100px]">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePriorityChange(task.id, 'high');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>High</span>
-                      {task.priority === 'high' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePriorityChange(task.id, 'medium');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>Medium</span>
-                      {task.priority === 'medium' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePriorityChange(task.id, 'low');
-                      }}
-                      className="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center justify-between"
-                    >
-                      <span>Low</span>
-                      {task.priority === 'low' && <CheckCircle className="w-3 h-3 text-[#3AB7BF]" />}
-                    </button>
-                  </div>
-                )}
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <span className="text-xs text-gray-600">{task.assignee}</span>
             </div>
 
-            {/* Description */}
-            <p className="text-xs text-gray-600 mb-3 line-clamp-2">
-              {task.description}
-            </p>
-
-            {/* Footer: Assignee and Due Date */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1">
-                <User className="w-3 h-3 text-gray-400" />
-                <span className="text-gray-600">{task.assignee}</span>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-gray-400" />
-                <span className={`${
-                  isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-600'
-                }`}>
-                  {formatDate(task.dueDate)}
-                </span>
-              </div>
+            <div className="flex items-center">
+              <Calendar className="w-3 h-3 text-gray-400 mr-1" />
+              <span className={`text-xs ${
+                isOverdue(task.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-600'
+              }`}>
+                {formatDate(task.dueDate)}
+              </span>
             </div>
           </div>
 
-          {/* More Options Menu */}
+
+          {/* Dropdown Menu - positioned relative to button in header */}
           {taskMenuOpen === task.id && (
-            <div className="absolute top-12 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+            <div className="absolute top-8 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -574,52 +366,46 @@ const TasksProjects: React.FC = () => {
     </Draggable>
   );
 
-  const renderKanbanBoard = () => {
-    const statusConfig = {
-      todo: { label: 'To Do', color: 'border-gray-300' },
-      in_progress: { label: 'In Progress', color: 'border-[#3AB7BF]' },
-      done: { label: 'Done', color: 'border-[#4ADE80]' }
-    };
-
-    return (
+  const renderKanbanBoard = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
-          const config = statusConfig[status];
-
+          const statusLabels = {
+            todo: 'To Do',
+            in_progress: 'In Progress', 
+            done: 'Done'
+          };
+          
           return (
             <div key={status} className="flex flex-col">
-              {/* Column Header */}
-              <div className={`border-t-4 ${config.color} bg-white rounded-t-lg px-4 py-3 mb-2`}>
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-[#101010] text-sm">
-                    {config.label}
-                  </h3>
-                  <span className="px-2.5 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-[#101010] flex items-center">
+                  {statusLabels[status]}
+                  <span className="ml-2 px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
                     {statusTasks.length}
                   </span>
-                </div>
+                </h3>
               </div>
-
-              {/* Droppable Column Area */}
+              
               <Droppable droppableId={status}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[500px] p-3 rounded-lg transition-all duration-200 ${
-                      snapshot.isDraggingOver
-                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed'
-                        : 'bg-gray-50/50 border-2 border-transparent'
+                    className={`flex-1 min-h-[400px] p-2 rounded-lg transition-all duration-200 ${
+                      snapshot.isDraggingOver 
+                        ? 'bg-[#3AB7BF]/10 border-2 border-[#3AB7BF] border-dashed' 
+                        : 'bg-gray-50 border-2 border-transparent'
                     }`}
                   >
-                    {statusTasks.length === 0 && !snapshot.isDraggingOver && (
-                      <div className="text-center py-8 text-gray-400 text-sm">
-                        No tasks
-                      </div>
-                    )}
                     {statusTasks.map((task, index) => renderTaskCard(task, index))}
                     {provided.placeholder}
+                    {/* Drop zone indicator when dragging over */}
+                    {snapshot.isDraggingOver && (
+                      <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
+                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </Droppable>
@@ -627,8 +413,7 @@ const TasksProjects: React.FC = () => {
           );
         })}
       </div>
-    );
-  };
+  );
 
   const renderListView = () => (
     <div className="bg-white rounded-lg border border-gray-200">
@@ -664,12 +449,12 @@ const TasksProjects: React.FC = () => {
                   </span>
                 </td>
                 <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
                     {task.priority}
                   </span>
                 </td>
                 <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getStatusColor(task.status)}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(task.status)}`}>
                     {task.status.replace('_', ' ')}
                   </span>
                 </td>
@@ -888,7 +673,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('board')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'board'
-                          ? 'bg-white text-[#4F46E5] shadow-sm'
+                          ? 'bg-white text-purple-600 shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -899,7 +684,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('list')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'list'
-                          ? 'bg-white text-[#4F46E5] shadow-sm'
+                          ? 'bg-white text-purple-600 shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -910,7 +695,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('gantt')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'gantt'
-                          ? 'bg-white text-[#4F46E5] shadow-sm'
+                          ? 'bg-white text-purple-600 shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -918,14 +703,6 @@ const TasksProjects: React.FC = () => {
                       Gantt
                     </button>
                   </div>
-
-                  <button
-                    onClick={() => setShowActivityLog(true)}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium flex items-center"
-                  >
-                    <Activity className="w-4 h-4 mr-1.5" />
-                    Activity Log
-                  </button>
                 </div>
               </div>
 
@@ -1085,7 +862,7 @@ const TasksProjects: React.FC = () => {
       {showTaskDetail && selectedTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
+            <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-[#101010]">
                 {isEditingTask ? 'Edit Task' : selectedTask.title}
               </h3>
@@ -1203,23 +980,35 @@ const TasksProjects: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
-                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
                       {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
                     </span>
                   </div>
 
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
-                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
                       {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                     </span>
                   </div>
                 </div>
 
+                {selectedTask.tags.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedTask.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
-                  <div className="space-y-3 max-h-40 overflow-y-auto mb-3">
+                  <div className="space-y-3 max-h-40 overflow-y-auto">
                     {selectedTask.comments.map(comment => (
                       <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center justify-between mb-1">
@@ -1232,79 +1021,6 @@ const TasksProjects: React.FC = () => {
                     {selectedTask.comments.length === 0 && (
                       <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
                     )}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      placeholder="Add a comment..."
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && newComment.trim()) {
-                          const updatedTask = {
-                            ...selectedTask,
-                            comments: [
-                              ...selectedTask.comments,
-                              {
-                                id: `c${Date.now()}`,
-                                author: 'Current User',
-                                content: newComment,
-                                createdAt: new Date()
-                              }
-                            ]
-                          };
-                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
-                          setSelectedTask(updatedTask);
-                          setNewComment('');
-
-                          setActivityLog(prev => [{
-                            id: `a${Date.now()}`,
-                            user: 'Current User',
-                            action: 'commented',
-                            taskTitle: selectedTask.title,
-                            taskId: selectedTask.id,
-                            details: `Added comment: "${newComment}"`,
-                            timestamp: new Date()
-                          }, ...prev]);
-                        }
-                      }}
-                    />
-                    <button
-                      onClick={() => {
-                        if (newComment.trim()) {
-                          const updatedTask = {
-                            ...selectedTask,
-                            comments: [
-                              ...selectedTask.comments,
-                              {
-                                id: `c${Date.now()}`,
-                                author: 'Current User',
-                                content: newComment,
-                                createdAt: new Date()
-                              }
-                            ]
-                          };
-                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
-                          setSelectedTask(updatedTask);
-                          setNewComment('');
-
-                          setActivityLog(prev => [{
-                            id: `a${Date.now()}`,
-                            user: 'Current User',
-                            action: 'commented',
-                            taskTitle: selectedTask.title,
-                            taskId: selectedTask.id,
-                            details: `Added comment: "${newComment}"`,
-                            timestamp: new Date()
-                          }, ...prev]);
-                        }
-                      }}
-                      disabled={!newComment.trim()}
-                      className="px-3 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Send className="w-4 h-4" />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -1337,22 +1053,23 @@ const TasksProjects: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <button
+                  <Button
+                    variant="outline"
                     onClick={() => {
                       setEditTaskForm(selectedTask);
                       setIsEditingTask(true);
                     }}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                   >
+                    <Edit3 className="w-4 h-4 mr-2" />
                     Edit Task
-                  </button>
+                  </Button>
                   <button
                     onClick={() => {
                       setShowTaskDetail(false);
                       setIsEditingTask(false);
                       setEditTaskForm(null);
                     }}
-                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+                    className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
                   >
                     Close
                   </button>
@@ -1514,83 +1231,6 @@ const TasksProjects: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* Activity Log Sidebar */}
-      {showActivityLog && (
-        <>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setShowActivityLog(false)}
-          />
-          <div className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-50 flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-[#101010] flex items-center">
-                  <Activity className="w-5 h-5 mr-2 text-[#4F46E5]" />
-                  Activity Log
-                </h3>
-                <button
-                  onClick={() => setShowActivityLog(false)}
-                  className="p-1 hover:bg-gray-100 rounded"
-                >
-                  <X className="w-4 h-4 text-gray-400" />
-                </button>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Filter by User</label>
-                <select
-                  value={activityLogFilter}
-                  onChange={(e) => setActivityLogFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
-                >
-                  <option value="all">All Users</option>
-                  {teamMembers.map(member => (
-                    <option key={member} value={member}>{member}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-3">
-                {activityLog
-                  .filter(entry => activityLogFilter === 'all' || entry.user === activityLogFilter)
-                  .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-                  .map((entry) => {
-                    return (
-                      <div
-                        key={entry.id}
-                        className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer"
-                        onClick={() => {
-                          const task = tasks.find(t => t.id === entry.taskId);
-                          if (task) {
-                            setSelectedTask(task);
-                            setShowTaskDetail(true);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
-                          <span className="text-xs text-gray-500">
-                            {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-1">
-                          <span className="font-medium text-[#101010]">{entry.taskTitle}</span>
-                        </p>
-                        <p className="text-sm text-gray-700">{entry.details}</p>
-                        <p className="text-xs text-gray-400 mt-2">
-                          {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
-                        </p>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          </div>
-        </>
       )}
       </div>
     </DragDropContext>
