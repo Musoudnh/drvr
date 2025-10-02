@@ -8,7 +8,6 @@ import { forecastService } from '../../services/forecastService';
 import type { ForecastLineItem } from '../../types/forecast';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
-import MonthsView from '../../components/Forecasting/MonthsView';
 
 interface GLCode {
   code: string;
@@ -1243,56 +1242,6 @@ const Forecasting: React.FC = () => {
           </div>
         </div>
       </Card>
-
-      {/* MonthsView Section */}
-      {dateViewMode === 'months' && (
-        <Card title="Month-by-Month Forecast View">
-          <div className="space-y-6">
-            <p className="text-sm text-gray-600 mb-4">
-              Interactive month view with actual vs. projected data. Gray months show historical actuals (locked),
-              white months are forecasts (editable). Select months for bulk adjustments.
-            </p>
-
-            {filteredGLCodes.slice(0, 3).map(glCode => {
-              const monthsData = months.map((month, idx) => {
-                const monthKey = `${month} ${selectedYear}`;
-                const isActual = isMonthActualized(monthKey);
-                const baseAmount = getBaseAmount(glCode.code);
-                const seasonal = getSeasonalFactor(month);
-                const value = Math.round(baseAmount * seasonal);
-                const prevValue = idx > 0
-                  ? Math.round(getBaseAmount(glCode.code) * getSeasonalFactor(months[idx - 1]))
-                  : value;
-                const percentage = idx > 0 ? ((value - prevValue) / prevValue) * 100 : 0;
-
-                return {
-                  month,
-                  value,
-                  percentage,
-                  isActual,
-                  isSelected: false
-                };
-              });
-
-              return (
-                <div key={glCode.code} className="pb-4 border-b border-gray-200 last:border-b-0">
-                  <MonthsView
-                    months={monthsData}
-                    onMonthsUpdate={(updated) => {
-                      console.log(`Updated ${glCode.code}:`, updated);
-                    }}
-                    onSelectionChange={(selected) => {
-                      console.log(`Selected months for ${glCode.code}:`, selected);
-                    }}
-                    rowLabel={`${glCode.name} (${glCode.code})`}
-                    format="currency"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </Card>
-      )}
 
         {/* Main Forecast Table */}
         <div className="w-full">
