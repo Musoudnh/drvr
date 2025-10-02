@@ -304,21 +304,11 @@ const TasksProjects: React.FC = () => {
   };
 
   const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'border border-[#F87171] text-[#F87171]';
-      case 'medium': return 'border border-[#FBBF24] text-[#FBBF24]';
-      case 'low': return 'border border-[#34D399] text-[#34D399]';
-      default: return 'border border-gray-300 text-gray-700';
-    }
+    return 'border border-[#94A3B8] text-[#94A3B8]';
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'todo': return 'border border-[#94A3B8] text-[#94A3B8]';
-      case 'in_progress': return 'border border-[#3AB7BF] text-[#3AB7BF]';
-      case 'done': return 'border border-[#4ADE80] text-[#4ADE80]';
-      default: return 'border border-gray-300 text-gray-700';
-    }
+    return 'border border-[#94A3B8] text-[#94A3B8]';
   };
 
   const formatDate = (date: Date) => {
