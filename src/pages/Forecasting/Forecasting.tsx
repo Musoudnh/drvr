@@ -1260,10 +1260,10 @@ const Forecasting: React.FC = () => {
         <div className="w-full">
           <Card title={
             dateViewMode === 'months'
-              ? `${selectedYear} Monthly Forecast by GL Code`
+              ? `${selectedYear} Monthly Forecast`
               : dateViewMode === 'quarters'
-              ? `Quarterly Forecast by GL Code (All Years)`
-              : `Yearly Forecast by GL Code (All Years)`
+              ? `Quarterly Forecast (All Years)`
+              : `Yearly Forecast (All Years)`
           }>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
