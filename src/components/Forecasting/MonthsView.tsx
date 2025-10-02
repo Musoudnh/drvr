@@ -194,10 +194,10 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                         />
                       ) : (
                         <div
-                          className={`px-2 py-1 rounded text-sm font-semibold ${
+                          className={`text-sm font-semibold ${
                             monthData.isActual
-                              ? 'text-gray-700 bg-gray-100'
-                              : 'text-gray-900 group-hover:bg-blue-50 group-hover:ring-2 group-hover:ring-blue-200'
+                              ? 'text-gray-900'
+                              : 'text-gray-900 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:ring-2 group-hover:ring-blue-200'
                           }`}
                         >
                           {formatValue(monthData.value)}
