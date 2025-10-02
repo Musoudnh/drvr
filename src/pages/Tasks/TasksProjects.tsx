@@ -291,13 +291,14 @@ const TasksProjects: React.FC = () => {
     setShowAddTaskModal(false);
   };
 
-  const handleTaskUpdate = (taskId: string, updates: { dueDate?: Date; createdAt?: Date }) => {
+  const handleTaskUpdate = (taskId: string, updates: { dueDate?: Date; createdAt?: Date; priority?: 'high' | 'medium' | 'low' }) => {
     setTasks(prev => prev.map(task =>
       task.id === taskId
         ? {
             ...task,
             ...(updates.dueDate && { dueDate: updates.dueDate }),
             ...(updates.createdAt && { createdAt: updates.createdAt }),
+            ...(updates.priority && { priority: updates.priority }),
             updatedAt: new Date()
           }
         : task
