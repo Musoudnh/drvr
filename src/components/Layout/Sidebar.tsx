@@ -105,8 +105,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
     { path: '/admin/security', label: 'Security & SOX', icon: Shield },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle },
-    { path: '/admin/audit', label: 'Audit Log', icon: FileText },
-    { path: '/admin/settings', label: 'Settings', icon: Settings }
+    { path: '/admin/audit', label: 'Audit Log', icon: FileText }
   ];
 
   const companyNavItems: NavItem[] = [
