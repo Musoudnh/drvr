@@ -255,9 +255,11 @@ const Forecasting: React.FC = () => {
     if (dateViewMode === 'months') {
       return period;
     } else if (dateViewMode === 'quarters') {
-      return `${period} ${selectedYear}`;
+      const yearAbbr = selectedYear.toString().slice(-2);
+      return `${period} ${yearAbbr}'`;
     } else {
-      return selectedYear.toString();
+      const yearAbbr = selectedYear.toString().slice(-2);
+      return `${yearAbbr}'`;
     }
   };
 
