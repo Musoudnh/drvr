@@ -1308,7 +1308,7 @@ const Forecasting: React.FC = () => {
                               <tr>
                                 <td colSpan={months.length + 3} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mx-4 mb-2 rounded">
-                                    <h5 className="text-sm font-semibold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
+                                    <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
                                     {/* Add Scenario Button */}
                                     <button
