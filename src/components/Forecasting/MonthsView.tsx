@@ -211,7 +211,7 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                     {monthData.actualValue !== undefined && (
                       <>
                         <div className="text-[10px] text-gray-500 font-medium mb-1">Actuals</div>
-                        <div className="px-2 py-1 rounded text-sm font-semibold bg-blue-50 text-blue-900 mb-2">
+                        <div className="px-2 py-1 rounded text-sm font-semibold bg-gray-100 text-gray-700 mb-2">
                           {formatValue(monthData.actualValue)}
                         </div>
 
