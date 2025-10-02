@@ -82,7 +82,6 @@ const CashFlow: React.FC = () => {
                 <span className="text-sm text-[#4ADE80]">+12.5% vs last month</span>
               </div>
             </div>
-            <TrendingUp className="w-8 h-8 text-[#4ADE80]" />
           </div>
         </Card>
 
@@ -96,7 +95,6 @@ const CashFlow: React.FC = () => {
                 <span className="text-sm text-[#F87171]">+8.3% vs last month</span>
               </div>
             </div>
-            <TrendingDown className="w-8 h-8 text-[#F87171]" />
           </div>
         </Card>
 
@@ -110,7 +108,6 @@ const CashFlow: React.FC = () => {
                 <span className="text-sm text-[#4ADE80]">+18.7% vs last month</span>
               </div>
             </div>
-            <TrendingUp className="w-8 h-8 text-[#3AB7BF]" />
           </div>
         </Card>
       </div>
