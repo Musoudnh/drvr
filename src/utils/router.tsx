@@ -20,6 +20,7 @@ import Security from '../pages/Admin/Security';
 import AuditLog from '../pages/Admin/AuditLog';
 import AdminSettings from '../pages/Admin/AdminSettings';
 import Forecasting from '../pages/Forecasting/Forecasting';
+import MonthsViewDemo from '../pages/Forecasting/MonthsViewDemo';
 import Benchmarks from '../pages/Benchmarks/Benchmarks';
 import TaxDocuments from '../pages/Tax/TaxDocuments';
 import Alerts from '../pages/Alerts/Alerts';
@@ -212,6 +213,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Forecasting">
         <Forecasting />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/forecasting/months-view",
+    element: (
+      <ProtectedRoute title="Months View - Financial Forecasting">
+        <MonthsViewDemo />
       </ProtectedRoute>
     )
   },
