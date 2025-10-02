@@ -111,12 +111,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
+    { path: '/forecasting', label: 'Forecasting', icon: Target },
     {
       path: '/financials',
       label: 'Financials',
       icon: DollarSign,
       children: [
-        { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
@@ -131,12 +131,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home },
     { path: '/analytics', label: 'Analysis', icon: PieChart },
+    { path: '/forecasting', label: 'Forecasting', icon: Target },
     {
       path: '/financials',
       label: 'Financials',
       icon: DollarSign,
       children: [
-        { path: '/forecasting', label: 'Forecasting', icon: Target },
         { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
         { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator }
       ]
