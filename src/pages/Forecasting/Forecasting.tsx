@@ -2316,118 +2316,83 @@ const Forecasting: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="space-y-4">
                 {/* Critical Alert */}
-                <div className="bg-white border border-red-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-red-100 rounded-lg">
-                      <AlertTriangle className="w-5 h-5 text-red-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
-                        <span className="text-xs text-red-600 font-medium">Critical</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Payroll & Benefits (GL 6000) shows a 35% variance above forecast for Q3
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Affected Period: Jul - Sep 2025</span>
-                        <span className="text-gray-400">2 hours ago</span>
-                      </div>
-                      <button className="mt-3 px-3 py-1.5 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
-                        Review Forecast
-                      </button>
-                    </div>
+                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
+                    <span className="text-xs text-red-600 font-medium">Critical</span>
                   </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Payroll & Benefits (GL 6000) shows a 35% variance above forecast for Q3
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">Affected Period: Jul - Sep 2025</span>
+                    <span className="text-gray-400">2 hours ago</span>
+                  </div>
+                  <button className="mt-3 px-3 py-1.5 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
+                    Review Forecast
+                  </button>
                 </div>
 
                 {/* Warning Alert */}
-                <div className="bg-white border border-amber-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-amber-100 rounded-lg">
-                      <AlertTriangle className="w-5 h-5 text-amber-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
-                        <span className="text-xs text-amber-600 font-medium">Warning</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Marketing expenses at 85% of annual budget with 3 months remaining
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">GL 6200 - Marketing</span>
-                        <span className="text-gray-400">5 hours ago</span>
-                      </div>
-                      <button className="mt-3 px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-medium hover:bg-amber-700 transition-colors">
-                        View Details
-                      </button>
-                    </div>
+                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
+                    <span className="text-xs text-amber-600 font-medium">Warning</span>
                   </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Marketing expenses at 85% of annual budget with 3 months remaining
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">GL 6200 - Marketing</span>
+                    <span className="text-gray-400">5 hours ago</span>
+                  </div>
+                  <button className="mt-3 px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-medium hover:bg-amber-700 transition-colors">
+                    View Details
+                  </button>
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-white border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Info className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
-                        <span className="text-xs text-blue-600 font-medium">Info</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        "Q4 Expansion Plan" scenario has been applied to Revenue accounts
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Applied by John Doe</span>
-                        <span className="text-gray-400">1 day ago</span>
-                      </div>
-                    </div>
+                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
+                    <span className="text-xs text-blue-600 font-medium">Info</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    "Q4 Expansion Plan" scenario has been applied to Revenue accounts
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">Applied by John Doe</span>
+                    <span className="text-gray-400">1 day ago</span>
                   </div>
                 </div>
 
                 {/* Success Alert */}
-                <div className="bg-white border border-green-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
-                        <span className="text-xs text-green-600 font-medium">Success</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Travel & Entertainment expenses are 15% below forecast YTD
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">GL 6400 - Travel</span>
-                        <span className="text-gray-400">2 days ago</span>
-                      </div>
-                    </div>
+                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
+                    <span className="text-xs text-green-600 font-medium">Success</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Travel & Entertainment expenses are 15% below forecast YTD
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">GL 6400 - Travel</span>
+                    <span className="text-gray-400">2 days ago</span>
                   </div>
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-white border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Info className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
-                        <span className="text-xs text-blue-600 font-medium">Info</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Version "2025 Annual Budget v3" has been saved successfully
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Saved by Current User</span>
-                        <span className="text-gray-400">3 days ago</span>
-                      </div>
-                    </div>
+                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
+                    <span className="text-xs text-blue-600 font-medium">Info</span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Version "2025 Annual Budget v3" has been saved successfully
+                  </p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-500">Saved by Current User</span>
+                    <span className="text-gray-400">3 days ago</span>
                   </div>
                 </div>
               </div>
