@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2 } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -91,6 +91,9 @@ const Forecasting: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
+  const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
+  const [hideEmptyAccounts, setHideEmptyAccounts] = useState(false);
+  const [showAccountCodes, setShowAccountCodes] = useState(true);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -237,7 +240,29 @@ const Forecasting: React.FC = () => {
   };
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  
+
+  const getDatePeriods = () => {
+    if (dateViewMode === 'months') {
+      return months;
+    } else if (dateViewMode === 'quarters') {
+      return ['Q1', 'Q2', 'Q3', 'Q4'];
+    } else {
+      return [selectedYear.toString()];
+    }
+  };
+
+  const getDateLabel = (period: string, index: number) => {
+    if (dateViewMode === 'months') {
+      return period;
+    } else if (dateViewMode === 'quarters') {
+      return `${period} ${selectedYear}`;
+    } else {
+      return selectedYear.toString();
+    }
+  };
+
+  const datePeriods = getDatePeriods();
+
   // Generate forecast data
   const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
     const data: MonthlyForecast[] = [];
@@ -356,9 +381,18 @@ const Forecasting: React.FC = () => {
   };
 
   const filteredGLCodes = glCodes.filter(glCode => {
-    const matchesSearch = glCode.code.includes(searchTerm) || 
+    const matchesSearch = glCode.code.includes(searchTerm) ||
                          glCode.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || glCode.category === selectedCategory;
+
+    if (hideEmptyAccounts) {
+      const hasActivity = forecastData.some(item =>
+        item.glCode === glCode.code &&
+        item.forecastedAmount > 0
+      );
+      return matchesSearch && matchesCategory && hasActivity;
+    }
+
     return matchesSearch && matchesCategory;
   });
 
@@ -1072,6 +1106,72 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <div className="mt-4 flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700">View:</label>
+            <div className="inline-flex rounded-lg border border-gray-300 bg-white">
+              <button
+                onClick={() => setDateViewMode('months')}
+                className={`px-4 py-2 text-sm font-medium transition-colors rounded-l-lg ${
+                  dateViewMode === 'months'
+                    ? 'bg-[#3AB7BF] text-white'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Months
+              </button>
+              <button
+                onClick={() => setDateViewMode('quarters')}
+                className={`px-4 py-2 text-sm font-medium transition-colors border-x border-gray-300 ${
+                  dateViewMode === 'quarters'
+                    ? 'bg-[#3AB7BF] text-white'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Quarters
+              </button>
+              <button
+                onClick={() => setDateViewMode('years')}
+                className={`px-4 py-2 text-sm font-medium transition-colors rounded-r-lg ${
+                  dateViewMode === 'years'
+                    ? 'bg-[#3AB7BF] text-white'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Years
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
+                hideEmptyAccounts
+                  ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+              }`}
+              title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
+            >
+              {hideEmptyAccounts ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
+            </button>
+
+            <button
+              onClick={() => setShowAccountCodes(!showAccountCodes)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
+                showAccountCodes
+                  ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+              }`}
+              title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
+            >
+              <Hash className="w-4 h-4" />
+              <span>{showAccountCodes ? 'Codes Shown' : 'Codes Hidden'}</span>
+            </button>
+          </div>
+        </div>
       </Card>
 
         {/* Main Forecast Table */}
@@ -1082,9 +1182,9 @@ const Forecasting: React.FC = () => {
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
-                    {months.map((month, index) => (
+                    {datePeriods.map((period, index) => (
                       <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
-                        {month} {selectedYear}
+                        {getDateLabel(period, index)}
                       </th>
                     ))}
                     <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">YTD Total</th>
@@ -1100,7 +1200,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={months.length + 2} className="py-3 px-4">
+                          <td colSpan={datePeriods.length + 3} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1126,8 +1226,10 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
-                                    <div className="font-semibold text-[#101010]">{glCode.name}</div>
-                                    <div className="font-mono text-xs text-gray-500 mt-0.5">{glCode.code}</div>
+                                    <div className="font-semibold text-[#101010]">
+                                      {showAccountCodes && <span className="font-mono text-xs text-gray-500 mr-2">{glCode.code}</span>}
+                                      {glCode.name}
+                                    </div>
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <button
@@ -1306,7 +1408,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={months.length + 3} className="py-0">
+                                <td colSpan={datePeriods.length + 3} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
