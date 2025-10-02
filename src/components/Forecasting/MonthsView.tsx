@@ -146,7 +146,7 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                 key={monthData.month}
                 className={`flex-shrink-0 border rounded-lg transition-all ${
                   monthData.isActual
-                    ? 'bg-gray-50 border-gray-300'
+                    ? 'bg-white border-gray-300'
                     : monthData.isSelected
                     ? 'bg-blue-50 border-blue-400 shadow-sm'
                     : 'bg-white border-gray-200 hover:border-gray-300'
@@ -231,7 +231,7 @@ const MonthsView: React.FC<MonthsViewProps> = ({
 
                   {monthData.isActual && (
                     <div className="mt-2 text-center">
-                      <span className="inline-block px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full text-[10px] font-medium">
+                      <span className="inline-block px-2 py-0.5 text-gray-600 text-[10px] font-medium">
                         ACTUAL
                       </span>
                     </div>
