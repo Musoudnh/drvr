@@ -1179,33 +1179,33 @@ const Forecasting: React.FC = () => {
         <div className="mt-4 flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">View:</label>
-            <div className="inline-flex rounded-lg border border-gray-300 bg-white">
+            <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
               <button
                 onClick={() => setDateViewMode('months')}
-                className={`px-4 py-2 text-sm font-medium transition-colors rounded-l-lg ${
+                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'months'
-                    ? 'bg-[#3AB7BF] text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white text-[#7B68EE] shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
                 Months
               </button>
               <button
                 onClick={() => setDateViewMode('quarters')}
-                className={`px-4 py-2 text-sm font-medium transition-colors border-x border-gray-300 ${
+                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'quarters'
-                    ? 'bg-[#3AB7BF] text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white text-[#7B68EE] shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
                 Quarters
               </button>
               <button
                 onClick={() => setDateViewMode('years')}
-                className={`px-4 py-2 text-sm font-medium transition-colors rounded-r-lg ${
+                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                   dateViewMode === 'years'
-                    ? 'bg-[#3AB7BF] text-white'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white text-[#7B68EE] shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
                 }`}
               >
                 Years
