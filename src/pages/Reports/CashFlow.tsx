@@ -10,14 +10,25 @@ interface WaterfallItem {
 
 const CashFlow: React.FC = () => {
   const waterfallData: WaterfallItem[] = [
-    { label: 'Budget', value: 1200000, type: 'starting' },
-    { label: 'Subscription Growth', value: 70000, type: 'increase' },
-    { label: 'Services Revenue', value: 15000, type: 'increase' },
-    { label: 'COGS Increase', value: -15000, type: 'decrease' },
-    { label: 'Marketing Overrun', value: -45000, type: 'decrease' },
-    { label: 'G&A Variance', value: -8000, type: 'decrease' },
-    { label: 'R&D Savings', value: 5000, type: 'increase' },
-    { label: 'Actual', value: 1285000, type: 'ending' }
+    { label: 'Revenue', value: 1483550, type: 'starting' },
+    { label: 'Cost of Goods Sold', value: -788324, type: 'decrease' },
+    { label: 'Expenses', value: -477590, type: 'decrease' },
+    { label: 'Other Income', value: 0, type: 'increase' },
+    { label: 'Cash Tax Paid', value: -11863, type: 'decrease' },
+    { label: 'Change in Accounts Payable', value: 17489, type: 'increase' },
+    { label: 'Change in Other Current Liabilities', value: 66459, type: 'increase' },
+    { label: 'Change in Accounts Receivable', value: -211966, type: 'decrease' },
+    { label: 'Change in Inventory', value: 31220, type: 'increase' },
+    { label: 'Change in Work in Progress', value: 0, type: 'decrease' },
+    { label: 'Change in Other Current Assets', value: 0, type: 'decrease' },
+    { label: 'Change in Fixed Assets (ex. Depreciation and Amortization)', value: -34246, type: 'decrease' },
+    { label: 'Change in Intangible Assets', value: 0, type: 'decrease' },
+    { label: 'Change in Investments or Other Non-Current Assets', value: 4227, type: 'increase' },
+    { label: 'Net Interest (after tax)', value: -27680, type: 'decrease' },
+    { label: 'Change in Other Non-Current Liabilities', value: 0, type: 'increase' },
+    { label: 'Dividends', value: 0, type: 'decrease' },
+    { label: 'Change in Retained Earnings and Other Equity', value: 0, type: 'increase' },
+    { label: 'Adjustments', value: 0, type: 'decrease' }
   ];
 
   const getWaterfallPosition = (index: number): number => {
@@ -95,31 +106,31 @@ const CashFlow: React.FC = () => {
         </Card>
       </div>
 
-      <div className="bg-[#0A1929] rounded-lg p-6">
+      <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">Cash Flow Waterfall</h2>
+          <h2 className="text-xl font-bold text-[#101010]">Cash Flow Waterfall</h2>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-400">Budget to Actual Bridge</span>
+            <span className="text-sm text-gray-600">Budget to Actual Bridge</span>
           </div>
         </div>
         <div className="space-y-1">
           {waterfallData.map((item, index) => {
             const position = getWaterfallPosition(index);
-            const maxValue = 1500000;
+            const maxValue = 1600000;
             const startPercent = (position / maxValue) * 100;
             const valuePercent = (Math.abs(item.value) / maxValue) * 100;
             const isTotal = item.type === 'starting' || item.type === 'ending';
 
             return (
               <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2' : 'py-1'}`}>
-                <div className="w-56 flex-shrink-0">
+                <div className="w-80 flex-shrink-0">
                   <div className="flex items-center gap-2">
                     {!isTotal && (
                       <span className="text-xs text-gray-500 uppercase font-medium">
                         {item.type === 'increase' ? 'ADD' : 'LESS'}
                       </span>
                     )}
-                    <span className={`text-sm ${isTotal ? 'font-bold text-white' : 'text-gray-300'}`}>
+                    <span className={`text-sm ${isTotal ? 'font-bold text-[#101010]' : 'text-gray-700'}`}>
                       {item.label}
                     </span>
                   </div>
@@ -158,7 +169,7 @@ const CashFlow: React.FC = () => {
                         }}
                       >
                         <span className="text-xs font-bold text-white">
-                          {item.type === 'increase' ? '+' : ''}{formatCurrency(item.value)}
+                          {item.value !== 0 ? (item.type === 'increase' ? '+' : '') + formatCurrency(item.value) : formatCurrency(0)}
                         </span>
                       </div>
                     </>
@@ -168,19 +179,19 @@ const CashFlow: React.FC = () => {
             );
           })}
         </div>
-        <div className="mt-6 pt-4 border-t border-gray-700">
+        <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-center gap-8">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-green-500 rounded" />
-              <span className="text-xs text-gray-300">Cash Received</span>
+              <span className="text-xs text-gray-600">Cash Received</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-red-500 rounded" />
-              <span className="text-xs text-gray-300">Cash Spent</span>
+              <span className="text-xs text-gray-600">Cash Spent</span>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Cash Flow Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
