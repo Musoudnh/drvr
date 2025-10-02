@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MonthsView from '../../components/Forecasting/MonthsView';
-import { Save, Download, RefreshCw } from 'lucide-react';
+import { Save, Download, RefreshCw, Filter, Calendar, ChevronDown } from 'lucide-react';
 import Button from '../../components/UI/Button';
 
 const MonthsViewDemo: React.FC = () => {
@@ -36,6 +36,13 @@ const MonthsViewDemo: React.FC = () => {
 
   const [selectedRevenueMonths, setSelectedRevenueMonths] = useState<string[]>([]);
   const [selectedExpenseMonths, setSelectedExpenseMonths] = useState<string[]>([]);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedView, setSelectedView] = useState<string>('all');
+  const [dateRange, setDateRange] = useState({
+    startDate: '',
+    endDate: ''
+  });
 
   const handleRevenueUpdate = (updatedMonths: typeof revenueMonths) => {
     setRevenueMonths(updatedMonths);
@@ -55,6 +62,30 @@ const MonthsViewDemo: React.FC = () => {
 
   const totals = calculateTotals();
 
+  const viewOptions = [
+    'All Data',
+    'Actuals Only',
+    'Forecast Only',
+    'Q1 (Jan-Mar)',
+    'Q2 (Apr-Jun)',
+    'Q3 (Jul-Sep)',
+    'Q4 (Oct-Dec)',
+    'H1 (Jan-Jun)',
+    'H2 (Jul-Dec)'
+  ];
+
+  const clearFilter = () => {
+    setSelectedView('all');
+  };
+
+  const clearDateFilter = () => {
+    setDateRange({ startDate: '', endDate: '' });
+  };
+
+  const handleExport = () => {
+    console.log('Exporting data...');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-[1600px] mx-auto">
@@ -68,21 +99,141 @@ const MonthsViewDemo: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
             <h2 className="text-lg font-semibold text-gray-900">2025 Financial Forecast</h2>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
-              <Button variant="outline" size="sm">
+            <div className="flex gap-3 relative">
+              <div className="relative">
+                <button
+                  onClick={() => setShowFilter(!showFilter)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  Filter
+                  {selectedView !== 'all' && (
+                    <span className="ml-2 px-1.5 py-0.5 bg-[#3AB7BF] text-white text-xs rounded-full">
+                      1
+                    </span>
+                  )}
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+
+                {showFilter && (
+                  <div className="absolute top-full mt-2 right-0 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    <div className="p-3 border-b border-gray-200">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium text-[#101010]">Filter View</h4>
+                        {selectedView !== 'all' && (
+                          <button
+                            onClick={clearFilter}
+                            className="text-xs text-[#3AB7BF] hover:underline"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto p-2">
+                      {viewOptions.map(option => (
+                        <label key={option} className="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                          <input
+                            type="radio"
+                            checked={selectedView === option.toLowerCase().replace(/\s+/g, '-')}
+                            onChange={() => {
+                              setSelectedView(option.toLowerCase().replace(/\s+/g, '-'));
+                              setShowFilter(false);
+                            }}
+                            className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#3AB7BF] mr-3"
+                          />
+                          <span className="text-sm text-gray-700">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setShowDatePicker(!showDatePicker)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Date Range
+                  {(dateRange.startDate || dateRange.endDate) && (
+                    <span className="ml-2 px-1.5 py-0.5 bg-[#3AB7BF] text-white text-xs rounded-full">
+                      •
+                    </span>
+                  )}
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+
+                {showDatePicker && (
+                  <div className="absolute top-full mt-2 right-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="font-medium text-[#101010]">Select Date Range</h4>
+                        {(dateRange.startDate || dateRange.endDate) && (
+                          <button
+                            onClick={clearDateFilter}
+                            className="text-xs text-[#3AB7BF] hover:underline"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                          <input
+                            type="date"
+                            value={dateRange.startDate}
+                            onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                          <input
+                            type="date"
+                            value={dateRange.endDate}
+                            onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                          />
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1"
+                            onClick={() => setShowDatePicker(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            className="flex-1"
+                            onClick={() => setShowDatePicker(false)}
+                          >
+                            Apply
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={handleExport}
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Export
-              </Button>
-              <Button variant="primary" size="sm">
-                <Save className="w-4 h-4 mr-2" />
-                Save Forecast
-              </Button>
+              </button>
             </div>
           </div>
 
