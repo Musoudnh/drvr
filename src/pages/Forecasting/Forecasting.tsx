@@ -2342,7 +2342,7 @@ const Forecasting: React.FC = () => {
               <div className="space-y-4">
                 {/* Critical Alert */}
                 {(alertFilter === 'all' || alertFilter === 'critical') && (
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
                     <span className="text-xs text-red-600 font-medium">Critical</span>
@@ -2362,7 +2362,7 @@ const Forecasting: React.FC = () => {
 
                 {/* Warning Alert */}
                 {(alertFilter === 'all' || alertFilter === 'warning') && (
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
                     <span className="text-xs text-amber-600 font-medium">Warning</span>
@@ -2382,7 +2382,7 @@ const Forecasting: React.FC = () => {
 
                 {/* Info Alert */}
                 {(alertFilter === 'all' || alertFilter === 'info') && (
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
@@ -2399,7 +2399,7 @@ const Forecasting: React.FC = () => {
 
                 {/* Success Alert */}
                 {alertFilter === 'all' && (
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
                     <span className="text-xs text-green-600 font-medium">Success</span>
@@ -2416,7 +2416,7 @@ const Forecasting: React.FC = () => {
 
                 {/* Info Alert */}
                 {(alertFilter === 'all' || alertFilter === 'info') && (
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
