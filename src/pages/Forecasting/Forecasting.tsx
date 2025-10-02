@@ -91,6 +91,7 @@ const Forecasting: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [editingScenario, setEditingScenario] = useState<AppliedScenario | null>(null);
   const [showEditScenarioModal, setShowEditScenarioModal] = useState(false);
+  const [scenarioSearchTerm, setScenarioSearchTerm] = useState('');
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
@@ -2239,7 +2240,7 @@ const Forecasting: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
             <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-[#101010]">Applied Scenarios</h3>
                   <p className="text-sm text-gray-600 mt-1">Audit history of all scenario changes</p>
@@ -2251,6 +2252,18 @@ const Forecasting: React.FC = () => {
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
+
+              {/* Search by P&L Account */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={scenarioSearchTerm}
+                  onChange={(e) => setScenarioSearchTerm(e.target.value)}
+                  placeholder="Search by P&L account..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                />
+              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
@@ -2260,9 +2273,28 @@ const Forecasting: React.FC = () => {
                   <p className="text-gray-500 font-medium">No scenarios applied yet</p>
                   <p className="text-sm text-gray-400 mt-2">Applied scenarios will appear here</p>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {appliedScenarios.map((scenario) => (
+              ) : (() => {
+                const filteredScenarios = appliedScenarios.filter((scenario) => {
+                  if (!scenarioSearchTerm) return true;
+                  const glAccount = glCodes.find(gl => gl.code === scenario.glCode);
+                  const accountName = glAccount?.name || scenario.glCode;
+                  return accountName.toLowerCase().includes(scenarioSearchTerm.toLowerCase()) ||
+                         scenario.glCode.toLowerCase().includes(scenarioSearchTerm.toLowerCase());
+                });
+
+                if (filteredScenarios.length === 0) {
+                  return (
+                    <div className="text-center py-12">
+                      <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500 font-medium">No scenarios found</p>
+                      <p className="text-sm text-gray-400 mt-2">Try adjusting your search term</p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="space-y-4">
+                    {filteredScenarios.map((scenario) => (
                     <div
                       key={scenario.id}
                       className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
@@ -2295,6 +2327,27 @@ const Forecasting: React.FC = () => {
                       {scenarioMenuOpen === scenario.id && (
                         <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                           <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                setEditingScenario(scenario);
+                                setGLScenarioForm({
+                                  ...glScenarioForm,
+                                  title: scenario.name,
+                                  description: scenario.description,
+                                  adjustmentType: scenario.adjustmentType,
+                                  adjustmentValue: scenario.adjustmentValue,
+                                  startMonth: scenario.startMonth.split(' ')[0],
+                                  endMonth: scenario.endMonth.split(' ')[0]
+                                });
+                                setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                setShowEditScenarioModal(true);
+                                setScenarioMenuOpen(null);
+                                setShowScenarioAuditSidebar(false);
+                              }}
+                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
+                            >
+                              Adjust
+                            </button>
                             <button
                               onClick={() => toggleScenario(scenario.id)}
                               className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
@@ -2356,9 +2409,10 @@ const Forecasting: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">
