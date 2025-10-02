@@ -815,8 +815,8 @@ const ScenarioPlanning: React.FC = () => {
 
       {/* Create/Edit Scenario Modal */}
       {(showCreateModal || editingScenario) && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-[900px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 w-[900px] max-w-[95vw] max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-2xl font-bold text-[#101010]">
                 {editingScenario ? 'Edit Scenario' : 'Create New Scenario'}
@@ -1062,8 +1062,8 @@ const ScenarioPlanning: React.FC = () => {
 
       {/* AI Insights Modal */}
       {showAIInsightsModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-[800px] max-w-[95vw] max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 w-[800px] max-w-[95vw] max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-2xl font-bold text-[#101010] flex items-center">
                 <Brain className="w-6 h-6 mr-3 text-[#8B5CF6]" />
@@ -1083,7 +1083,7 @@ const ScenarioPlanning: React.FC = () => {
                 if (!scenario) return null;
                 
                 return (
-                  <div key={scenarioId} className="p-6 border border-gray-200 rounded-xl">
+                  <div key={scenarioId} className="p-6 border border-gray-200/50 bg-white/80 backdrop-blur-sm rounded-xl shadow-md">
                     <div className="flex items-center mb-4">
                       <div 
                         className="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
@@ -1150,8 +1150,8 @@ const ScenarioPlanning: React.FC = () => {
 
       {/* Comparison Metrics Modal */}
       {showComparisonModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[500px] max-w-[90vw]">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white/95 backdrop-blur-md rounded-xl p-6 w-[500px] max-w-[90vw] shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold text-[#101010]">Customize Comparison</h3>
               <button
