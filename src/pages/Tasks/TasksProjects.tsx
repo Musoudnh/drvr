@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send, ChevronDown, Check } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
@@ -74,6 +74,7 @@ const TasksProjects: React.FC = () => {
     connected: boolean;
   }>>([]);
   const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
+  const [priorityDropdownOpen, setPriorityDropdownOpen] = useState<string | null>(null);
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
   const [newComment, setNewComment] = useState('');
@@ -354,13 +355,43 @@ const TasksProjects: React.FC = () => {
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
             <div className="flex items-center gap-1 flex-shrink-0">
-              <span className={`px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(task.priority)}`}>
-                {task.priority}
-              </span>
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPriorityDropdownOpen(priorityDropdownOpen === task.id ? null : task.id);
+                    setTaskMenuOpen(null);
+                  }}
+                  className={`px-2 py-0.5 rounded-lg text-xs font-medium flex items-center gap-1 transition-all hover:shadow-sm ${getPriorityColor(task.priority)}`}
+                >
+                  <span className="capitalize">{task.priority}</span>
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+
+                {priorityDropdownOpen === task.id && (
+                  <div className="absolute top-full right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[120px]">
+                    {(['high', 'medium', 'low'] as const).map((priority) => (
+                      <button
+                        key={priority}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTaskUpdate(task.id, { priority });
+                          setPriorityDropdownOpen(null);
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-between capitalize"
+                      >
+                        <span>{priority}</span>
+                        {task.priority === priority && <Check className="w-4 h-4 text-[#3AB7BF]" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
+                  setPriorityDropdownOpen(null);
                 }}
                 className="p-1 hover:bg-gray-100 rounded relative"
                 title="More options"
@@ -428,7 +459,13 @@ const TasksProjects: React.FC = () => {
   );
 
   const renderKanbanBoard = () => (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
+      <div
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full"
+        onClick={() => {
+          setPriorityDropdownOpen(null);
+          setTaskMenuOpen(null);
+        }}
+      >
         {(['todo', 'in_progress', 'done'] as const).map(status => {
           const statusTasks = tasksByStatus[status];
           const statusLabels = {
