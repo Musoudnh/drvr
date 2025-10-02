@@ -293,24 +293,16 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div
-        className="space-y-6"
+        className="space-y-4"
         onClick={() => {
           setStatusDropdownOpen(null);
           setPriorityDropdownOpen(null);
           setTaskMenuOpen(null);
         }}
       >
-        <div className="hidden md:grid md:grid-cols-3 gap-4">
-          {renderColumn('todo', todoTasks, 'To Do', 'border-gray-400')}
-          {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-teal-500')}
-          {renderColumn('done', doneTasks, 'Done', 'border-green-500')}
-        </div>
-
-        <div className="md:hidden space-y-4">
-          {renderColumn('todo', todoTasks, 'To Do', 'border-gray-400')}
-          {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-teal-500')}
-          {renderColumn('done', doneTasks, 'Done', 'border-green-500')}
-        </div>
+        {renderColumn('todo', todoTasks, 'To Do', 'border-gray-400')}
+        {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-teal-500')}
+        {renderColumn('done', doneTasks, 'Done', 'border-green-500')}
       </div>
     </DragDropContext>
   );
