@@ -44,6 +44,8 @@ const TasksProjects: React.FC = () => {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showTaskDetail, setShowTaskDetail] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isEditingTask, setIsEditingTask] = useState(false);
+  const [editTaskForm, setEditTaskForm] = useState<Task | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotesPanel, setShowNotesPanel] = useState(false);
   const [clickupConnected, setClickupConnected] = useState(false);
@@ -334,6 +336,8 @@ const TasksProjects: React.FC = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedTask(task);
+                  setEditTaskForm(task);
+                  setIsEditingTask(true);
                   setShowTaskDetail(true);
                   setTaskMenuOpen(null);
                 }}
@@ -472,6 +476,8 @@ const TasksProjects: React.FC = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedTask(task);
+                            setEditTaskForm(task);
+                            setIsEditingTask(true);
                             setShowTaskDetail(true);
                             setTaskMenuOpen(null);
                           }}
@@ -857,106 +863,218 @@ const TasksProjects: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[#101010]">{selectedTask.title}</h3>
+              <h3 className="text-xl font-semibold text-[#101010]">
+                {isEditingTask ? 'Edit Task' : selectedTask.title}
+              </h3>
               <button
-                onClick={() => setShowTaskDetail(false)}
+                onClick={() => {
+                  setShowTaskDetail(false);
+                  setIsEditingTask(false);
+                  setEditTaskForm(null);
+                }}
                 className="p-1 hover:bg-gray-100 rounded"
               >
                 <X className="w-4 h-4 text-gray-400" />
               </button>
             </div>
             
-            <div className="space-y-6">
-              <div>
-                <h4 className="font-semibold text-[#101010] mb-2">Description</h4>
-                <p className="text-gray-700">{selectedTask.description}</p>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+            {isEditingTask && editTaskForm ? (
+              <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Assignee</h4>
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
-                      <span className="text-white text-sm font-medium">
-                        {selectedTask.assignee.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                    <span className="text-gray-700">{selectedTask.assignee}</span>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                  <input
+                    type="text"
+                    value={editTaskForm.title}
+                    onChange={(e) => setEditTaskForm({...editTaskForm, title: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <textarea
+                    value={editTaskForm.description}
+                    onChange={(e) => setEditTaskForm({...editTaskForm, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Assignee</label>
+                    <input
+                      type="text"
+                      value={editTaskForm.assignee}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, assignee: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+                    <input
+                      type="date"
+                      value={editTaskForm.dueDate.toISOString().split('T')[0]}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    />
                   </div>
                 </div>
-                
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                    <select
+                      value={editTaskForm.priority}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <select
+                      value={editTaskForm.status}
+                      onChange={(e) => setEditTaskForm({...editTaskForm, status: e.target.value as Task['status']})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    >
+                      <option value="todo">To Do</option>
+                      <option value="in_progress">In Progress</option>
+                      <option value="review">Review</option>
+                      <option value="done">Done</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Due Date</h4>
-                  <div className="flex items-center">
-                    <Calendar className="w-4 h-4 text-gray-400 mr-2" />
-                    <span className={`${
-                      isOverdue(selectedTask.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
-                    }`}>
-                      {formatDate(selectedTask.dueDate)}
+                  <h4 className="font-semibold text-[#101010] mb-2">Description</h4>
+                  <p className="text-gray-700">{selectedTask.description}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Assignee</h4>
+                    <p className="text-gray-700">{selectedTask.assignee}</p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Due Date</h4>
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 text-gray-400 mr-2" />
+                      <span className={`${
+                        isOverdue(selectedTask.dueDate) ? 'text-[#F87171] font-medium' : 'text-gray-700'
+                      }`}>
+                        {formatDate(selectedTask.dueDate)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                      {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
+                      {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                     </span>
                   </div>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
+
+                {selectedTask.tags.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedTask.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
-                    {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
-                  </span>
-                </div>
-                
-                <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
-                    {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
-                  </span>
-                </div>
-              </div>
-              
-              {selectedTask.tags.length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTask.tags.map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
-                        {tag}
-                      </span>
+                  <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
+                  <div className="space-y-3 max-h-40 overflow-y-auto">
+                    {selectedTask.comments.map(comment => (
+                      <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
+                          <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
+                        </div>
+                        <p className="text-sm text-gray-700">{comment.content}</p>
+                      </div>
                     ))}
+                    {selectedTask.comments.length === 0 && (
+                      <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
+                    )}
                   </div>
                 </div>
-              )}
-              
-              <div>
-                <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
-                <div className="space-y-3 max-h-40 overflow-y-auto">
-                  {selectedTask.comments.map(comment => (
-                    <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
-                        <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
-                      </div>
-                      <p className="text-sm text-gray-700">{comment.content}</p>
-                    </div>
-                  ))}
-                  {selectedTask.comments.length === 0 && (
-                    <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
-                  )}
-                </div>
               </div>
-            </div>
+            )}
             
             <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline">
-                <Edit3 className="w-4 h-4 mr-2" />
-                Edit Task
-              </Button>
-              <button
-                onClick={() => setShowTaskDetail(false)}
-                className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
-              >
-                Close
-              </button>
+              {isEditingTask ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsEditingTask(false);
+                      setEditTaskForm(null);
+                    }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (editTaskForm) {
+                        setTasks(prev => prev.map(t => t.id === editTaskForm.id ? editTaskForm : t));
+                        setSelectedTask(editTaskForm);
+                        setIsEditingTask(false);
+                      }
+                    }}
+                    className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setEditTaskForm(selectedTask);
+                      setIsEditingTask(true);
+                    }}
+                  >
+                    <Edit3 className="w-4 h-4 mr-2" />
+                    Edit Task
+                  </Button>
+                  <button
+                    onClick={() => {
+                      setShowTaskDetail(false);
+                      setIsEditingTask(false);
+                      setEditTaskForm(null);
+                    }}
+                    className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
+                  >
+                    Close
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
