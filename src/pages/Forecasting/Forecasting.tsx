@@ -275,6 +275,16 @@ const Forecasting: React.FC = () => {
     return quarterMap[quarter] || [];
   };
 
+  const getQuarterLabel = (quarter: string): string => {
+    const labelMap: { [key: string]: string } = {
+      'Q1': 'Jan-Mar',
+      'Q2': 'Apr-Jun',
+      'Q3': 'Jul-Sep',
+      'Q4': 'Oct-Dec'
+    };
+    return labelMap[quarter] || '';
+  };
+
   const getAggregatedAmount = (glCode: string, period: string): number => {
     if (dateViewMode === 'months') {
       const monthData = forecastData.find(
@@ -1224,6 +1234,11 @@ const Forecasting: React.FC = () => {
                           <div className="flex flex-col">
                             <span className="text-base">FY{getDateLabel(period, index)}</span>
                             <span className="text-xs font-normal text-gray-500">Jan-Dec</span>
+                          </div>
+                        ) : dateViewMode === 'quarters' ? (
+                          <div className="flex flex-col">
+                            <span className="text-base">{getDateLabel(period, index)}</span>
+                            <span className="text-xs font-normal text-gray-500">{getQuarterLabel(period)}</span>
                           </div>
                         ) : (
                           getDateLabel(period, index)
