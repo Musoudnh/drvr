@@ -1433,7 +1433,7 @@ const Forecasting: React.FC = () => {
                                           const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
                                           return (
                                             <>
-                                              <div className="text-[10px] text-gray-900 font-semibold bg-green-50 rounded px-1 py-0.5">
+                                              <div className="text-[10px] text-[#212b36] font-semibold bg-green-50 rounded px-1 py-0.5">
                                                 Act: ${monthData.actualAmount.toLocaleString()}
                                               </div>
                                               <div className={`text-[10px] font-medium rounded px-1 py-0.5 bg-gray-100 ${
