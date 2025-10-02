@@ -1234,6 +1234,8 @@ const Forecasting: React.FC = () => {
                         className={`py-3 font-bold text-gray-800 ${
                           dateViewMode === 'months'
                             ? 'text-center px-2 min-w-[120px]'
+                            : dateViewMode === 'quarters'
+                            ? 'text-left px-1 min-w-[90px]'
                             : 'text-left px-2 min-w-[100px]'
                         }`}
                       >
@@ -1252,9 +1254,7 @@ const Forecasting: React.FC = () => {
                         )}
                       </th>
                     ))}
-                    {dateViewMode === 'years' ? (
-                      <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">Total</th>
-                    ) : (
+                    {dateViewMode !== 'years' && (
                       <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
                     )}
                   </tr>
@@ -1268,7 +1268,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={datePeriods.length + 2} className="py-3 px-4">
+                          <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1330,8 +1330,12 @@ const Forecasting: React.FC = () => {
                                 return (
                                   <td
                                     key={periodIndex}
-                                    className={`py-3 px-2 text-sm ${
-                                      dateViewMode === 'months' ? 'text-center' : 'text-left'
+                                    className={`py-3 text-sm ${
+                                      dateViewMode === 'months'
+                                        ? 'text-center px-2'
+                                        : dateViewMode === 'quarters'
+                                        ? 'text-left px-1'
+                                        : 'text-left px-2'
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
@@ -1383,53 +1387,53 @@ const Forecasting: React.FC = () => {
                                   </td>
                                 );
                               })}
-                              <td className="py-3 px-4 text-right text-sm font-medium">
-                                {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
-                                  <input
-                                    type="text"
-                                    inputMode="numeric"
-                                    value={editValue}
-                                    onChange={(e) => {
-                                      const value = e.target.value;
-                                      if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                        setEditValue(value);
-                                      }
-                                    }}
-                                    onBlur={handleCellSave}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') handleCellSave();
-                                      if (e.key === 'Escape') handleCellCancel();
-                                    }}
-                                    className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
-                                    autoFocus
-                                    onFocus={(e) => e.target.select()}
-                                  />
-                                ) : (
-                                  <span
-                                    onClick={() => {
-                                      if (dateViewMode !== 'years') {
+                              {dateViewMode !== 'years' && (
+                                <td className="py-3 px-4 text-right text-sm font-medium">
+                                  {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
+                                    <input
+                                      type="text"
+                                      inputMode="numeric"
+                                      value={editValue}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                          setEditValue(value);
+                                        }
+                                      }}
+                                      onBlur={handleCellSave}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter') handleCellSave();
+                                        if (e.key === 'Escape') handleCellCancel();
+                                      }}
+                                      className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
+                                      autoFocus
+                                      onFocus={(e) => e.target.select()}
+                                    />
+                                  ) : (
+                                    <span
+                                      onClick={() => {
                                         const fyTotal = forecastData
                                           .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
                                           .reduce((sum, item) => sum + item.forecastedAmount, 0);
                                         setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
                                         setEditValue(fyTotal.toString());
-                                      }
-                                    }}
-                                    className={dateViewMode !== 'years' ? "cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block" : ""}
-                                  >
-                                    ${forecastData
-                                      .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                      .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                      .toLocaleString()}
-                                  </span>
-                                )}
-                              </td>
+                                      }}
+                                      className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
+                                    >
+                                      ${forecastData
+                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
+                                        .reduce((sum, item) => sum + item.forecastedAmount, 0)
+                                        .toLocaleString()}
+                                    </span>
+                                  )}
+                                </td>
+                              )}
                             </tr>
                             
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={datePeriods.length + 2} className="py-0">
+                                <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
