@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { GripVertical, Calendar, User, MoreVertical, CreditCard as Edit3, Trash2, AlertTriangle, ChevronDown, Check } from 'lucide-react';
+import { GripVertical, Calendar, User, MoreVertical, CreditCard as Edit3, Trash2, AlertTriangle, ChevronDown, Check, Settings } from 'lucide-react';
 
 interface Task {
   id: string;
@@ -29,6 +29,15 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
   const [priorityDropdownOpen, setPriorityDropdownOpen] = useState<string | null>(null);
   const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
   const [hoveredTask, setHoveredTask] = useState<string | null>(null);
+  const [columnMenuOpen, setColumnMenuOpen] = useState<string | null>(null);
+  const [showColumnSettingsModal, setShowColumnSettingsModal] = useState<string | null>(null);
+  const [columnSettings, setColumnSettings] = useState({
+    todo: { label: 'To Do', color: 'bg-gray-100', textColor: 'text-gray-700' },
+    in_progress: { label: 'In Progress', color: 'bg-yellow-100', textColor: 'text-yellow-700' },
+    done: { label: 'Done', color: 'bg-green-100', textColor: 'text-green-700' }
+  });
+  const [tempColumnLabel, setTempColumnLabel] = useState('');
+  const [tempColumnColor, setTempColumnColor] = useState('');
 
   const todoTasks = tasks.filter(t => t.status === 'todo');
   const inProgressTasks = tasks.filter(t => t.status === 'in_progress');
@@ -64,15 +73,16 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
   };
 
   const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'todo': return 'To Do';
-      case 'in_progress': return 'In Progress';
-      case 'done': return 'Done';
-      default: return status;
-    }
+    if (status === 'todo') return columnSettings.todo.label;
+    if (status === 'in_progress') return columnSettings.in_progress.label;
+    if (status === 'done') return columnSettings.done.label;
+    return status;
   };
 
   const getStatusColor = (status: string) => {
+    if (status === 'todo') return `${columnSettings.todo.color} ${columnSettings.todo.textColor} border-gray-200`;
+    if (status === 'in_progress') return `${columnSettings.in_progress.color} ${columnSettings.in_progress.textColor} border-yellow-200`;
+    if (status === 'done') return `${columnSettings.done.color} ${columnSettings.done.textColor} border-green-200`;
     return 'bg-gray-100 text-gray-700 border-gray-200';
   };
 
@@ -244,57 +254,191 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
     </Draggable>
   );
 
-  const renderColumn = (status: 'todo' | 'in_progress' | 'done', columnTasks: Task[], title: string, borderColor: string) => (
-    <div key={status} className="flex-1 min-w-0">
-      <div className="bg-white rounded-t-lg">
-        <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-          <h3 className="font-semibold text-[#101010] text-sm flex items-center">
-            {title}
-            <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
-              {columnTasks.length}
-            </span>
-          </h3>
-        </div>
+  const renderColumn = (status: 'todo' | 'in_progress' | 'done', columnTasks: Task[], title: string, borderColor: string) => {
+    const settings = columnSettings[status];
 
-        <Droppable droppableId={status}>
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className={`min-h-[200px] transition-colors ${
-                snapshot.isDraggingOver ? 'bg-teal-50' : 'bg-white'
-              }`}
-            >
-              {columnTasks.length === 0 ? (
-                <div className="p-8 text-center text-gray-400 text-sm">
-                  No tasks
+    return (
+      <div key={status} className="flex-1 min-w-0">
+        <div className="bg-white rounded-t-lg">
+          <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+            <h3 className="font-semibold text-[#101010] text-sm flex items-center">
+              <span className={`px-3 py-1.5 rounded-md text-xs font-medium ${settings.color} ${settings.textColor} border border-gray-200`}>
+                {settings.label}
+              </span>
+              <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                {columnTasks.length}
+              </span>
+            </h3>
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setColumnMenuOpen(columnMenuOpen === status ? null : status);
+                }}
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
+              >
+                <MoreVertical className="w-4 h-4 text-gray-600" />
+              </button>
+              {columnMenuOpen === status && (
+                <div className="absolute top-full right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[160px]">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowColumnSettingsModal(status);
+                      setTempColumnLabel(settings.label);
+                      setTempColumnColor(settings.color);
+                      setColumnMenuOpen(null);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Customize Column
+                  </button>
                 </div>
-              ) : (
-                columnTasks.map((task, index) => renderTaskRow(task, index))
               )}
-              {provided.placeholder}
             </div>
-          )}
-        </Droppable>
+          </div>
+
+          <Droppable droppableId={status}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={`min-h-[200px] transition-colors ${
+                  snapshot.isDraggingOver ? 'bg-teal-50' : 'bg-white'
+                }`}
+              >
+                {columnTasks.length === 0 ? (
+                  <div className="p-8 text-center text-gray-400 text-sm">
+                    No tasks
+                  </div>
+                ) : (
+                  columnTasks.map((task, index) => renderTaskRow(task, index))
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div
-        className="space-y-4"
-        onClick={() => {
-          setStatusDropdownOpen(null);
-          setPriorityDropdownOpen(null);
-          setTaskMenuOpen(null);
-        }}
-      >
-        {renderColumn('todo', todoTasks, 'To Do', '')}
-        {renderColumn('in_progress', inProgressTasks, 'In Progress', '')}
-        {renderColumn('done', doneTasks, 'Done', '')}
-      </div>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div
+          className="space-y-4"
+          onClick={() => {
+            setStatusDropdownOpen(null);
+            setPriorityDropdownOpen(null);
+            setTaskMenuOpen(null);
+            setColumnMenuOpen(null);
+          }}
+        >
+          {renderColumn('todo', todoTasks, 'To Do', '')}
+          {renderColumn('in_progress', inProgressTasks, 'In Progress', '')}
+          {renderColumn('done', doneTasks, 'Done', '')}
+        </div>
+      </DragDropContext>
+
+      {showColumnSettingsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[400px] max-w-[90vw]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[#101010]">Customize Column</h3>
+              <button
+                onClick={() => setShowColumnSettingsModal(null)}
+                className="p-1 hover:bg-gray-100 rounded"
+              >
+                <span className="text-gray-400 text-xl leading-none">&times;</span>
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Column Name</label>
+                <input
+                  type="text"
+                  value={tempColumnLabel}
+                  onChange={(e) => setTempColumnLabel(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  placeholder="Enter column name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Grey' },
+                    { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Yellow' },
+                    { bg: 'bg-green-100', text: 'text-green-700', label: 'Green' },
+                    { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Blue' },
+                    { bg: 'bg-red-100', text: 'text-red-700', label: 'Red' },
+                    { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Purple' },
+                    { bg: 'bg-pink-100', text: 'text-pink-700', label: 'Pink' },
+                    { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Orange' }
+                  ].map((color) => (
+                    <button
+                      key={color.bg}
+                      onClick={() => {
+                        setTempColumnColor(color.bg);
+                      }}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        tempColumnColor === color.bg
+                          ? 'border-[#3AB7BF] ring-2 ring-[#3AB7BF] ring-opacity-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className={`w-full h-6 rounded ${color.bg}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowColumnSettingsModal(null)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (showColumnSettingsModal) {
+                    const colorMap: Record<string, string> = {
+                      'bg-gray-100': 'text-gray-700',
+                      'bg-yellow-100': 'text-yellow-700',
+                      'bg-green-100': 'text-green-700',
+                      'bg-blue-100': 'text-blue-700',
+                      'bg-red-100': 'text-red-700',
+                      'bg-purple-100': 'text-purple-700',
+                      'bg-pink-100': 'text-pink-700',
+                      'bg-orange-100': 'text-orange-700'
+                    };
+
+                    setColumnSettings({
+                      ...columnSettings,
+                      [showColumnSettingsModal]: {
+                        label: tempColumnLabel || columnSettings[showColumnSettingsModal].label,
+                        color: tempColumnColor || columnSettings[showColumnSettingsModal].color,
+                        textColor: colorMap[tempColumnColor] || columnSettings[showColumnSettingsModal].textColor
+                      }
+                    });
+                    setShowColumnSettingsModal(null);
+                  }
+                }}
+                className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
