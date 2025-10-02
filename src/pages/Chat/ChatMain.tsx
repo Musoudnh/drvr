@@ -333,11 +333,34 @@ const ChatMain: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Tab Navigation */}
       <div className="bg-white rounded-lg shadow-sm">
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8 px-6" aria-label="Chat Navigation">
+            <button
+              onClick={() => setShowConnectModal(true)}
+              className="flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Connect Chat
+            </button>
+          </nav>
+        </div>
+
+        {/* Tab Content */}
         <div className="p-6">
-          <div className="flex items-center justify-center h-96">
-            <p className="text-gray-600 text-lg">Connect your chat</p>
-          </div>
+          {activeTab === 'native' && renderNativeChat()}
+          {activeTab === 'slack' && renderIntegrationTab('slack')}
+          {activeTab === 'teams' && renderIntegrationTab('teams')}
+          {activeTab === 'google' && renderIntegrationTab('google')}
+          
+          {connectedChats.map(chat => (
+            activeTab === chat.id && (
+              <div key={chat.id}>
+                {renderIntegrationTab(chat.platform)}
+              </div>
+            )
+          ))}
         </div>
       </div>
 
