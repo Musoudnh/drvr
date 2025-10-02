@@ -217,10 +217,10 @@ const MonthsView: React.FC<MonthsViewProps> = ({
 
                         <div className="text-[10px] text-gray-500 font-medium mb-1">% vs Budget</div>
                         <div
-                          className={`px-2 py-1 rounded text-xs font-medium ${
+                          className={`text-xs font-medium ${
                             calculateVariance(monthData.actualValue, monthData.value) >= 0
-                              ? 'bg-green-50 text-green-700'
-                              : 'bg-red-50 text-red-700'
+                              ? 'text-green-700'
+                              : 'text-red-700'
                           }`}
                         >
                           {formatPercentage(calculateVariance(monthData.actualValue, monthData.value))}
