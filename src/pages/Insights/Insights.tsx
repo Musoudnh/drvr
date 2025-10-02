@@ -40,7 +40,7 @@ const Insights: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
   const [selectedKPIView, setSelectedKPIView] = useState<'all' | 'revenue' | 'efficiency'>('all');
 
-  const kpiMetrics: KPIMetric[] = [
+  const allKpiMetrics: KPIMetric[] = [
     {
       name: 'ARR',
       value: '$12.4M',
@@ -242,6 +242,12 @@ const Insights: React.FC = () => {
     return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
   };
 
+  const kpiMetrics = selectedKPIView === 'all'
+    ? allKpiMetrics
+    : selectedKPIView === 'revenue'
+    ? allKpiMetrics.filter(m => ['ARR', 'MRR', 'Churn Rate'].includes(m.name))
+    : allKpiMetrics.filter(m => ['CAC', 'LTV', 'LTV:CAC Ratio', 'Burn Multiple', 'Cash Runway'].includes(m.name));
+
   const getWaterfallPosition = (index: number): number => {
     let position = 0;
     for (let i = 0; i < index; i++) {
@@ -287,33 +293,33 @@ const Insights: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1 w-fit">
         <button
           onClick={() => setSelectedKPIView('all')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
             selectedKPIView === 'all'
-              ? 'bg-[#3AB7BF] text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
           }`}
         >
           All Metrics
         </button>
         <button
           onClick={() => setSelectedKPIView('revenue')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
             selectedKPIView === 'revenue'
-              ? 'bg-[#3AB7BF] text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
           }`}
         >
           Revenue
         </button>
         <button
           onClick={() => setSelectedKPIView('efficiency')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
             selectedKPIView === 'efficiency'
-              ? 'bg-[#3AB7BF] text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
+              : 'text-gray-600 hover:text-gray-800'
           }`}
         >
           Efficiency
