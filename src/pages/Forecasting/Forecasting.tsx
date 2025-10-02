@@ -2316,7 +2316,7 @@ const Forecasting: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="space-y-4">
                 {/* Critical Alert */}
-                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
                     <span className="text-xs text-red-600 font-medium">Critical</span>
@@ -2334,7 +2334,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Warning Alert */}
-                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
                     <span className="text-xs text-amber-600 font-medium">Warning</span>
@@ -2352,7 +2352,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
@@ -2367,7 +2367,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Success Alert */}
-                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
                     <span className="text-xs text-green-600 font-medium">Success</span>
@@ -2382,7 +2382,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-white border border-gray-900 rounded-lg p-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
