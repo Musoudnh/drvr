@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
@@ -25,6 +25,16 @@ interface Comment {
   author: string;
   content: string;
   createdAt: Date;
+}
+
+interface ActivityLogEntry {
+  id: string;
+  user: string;
+  action: 'created' | 'updated' | 'commented' | 'status_changed';
+  taskTitle: string;
+  taskId: string;
+  details: string;
+  timestamp: Date;
 }
 
 interface Project {
@@ -63,6 +73,9 @@ const TasksProjects: React.FC = () => {
     connected: boolean;
   }>>([]);
   const [taskMenuOpen, setTaskMenuOpen] = useState<string | null>(null);
+  const [showActivityLog, setShowActivityLog] = useState(false);
+  const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
+  const [newComment, setNewComment] = useState('');
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -149,11 +162,68 @@ const TasksProjects: React.FC = () => {
 
   const teamMembers = [
     'Sarah Johnson',
-    'Michael Chen', 
+    'Michael Chen',
     'Emily Rodriguez',
     'David Kim',
     'Lisa Thompson'
   ];
+
+  const [activityLog, setActivityLog] = useState<ActivityLogEntry[]>([
+    {
+      id: 'a1',
+      user: 'Sarah Johnson',
+      action: 'created',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Created task',
+      timestamp: new Date('2025-01-10T09:30:00')
+    },
+    {
+      id: 'a2',
+      user: 'Michael Chen',
+      action: 'commented',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Added comment about marketing budget',
+      timestamp: new Date('2025-01-15T14:20:00')
+    },
+    {
+      id: 'a3',
+      user: 'Sarah Johnson',
+      action: 'status_changed',
+      taskTitle: 'Q1 Budget Review',
+      taskId: '1',
+      details: 'Changed status from To Do to In Progress',
+      timestamp: new Date('2025-01-15T16:45:00')
+    },
+    {
+      id: 'a4',
+      user: 'Emily Rodriguez',
+      action: 'created',
+      taskTitle: 'Financial Report Generation',
+      taskId: '2',
+      details: 'Created task',
+      timestamp: new Date('2025-01-12T10:15:00')
+    },
+    {
+      id: 'a5',
+      user: 'David Kim',
+      action: 'updated',
+      taskTitle: 'Expense Categorization',
+      taskId: '3',
+      details: 'Updated task description',
+      timestamp: new Date('2025-01-16T11:30:00')
+    },
+    {
+      id: 'a6',
+      user: 'David Kim',
+      action: 'status_changed',
+      taskTitle: 'Expense Categorization',
+      taskId: '3',
+      details: 'Changed status from In Progress to Done',
+      timestamp: new Date('2025-01-18T15:00:00')
+    }
+  ]);
 
   const filteredTasks = tasks.filter(task =>
     task.assignee.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -703,6 +773,14 @@ const TasksProjects: React.FC = () => {
                       Gantt
                     </button>
                   </div>
+
+                  <button
+                    onClick={() => setShowActivityLog(true)}
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium flex items-center"
+                  >
+                    <Activity className="w-4 h-4 mr-1.5" />
+                    Activity Log
+                  </button>
                 </div>
               </div>
 
@@ -980,14 +1058,14 @@ const TasksProjects: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
                       {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
                     </span>
                   </div>
 
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
+                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
                       {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                     </span>
                   </div>
@@ -996,7 +1074,7 @@ const TasksProjects: React.FC = () => {
 
                 <div>
                   <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
-                  <div className="space-y-3 max-h-40 overflow-y-auto">
+                  <div className="space-y-3 max-h-40 overflow-y-auto mb-3">
                     {selectedTask.comments.map(comment => (
                       <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center justify-between mb-1">
@@ -1009,6 +1087,79 @@ const TasksProjects: React.FC = () => {
                     {selectedTask.comments.length === 0 && (
                       <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
                     )}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Add a comment..."
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && newComment.trim()) {
+                          const updatedTask = {
+                            ...selectedTask,
+                            comments: [
+                              ...selectedTask.comments,
+                              {
+                                id: `c${Date.now()}`,
+                                author: 'Current User',
+                                content: newComment,
+                                createdAt: new Date()
+                              }
+                            ]
+                          };
+                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+                          setSelectedTask(updatedTask);
+                          setNewComment('');
+
+                          setActivityLog(prev => [{
+                            id: `a${Date.now()}`,
+                            user: 'Current User',
+                            action: 'commented',
+                            taskTitle: selectedTask.title,
+                            taskId: selectedTask.id,
+                            details: `Added comment: "${newComment}"`,
+                            timestamp: new Date()
+                          }, ...prev]);
+                        }
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        if (newComment.trim()) {
+                          const updatedTask = {
+                            ...selectedTask,
+                            comments: [
+                              ...selectedTask.comments,
+                              {
+                                id: `c${Date.now()}`,
+                                author: 'Current User',
+                                content: newComment,
+                                createdAt: new Date()
+                              }
+                            ]
+                          };
+                          setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+                          setSelectedTask(updatedTask);
+                          setNewComment('');
+
+                          setActivityLog(prev => [{
+                            id: `a${Date.now()}`,
+                            user: 'Current User',
+                            action: 'commented',
+                            taskTitle: selectedTask.title,
+                            taskId: selectedTask.id,
+                            details: `Added comment: "${newComment}"`,
+                            timestamp: new Date()
+                          }, ...prev]);
+                        }
+                      }}
+                      disabled={!newComment.trim()}
+                      className="px-3 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1218,6 +1369,120 @@ const TasksProjects: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Activity Log Sidebar */}
+      {showActivityLog && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowActivityLog(false)}
+          />
+          <div className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-50 flex flex-col">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-[#101010] flex items-center">
+                  <Activity className="w-5 h-5 mr-2 text-[#4F46E5]" />
+                  Activity Log
+                </h3>
+                <button
+                  onClick={() => setShowActivityLog(false)}
+                  className="p-1 hover:bg-gray-100 rounded"
+                >
+                  <X className="w-4 h-4 text-gray-400" />
+                </button>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Filter by User</label>
+                <select
+                  value={activityLogFilter}
+                  onChange={(e) => setActivityLogFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                >
+                  <option value="all">All Users</option>
+                  {teamMembers.map(member => (
+                    <option key={member} value={member}>{member}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="space-y-4">
+                {activityLog
+                  .filter(entry => activityLogFilter === 'all' || entry.user === activityLogFilter)
+                  .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+                  .map((entry) => {
+                    const getActionIcon = () => {
+                      switch (entry.action) {
+                        case 'created':
+                          return <Plus className="w-4 h-4 text-green-600" />;
+                        case 'updated':
+                          return <Edit3 className="w-4 h-4 text-blue-600" />;
+                        case 'commented':
+                          return <MessageSquare className="w-4 h-4 text-purple-600" />;
+                        case 'status_changed':
+                          return <CheckCircle className="w-4 h-4 text-orange-600" />;
+                        default:
+                          return <Clock className="w-4 h-4 text-gray-600" />;
+                      }
+                    };
+
+                    const getActionColor = () => {
+                      switch (entry.action) {
+                        case 'created':
+                          return 'bg-green-50 border-green-200';
+                        case 'updated':
+                          return 'bg-blue-50 border-blue-200';
+                        case 'commented':
+                          return 'bg-purple-50 border-purple-200';
+                        case 'status_changed':
+                          return 'bg-orange-50 border-orange-200';
+                        default:
+                          return 'bg-gray-50 border-gray-200';
+                      }
+                    };
+
+                    return (
+                      <div
+                        key={entry.id}
+                        className={`p-4 border rounded-lg ${getActionColor()} hover:shadow-sm transition-shadow cursor-pointer`}
+                        onClick={() => {
+                          const task = tasks.find(t => t.id === entry.taskId);
+                          if (task) {
+                            setSelectedTask(task);
+                            setShowTaskDetail(true);
+                          }
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5">
+                            {getActionIcon()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
+                              <span className="text-xs text-gray-500">
+                                {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-600 mb-1">
+                              <span className="font-medium text-[#4F46E5]">{entry.taskTitle}</span>
+                            </p>
+                            <p className="text-xs text-gray-700">{entry.details}</p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
       </div>
     </DragDropContext>
