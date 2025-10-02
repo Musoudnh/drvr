@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical } from 'lucide-react';
+import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import GanttView from '../../components/Tasks/GanttView';
@@ -289,10 +289,22 @@ const TasksProjects: React.FC = () => {
           }}
         >
           <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-[#101010] text-sm leading-tight">{task.title}</h3>
-            <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
-              {task.priority}
-            </span>
+            <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <span className={`px-2 py-0.5 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                {task.priority}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
+                }}
+                className="p-1 hover:bg-gray-100 rounded relative"
+                title="More options"
+              >
+                <MoreVertical className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
           </div>
 
           <p className="text-xs text-gray-600 mb-2 line-clamp-2">
@@ -301,11 +313,6 @@ const TasksProjects: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-5 h-5 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-1.5">
-                <span className="text-white text-[10px] font-medium">
-                  {task.assignee.split(' ').map(n => n[0]).join('')}
-                </span>
-              </div>
               <span className="text-xs text-gray-600">{task.assignee}</span>
             </div>
 
@@ -320,50 +327,36 @@ const TasksProjects: React.FC = () => {
           </div>
 
 
-          {/* Task Options Menu */}
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setTaskMenuOpen(taskMenuOpen === task.id ? null : task.id);
-              }}
-              className="p-1 hover:bg-gray-100 rounded"
-              title="More options"
-            >
-              <MoreHorizontal className="w-4 h-4 text-gray-400" />
-            </button>
-
-            {/* Dropdown Menu */}
-            {taskMenuOpen === task.id && (
-              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedTask(task);
-                    setShowTaskDetail(true);
-                    setTaskMenuOpen(null);
-                  }}
-                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
-                >
-                  <Edit3 className="w-4 h-4 mr-2" />
-                  Edit
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (window.confirm(`Delete task "${task.title}"?`)) {
-                      setTasks(prev => prev.filter(t => t.id !== task.id));
-                    }
-                    setTaskMenuOpen(null);
-                  }}
-                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Dropdown Menu - positioned relative to button in header */}
+          {taskMenuOpen === task.id && (
+            <div className="absolute top-8 right-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[140px]">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedTask(task);
+                  setShowTaskDetail(true);
+                  setTaskMenuOpen(null);
+                }}
+                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+              >
+                <Edit3 className="w-4 h-4 mr-2" />
+                Edit
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm(`Delete task "${task.title}"?`)) {
+                    setTasks(prev => prev.filter(t => t.id !== task.id));
+                  }
+                  setTaskMenuOpen(null);
+                }}
+                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       )}
     </Draggable>
@@ -442,14 +435,7 @@ const TasksProjects: React.FC = () => {
                   </div>
                 </td>
                 <td className="py-3 px-4">
-                  <div className="flex items-center">
-                    <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
-                      <span className="text-white text-xs font-medium">
-                        {task.assignee.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-700">{task.assignee}</span>
-                  </div>
+                  <span className="text-sm text-gray-700">{task.assignee}</span>
                 </td>
                 <td className="py-3 px-4">
                   <span className={`text-sm ${
@@ -477,7 +463,7 @@ const TasksProjects: React.FC = () => {
                       }}
                       className="p-1 hover:bg-gray-100 rounded"
                     >
-                      <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                      <MoreVertical className="w-4 h-4 text-gray-600" />
                     </button>
 
                     {taskMenuOpen === task.id && (
