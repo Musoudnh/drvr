@@ -2316,7 +2316,7 @@ const Forecasting: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="space-y-4">
                 {/* Critical Alert */}
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-white border border-red-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-red-100 rounded-lg">
                       <AlertTriangle className="w-5 h-5 text-red-600" />
@@ -2341,7 +2341,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Warning Alert */}
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <div className="bg-white border border-amber-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-amber-100 rounded-lg">
                       <AlertTriangle className="w-5 h-5 text-amber-600" />
@@ -2366,7 +2366,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-white border border-blue-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-blue-100 rounded-lg">
                       <Info className="w-5 h-5 text-blue-600" />
@@ -2388,7 +2388,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Success Alert */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-white border border-green-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-green-100 rounded-lg">
                       <CheckCircle className="w-5 h-5 text-green-600" />
@@ -2410,7 +2410,7 @@ const Forecasting: React.FC = () => {
                 </div>
 
                 {/* Info Alert */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-white border border-blue-200 rounded-lg p-4">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-blue-100 rounded-lg">
                       <Info className="w-5 h-5 text-blue-600" />
