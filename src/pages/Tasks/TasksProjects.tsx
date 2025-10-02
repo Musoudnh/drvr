@@ -862,7 +862,7 @@ const TasksProjects: React.FC = () => {
       {showTaskDetail && selectedTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[600px] max-w-[90vw] max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-200">
               <h3 className="text-xl font-semibold text-[#101010]">
                 {isEditingTask ? 'Edit Task' : selectedTask.title}
               </h3>
@@ -993,18 +993,6 @@ const TasksProjects: React.FC = () => {
                   </div>
                 </div>
 
-                {selectedTask.tags.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-[#101010] mb-2">Tags</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedTask.tags.map(tag => (
-                        <span key={tag} className="px-2 py-1 bg-[#3AB7BF]/10 text-[#3AB7BF] rounded text-sm">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 <div>
                   <h4 className="font-semibold text-[#101010] mb-2">Comments</h4>
@@ -1053,23 +1041,22 @@ const TasksProjects: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="outline"
+                  <button
                     onClick={() => {
                       setEditTaskForm(selectedTask);
                       setIsEditingTask(true);
                     }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                   >
-                    <Edit3 className="w-4 h-4 mr-2" />
                     Edit Task
-                  </Button>
+                  </button>
                   <button
                     onClick={() => {
                       setShowTaskDetail(false);
                       setIsEditingTask(false);
                       setEditTaskForm(null);
                     }}
-                    className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] transition-colors"
+                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
                   >
                     Close
                   </button>
