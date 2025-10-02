@@ -185,17 +185,14 @@ const Insights: React.FC = () => {
     { label: 'Change in Inventory', value: 31220, type: 'increase' },
     { label: 'Change in Work in Progress', value: 0, type: 'decrease' },
     { label: 'Change in Other Current Assets', value: 0, type: 'decrease' },
-    { label: 'OPERATING CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Change in Fixed Assets (ex. Depreciation and Amortization)', value: -34246, type: 'decrease' },
     { label: 'Change in Intangible Assets', value: 0, type: 'decrease' },
     { label: 'Change in Investments or Other Non-Current Assets', value: 4227, type: 'increase' },
-    { label: 'FREE CASH FLOW', value: 0, type: 'subtotal' },
     { label: 'Net Interest (after tax)', value: -27680, type: 'decrease' },
     { label: 'Change in Other Non-Current Liabilities', value: 0, type: 'increase' },
     { label: 'Dividends', value: 0, type: 'decrease' },
     { label: 'Change in Retained Earnings and Other Equity', value: 0, type: 'increase' },
-    { label: 'Adjustments', value: 0, type: 'decrease' },
-    { label: 'NET CASH FLOW', value: 0, type: 'ending' }
+    { label: 'Adjustments', value: 0, type: 'decrease' }
   ];
 
   const marginAnalysis: MarginAnalysis[] = [
@@ -532,11 +529,11 @@ const Insights: React.FC = () => {
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-500 rounded" />
+              <div className="w-4 h-4 bg-[#10B981] rounded" />
               <span className="text-xs text-gray-600">Cash Received</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-red-500 rounded" />
+              <div className="w-4 h-4 bg-[#EF4444] rounded" />
               <span className="text-xs text-gray-600">Cash Spent</span>
             </div>
           </div>
