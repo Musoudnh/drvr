@@ -93,6 +93,7 @@ const Forecasting: React.FC = () => {
   const [showEditScenarioModal, setShowEditScenarioModal] = useState(false);
   const [scenarioSearchTerm, setScenarioSearchTerm] = useState('');
   const [showAlertsSidebar, setShowAlertsSidebar] = useState(false);
+  const [alertFilter, setAlertFilter] = useState<'all' | 'critical' | 'warning' | 'info'>('all');
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
@@ -2298,16 +2299,44 @@ const Forecasting: React.FC = () => {
 
               {/* Alert Filter Tabs */}
               <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-                <button className="px-3 py-1.5 bg-white text-[#7B68EE] shadow-sm rounded text-xs font-medium">
+                <button
+                  onClick={() => setAlertFilter('all')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                    alertFilter === 'all'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
                   All Alerts
                 </button>
-                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
+                <button
+                  onClick={() => setAlertFilter('critical')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                    alertFilter === 'critical'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
                   Critical
                 </button>
-                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
+                <button
+                  onClick={() => setAlertFilter('warning')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                    alertFilter === 'warning'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
                   Warnings
                 </button>
-                <button className="px-3 py-1.5 text-gray-600 hover:text-gray-800 rounded text-xs font-medium">
+                <button
+                  onClick={() => setAlertFilter('info')}
+                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                    alertFilter === 'info'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
                   Info
                 </button>
               </div>
@@ -2316,6 +2345,7 @@ const Forecasting: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6">
               <div className="space-y-4">
                 {/* Critical Alert */}
+                {(alertFilter === 'all' || alertFilter === 'critical') && (
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
@@ -2332,8 +2362,10 @@ const Forecasting: React.FC = () => {
                     Review Forecast
                   </button>
                 </div>
+                )}
 
                 {/* Warning Alert */}
+                {(alertFilter === 'all' || alertFilter === 'warning') && (
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
@@ -2350,8 +2382,10 @@ const Forecasting: React.FC = () => {
                     View Details
                   </button>
                 </div>
+                )}
 
                 {/* Info Alert */}
+                {(alertFilter === 'all' || alertFilter === 'info') && (
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
@@ -2365,8 +2399,10 @@ const Forecasting: React.FC = () => {
                     <span className="text-gray-400">1 day ago</span>
                   </div>
                 </div>
+                )}
 
                 {/* Success Alert */}
+                {alertFilter === 'all' && (
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
@@ -2380,8 +2416,10 @@ const Forecasting: React.FC = () => {
                     <span className="text-gray-400">2 days ago</span>
                   </div>
                 </div>
+                )}
 
                 {/* Info Alert */}
+                {(alertFilter === 'all' || alertFilter === 'info') && (
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
@@ -2395,6 +2433,7 @@ const Forecasting: React.FC = () => {
                     <span className="text-gray-400">3 days ago</span>
                   </div>
                 </div>
+                )}
               </div>
             </div>
 
