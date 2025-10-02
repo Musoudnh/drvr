@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -89,10 +89,6 @@ const Forecasting: React.FC = () => {
   const [showScenarioAuditSidebar, setShowScenarioAuditSidebar] = useState(false);
   const [scenarioMenuOpen, setScenarioMenuOpen] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
-  const [editingScenario, setEditingScenario] = useState<AppliedScenario | null>(null);
-  const [showEditScenarioModal, setShowEditScenarioModal] = useState(false);
-  const [scenarioSearchTerm, setScenarioSearchTerm] = useState('');
-  const [showAlertsSidebar, setShowAlertsSidebar] = useState(false);
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
@@ -245,30 +241,25 @@ const Forecasting: React.FC = () => {
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const availableYears = [2023, 2024, 2025, 2026, 2027];
-
   const getDatePeriods = () => {
     if (dateViewMode === 'months') {
       return months;
     } else if (dateViewMode === 'quarters') {
-      return availableYears.flatMap(year =>
-        ['Q1', 'Q2', 'Q3', 'Q4'].map(q => ({ period: q, year }))
-      );
+      return ['Q1', 'Q2', 'Q3', 'Q4'];
     } else {
-      return availableYears.map(year => ({ period: 'FY', year }));
+      return [selectedYear.toString()];
     }
   };
 
-  const getDateLabel = (period: any, index: number) => {
+  const getDateLabel = (period: string, index: number) => {
     if (dateViewMode === 'months') {
       return period;
     } else if (dateViewMode === 'quarters') {
-      const yearAbbr = period.year.toString().slice(-2);
-      const isSelectedYear = period.year === selectedYear;
-      return { label: `${period.period} ${yearAbbr}'`, isSelectedYear, year: period.year };
+      const yearAbbr = selectedYear.toString().slice(-2);
+      return `${period} ${yearAbbr}'`;
     } else {
-      const isSelectedYear = period.year === selectedYear;
-      return { label: `${period.year}`, isSelectedYear, year: period.year };
+      const yearAbbr = selectedYear.toString().slice(-2);
+      return `${yearAbbr}'`;
     }
   };
 
@@ -294,84 +285,77 @@ const Forecasting: React.FC = () => {
     return labelMap[quarter] || '';
   };
 
-  const getAggregatedAmount = (glCode: string, period: any): number => {
+  const getAggregatedAmount = (glCode: string, period: string): number => {
     if (dateViewMode === 'months') {
       const monthData = forecastData.find(
         item => item.glCode === glCode && item.month === `${period} ${selectedYear}`
       );
       return monthData?.forecastedAmount || 0;
     } else if (dateViewMode === 'quarters') {
-      const quarterMonths = getQuarterMonths(period.period);
-      const year = period.year;
+      const quarterMonths = getQuarterMonths(period);
       return quarterMonths.reduce((sum, month) => {
         const monthData = forecastData.find(
-          item => item.glCode === glCode && item.month === `${month} ${year}`
+          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
         );
         return sum + (monthData?.forecastedAmount || 0);
       }, 0);
     } else {
-      const year = period.year;
       return months.reduce((sum, month) => {
         const monthData = forecastData.find(
-          item => item.glCode === glCode && item.month === `${month} ${year}`
+          item => item.glCode === glCode && item.month === `${month} ${selectedYear}`
         );
         return sum + (monthData?.forecastedAmount || 0);
       }, 0);
     }
   };
 
-  // Generate forecast data for all years
+  // Generate forecast data
   const [forecastData, setForecastData] = useState<MonthlyForecast[]>(() => {
     const data: MonthlyForecast[] = [];
     const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-
+    
     glCodes.forEach(glCode => {
-      availableYears.forEach(year => {
-        let cumulativeYTD = 0;
-        let previousAmount = 0;
-        const yearOffset = (year - 2025);
-
-        months.forEach((month, index) => {
-          const isHistorical = year < currentYear || (year === currentYear && index <= currentMonth);
-          const baseAmount = getBaseAmount(glCode.code);
-          const seasonalFactor = getSeasonalFactor(month);
-          const annualGrowth = Math.pow(1 + (scenarioAssumptions[0].value / 100), yearOffset);
-          const growthFactor = annualGrowth * Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
-
-          let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
-
-          // Apply scenario assumptions
-          if (glCode.code === '6000') { // Payroll
-            forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
-          } else if (glCode.code === '6100') { // Marketing
-            forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
-          } else if (glCode.code === '6200') { // Rent
-            forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
-          }
-
-          cumulativeYTD += forecastedAmount;
-          const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
-
-          const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
-          const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
-
-          data.push({
-            glCode: glCode.code,
-            month: `${month} ${year}`,
-            forecastedAmount: Math.round(forecastedAmount),
-            actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
-            variance,
-            changeVsPrior: index > 0 ? changeVsPrior : undefined,
-            cumulativeYTD: Math.round(cumulativeYTD),
-            isEditable: !isHistorical
-          });
-
-          previousAmount = forecastedAmount;
+      let cumulativeYTD = 0;
+      let previousAmount = 0;
+      
+      months.forEach((month, index) => {
+        const isHistorical = index <= currentMonth;
+        const baseAmount = getBaseAmount(glCode.code);
+        const seasonalFactor = getSeasonalFactor(month);
+        const growthFactor = Math.pow(1 + (scenarioAssumptions[0].value / 100), index / 12);
+        
+        let forecastedAmount = baseAmount * seasonalFactor * growthFactor;
+        
+        // Apply scenario assumptions
+        if (glCode.code === '6000') { // Payroll
+          forecastedAmount *= (1 + scenarioAssumptions[1].value / 100) * (1 + scenarioAssumptions[3].value / 100);
+        } else if (glCode.code === '6100') { // Marketing
+          forecastedAmount *= (1 + scenarioAssumptions[2].value / 100);
+        } else if (glCode.code === '6200') { // Rent
+          forecastedAmount *= (1 + scenarioAssumptions[4].value / 100);
+        }
+        
+        cumulativeYTD += forecastedAmount;
+        const changeVsPrior = previousAmount > 0 ? ((forecastedAmount - previousAmount) / previousAmount) * 100 : 0;
+        
+        const actualAmount = isHistorical ? forecastedAmount * (0.95 + Math.random() * 0.1) : undefined;
+        const variance = actualAmount ? ((actualAmount - forecastedAmount) / forecastedAmount) * 100 : undefined;
+        
+        data.push({
+          glCode: glCode.code,
+          month: `${month} ${selectedYear}`,
+          forecastedAmount: Math.round(forecastedAmount),
+          actualAmount: actualAmount ? Math.round(actualAmount) : undefined,
+          variance,
+          changeVsPrior: index > 0 ? changeVsPrior : undefined,
+          cumulativeYTD: Math.round(cumulativeYTD),
+          isEditable: !isHistorical
         });
+        
+        previousAmount = forecastedAmount;
       });
     });
-
+    
     return data;
   });
 
@@ -1073,13 +1057,6 @@ const Forecasting: React.FC = () => {
               Save Forecast
             </button>
             <button
-              onClick={() => setShowAlertsSidebar(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
-            >
-              <Bell className="w-4 h-4 mr-1 inline" />
-              Alerts
-            </button>
-            <button
               onClick={() => setShowScenarioAuditSidebar(true)}
               className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
             >
@@ -1245,56 +1222,39 @@ const Forecasting: React.FC = () => {
 
         {/* Main Forecast Table */}
         <div className="w-full">
-          <Card title={
-            dateViewMode === 'months'
-              ? `${selectedYear} Monthly Forecast by GL Code`
-              : dateViewMode === 'quarters'
-              ? `Quarterly Forecast by GL Code (All Years)`
-              : `Yearly Forecast by GL Code (All Years)`
-          }>
+          <Card title={`${selectedYear} Monthly Forecast by GL Code`}>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
-                    {datePeriods.map((period, index) => {
-                      const labelData = getDateLabel(period, index);
-                      const isOuterYear = dateViewMode !== 'months' && labelData.year !== selectedYear;
-
-                      return (
-                        <th
-                          key={index}
-                          className={`py-3 font-bold ${
-                            isOuterYear ? 'text-gray-500 bg-gray-50' : 'text-gray-800'
-                          } ${
-                            dateViewMode === 'months'
-                              ? 'text-center px-2 min-w-[120px]'
-                              : dateViewMode === 'quarters'
-                              ? 'text-center px-2 min-w-[100px]'
-                              : 'text-center px-2 min-w-[100px]'
-                          }`}
-                        >
-                          {dateViewMode === 'years' ? (
-                            <div className="flex flex-col">
-                              <span className={`text-base ${
-                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
-                              }`}>FY{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">Jan-Dec</span>
-                            </div>
-                          ) : dateViewMode === 'quarters' ? (
-                            <div className="flex flex-col">
-                              <span className={`text-sm ${
-                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
-                              }`}>{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
-                            </div>
-                          ) : (
-                            period
-                          )}
-                        </th>
-                      );
-                    })}
-                    {dateViewMode === 'months' && (
+                    {datePeriods.map((period, index) => (
+                      <th
+                        key={index}
+                        className={`py-3 font-bold text-gray-800 ${
+                          dateViewMode === 'months'
+                            ? 'text-center px-2 min-w-[120px]'
+                            : dateViewMode === 'quarters'
+                            ? 'text-left px-0.5 w-[95px]'
+                            : 'text-left px-2 min-w-[100px]'
+                        }`}
+                      >
+                        {dateViewMode === 'years' ? (
+                          <div className="flex flex-col">
+                            <span className="text-base">FY{getDateLabel(period, index)}</span>
+                            <span className="text-xs font-normal text-gray-500">Jan-Dec</span>
+                          </div>
+                        ) : dateViewMode === 'quarters' ? (
+                          <div className="flex flex-col">
+                            <span className="text-base">{getDateLabel(period, index)}</span>
+                            <span className="text-xs font-normal text-gray-500">{getQuarterLabel(period)}</span>
+                          </div>
+                        ) : (
+                          getDateLabel(period, index)
+                        )}
+                      </th>
+                    ))}
+                    {dateViewMode !== 'years' && (
                       <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
                     )}
                   </tr>
@@ -1308,7 +1268,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-3 px-4">
+                          <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1362,8 +1322,6 @@ const Forecasting: React.FC = () => {
                               </td>
                               {datePeriods.map((period, periodIndex) => {
                                 const aggregatedAmount = getAggregatedAmount(glCode.code, period);
-                                const labelData = dateViewMode !== 'months' ? getDateLabel(period, periodIndex) : null;
-                                const isOuterYear = dateViewMode !== 'months' && labelData && labelData.year !== selectedYear;
                                 const periodKey = dateViewMode === 'months' ? `${period} ${selectedYear}` : period;
                                 const isActualized = dateViewMode === 'months' ? isMonthActualized(periodKey) : false;
                                 const isEditing = dateViewMode === 'months' && editingCell?.glCode === glCode.code && editingCell?.month === periodKey;
@@ -1373,17 +1331,15 @@ const Forecasting: React.FC = () => {
                                   <td
                                     key={periodIndex}
                                     className={`py-3 text-sm ${
-                                      isOuterYear ? 'bg-gray-50/50' : ''
-                                    } ${
                                       dateViewMode === 'months'
                                         ? 'text-center px-2'
-                                        : 'text-center px-2'
+                                        : dateViewMode === 'quarters'
+                                        ? 'text-left px-0.5'
+                                        : 'text-left px-2'
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      <div className={`rounded px-1 ${
-                                        isOuterYear ? 'font-normal text-gray-500 text-xs' : 'font-medium'
-                                      } ${
+                                      <div className={`font-medium rounded px-1 ${
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
                                           : !isActualized && dateViewMode === 'months'
@@ -1431,7 +1387,7 @@ const Forecasting: React.FC = () => {
                                   </td>
                                 );
                               })}
-                              {dateViewMode === 'months' && (
+                              {dateViewMode !== 'years' && (
                                 <td className="py-3 px-4 text-right text-sm font-medium">
                                   {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                     <input
@@ -1477,7 +1433,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && (
                               <tr>
-                                <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
+                                <td colSpan={dateViewMode === 'years' ? datePeriods.length + 1 : datePeriods.length + 2} className="py-0">
                                   <div className="bg-gray-50 border-l-4 border-[#3AB7BF] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
@@ -1532,26 +1488,6 @@ const Forecasting: React.FC = () => {
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                                                 <div className="flex gap-2">
-                                                  <button
-                                                    onClick={() => {
-                                                      setEditingScenario(scenario);
-                                                      setGLScenarioForm({
-                                                        ...glScenarioForm,
-                                                        title: scenario.name,
-                                                        description: scenario.description,
-                                                        adjustmentType: scenario.adjustmentType,
-                                                        adjustmentValue: scenario.adjustmentValue,
-                                                        startMonth: scenario.startMonth.split(' ')[0],
-                                                        endMonth: scenario.endMonth.split(' ')[0]
-                                                      });
-                                                      setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
-                                                      setShowEditScenarioModal(true);
-                                                      setScenarioMenuOpen(null);
-                                                    }}
-                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
-                                                  >
-                                                    Adjust
-                                                  </button>
                                                   <button
                                                     onClick={() => toggleScenario(scenario.id)}
                                                     className="px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
@@ -1728,165 +1664,6 @@ const Forecasting: React.FC = () => {
                className="px-4 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Apply Scenario
-             </button>
-           </div>
-         </div>
-       </div>
-     )}
-
-     {/* Edit Scenario Modal */}
-     {showEditScenarioModal && editingScenario && selectedGLCode && (
-       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end z-50">
-         <div className="bg-white shadow-2xl p-6 w-[600px] max-w-[90vw] h-full overflow-y-auto">
-           <div className="flex items-center justify-between mb-6">
-             <h3 className="text-xl font-semibold text-[#101010]">
-               Adjust Scenario: {editingScenario.name}
-             </h3>
-             <button
-               onClick={() => {
-                 setShowEditScenarioModal(false);
-                 setEditingScenario(null);
-                 setSelectedGLCode(null);
-               }}
-               className="p-1 hover:bg-gray-100 rounded"
-             >
-               <X className="w-4 h-4 text-gray-400" />
-             </button>
-           </div>
-
-           <div className="space-y-4">
-             <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
-               <input
-                 type="text"
-                 value={glScenarioForm.title}
-                 onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                 placeholder="e.g., Q2 Marketing Campaign"
-               />
-             </div>
-
-             <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-               <textarea
-                 value={glScenarioForm.description}
-                 onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                 rows={3}
-                 placeholder="Describe the scenario and its impact"
-               />
-             </div>
-
-             {renderGLSpecificInputs()}
-
-             <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
-             </div>
-           </div>
-
-           <div className="flex justify-end gap-3 mt-6">
-             <button
-               onClick={() => {
-                 setShowEditScenarioModal(false);
-                 setEditingScenario(null);
-                 setSelectedGLCode(null);
-               }}
-               className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-             >
-               Cancel
-             </button>
-             <button
-               onClick={() => {
-                 if (editingScenario && isScenarioValid()) {
-                   // Remove old scenario impact if it was active
-                   if (editingScenario.isActive) {
-                     applyScenarioToForecast(editingScenario, false);
-                   }
-
-                   // Update scenario with new values
-                   const updatedScenario: AppliedScenario = {
-                     ...editingScenario,
-                     name: glScenarioForm.title,
-                     description: glScenarioForm.description,
-                     startMonth: glScenarioForm.startMonth,
-                     endMonth: glScenarioForm.endMonth,
-                     adjustmentType: glScenarioForm.adjustmentType,
-                     adjustmentValue: glScenarioForm.adjustmentValue,
-                   };
-
-                   // Apply new scenario impact if active
-                   if (updatedScenario.isActive) {
-                     const startMonthIndex = months.indexOf(updatedScenario.startMonth);
-                     const endMonthIndex = months.indexOf(updatedScenario.endMonth);
-
-                     setForecastData(prev => prev.map(item => {
-                       if (item.glCode === updatedScenario.glCode) {
-                         const itemMonthIndex = months.indexOf(item.month.split(' ')[0]);
-                         if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
-                           let adjustedAmount = item.forecastedAmount;
-                           if (updatedScenario.adjustmentType === 'percentage') {
-                             adjustedAmount = item.forecastedAmount * (1 + updatedScenario.adjustmentValue / 100);
-                           } else {
-                             adjustedAmount = item.forecastedAmount + updatedScenario.adjustmentValue;
-                           }
-                           return { ...item, forecastedAmount: Math.round(adjustedAmount) };
-                         }
-                       }
-                       return item;
-                     }));
-                   }
-
-                   // Update scenario in list
-                   setAppliedScenarios(prev =>
-                     prev.map(s => s.id === editingScenario.id ? updatedScenario : s)
-                   );
-
-                   setShowEditScenarioModal(false);
-                   setEditingScenario(null);
-                   setSelectedGLCode(null);
-                   setGLScenarioForm({
-                     title: '',
-                     description: '',
-                     owner: 'Current User',
-                     startMonth: 'Jan',
-                     endMonth: 'Dec',
-                     startYear: selectedYear,
-                     endYear: selectedYear,
-                     scenarioType: 'custom',
-                     revenueGrowthPercent: 0,
-                     salesVolumeAssumption: 0,
-                     pricingAssumption: 0,
-                     churnRatePercent: 0,
-                     marketExpansion: 0,
-                     marketingSpendPercent: 0,
-                     cogsPercent: 0,
-                     rdPercent: 0,
-                     overheadCosts: 0,
-                     variableFixedSplit: 50,
-                     headcount: 0,
-                     headcountGrowthPercent: 0,
-                     averageSalary: 0,
-                     payrollTaxRate: 15.3,
-                     benefitsRate: 25,
-                     hiringPlan: 0,
-                     attritionRatePercent: 15,
-                     numberOfTrips: 0,
-                     averageTripCost: 0,
-                     campaignBudget: 0,
-                     numberOfCampaigns: 0,
-                     squareFootage: 0,
-                     pricePerSqFt: 0,
-                     numberOfLicenses: 0,
-                     costPerLicense: 0,
-                     adjustmentType: 'percentage',
-                     adjustmentValue: 0
-                   });
-                 }
-               }}
-               disabled={!isScenarioValid()}
-               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2EA5AD] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-             >
-               Update Scenario
              </button>
            </div>
          </div>
@@ -2243,184 +2020,12 @@ const Forecasting: React.FC = () => {
         </div>
       )}
 
-      {/* Alerts Sidebar */}
-      {showAlertsSidebar && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-          <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-[#101010]">Forecast Alerts</h3>
-                  <p className="text-sm text-gray-600 mt-1">Monitor budget variances and anomalies</p>
-                </div>
-                <button
-                  onClick={() => setShowAlertsSidebar(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
-              </div>
-
-              {/* Alert Filter Tabs */}
-              <div className="flex gap-2">
-                <button className="px-3 py-1.5 bg-[#3AB7BF] text-white rounded-lg text-xs font-medium">
-                  All Alerts
-                </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
-                  Critical
-                </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
-                  Warnings
-                </button>
-                <button className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200">
-                  Info
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-4">
-                {/* Critical Alert */}
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-red-100 rounded-lg">
-                      <AlertTriangle className="w-5 h-5 text-red-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
-                        <span className="text-xs text-red-600 font-medium">Critical</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Payroll & Benefits (GL 6000) shows a 35% variance above forecast for Q3
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Affected Period: Jul - Sep 2025</span>
-                        <span className="text-gray-400">2 hours ago</span>
-                      </div>
-                      <button className="mt-3 px-3 py-1.5 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
-                        Review Forecast
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Warning Alert */}
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-amber-100 rounded-lg">
-                      <AlertTriangle className="w-5 h-5 text-amber-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
-                        <span className="text-xs text-amber-600 font-medium">Warning</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Marketing expenses at 85% of annual budget with 3 months remaining
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">GL 6200 - Marketing</span>
-                        <span className="text-gray-400">5 hours ago</span>
-                      </div>
-                      <button className="mt-3 px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-medium hover:bg-amber-700 transition-colors">
-                        View Details
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info Alert */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Info className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
-                        <span className="text-xs text-blue-600 font-medium">Info</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        "Q4 Expansion Plan" scenario has been applied to Revenue accounts
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Applied by John Doe</span>
-                        <span className="text-gray-400">1 day ago</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Success Alert */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
-                        <span className="text-xs text-green-600 font-medium">Success</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Travel & Entertainment expenses are 15% below forecast YTD
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">GL 6400 - Travel</span>
-                        <span className="text-gray-400">2 days ago</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info Alert */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Info className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
-                        <span className="text-xs text-blue-600 font-medium">Info</span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        Version "2025 Annual Budget v3" has been saved successfully
-                      </p>
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-500">Saved by Current User</span>
-                        <span className="text-gray-400">3 days ago</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 border-t border-gray-200 bg-gray-50">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">
-                  <strong>5</strong> active alerts
-                </p>
-                <button
-                  onClick={() => setShowAlertsSidebar(false)}
-                  className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Applied Scenarios Audit Sidebar */}
       {showScenarioAuditSidebar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
             <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-[#101010]">Applied Scenarios</h3>
                   <p className="text-sm text-gray-600 mt-1">Audit history of all scenario changes</p>
@@ -2432,18 +2037,6 @@ const Forecasting: React.FC = () => {
                   <X className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
-
-              {/* Search by P&L Account */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={scenarioSearchTerm}
-                  onChange={(e) => setScenarioSearchTerm(e.target.value)}
-                  placeholder="Search by P&L account..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
-                />
-              </div>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
@@ -2453,28 +2046,9 @@ const Forecasting: React.FC = () => {
                   <p className="text-gray-500 font-medium">No scenarios applied yet</p>
                   <p className="text-sm text-gray-400 mt-2">Applied scenarios will appear here</p>
                 </div>
-              ) : (() => {
-                const filteredScenarios = appliedScenarios.filter((scenario) => {
-                  if (!scenarioSearchTerm) return true;
-                  const glAccount = glCodes.find(gl => gl.code === scenario.glCode);
-                  const accountName = glAccount?.name || scenario.glCode;
-                  return accountName.toLowerCase().includes(scenarioSearchTerm.toLowerCase()) ||
-                         scenario.glCode.toLowerCase().includes(scenarioSearchTerm.toLowerCase());
-                });
-
-                if (filteredScenarios.length === 0) {
-                  return (
-                    <div className="text-center py-12">
-                      <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-gray-500 font-medium">No scenarios found</p>
-                      <p className="text-sm text-gray-400 mt-2">Try adjusting your search term</p>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div className="space-y-4">
-                    {filteredScenarios.map((scenario) => (
+              ) : (
+                <div className="space-y-4">
+                  {appliedScenarios.map((scenario) => (
                     <div
                       key={scenario.id}
                       className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300"
@@ -2507,27 +2081,6 @@ const Forecasting: React.FC = () => {
                       {scenarioMenuOpen === scenario.id && (
                         <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                           <div className="flex gap-2">
-                            <button
-                              onClick={() => {
-                                setEditingScenario(scenario);
-                                setGLScenarioForm({
-                                  ...glScenarioForm,
-                                  title: scenario.name,
-                                  description: scenario.description,
-                                  adjustmentType: scenario.adjustmentType,
-                                  adjustmentValue: scenario.adjustmentValue,
-                                  startMonth: scenario.startMonth.split(' ')[0],
-                                  endMonth: scenario.endMonth.split(' ')[0]
-                                });
-                                setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
-                                setShowEditScenarioModal(true);
-                                setScenarioMenuOpen(null);
-                                setShowScenarioAuditSidebar(false);
-                              }}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
-                            >
-                              Adjust
-                            </button>
                             <button
                               onClick={() => toggleScenario(scenario.id)}
                               className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
@@ -2589,10 +2142,9 @@ const Forecasting: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    ))}
-                  </div>
-                );
-              })()}
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">

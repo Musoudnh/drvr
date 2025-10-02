@@ -104,7 +104,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/admin/billing', label: 'Subscription', icon: CreditCard },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
     { path: '/admin/security', label: 'Security & SOX', icon: Shield },
-    { path: '/alerts', label: 'Alerts', icon: AlertCircle },
     { path: '/admin/audit', label: 'Audit Log', icon: FileText },
     { path: '/admin/settings', label: 'Settings', icon: Settings }
   ];
@@ -125,7 +124,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/chat', label: 'Chat', icon: MessageSquare }
+    { path: '/chat', label: 'Chat', icon: MessageSquare },
+    { path: '/alerts', label: 'Alerts', icon: AlertCircle }
   ];
 
   // Financial navigation items (shown when on forecasting-related pages)
@@ -145,7 +145,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     },
     { path: '/benchmarks', label: 'Benchmarks', icon: BarChart3 },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/chat', label: 'Chat', icon: MessageSquare }
+    { path: '/chat', label: 'Chat', icon: MessageSquare },
+    { path: '/alerts', label: 'Alerts', icon: AlertCircle }
   ];
   // Use appropriate nav items based on current page context
   const navItems = isAdminPage ? adminNavItems : 
