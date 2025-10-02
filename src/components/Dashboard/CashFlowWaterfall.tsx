@@ -277,13 +277,12 @@ const CashFlowWaterfall: React.FC = () => {
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">Component</th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">Amount</th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">% of Revenue</th>
-                <th className="text-center py-3 px-4 font-semibold text-gray-700">Impact</th>
               </tr>
             </thead>
             <tbody>
               {/* Operating Activities */}
               <tr className="bg-[#4ADE80]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">OPERATING ACTIVITIES</td>
+                <td colSpan={3} className="py-3 px-4 font-bold text-[#101010] text-base">OPERATING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'operating' && item.type !== 'total').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
@@ -294,27 +293,17 @@ const CashFlowWaterfall: React.FC = () => {
                   <td className="py-2 px-4 text-right text-gray-600">
                     {((Math.abs(item.value) / 847500) * 100).toFixed(1)}%
                   </td>
-                  <td className="py-2 px-4 text-center">
-                    {item.value >= 0 ? (
-                      <TrendingUp className="w-4 h-4 text-[#4ADE80] mx-auto" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-[#F87171] mx-auto" />
-                    )}
-                  </td>
                 </tr>
               ))}
               <tr className="border-b-2 border-gray-300 bg-[#4ADE80]/5">
                 <td className="py-3 px-4 font-bold text-[#101010]">OPERATING CASH FLOW</td>
                 <td className="py-3 px-4 text-right font-bold text-[#4ADE80]">$315,990</td>
                 <td className="py-3 px-4 text-right font-bold text-gray-600">37.3%</td>
-                <td className="py-3 px-4 text-center">
-                  <TrendingUp className="w-4 h-4 text-[#4ADE80] mx-auto" />
-                </td>
               </tr>
 
               {/* Investing Activities */}
               <tr className="bg-[#F87171]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">INVESTING ACTIVITIES</td>
+                <td colSpan={3} className="py-3 px-4 font-bold text-[#101010] text-base">INVESTING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'investing').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
@@ -325,23 +314,17 @@ const CashFlowWaterfall: React.FC = () => {
                   <td className="py-2 px-4 text-right text-gray-600">
                     {((Math.abs(item.value) / 847500) * 100).toFixed(1)}%
                   </td>
-                  <td className="py-2 px-4 text-center">
-                    <TrendingDown className="w-4 h-4 text-[#F87171] mx-auto" />
-                  </td>
                 </tr>
               ))}
               <tr className="border-b-2 border-gray-300 bg-[#F87171]/5">
                 <td className="py-3 px-4 font-bold text-[#101010]">FREE CASH FLOW</td>
                 <td className="py-3 px-4 text-right font-bold text-[#F87171]">-$134,735</td>
                 <td className="py-3 px-4 text-right font-bold text-gray-600">-15.9%</td>
-                <td className="py-3 px-4 text-center">
-                  <TrendingDown className="w-4 h-4 text-[#F87171] mx-auto" />
-                </td>
               </tr>
 
               {/* Financing Activities */}
               <tr className="bg-[#F59E0B]/10">
-                <td colSpan={4} className="py-3 px-4 font-bold text-[#101010] text-base">FINANCING ACTIVITIES</td>
+                <td colSpan={3} className="py-3 px-4 font-bold text-[#101010] text-base">FINANCING ACTIVITIES</td>
               </tr>
               {waterfallData.filter(item => item.category === 'financing').map((item, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
@@ -352,13 +335,6 @@ const CashFlowWaterfall: React.FC = () => {
                   <td className="py-2 px-4 text-right text-gray-600">
                     {((Math.abs(item.value) / 847500) * 100).toFixed(1)}%
                   </td>
-                  <td className="py-2 px-4 text-center">
-                    {item.value >= 0 ? (
-                      <TrendingUp className="w-4 h-4 text-[#4ADE80] mx-auto" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-[#F87171] mx-auto" />
-                    )}
-                  </td>
                 </tr>
               ))}
 
@@ -367,9 +343,6 @@ const CashFlowWaterfall: React.FC = () => {
                 <td className="py-4 px-4 font-bold text-[#101010] text-lg">NET CASH FLOW</td>
                 <td className="py-4 px-4 text-right font-bold text-[#F87171] text-lg">-$171,248</td>
                 <td className="py-4 px-4 text-right font-bold text-gray-600">-20.2%</td>
-                <td className="py-4 px-4 text-center">
-                  <TrendingDown className="w-5 h-5 text-[#F87171] mx-auto" />
-                </td>
               </tr>
             </tbody>
           </table>
