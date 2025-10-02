@@ -443,98 +443,84 @@ const Insights: React.FC = () => {
             <span className="text-sm text-gray-600">Budget to Actual Bridge</span>
           </div>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {waterfallData.map((item, index) => {
             const position = getWaterfallPosition(index);
-            const maxValue = Math.max(...waterfallData.map(d =>
-              d.type === 'starting' || d.type === 'ending' ? d.value : position + Math.abs(d.value)
-            ));
-            const barWidth = item.type === 'starting' || item.type === 'ending'
-              ? (item.value / maxValue) * 100
-              : (Math.abs(item.value) / maxValue) * 100;
-            const baseWidth = (position / maxValue) * 100;
+            const nextPosition = index < waterfallData.length - 1 ? getWaterfallPosition(index + 1) : position;
+            const maxValue = 1500000;
+
+            const startPercent = (position / maxValue) * 100;
+            const valuePercent = (Math.abs(item.value) / maxValue) * 100;
+            const isTotal = item.type === 'starting' || item.type === 'ending';
 
             return (
-              <div key={index} className="flex items-center gap-4">
-                <div className="w-48 flex-shrink-0 text-sm font-medium text-gray-900">
-                  {item.label}
-                </div>
-                <div className="flex-1 relative h-12 flex items-center">
-                  <div className="absolute inset-0 flex items-center">
-                    {item.type === 'starting' && (
-                      <div
-                        className="h-10 bg-blue-500 rounded flex items-center justify-end pr-3"
-                        style={{ width: `${barWidth}%` }}
-                      >
-                        <span className="text-xs font-semibold text-white">
-                          {formatCurrency(item.value)}
-                        </span>
-                      </div>
+              <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2' : 'py-1'}`}>
+                <div className="w-56 flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    {!isTotal && (
+                      <span className="text-xs text-gray-500 uppercase font-medium">
+                        {item.type === 'increase' ? 'ADD' : 'LESS'}
+                      </span>
                     )}
-                    {item.type === 'ending' && (
-                      <div
-                        className="h-10 bg-green-500 rounded flex items-center justify-end pr-3"
-                        style={{ width: `${barWidth}%` }}
-                      >
-                        <span className="text-xs font-semibold text-white">
-                          {formatCurrency(item.value)}
-                        </span>
-                      </div>
-                    )}
-                    {item.type === 'increase' && (
-                      <>
-                        <div
-                          className="h-10 bg-gray-200 rounded-l"
-                          style={{ width: `${baseWidth}%` }}
-                        />
-                        <div
-                          className="h-10 bg-green-400 rounded-r flex items-center justify-end pr-3"
-                          style={{ width: `${barWidth}%` }}
-                        >
-                          <span className="text-xs font-semibold text-white">
-                            {formatCurrency(item.value)}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                    {item.type === 'decrease' && (
-                      <>
-                        <div
-                          className="h-10 bg-gray-200 rounded-l"
-                          style={{ width: `${baseWidth}%` }}
-                        />
-                        <div
-                          className="h-10 bg-red-400 rounded-r flex items-center justify-end pr-3"
-                          style={{ width: `${barWidth}%` }}
-                        >
-                          <span className="text-xs font-semibold text-white">
-                            {formatCurrency(item.value)}
-                          </span>
-                        </div>
-                      </>
-                    )}
+                    <span className={`text-sm ${isTotal ? 'font-bold text-gray-900' : 'text-gray-700'}`}>
+                      {item.label}
+                    </span>
                   </div>
+                </div>
+                <div className="flex-1 relative h-10 flex items-center">
+                  {isTotal ? (
+                    <div
+                      className={`h-8 rounded flex items-center justify-center ${
+                        item.type === 'starting' ? 'bg-blue-500' : 'bg-green-500'
+                      }`}
+                      style={{
+                        width: `${(item.value / maxValue) * 100}%`,
+                        minWidth: '60px'
+                      }}
+                    >
+                      <span className="text-xs font-bold text-white">
+                        {formatCurrency(item.value)}
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        className="h-8 bg-transparent border-l-2 border-gray-300"
+                        style={{
+                          width: `${startPercent}%`,
+                          minWidth: startPercent > 0 ? '1px' : '0'
+                        }}
+                      />
+                      <div
+                        className={`h-8 rounded flex items-center justify-center ${
+                          item.type === 'increase' ? 'bg-green-500' : 'bg-red-500'
+                        }`}
+                        style={{
+                          width: `${valuePercent}%`,
+                          minWidth: '50px'
+                        }}
+                      >
+                        <span className="text-xs font-bold text-white">
+                          {item.type === 'increase' ? '+' : ''}{formatCurrency(item.value)}
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
-        <div className="mt-6 flex items-center justify-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-500 rounded" />
-            <span className="text-xs text-gray-600">Starting Balance</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-400 rounded" />
-            <span className="text-xs text-gray-600">Increase</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-400 rounded" />
-            <span className="text-xs text-gray-600">Decrease</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500 rounded" />
-            <span className="text-xs text-gray-600">Ending Balance</span>
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-green-500 rounded" />
+              <span className="text-xs text-gray-600">Cash Received</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-red-500 rounded" />
+              <span className="text-xs text-gray-600">Cash Spent</span>
+            </div>
           </div>
         </div>
       </Card>
