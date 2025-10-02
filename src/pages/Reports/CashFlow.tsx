@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import Card from '../../components/UI/Card';
 
@@ -9,6 +9,9 @@ interface WaterfallItem {
 }
 
 const CashFlow: React.FC = () => {
+  const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
+  const [selectedYear, setSelectedYear] = useState(2025);
+
   const waterfallData: WaterfallItem[] = [
     { label: 'Revenue', value: 1483550, type: 'starting' },
     { label: 'Cost of Goods Sold', value: -788324, type: 'decrease' },
@@ -69,6 +72,72 @@ const CashFlow: React.FC = () => {
         <h2 className="text-2xl font-bold text-[#101010]">Cash Flow Analysis</h2>
         <p className="text-gray-600 mt-1">Track your cash inflows and outflows</p>
       </div>
+
+      {/* Time Period Selection Controls */}
+      <Card>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              >
+                <option value={2023}>2023</option>
+                <option value={2024}>2024</option>
+                <option value={2025}>2025</option>
+                <option value={2026}>2026</option>
+                <option value={2027}>2027</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
+              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+                <button
+                  onClick={() => setDateViewMode('months')}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                    dateViewMode === 'months'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setDateViewMode('quarters')}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                    dateViewMode === 'quarters'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Quarterly
+                </button>
+                <button
+                  onClick={() => setDateViewMode('years')}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                    dateViewMode === 'years'
+                      ? 'bg-white text-[#7B68EE] shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800'
+                  }`}
+                >
+                  Yearly
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            Viewing: <span className="font-semibold text-[#101010]">
+              {dateViewMode === 'months' && `${selectedYear} (Monthly)`}
+              {dateViewMode === 'quarters' && `${selectedYear} (Quarterly)`}
+              {dateViewMode === 'years' && `${selectedYear - 2} - ${selectedYear + 2}`}
+            </span>
+          </div>
+        </div>
+      </Card>
 
       {/* Cash Flow Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
