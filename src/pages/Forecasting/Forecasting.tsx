@@ -1448,7 +1448,7 @@ const Forecasting: React.FC = () => {
                                               <div className="text-[10px] text-[#212b36] font-semibold bg-green-50 rounded px-1 py-0.5">
                                                 Act: ${monthData.actualAmount.toLocaleString()}
                                               </div>
-                                              <div className={`text-[10px] font-medium rounded px-1 py-0.5 bg-gray-100 ${varianceColor}`}>
+                                              <div className={`text-[10px] font-medium ${varianceColor}`}>
                                                 {showActualsAsAmount
                                                   ? `${varianceDollar >= 0 ? '+' : ''}$${Math.abs(varianceDollar).toLocaleString()}`
                                                   : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
