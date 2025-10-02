@@ -98,6 +98,7 @@ const Forecasting: React.FC = () => {
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
   const [hideEmptyAccounts, setHideEmptyAccounts] = useState(false);
   const [showAccountCodes, setShowAccountCodes] = useState(true);
+  const [showActualsAsAmount, setShowActualsAsAmount] = useState(false);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -1213,31 +1214,43 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
             <button
               onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 hideEmptyAccounts
-                  ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
               title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
             >
-              {hideEmptyAccounts ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {hideEmptyAccounts ? <EyeOff className="w-4 h-4 mr-1 inline" /> : <Eye className="w-4 h-4 mr-1 inline" />}
               <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
             </button>
 
             <button
               onClick={() => setShowAccountCodes(!showAccountCodes)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 showAccountCodes
-                  ? 'bg-[#3AB7BF] text-white border-[#3AB7BF]'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
               title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
             >
-              <Hash className="w-4 h-4" />
-              <span>{showAccountCodes ? 'Codes Shown' : 'Codes Hidden'}</span>
+              <Hash className="w-4 h-4 mr-1 inline" />
+              <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
+            </button>
+
+            <button
+              onClick={() => setShowActualsAsAmount(!showActualsAsAmount)}
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                showActualsAsAmount
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+              title={showActualsAsAmount ? 'Show actuals as percentage' : 'Show actuals as amount'}
+            >
+              <span>{showActualsAsAmount ? '$' : '%'}</span>
             </button>
           </div>
         </div>
@@ -1431,17 +1444,18 @@ const Forecasting: React.FC = () => {
                                         const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                         if (monthData?.actualAmount !== undefined) {
                                           const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
+                                          const varianceDollar = monthData.actualAmount - aggregatedAmount;
+                                          const varianceColor = getVarianceColor(variance, glCode.code);
                                           return (
                                             <>
                                               <div className="text-[10px] text-[#212b36] font-semibold bg-green-50 rounded px-1 py-0.5">
                                                 Act: ${monthData.actualAmount.toLocaleString()}
                                               </div>
-                                              <div className={`text-[10px] font-medium rounded px-1 py-0.5 bg-gray-100 ${
-                                                variance >= 0
-                                                  ? 'text-green-700'
-                                                  : 'text-red-700'
-                                              }`}>
-                                                {variance >= 0 ? '+' : ''}{variance.toFixed(1)}%
+                                              <div className={`text-[10px] font-medium rounded px-1 py-0.5 bg-gray-100 ${varianceColor}`}>
+                                                {showActualsAsAmount
+                                                  ? `${varianceDollar >= 0 ? '+' : ''}$${Math.abs(varianceDollar).toLocaleString()}`
+                                                  : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
+                                                }
                                               </div>
                                             </>
                                           );
