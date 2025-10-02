@@ -1409,45 +1409,15 @@ const TasksProjects: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {activityLog
                   .filter(entry => activityLogFilter === 'all' || entry.user === activityLogFilter)
                   .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
                   .map((entry) => {
-                    const getActionIcon = () => {
-                      switch (entry.action) {
-                        case 'created':
-                          return <Plus className="w-4 h-4 text-green-600" />;
-                        case 'updated':
-                          return <Edit3 className="w-4 h-4 text-blue-600" />;
-                        case 'commented':
-                          return <MessageSquare className="w-4 h-4 text-purple-600" />;
-                        case 'status_changed':
-                          return <CheckCircle className="w-4 h-4 text-orange-600" />;
-                        default:
-                          return <Clock className="w-4 h-4 text-gray-600" />;
-                      }
-                    };
-
-                    const getActionColor = () => {
-                      switch (entry.action) {
-                        case 'created':
-                          return 'bg-green-50 border-green-200';
-                        case 'updated':
-                          return 'bg-blue-50 border-blue-200';
-                        case 'commented':
-                          return 'bg-purple-50 border-purple-200';
-                        case 'status_changed':
-                          return 'bg-orange-50 border-orange-200';
-                        default:
-                          return 'bg-gray-50 border-gray-200';
-                      }
-                    };
-
                     return (
                       <div
                         key={entry.id}
-                        className={`p-4 border rounded-lg ${getActionColor()} hover:shadow-sm transition-shadow cursor-pointer`}
+                        className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer"
                         onClick={() => {
                           const task = tasks.find(t => t.id === entry.taskId);
                           if (task) {
@@ -1456,26 +1426,19 @@ const TasksProjects: React.FC = () => {
                           }
                         }}
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="mt-0.5">
-                            {getActionIcon()}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
-                              <span className="text-xs text-gray-500">
-                                {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </span>
-                            </div>
-                            <p className="text-xs text-gray-600 mb-1">
-                              <span className="font-medium text-[#4F46E5]">{entry.taskTitle}</span>
-                            </p>
-                            <p className="text-xs text-gray-700">{entry.details}</p>
-                            <p className="text-xs text-gray-400 mt-1">
-                              {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
-                            </p>
-                          </div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
+                          <span className="text-xs text-gray-500">
+                            {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
                         </div>
+                        <p className="text-sm text-gray-600 mb-1">
+                          <span className="font-medium text-[#101010]">{entry.taskTitle}</span>
+                        </p>
+                        <p className="text-sm text-gray-700">{entry.details}</p>
+                        <p className="text-xs text-gray-400 mt-2">
+                          {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </p>
                       </div>
                     );
                   })}
