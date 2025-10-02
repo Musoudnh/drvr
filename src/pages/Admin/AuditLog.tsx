@@ -282,8 +282,8 @@ const AuditLog: React.FC = () => {
                   <td className="py-3 px-4 text-gray-600">{log.resource}</td>
                   <td className="py-3 px-4 text-sm text-gray-600">{log.ip}</td>
                   <td className="py-3 px-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      log.status === 'success' 
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                      log.status === 'success'
                         ? 'bg-[#4ADE80]/20 text-[#4ADE80]'
                         : 'bg-[#F87171]/20 text-[#F87171]'
                     }`}>
