@@ -33,6 +33,8 @@ interface CashFlowData {
 const CashFlow: React.FC = () => {
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
   const [selectedYear, setSelectedYear] = useState(2025);
+  const [selectedMonth, setSelectedMonth] = useState<string>('Jan');
+  const [selectedQuarter, setSelectedQuarter] = useState<string>('Q1');
 
   const monthlyData: Record<number, Record<string, CashFlowData>> = {
     2023: {
@@ -107,90 +109,67 @@ const CashFlow: React.FC = () => {
     }
   };
 
-  const aggregateData = useMemo(() => {
+  const currentPeriodData = useMemo(() => {
     const yearData = monthlyData[selectedYear];
     if (!yearData) return null;
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     if (dateViewMode === 'months') {
-      return months.map(month => ({
-        period: month,
-        data: yearData[month]
-      }));
+      return yearData[selectedMonth];
     } else if (dateViewMode === 'quarters') {
-      const quarters = [
-        { name: 'Q1', months: ['Jan', 'Feb', 'Mar'] },
-        { name: 'Q2', months: ['Apr', 'May', 'Jun'] },
-        { name: 'Q3', months: ['Jul', 'Aug', 'Sep'] },
-        { name: 'Q4', months: ['Oct', 'Nov', 'Dec'] }
-      ];
+      const quarterMonths: Record<string, string[]> = {
+        'Q1': ['Jan', 'Feb', 'Mar'],
+        'Q2': ['Apr', 'May', 'Jun'],
+        'Q3': ['Jul', 'Aug', 'Sep'],
+        'Q4': ['Oct', 'Nov', 'Dec']
+      };
 
-      return quarters.map(quarter => {
-        const aggregated: CashFlowData = {
-          revenue: 0, cogs: 0, expenses: 0, otherIncome: 0, cashTaxPaid: 0,
-          changeInAccountsPayable: 0, changeInOtherCurrentLiabilities: 0,
-          changeInAccountsReceivable: 0, changeInInventory: 0,
-          changeInWorkInProgress: 0, changeInOtherCurrentAssets: 0,
-          changeInFixedAssets: 0, changeInIntangibleAssets: 0,
-          changeInInvestments: 0, netInterest: 0,
-          changeInOtherNonCurrentLiabilities: 0, dividends: 0,
-          changeInRetainedEarnings: 0, adjustments: 0
-        };
+      const aggregated: CashFlowData = {
+        revenue: 0, cogs: 0, expenses: 0, otherIncome: 0, cashTaxPaid: 0,
+        changeInAccountsPayable: 0, changeInOtherCurrentLiabilities: 0,
+        changeInAccountsReceivable: 0, changeInInventory: 0,
+        changeInWorkInProgress: 0, changeInOtherCurrentAssets: 0,
+        changeInFixedAssets: 0, changeInIntangibleAssets: 0,
+        changeInInvestments: 0, netInterest: 0,
+        changeInOtherNonCurrentLiabilities: 0, dividends: 0,
+        changeInRetainedEarnings: 0, adjustments: 0
+      };
 
-        quarter.months.forEach(month => {
-          const monthData = yearData[month];
-          if (monthData) {
-            Object.keys(aggregated).forEach(key => {
-              aggregated[key as keyof CashFlowData] += monthData[key as keyof CashFlowData];
-            });
-          }
-        });
-
-        return { period: quarter.name, data: aggregated };
+      quarterMonths[selectedQuarter].forEach(month => {
+        const monthData = yearData[month];
+        if (monthData) {
+          Object.keys(aggregated).forEach(key => {
+            aggregated[key as keyof CashFlowData] += monthData[key as keyof CashFlowData];
+          });
+        }
       });
+
+      return aggregated;
     } else {
-      const years = [selectedYear - 2, selectedYear - 1, selectedYear, selectedYear + 1, selectedYear + 2];
+      const aggregated: CashFlowData = {
+        revenue: 0, cogs: 0, expenses: 0, otherIncome: 0, cashTaxPaid: 0,
+        changeInAccountsPayable: 0, changeInOtherCurrentLiabilities: 0,
+        changeInAccountsReceivable: 0, changeInInventory: 0,
+        changeInWorkInProgress: 0, changeInOtherCurrentAssets: 0,
+        changeInFixedAssets: 0, changeInIntangibleAssets: 0,
+        changeInInvestments: 0, netInterest: 0,
+        changeInOtherNonCurrentLiabilities: 0, dividends: 0,
+        changeInRetainedEarnings: 0, adjustments: 0
+      };
 
-      return years.map(year => {
-        const yearDataForYear = monthlyData[year];
-        if (!yearDataForYear) return null;
+      months.forEach(month => {
+        const monthData = yearData[month];
+        if (monthData) {
+          Object.keys(aggregated).forEach(key => {
+            aggregated[key as keyof CashFlowData] += monthData[key as keyof CashFlowData];
+          });
+        }
+      });
 
-        const aggregated: CashFlowData = {
-          revenue: 0, cogs: 0, expenses: 0, otherIncome: 0, cashTaxPaid: 0,
-          changeInAccountsPayable: 0, changeInOtherCurrentLiabilities: 0,
-          changeInAccountsReceivable: 0, changeInInventory: 0,
-          changeInWorkInProgress: 0, changeInOtherCurrentAssets: 0,
-          changeInFixedAssets: 0, changeInIntangibleAssets: 0,
-          changeInInvestments: 0, netInterest: 0,
-          changeInOtherNonCurrentLiabilities: 0, dividends: 0,
-          changeInRetainedEarnings: 0, adjustments: 0
-        };
-
-        months.forEach(month => {
-          const monthData = yearDataForYear[month];
-          if (monthData) {
-            Object.keys(aggregated).forEach(key => {
-              aggregated[key as keyof CashFlowData] += monthData[key as keyof CashFlowData];
-            });
-          }
-        });
-
-        return { period: year.toString(), data: aggregated };
-      }).filter(item => item !== null) as { period: string; data: CashFlowData }[];
+      return aggregated;
     }
-  }, [dateViewMode, selectedYear]);
-
-  const currentPeriodData = useMemo(() => {
-    if (!aggregateData || aggregateData.length === 0) return null;
-
-    if (dateViewMode === 'years') {
-      const currentYearData = aggregateData.find(item => item.period === selectedYear.toString());
-      return currentYearData ? currentYearData.data : aggregateData[2]?.data;
-    }
-
-    return aggregateData[0].data;
-  }, [aggregateData, dateViewMode, selectedYear]);
+  }, [dateViewMode, selectedYear, selectedMonth, selectedQuarter]);
 
   const waterfallData: WaterfallItem[] = useMemo(() => {
     if (!currentPeriodData) {
@@ -274,6 +253,20 @@ const CashFlow: React.FC = () => {
       maximumFractionDigits: 0
     }).format(value);
   };
+
+  const maxRevenueForScale = useMemo(() => {
+    let maxRevenue = 0;
+    Object.values(monthlyData).forEach(yearData => {
+      let yearTotal = 0;
+      Object.values(yearData).forEach(monthData => {
+        yearTotal += monthData.revenue;
+      });
+      if (yearTotal > maxRevenue) {
+        maxRevenue = yearTotal;
+      }
+    });
+    return maxRevenue;
+  }, []);
 
   const summaryMetrics = useMemo(() => {
     if (!currentPeriodData) {
@@ -371,13 +364,53 @@ const CashFlow: React.FC = () => {
                 </button>
               </div>
             </div>
+
+            {dateViewMode === 'months' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="Jan">January</option>
+                  <option value="Feb">February</option>
+                  <option value="Mar">March</option>
+                  <option value="Apr">April</option>
+                  <option value="May">May</option>
+                  <option value="Jun">June</option>
+                  <option value="Jul">July</option>
+                  <option value="Aug">August</option>
+                  <option value="Sep">September</option>
+                  <option value="Oct">October</option>
+                  <option value="Nov">November</option>
+                  <option value="Dec">December</option>
+                </select>
+              </div>
+            )}
+
+            {dateViewMode === 'quarters' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
+                <select
+                  value={selectedQuarter}
+                  onChange={(e) => setSelectedQuarter(e.target.value)}
+                  className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                >
+                  <option value="Q1">Q1 (Jan - Mar)</option>
+                  <option value="Q2">Q2 (Apr - Jun)</option>
+                  <option value="Q3">Q3 (Jul - Sep)</option>
+                  <option value="Q4">Q4 (Oct - Dec)</option>
+                </select>
+              </div>
+            )}
           </div>
 
           <div className="text-sm text-gray-600">
             Viewing: <span className="font-semibold text-[#101010]">
-              {dateViewMode === 'months' && `${selectedYear} (Monthly)`}
-              {dateViewMode === 'quarters' && `${selectedYear} (Quarterly)`}
-              {dateViewMode === 'years' && `${selectedYear - 2} - ${selectedYear + 2}`}
+              {dateViewMode === 'months' && `${selectedMonth} ${selectedYear}`}
+              {dateViewMode === 'quarters' && `${selectedQuarter} ${selectedYear}`}
+              {dateViewMode === 'years' && `FY ${selectedYear}`}
             </span>
           </div>
         </div>
@@ -442,7 +475,7 @@ const CashFlow: React.FC = () => {
             const startPosition = getWaterfallPosition(index);
             const endPosition = getCalculatedValue(index);
             const displayValue = item.type === 'subtotal' || item.type === 'ending' ? endPosition : item.value;
-            const maxValue = 1600000;
+            const maxValue = maxRevenueForScale;
             const minValue = 0;
             const range = maxValue - minValue;
 
