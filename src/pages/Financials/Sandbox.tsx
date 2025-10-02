@@ -616,7 +616,7 @@ const Sandbox: React.FC = () => {
                 {activeResult.results.calculations.length > 0 && (
                   <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                     <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
-                      <Calculator className="w-4 h-4 mr-2 text-purple-600" />
+                      <Calculator className="w-4 h-4 mr-2 text-[#4F46E5]" />
                       Step-by-Step Calculation
                     </h4>
                     <div className="space-y-4">

@@ -101,8 +101,8 @@ export function VersionHistoryModal({
         </div>
 
         {selectedForComparison.length === 2 && (
-          <div className="px-6 py-3 bg-purple-50 border-b border-purple-100 flex items-center justify-between">
-            <span className="text-sm text-purple-800 font-medium">
+          <div className="px-6 py-3 bg-[#EEF2FF] border-b border-[#C7D2FE] flex items-center justify-between">
+            <span className="text-sm text-[#4338CA] font-medium">
               2 versions selected for comparison
             </span>
             <Button onClick={handleCompare} variant="primary" size="sm">
@@ -133,7 +133,7 @@ export function VersionHistoryModal({
                   key={version.id}
                   className={`border rounded-lg p-5 transition-all ${
                     selectedForComparison.includes(version.id)
-                      ? 'border-purple-500 bg-purple-50'
+                      ? 'border-[#4F46E5] bg-[#EEF2FF]'
                       : 'border-gray-200 bg-white hover:shadow-md'
                   }`}
                 >
@@ -177,7 +177,7 @@ export function VersionHistoryModal({
                         onClick={() => toggleComparisonSelection(version.id)}
                         className={`p-2 rounded-lg transition-colors ${
                           selectedForComparison.includes(version.id)
-                            ? 'bg-purple-500 text-white'
+                            ? 'bg-[#4F46E5] text-white'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
                         title="Select for comparison"

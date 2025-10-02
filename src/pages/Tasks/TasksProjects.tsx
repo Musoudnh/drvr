@@ -673,7 +673,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('board')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'board'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -684,7 +684,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('list')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'list'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -695,7 +695,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('gantt')}
                       className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                         viewMode === 'gantt'
-                          ? 'bg-white text-purple-600 shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >

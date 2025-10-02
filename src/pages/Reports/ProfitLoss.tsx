@@ -179,7 +179,7 @@ const ProfitLoss: React.FC = () => {
                 <tr 
                   key={index} 
                   className={`border-b border-gray-100 hover:bg-gray-50 ${
-                    row.type === 'Forecast' ? 'bg-purple-50/30' : ''
+                    row.type === 'Forecast' ? 'bg-[#EEF2FF]/30' : ''
                   }`}
                 >
                   <td className="py-3 px-4 font-medium text-[#101010]">{row.month}</td>

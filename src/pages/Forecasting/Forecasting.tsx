@@ -1387,7 +1387,7 @@ const Forecasting: React.FC = () => {
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
                                           : !isActualized && dateViewMode === 'months'
-                                            ? 'cursor-pointer hover:bg-purple-50'
+                                            ? 'cursor-pointer hover:bg-[#EEF2FF]'
                                             : ''
                                       }`}>
                                         {isEditing ? (
@@ -1406,7 +1406,7 @@ const Forecasting: React.FC = () => {
                                               if (e.key === 'Enter') handleCellSave();
                                               if (e.key === 'Escape') handleCellCancel();
                                             }}
-                                            className="w-full px-1 py-0.5 text-center border border-purple-300 rounded text-xs"
+                                            className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-xs"
                                             autoFocus
                                             onFocus={(e) => e.target.select()}
                                           />
@@ -1421,7 +1421,7 @@ const Forecasting: React.FC = () => {
                                                 }
                                               }
                                             }}
-                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-purple-600 select-none'}
+                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}
                                           >
                                             ${aggregatedAmount.toLocaleString()}
                                           </span>
@@ -1449,7 +1449,7 @@ const Forecasting: React.FC = () => {
                                         if (e.key === 'Enter') handleCellSave();
                                         if (e.key === 'Escape') handleCellCancel();
                                       }}
-                                      className="w-full px-2 py-1 text-right border border-purple-300 rounded text-sm"
+                                      className="w-full px-2 py-1 text-right border border-[#A5B4FC] rounded text-sm"
                                       autoFocus
                                       onFocus={(e) => e.target.select()}
                                     />
@@ -1462,7 +1462,7 @@ const Forecasting: React.FC = () => {
                                         setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
                                         setEditValue(fyTotal.toString());
                                       }}
-                                      className="cursor-pointer hover:bg-purple-50 rounded px-2 py-1 inline-block"
+                                      className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block"
                                     >
                                       ${forecastData
                                         .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
@@ -2209,8 +2209,8 @@ const Forecasting: React.FC = () => {
                 />
               </div>
 
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                <p className="text-sm text-purple-900">
+              <div className="bg-[#EEF2FF] border border-[#C7D2FE] rounded-lg p-3">
+                <p className="text-sm text-[#312E81]">
                   <strong>Preview:</strong>
                   {bulkAdjustment.type === 'percentage' && (
                     <span> All selected values will be {bulkAdjustment.value >= 0 ? 'increased' : 'decreased'} by {Math.abs(bulkAdjustment.value)}%</span>
