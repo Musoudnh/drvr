@@ -301,7 +301,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
         }}
       >
         {renderColumn('todo', todoTasks, 'To Do', 'border-gray-400')}
-        {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-teal-500')}
+        {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-yellow-500')}
         {renderColumn('done', doneTasks, 'Done', 'border-green-500')}
       </div>
     </DragDropContext>
