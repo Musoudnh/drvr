@@ -349,18 +349,9 @@ const ChatMain: React.FC = () => {
 
         {/* Tab Content */}
         <div className="p-6">
-          {activeTab === 'native' && renderNativeChat()}
-          {activeTab === 'slack' && renderIntegrationTab('slack')}
-          {activeTab === 'teams' && renderIntegrationTab('teams')}
-          {activeTab === 'google' && renderIntegrationTab('google')}
-          
-          {connectedChats.map(chat => (
-            activeTab === chat.id && (
-              <div key={chat.id}>
-                {renderIntegrationTab(chat.platform)}
-              </div>
-            )
-          ))}
+          <div className="flex items-center justify-center h-96">
+            <p className="text-gray-500 text-lg">Connect your chat</p>
+          </div>
         </div>
       </div>
 
