@@ -362,10 +362,12 @@ const TasksProjects: React.FC = () => {
                     setPriorityDropdownOpen(priorityDropdownOpen === task.id ? null : task.id);
                     setTaskMenuOpen(null);
                   }}
-                  className={`px-2 py-0.5 rounded-lg text-xs font-medium flex items-center gap-1 transition-all hover:shadow-sm ${getPriorityColor(task.priority)}`}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all hover:shadow-sm ${getPriorityColor(task.priority)}`}
                 >
-                  <span className="capitalize">{task.priority}</span>
-                  <ChevronDown className="w-3 h-3" />
+                  <span className="flex items-center capitalize">
+                    {task.priority}
+                    <ChevronDown className="w-3 h-3 ml-1" />
+                  </span>
                 </button>
 
                 {priorityDropdownOpen === task.id && (
