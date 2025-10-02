@@ -60,12 +60,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
   };
 
   const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-red-100 text-red-700 border-red-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'low': return 'bg-green-100 text-green-700 border-green-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
+    return 'bg-gray-100 text-gray-700 border-gray-200';
   };
 
   const getStatusLabel = (status: string) => {
@@ -78,12 +73,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'todo': return 'bg-gray-100 text-gray-700 border-gray-200';
-      case 'in_progress': return 'bg-teal-100 text-teal-700 border-teal-200';
-      case 'done': return 'bg-green-100 text-green-700 border-green-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
+    return 'bg-gray-100 text-gray-700 border-gray-200';
   };
 
   const renderTaskRow = (task: Task, index: number) => (
@@ -256,7 +246,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
 
   const renderColumn = (status: 'todo' | 'in_progress' | 'done', columnTasks: Task[], title: string, borderColor: string) => (
     <div key={status} className="flex-1 min-w-0">
-      <div className={`border-t-4 ${borderColor} bg-white rounded-t-lg`}>
+      <div className="bg-white rounded-t-lg">
         <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
           <h3 className="font-semibold text-[#101010] text-sm flex items-center">
             {title}
@@ -300,9 +290,9 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
           setTaskMenuOpen(null);
         }}
       >
-        {renderColumn('todo', todoTasks, 'To Do', 'border-gray-400')}
-        {renderColumn('in_progress', inProgressTasks, 'In Progress', 'border-yellow-500')}
-        {renderColumn('done', doneTasks, 'Done', 'border-green-500')}
+        {renderColumn('todo', todoTasks, 'To Do', '')}
+        {renderColumn('in_progress', inProgressTasks, 'In Progress', '')}
+        {renderColumn('done', doneTasks, 'Done', '')}
       </div>
     </DragDropContext>
   );
