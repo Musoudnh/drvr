@@ -1211,44 +1211,53 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-            <button
-              onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                hideEmptyAccounts
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
-            >
-              {hideEmptyAccounts ? <EyeOff className="w-4 h-4 mr-1 inline" /> : <Eye className="w-4 h-4 mr-1 inline" />}
-              <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
-            </button>
+          <div className="flex gap-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Display</label>
+              <button
+                onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
+                  hideEmptyAccounts
+                    ? 'bg-[#7B68EE] text-white border-[#7B68EE]'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                }`}
+                title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
+              >
+                {hideEmptyAccounts ? <EyeOff className="w-4 h-4 mr-2 inline" /> : <Eye className="w-4 h-4 mr-2 inline" />}
+                <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
+              </button>
+            </div>
 
-            <button
-              onClick={() => setShowAccountCodes(!showAccountCodes)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                showAccountCodes
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
-            >
-              <Hash className="w-4 h-4 mr-1 inline" />
-              <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
-            </button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">GL Codes</label>
+              <button
+                onClick={() => setShowAccountCodes(!showAccountCodes)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
+                  showAccountCodes
+                    ? 'bg-[#7B68EE] text-white border-[#7B68EE]'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                }`}
+                title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
+              >
+                <Hash className="w-4 h-4 mr-2 inline" />
+                <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
+              </button>
+            </div>
 
-            <button
-              onClick={() => setShowActualsAsAmount(!showActualsAsAmount)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                showActualsAsAmount
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={showActualsAsAmount ? 'Show actuals as percentage' : 'Show actuals as amount'}
-            >
-              <span>{showActualsAsAmount ? '$' : '%'}</span>
-            </button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Actuals Format</label>
+              <button
+                onClick={() => setShowActualsAsAmount(!showActualsAsAmount)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
+                  showActualsAsAmount
+                    ? 'bg-[#7B68EE] text-white border-[#7B68EE]'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                }`}
+                title={showActualsAsAmount ? 'Show actuals as percentage' : 'Show actuals as amount'}
+              >
+                <span className="font-semibold">{showActualsAsAmount ? '$ Amount' : '% Percent'}</span>
+              </button>
+            </div>
           </div>
         </div>
       </Card>
