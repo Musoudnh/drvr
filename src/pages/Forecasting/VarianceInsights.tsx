@@ -516,126 +516,168 @@ const VarianceInsights: React.FC = () => {
             </div>
           </div>
 
-          {/* Variance Table */}
+          {/* Variance Table - Vertical Layout */}
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="text-left py-4 px-6 font-bold text-gray-800">Metric</th>
-                    <th className="text-right py-4 px-6 font-bold text-gray-800">Actual</th>
-                    <th className="text-right py-4 px-6 font-bold text-gray-800">Forecast</th>
-                    <th className="text-right py-4 px-6 font-bold text-gray-800">Variance</th>
-                    <th className="text-center py-4 px-6 font-bold text-gray-800">Trend</th>
-                    <th className="text-center py-4 px-6 font-bold text-gray-800">Significance</th>
-                    <th className="text-center py-4 px-6 font-bold text-gray-800">Actions</th>
+                    <th className="text-left py-4 px-6 font-bold text-gray-800 w-48">Metric</th>
+                    {filteredVariances.map(variance => (
+                      <th key={variance.metric} className="text-center py-4 px-4 font-bold text-gray-800 min-w-[140px]">
+                        <button
+                          onClick={() => toggleVarianceExpansion(variance.metric)}
+                          className="flex items-center justify-center w-full hover:text-[#3AB7BF] transition-colors"
+                        >
+                          {variance.metric}
+                          {expandedVariances.includes(variance.metric) ? (
+                            <ChevronDown className="w-4 h-4 ml-2" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 ml-2" />
+                          )}
+                        </button>
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredVariances.map(variance => {
-                    const isExpanded = expandedVariances.includes(variance.metric);
-                    const TrendIcon = getTrendIcon(variance.trend);
-                    const isPercentageMetric = variance.metric.includes('Margin') || variance.metric.includes('Rate');
-                    
-                    return (
-                      <React.Fragment key={variance.metric}>
-                        <tr className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="py-4 px-6">
-                            <button
-                              onClick={() => toggleVarianceExpansion(variance.metric)}
-                              className="flex items-center font-medium text-[#101010] hover:text-[#3AB7BF] transition-colors"
-                            >
-                              {isExpanded ? (
-                                <ChevronDown className="w-4 h-4 mr-2" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 mr-2" />
-                              )}
-                              {variance.metric}
-                            </button>
-                          </td>
-                          <td className="py-4 px-6 text-right font-bold text-[#101010]">
-                            {formatVarianceValue(variance.actual, isPercentageMetric)}
-                          </td>
-                          <td className="py-4 px-6 text-right text-gray-600">
-                            {formatVarianceValue(variance.forecast, isPercentageMetric)}
-                          </td>
-                          <td className="py-4 px-6 text-right">
-                            <div className="flex items-center justify-end">
-                              {variance.variancePercent > 0 ? (
-                                <ArrowUp className="w-4 h-4 text-[#4ADE80] mr-1" />
-                              ) : variance.variancePercent < 0 ? (
-                                <ArrowDown className="w-4 h-4 text-[#F87171] mr-1" />
-                              ) : (
-                                <Minus className="w-4 h-4 text-gray-400 mr-1" />
-                              )}
-                              <span 
-                                className="font-bold"
-                                style={{ 
-                                  color: variance.variancePercent > 0 ? '#4ADE80' : 
-                                         variance.variancePercent < 0 ? '#F87171' : '#6B7280'
-                                }}
-                              >
-                                {variance.variancePercent > 0 ? '+' : ''}{variance.variancePercent.toFixed(1)}%
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            <div className="flex items-center justify-center">
-                              <TrendIcon 
-                                className="w-4 h-4 mr-1" 
-                                style={{ color: getTrendColor(variance.trend) }}
-                              />
-                              <span className="text-sm capitalize">{variance.trend}</span>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            <span 
-                              className="px-3 py-1 rounded-full text-xs font-medium"
-                              style={{ 
-                                backgroundColor: `${getSignificanceColor(variance.significance)}20`,
-                                color: getSignificanceColor(variance.significance)
-                              }}
-                            >
-                              {variance.significance}
-                            </span>
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            <div className="flex items-center justify-center gap-2">
-                              <button
-                                onClick={() => {
-                                  setSelectedVariance(variance);
-                                  setShowDrillDownModal(true);
-                                }}
-                                className="p-1 hover:bg-gray-100 rounded"
-                                title="Drill down"
-                              >
-                                <Eye className="w-4 h-4 text-gray-400" />
-                              </button>
-                              <button
-                                className="p-1 hover:bg-gray-100 rounded"
-                                title="View details"
-                              >
-                                <ExternalLink className="w-4 h-4 text-gray-400" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        
-                        {/* Expanded Row */}
-                        {isExpanded && (
+                  {/* Actual Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Actual</td>
+                    {filteredVariances.map(variance => {
+                      const isPercentageMetric = variance.metric.includes('Margin') || variance.metric.includes('Rate');
+                      return (
+                        <td key={variance.metric} className="py-4 px-4 text-center font-bold text-[#101010]">
+                          {formatVarianceValue(variance.actual, isPercentageMetric)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Forecast Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Forecast</td>
+                    {filteredVariances.map(variance => {
+                      const isPercentageMetric = variance.metric.includes('Margin') || variance.metric.includes('Rate');
+                      return (
+                        <td key={variance.metric} className="py-4 px-4 text-center text-gray-600">
+                          {formatVarianceValue(variance.forecast, isPercentageMetric)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Variance Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Variance</td>
+                    {filteredVariances.map(variance => (
+                      <td key={variance.metric} className="py-4 px-4 text-center">
+                        <div className="flex items-center justify-center">
+                          {variance.variancePercent > 0 ? (
+                            <ArrowUp className="w-4 h-4 text-[#4ADE80] mr-1" />
+                          ) : variance.variancePercent < 0 ? (
+                            <ArrowDown className="w-4 h-4 text-[#F87171] mr-1" />
+                          ) : (
+                            <Minus className="w-4 h-4 text-gray-400 mr-1" />
+                          )}
+                          <span
+                            className="font-bold"
+                            style={{
+                              color: variance.variancePercent > 0 ? '#4ADE80' :
+                                     variance.variancePercent < 0 ? '#F87171' : '#6B7280'
+                            }}
+                          >
+                            {variance.variancePercent > 0 ? '+' : ''}{variance.variancePercent.toFixed(1)}%
+                          </span>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* Trend Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Trend</td>
+                    {filteredVariances.map(variance => {
+                      const TrendIcon = getTrendIcon(variance.trend);
+                      return (
+                        <td key={variance.metric} className="py-4 px-4 text-center">
+                          <div className="flex items-center justify-center">
+                            <TrendIcon
+                              className="w-4 h-4 mr-1"
+                              style={{ color: getTrendColor(variance.trend) }}
+                            />
+                            <span className="text-sm capitalize">{variance.trend}</span>
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Significance Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Significance</td>
+                    {filteredVariances.map(variance => (
+                      <td key={variance.metric} className="py-4 px-4 text-center">
+                        <span
+                          className="px-3 py-1 rounded-full text-xs font-medium inline-block"
+                          style={{
+                            backgroundColor: `${getSignificanceColor(variance.significance)}20`,
+                            color: getSignificanceColor(variance.significance)
+                          }}
+                        >
+                          {variance.significance}
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* Actions Row */}
+                  <tr className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-6 font-bold text-gray-800 bg-gray-50">Actions</td>
+                    {filteredVariances.map(variance => (
+                      <td key={variance.metric} className="py-4 px-4 text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedVariance(variance);
+                              setShowDrillDownModal(true);
+                            }}
+                            className="p-1 hover:bg-gray-100 rounded"
+                            title="Drill down"
+                          >
+                            <Eye className="w-4 h-4 text-gray-400" />
+                          </button>
+                          <button
+                            className="p-1 hover:bg-gray-100 rounded"
+                            title="View details"
+                          >
+                            <ExternalLink className="w-4 h-4 text-gray-400" />
+                          </button>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* Expanded Details Rows */}
+                  {filteredVariances.some(v => expandedVariances.includes(v.metric)) && (
+                    <>
+                      {filteredVariances.filter(v => expandedVariances.includes(v.metric)).map(variance => (
+                        <React.Fragment key={`expanded-${variance.metric}`}>
                           <tr className="bg-gray-50">
-                            <td colSpan={7} className="py-6 px-6">
-                              <div className="space-y-4">
+                            <td colSpan={filteredVariances.length + 1} className="py-6 px-6">
+                              <div className="space-y-6">
+                                <h4 className="text-lg font-bold text-[#101010] mb-4">{variance.metric} - Detailed Analysis</h4>
+
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                  <div>
+                                  <div className="p-6 bg-white rounded-lg border border-gray-200">
                                     <h5 className="font-bold text-[#101010] mb-3 flex items-center">
                                       <Info className="w-4 h-4 mr-2 text-[#3AB7BF]" />
                                       Explanation
                                     </h5>
                                     <p className="text-sm text-gray-700 leading-relaxed">{variance.explanation}</p>
                                   </div>
-                                  
-                                  <div>
+
+                                  <div className="p-6 bg-white rounded-lg border border-gray-200">
                                     <h5 className="font-bold text-[#101010] mb-3 flex items-center">
                                       <Lightbulb className="w-4 h-4 mr-2 text-[#F59E0B]" />
                                       Recommendations
@@ -650,21 +692,21 @@ const VarianceInsights: React.FC = () => {
                                     </ul>
                                   </div>
                                 </div>
-                                
+
                                 {/* Drill Down Preview */}
                                 {variance.drillDownData && (
-                                  <div className="mt-6 pt-4 border-t border-gray-200">
-                                    <h5 className="font-bold text-[#101010] mb-3">Breakdown Analysis</h5>
+                                  <div className="p-6 bg-white rounded-lg border border-gray-200">
+                                    <h5 className="font-bold text-[#101010] mb-4">Breakdown Analysis</h5>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                       {variance.drillDownData.map(item => (
-                                        <div key={item.id} className="p-3 bg-white rounded-lg border border-gray-200">
-                                          <p className="font-medium text-[#101010] text-sm">{item.name}</p>
-                                          <div className="flex justify-between mt-2">
+                                        <div key={item.id} className="p-4 bg-gray-50 rounded-lg">
+                                          <p className="font-medium text-[#101010] text-sm mb-2">{item.name}</p>
+                                          <div className="flex justify-between">
                                             <span className="text-xs text-gray-600">Variance:</span>
-                                            <span 
+                                            <span
                                               className="text-xs font-bold"
-                                              style={{ 
-                                                color: item.variance > 0 ? '#4ADE80' : 
+                                              style={{
+                                                color: item.variance > 0 ? '#4ADE80' :
                                                        item.variance < 0 ? '#F87171' : '#6B7280'
                                               }}
                                             >
@@ -679,10 +721,10 @@ const VarianceInsights: React.FC = () => {
                               </div>
                             </td>
                           </tr>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
