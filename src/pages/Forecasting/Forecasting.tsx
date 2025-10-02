@@ -1229,7 +1229,14 @@ const Forecasting: React.FC = () => {
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
                     {datePeriods.map((period, index) => (
-                      <th key={index} className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">
+                      <th
+                        key={index}
+                        className={`py-3 font-bold text-gray-800 ${
+                          dateViewMode === 'months'
+                            ? 'text-center px-2 min-w-[120px]'
+                            : 'text-left px-2 min-w-[100px]'
+                        }`}
+                      >
                         {dateViewMode === 'years' ? (
                           <div className="flex flex-col">
                             <span className="text-base">FY{getDateLabel(period, index)}</span>
@@ -1321,7 +1328,12 @@ const Forecasting: React.FC = () => {
                                 const isSelected = dateViewMode === 'months' && isCellSelected(glCode.code, periodKey);
 
                                 return (
-                                  <td key={periodIndex} className="py-3 px-2 text-center text-sm">
+                                  <td
+                                    key={periodIndex}
+                                    className={`py-3 px-2 text-sm ${
+                                      dateViewMode === 'months' ? 'text-center' : 'text-left'
+                                    }`}
+                                  >
                                     <div className="space-y-1 relative">
                                       <div className={`font-medium rounded px-1 ${
                                         isSelected
