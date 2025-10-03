@@ -558,78 +558,87 @@ const CashFlow: React.FC = () => {
           <h2 className="text-xl font-bold text-[#101010]">Cash Flow Waterfall</h2>
         </div>
         <div className="w-full overflow-x-auto">
-          <div className="min-w-full space-y-1">
-            {waterfallData.map((item, index) => {
-              const startPosition = getWaterfallPosition(index);
-              const endPosition = getCalculatedValue(index);
-              const displayValue = item.type === 'subtotal' || item.type === 'ending' ? endPosition : item.value;
-              const maxValue = displayScale;
-              const minValue = 0;
-              const range = maxValue - minValue;
+          <div className="min-w-full relative">
+            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none" style={{ paddingLeft: '21rem' }}>
+              <div className="h-px bg-[#E5E5E5]"></div>
+              <div className="h-px bg-[#E5E5E5]"></div>
+              <div className="h-px bg-[#E5E5E5]"></div>
+              <div className="h-px bg-[#E5E5E5]"></div>
+              <div className="h-px bg-[#E5E5E5]"></div>
+            </div>
+            <div className="space-y-1 relative z-10">
+              {waterfallData.map((item, index) => {
+                const startPosition = getWaterfallPosition(index);
+                const endPosition = getCalculatedValue(index);
+                const displayValue = item.type === 'subtotal' || item.type === 'ending' ? endPosition : item.value;
+                const maxValue = displayScale;
+                const minValue = 0;
+                const range = maxValue - minValue;
 
-              const isTotal = item.type === 'starting' || item.type === 'ending' || item.type === 'subtotal';
-              const isSubtotal = item.type === 'subtotal';
+                const isTotal = item.type === 'starting' || item.type === 'ending' || item.type === 'subtotal';
+                const isSubtotal = item.type === 'subtotal';
 
-              return (
-                <div key={index} className={`flex items-center gap-4 ${isTotal ? 'py-2 border-t border-gray-200' : 'py-1'}`}>
-                  <div className="w-80 flex-shrink-0">
-                    <div className="flex items-center gap-2">
-                      {!isTotal && (
-                        <span className="text-xs text-gray-500 uppercase font-medium">
-                          {item.type === 'increase' ? 'ADD' : 'LESS'}
-                        </span>
-                      )}
-                      <span className={`text-sm ${isTotal ? 'font-bold text-[#101010]' : 'text-gray-700'}`}>
-                        {item.label}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex-1 relative h-10 flex items-center min-w-0">
-                    {isTotal ? (
-                      <div
-                        className={`h-8 flex items-center justify-center ${
-                          item.type === 'starting' ? 'bg-[#10B981] rounded' :
-                          isSubtotal ? 'bg-[#3B82F6] rounded' :
-                          'bg-[#10B981] rounded'
-                        }`}
-                        style={{
-                          width: `${(endPosition / range) * 100}%`,
-                          minWidth: '120px',
-                          maxWidth: '100%'
-                        }}
-                      >
-                        <span className="text-xs font-bold text-white whitespace-nowrap px-2">
-                          {formatCurrency(displayValue)}
+                return (
+                  <div key={index} className={`flex items-center gap-6 ${isTotal ? 'py-2 border-t border-gray-200' : 'py-1'}`}>
+                    <div className="w-[20rem] flex-shrink-0">
+                      <div className="flex items-center gap-3">
+                        {!isTotal && (
+                          <span className="text-xs text-gray-500 uppercase font-semibold tracking-wide">
+                            {item.type === 'increase' ? 'ADD' : 'LESS'}
+                          </span>
+                        )}
+                        <span className={`text-base ${isTotal ? 'font-bold text-[#101010]' : 'font-medium text-gray-700'}`}>
+                          {item.label}
                         </span>
                       </div>
-                    ) : (
-                      <>
+                    </div>
+                    <div className="flex-1 relative h-10 flex items-center min-w-0">
+                      {isTotal ? (
                         <div
-                          className="h-8 bg-transparent flex-shrink-0"
-                          style={{
-                            width: `${(Math.min(startPosition, endPosition) / range) * 100}%`
-                          }}
-                        />
-                        <div
-                          className={`h-8 flex items-center justify-center flex-shrink-0 ${
-                            item.type === 'increase' ? 'bg-[#10B981]' : 'bg-[#EF4444]'
+                          className={`h-8 flex items-center justify-center ${
+                            item.type === 'starting' ? 'bg-[#10B981] rounded' :
+                            isSubtotal ? 'bg-[#3B82F6] rounded' :
+                            'bg-[#10B981] rounded'
                           }`}
                           style={{
-                            width: `${(Math.abs(item.value) / range) * 100}%`,
-                            minWidth: '80px',
+                            width: `${(endPosition / range) * 100}%`,
+                            minWidth: '140px',
                             maxWidth: '100%'
                           }}
                         >
-                          <span className="text-xs font-bold text-white whitespace-nowrap px-2">
-                            {item.value !== 0 ? (item.type === 'increase' ? '+' : '') + formatCurrency(item.value) : '$0'}
+                          <span className="text-sm font-bold text-white whitespace-nowrap px-3">
+                            {formatCurrency(displayValue)}
                           </span>
                         </div>
-                      </>
-                    )}
+                      ) : (
+                        <>
+                          <div
+                            className="h-8 bg-transparent flex-shrink-0"
+                            style={{
+                              width: `${(Math.min(startPosition, endPosition) / range) * 100}%`
+                            }}
+                          />
+                          <div
+                            className={`h-8 flex items-center justify-center flex-shrink-0 ${
+                              item.type === 'increase' ? 'bg-[#10B981]' : 'bg-[#EF4444]'
+                            }`}
+                            style={{
+                              width: `${(Math.abs(item.value) / range) * 100}%`,
+                              minWidth: '100px',
+                              maxWidth: '100%'
+                            }}
+                          >
+                            <span className="text-sm font-bold text-white whitespace-nowrap px-3">
+                              {item.value !== 0 ? (item.type === 'increase' ? '+' : '') + formatCurrency(item.value) : '$0'}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
         <div className="mt-6 pt-4 border-t border-gray-200">
