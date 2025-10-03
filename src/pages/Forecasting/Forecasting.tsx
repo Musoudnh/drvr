@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
@@ -52,6 +53,8 @@ interface AppliedScenario {
 }
 
 const Forecasting: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedYear, setSelectedYear] = useState(2025);
   const [multiYearView, setMultiYearView] = useState(false);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
@@ -1061,7 +1064,44 @@ const Forecasting: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div></div>
+        {/* Left Navigation Buttons */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/forecasting')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/forecasting'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <Target className="w-4 h-4 mr-2" />
+            Forecasting
+          </button>
+          <button
+            onClick={() => navigate('/reports/balance-sheet')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/reports/balance-sheet'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <PieChart className="w-4 h-4 mr-2" />
+            Balance Sheet
+          </button>
+          <button
+            onClick={() => navigate('/reports/cash-flow')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/reports/cash-flow'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <DollarSign className="w-4 h-4 mr-2" />
+            Cash Flow
+          </button>
+        </div>
+
+        {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowSaveForecastModal(true)}

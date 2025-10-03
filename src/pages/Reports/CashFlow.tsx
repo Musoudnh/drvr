@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, ChevronDown, Download } from 'lucide-react';
+import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, ChevronDown, Download, Target, PieChart, DollarSign, Save, Bell, History } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 
 interface WaterfallItem {
@@ -31,6 +32,8 @@ interface CashFlowData {
 }
 
 const CashFlow: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
   const [selectedYear, setSelectedYear] = useState(2025);
   const [selectedMonth, setSelectedMonth] = useState<string>('Jan');
@@ -329,9 +332,77 @@ const CashFlow: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-[#101010]">Cash Flow Analysis</h2>
-        <p className="text-gray-600 mt-1">Track your cash inflows and outflows</p>
+      <div className="flex justify-between items-center">
+        {/* Left Navigation Buttons */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate('/forecasting')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/forecasting'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <Target className="w-4 h-4 mr-2" />
+            Forecasting
+          </button>
+          <button
+            onClick={() => navigate('/reports/balance-sheet')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/reports/balance-sheet'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <PieChart className="w-4 h-4 mr-2" />
+            Balance Sheet
+          </button>
+          <button
+            onClick={() => navigate('/reports/cash-flow')}
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+              location.pathname === '/reports/cash-flow'
+                ? 'bg-[#7B68EE] text-white'
+                : 'bg-white text-[#7B68EE]'
+            }`}
+          >
+            <DollarSign className="w-4 h-4 mr-2" />
+            Cash Flow
+          </button>
+        </div>
+
+        {/* Right Action Buttons */}
+        <div className="flex items-center gap-3">
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Save Forecast
+          </button>
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Bell className="w-4 h-4 mr-2" />
+            Alerts
+          </button>
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <History className="w-4 h-4 mr-2" />
+            Applied Scenarios
+          </button>
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <History className="w-4 h-4 mr-2" />
+            Version History
+          </button>
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </button>
+        </div>
       </div>
 
       {/* Time Period Selection Controls */}
