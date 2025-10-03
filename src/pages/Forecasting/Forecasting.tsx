@@ -1177,7 +1177,7 @@ const Forecasting: React.FC = () => {
 
       {/* Selection Actions Bar */}
       {selectedCells.length > 0 && (
-        <div className="bg-[#E6E0FF] border border-[#7B68EE] rounded-lg p-4 flex items-center justify-between">
+        <div className="bg-[#F5F3FF] border border-[#7B68EE] rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="text-sm font-medium text-[#101010]">
               {selectedCells.length} cell{selectedCells.length > 1 ? 's' : ''} selected
