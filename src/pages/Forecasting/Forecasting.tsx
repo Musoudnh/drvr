@@ -1524,9 +1524,6 @@ const Forecasting: React.FC = () => {
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      {dateViewMode !== 'months' && (
-                                        <div className="text-[10px] text-gray-500 font-medium mb-1">Budget</div>
-                                      )}
                                       <div className={`rounded px-1 ${
                                         isOuterYear ? 'font-normal text-gray-500 text-xs' : 'font-medium'
                                       } ${
