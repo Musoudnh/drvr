@@ -1820,8 +1820,8 @@ const Forecasting: React.FC = () => {
 
      {/* GL Scenario Modal */}
      {showGLScenarioModal && selectedGLCode && (
-       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end z-50">
-         <div className="bg-white shadow-2xl p-6 w-[600px] max-w-[90vw] h-full overflow-y-auto">
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+         <div className="bg-white shadow-2xl rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
            <div className="flex items-center justify-between mb-6">
              <h3 className="text-xl font-semibold text-[#101010]">
                Add Scenario for {selectedGLCode.name} ({selectedGLCode.code})
