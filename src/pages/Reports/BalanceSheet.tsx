@@ -536,7 +536,7 @@ const BalanceSheet: React.FC = () => {
                   <td className="py-3 px-4 text-right text-[#4ADE80]">{formatCurrency(getCategoryTotal('Non-Current Assets', 'total'))}</td>
                 <td className="py-3 px-4 text-right text-gray-600">64.8%</td>
               </tr>
-              <tr className="bg-[#4ADE80]/20 font-bold">
+              <tr className="bg-gray-100 font-bold">
                 <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL ASSETS</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
@@ -605,7 +605,7 @@ const BalanceSheet: React.FC = () => {
                   <td className="py-3 px-4 text-right text-[#F87171]">{formatCurrency(getCategoryTotal('Non-Current Liabilities', 'total'))}</td>
                 <td className="py-3 px-4 text-right text-gray-600">-27.3%</td>
               </tr>
-              <tr className="bg-[#F87171]/20 font-bold">
+              <tr className="bg-gray-100 font-bold">
                 <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL LIABILITIES</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
@@ -633,7 +633,7 @@ const BalanceSheet: React.FC = () => {
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
-              <tr className="bg-[#3AB7BF]/20 font-bold">
+              <tr className="bg-gray-100 font-bold">
                 <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL EQUITY</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
