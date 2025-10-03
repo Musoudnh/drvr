@@ -52,6 +52,8 @@ interface AppliedScenario {
   adjustmentType: 'percentage' | 'fixed';
   adjustmentValue: number;
   appliedAt: Date;
+  isSalesDriverScenario?: boolean;
+  salesScenarioData?: SalesScenario;
   createdBy: string;
   isActive: boolean;
 }
@@ -67,6 +69,7 @@ const Forecasting: React.FC = () => {
   const [multiYearView, setMultiYearView] = useState(false);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
   const [showSalesScenarioModal, setShowSalesScenarioModal] = useState(false);
+  const [editingSalesScenario, setEditingSalesScenario] = useState<SalesScenario | null>(null);
   const [salesScenarios, setSalesScenarios] = useState<SalesScenario[]>([]);
   const [newGLScenario, setNewGLScenario] = useState({
     name: '',
@@ -1714,18 +1717,24 @@ const Forecasting: React.FC = () => {
                                                 <div className="flex gap-2">
                                                   <button
                                                     onClick={() => {
-                                                      setEditingScenario(scenario);
-                                                      setGLScenarioForm({
-                                                        ...glScenarioForm,
-                                                        title: scenario.name,
-                                                        description: scenario.description,
-                                                        adjustmentType: scenario.adjustmentType,
-                                                        adjustmentValue: scenario.adjustmentValue,
-                                                        startMonth: scenario.startMonth.split(' ')[0],
-                                                        endMonth: scenario.endMonth.split(' ')[0]
-                                                      });
-                                                      setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
-                                                      setShowEditScenarioModal(true);
+                                                      if (scenario.isSalesDriverScenario && scenario.salesScenarioData) {
+                                                        setEditingSalesScenario(scenario.salesScenarioData);
+                                                        setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                                        setShowSalesScenarioModal(true);
+                                                      } else {
+                                                        setEditingScenario(scenario);
+                                                        setGLScenarioForm({
+                                                          ...glScenarioForm,
+                                                          title: scenario.name,
+                                                          description: scenario.description,
+                                                          adjustmentType: scenario.adjustmentType,
+                                                          adjustmentValue: scenario.adjustmentValue,
+                                                          startMonth: scenario.startMonth.split(' ')[0],
+                                                          endMonth: scenario.endMonth.split(' ')[0]
+                                                        });
+                                                        setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                                        setShowEditScenarioModal(true);
+                                                      }
                                                       setScenarioMenuOpen(null);
                                                     }}
                                                     className="px-2.5 py-1.5 text-xs font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
@@ -3008,9 +3017,17 @@ const Forecasting: React.FC = () => {
         onClose={() => {
           setShowSalesScenarioModal(false);
           setSelectedGLCode(null);
+          setEditingSalesScenario(null);
         }}
+        initialScenario={editingSalesScenario || undefined}
         onSave={(scenario) => {
-          setSalesScenarios([...salesScenarios, scenario]);
+          const isEditing = !!editingSalesScenario;
+
+          if (isEditing) {
+            setSalesScenarios(prev => prev.map(s => s.id === scenario.id ? scenario : s));
+          } else {
+            setSalesScenarios([...salesScenarios, scenario]);
+          }
 
           if (selectedGLCode) {
             const impacts = SalesDriverService.calculateScenarioImpacts(scenario);
@@ -3024,7 +3041,7 @@ const Forecasting: React.FC = () => {
               .map(d => d.driverName)
               .join(', ') || 'No drivers';
 
-            const newAppliedScenario: AppliedScenario = {
+            const updatedAppliedScenario: AppliedScenario = {
               id: scenario.id || Date.now().toString(),
               glCode: selectedGLCode.code,
               name: scenario.name,
@@ -3035,10 +3052,18 @@ const Forecasting: React.FC = () => {
               adjustmentValue: Math.round(avgImpactPercent * 10) / 10,
               appliedAt: new Date(),
               createdBy: 'Current User',
-              isActive: true
+              isActive: true,
+              isSalesDriverScenario: true,
+              salesScenarioData: scenario
             };
 
-            setAppliedScenarios(prev => [...prev, newAppliedScenario]);
+            if (isEditing) {
+              setAppliedScenarios(prev => prev.map(s =>
+                s.id === scenario.id ? updatedAppliedScenario : s
+              ));
+            } else {
+              setAppliedScenarios(prev => [...prev, updatedAppliedScenario]);
+            }
 
             const startMonthIndex = months.indexOf(scenario.startMonth);
             const endMonthIndex = months.indexOf(scenario.endMonth);
@@ -3065,6 +3090,7 @@ const Forecasting: React.FC = () => {
 
           setShowSalesScenarioModal(false);
           setSelectedGLCode(null);
+          setEditingSalesScenario(null);
         }}
       />
 
