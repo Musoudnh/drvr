@@ -157,7 +157,7 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
                       <div
                         className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                           isVisible
-                            ? 'bg-[#3AB7BF] border-[#3AB7BF]'
+                            ? 'bg-[#8B5CF6] border-[#8B5CF6]'
                             : 'bg-white border-gray-300'
                         }`}
                       >
