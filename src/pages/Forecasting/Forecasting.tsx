@@ -1503,44 +1503,62 @@ const Forecasting: React.FC = () => {
                                 );
                               })}
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-4 text-right text-sm font-medium">
-                                  {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
-                                    <input
-                                      type="text"
-                                      inputMode="numeric"
-                                      value={editValue}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                          setEditValue(value);
-                                        }
-                                      }}
-                                      onBlur={handleCellSave}
-                                      onKeyDown={(e) => {
-                                        if (e.key === 'Enter') handleCellSave();
-                                        if (e.key === 'Escape') handleCellCancel();
-                                      }}
-                                      className="w-full px-2 py-1 text-right border border-[#A5B4FC] rounded text-sm"
-                                      autoFocus
-                                      onFocus={(e) => e.target.select()}
-                                    />
-                                  ) : (
-                                    <span
-                                      onClick={() => {
-                                        const fyTotal = forecastData
-                                          .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                          .reduce((sum, item) => sum + item.forecastedAmount, 0);
-                                        setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
-                                        setEditValue(fyTotal.toString());
-                                      }}
-                                      className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block"
-                                    >
-                                      ${forecastData
-                                        .filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()))
-                                        .reduce((sum, item) => sum + item.forecastedAmount, 0)
-                                        .toLocaleString()}
-                                    </span>
-                                  )}
+                                <td className="py-3 px-4 text-sm">
+                                  <div className="space-y-1">
+                                    {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
+                                      <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={editValue}
+                                        onChange={(e) => {
+                                          const value = e.target.value;
+                                          if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                            setEditValue(value);
+                                          }
+                                        }}
+                                        onBlur={handleCellSave}
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') handleCellSave();
+                                          if (e.key === 'Escape') handleCellCancel();
+                                        }}
+                                        className="w-full px-2 py-1 text-right border border-[#A5B4FC] rounded text-sm"
+                                        autoFocus
+                                        onFocus={(e) => e.target.select()}
+                                      />
+                                    ) : (() => {
+                                      const yearData = forecastData.filter(item => item.glCode === glCode.code && item.month.includes(selectedYear.toString()));
+                                      const totalActuals = yearData.reduce((sum, item) => sum + (item.actualAmount || 0), 0);
+                                      const totalForecast = yearData.reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                      const remainingForecast = yearData
+                                        .filter(item => !item.actualAmount)
+                                        .reduce((sum, item) => sum + item.forecastedAmount, 0);
+                                      const actualsAndRemaining = totalActuals + remainingForecast;
+                                      const variance = totalForecast !== 0 ? ((actualsAndRemaining - totalForecast) / totalForecast) * 100 : 0;
+                                      const varianceColor = getVarianceColor(variance, glCode.code);
+
+                                      return (
+                                        <>
+                                          <div className="text-right">
+                                            <span
+                                              onClick={() => {
+                                                setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
+                                                setEditValue(totalForecast.toString());
+                                              }}
+                                              className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block font-medium text-[#101010]"
+                                            >
+                                              ${actualsAndRemaining.toLocaleString()}
+                                            </span>
+                                          </div>
+                                          <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5 text-right">
+                                            Budget: ${totalForecast.toLocaleString()}
+                                          </div>
+                                          <div className={`text-[10px] font-medium text-right ${varianceColor}`}>
+                                            {variance >= 0 ? '+' : ''}{variance.toFixed(1)}%
+                                          </div>
+                                        </>
+                                      );
+                                    })()}
+                                  </div>
                                 </td>
                               )}
                             </tr>
