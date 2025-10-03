@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PieChart, Target, Download, Save, Bell, History, ChevronDown } from 'lucide-react';
+import { PieChart, DollarSign, Target, Download, Save, Bell, History, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 
