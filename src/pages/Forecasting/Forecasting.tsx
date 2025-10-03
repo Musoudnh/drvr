@@ -1723,8 +1723,8 @@ const Forecasting: React.FC = () => {
                                       <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
                                           <div key={scenario.id} className="p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200">
-                                            <div className="flex items-center justify-between">
-                                              <div className="flex-1">
+                                            <div className="flex items-start justify-between gap-3">
+                                              <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
                                                   {scenario.isSalesDriverScenario && (
@@ -1748,53 +1748,52 @@ const Forecasting: React.FC = () => {
                                                     ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
                                                   }
                                                 </p>
-
-                                                {/* Timeline Gantt - Aligned with table columns */}
-                                                <div className="mt-3 flex items-center">
-                                                  <div className="w-48"></div>
-                                                  <div className="flex-1 flex gap-0">
-                                                    {months.map((month, index) => {
-                                                      const startIndex = getMonthIndex(scenario.startMonth);
-                                                      const endIndex = getMonthIndex(scenario.endMonth);
-                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
-                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                      const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
-
-                                                      return (
-                                                        <div
-                                                          key={index}
-                                                          className="flex-1 px-2"
-                                                        >
-                                                          <div
-                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
-                                                              isActive
-                                                                ? 'bg-[#4ADE80]'
-                                                                : isInactive
-                                                                  ? 'bg-gray-300'
-                                                                  : 'bg-transparent'
-                                                            }`}
-                                                            title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
-                                                          >
-                                                            {showImpact && (
-                                                              <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
-                                                                {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
-                                                              </span>
-                                                            )}
-                                                          </div>
-                                                        </div>
-                                                      );
-                                                    })}
-                                                  </div>
-                                                </div>
                                               </div>
                                               <button
                                                 onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
-                                                className="px-3 py-1.5 bg-[#eff1f4] hover:bg-[#e5e7ea] text-gray-700 text-xs font-medium rounded transition-colors flex items-center gap-1.5"
+                                                className="px-3 py-1.5 bg-[#eff1f4] hover:bg-[#e5e7ea] text-gray-700 text-xs font-medium rounded transition-colors flex items-center gap-1.5 flex-shrink-0"
                                               >
                                                 <Edit2 className="w-3.5 h-3.5" />
                                                 Edit
                                               </button>
+                                            </div>
+
+                                            {/* Timeline Gantt - Aligned with table columns */}
+                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100 pt-2">
+                                              <div className="flex">
+                                                {months.map((month, index) => {
+                                                  const startIndex = getMonthIndex(scenario.startMonth);
+                                                  const endIndex = getMonthIndex(scenario.endMonth);
+                                                  const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                  const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                  const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                  const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
+
+                                                  return (
+                                                    <div
+                                                      key={index}
+                                                      className="flex-1 min-w-[120px] px-2"
+                                                    >
+                                                      <div
+                                                        className={`h-8 rounded flex items-center justify-center transition-all ${
+                                                          isActive
+                                                            ? 'bg-[#4ADE80]'
+                                                            : isInactive
+                                                              ? 'bg-gray-300'
+                                                              : 'bg-transparent'
+                                                        }`}
+                                                        title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
+                                                      >
+                                                        {showImpact && (
+                                                          <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
+                                                            {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  );
+                                                })}
+                                              </div>
                                             </div>
 
                                             {scenarioMenuOpen === scenario.id && (
