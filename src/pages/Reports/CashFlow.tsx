@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, ChevronDown } from 'lucide-react';
 import Card from '../../components/UI/Card';
 
 interface WaterfallItem {
@@ -35,6 +35,30 @@ const CashFlow: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [selectedMonth, setSelectedMonth] = useState<string>('Jan');
   const [selectedQuarter, setSelectedQuarter] = useState<string>('Q1');
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
+  const quarterDropdownRef = useRef<HTMLDivElement>(null);
+  const yearDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
+        setMonthDropdownOpen(false);
+      }
+      if (quarterDropdownRef.current && !quarterDropdownRef.current.contains(event.target as Node)) {
+        setQuarterDropdownOpen(false);
+      }
+      if (yearDropdownRef.current && !yearDropdownRef.current.contains(event.target as Node)) {
+        setYearDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const monthlyData: Record<number, Record<string, CashFlowData>> = {
     2023: {
@@ -350,61 +374,103 @@ const CashFlow: React.FC = () => {
               </div>
             </div>
 
-            <div>
+            <div className="relative" ref={monthDropdownRef}>
               <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-                {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
-                  <button
-                    key={month}
-                    onClick={() => setSelectedMonth(month)}
-                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      selectedMonth === month
-                        ? 'bg-white text-[#7B68EE] shadow-sm'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                  >
-                    {month}
-                  </button>
-                ))}
-              </div>
+              <button
+                onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
+                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              >
+                <span>{selectedMonth}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {monthDropdownOpen && (
+                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                  <div className="grid grid-cols-3 gap-1">
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
+                      <button
+                        key={month}
+                        onClick={() => {
+                          setSelectedMonth(month);
+                          setMonthDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                          selectedMonth === month
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {month}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div>
+            <div className="relative" ref={quarterDropdownRef}>
               <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
-              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-                {['Q1', 'Q2', 'Q3', 'Q4'].map((quarter) => (
-                  <button
-                    key={quarter}
-                    onClick={() => setSelectedQuarter(quarter)}
-                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      selectedQuarter === quarter
-                        ? 'bg-white text-[#7B68EE] shadow-sm'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                  >
-                    {quarter}
-                  </button>
-                ))}
-              </div>
+              <button
+                onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
+                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              >
+                <span>{selectedQuarter}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {quarterDropdownOpen && (
+                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                  <div className="flex flex-col gap-1">
+                    {['Q1', 'Q2', 'Q3', 'Q4'].map((quarter) => (
+                      <button
+                        key={quarter}
+                        onClick={() => {
+                          setSelectedQuarter(quarter);
+                          setQuarterDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          selectedQuarter === quarter
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {quarter}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div>
+            <div className="relative" ref={yearDropdownRef}>
               <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-                {[2023, 2024, 2025, 2026, 2027].map((year) => (
-                  <button
-                    key={year}
-                    onClick={() => setSelectedYear(year)}
-                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      selectedYear === year
-                        ? 'bg-white text-[#7B68EE] shadow-sm'
-                        : 'text-gray-600 hover:text-gray-800'
-                    }`}
-                  >
-                    {year}
-                  </button>
-                ))}
-              </div>
+              <button
+                onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
+                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              >
+                <span>{selectedYear}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {yearDropdownOpen && (
+                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                  <div className="flex flex-col gap-1">
+                    {[2023, 2024, 2025, 2026, 2027].map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => {
+                          setSelectedYear(year);
+                          setYearDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          selectedYear === year
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {year}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
