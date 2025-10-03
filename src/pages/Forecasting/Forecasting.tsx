@@ -105,8 +105,8 @@ const Forecasting: React.FC = () => {
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
   const [hideEmptyAccounts, setHideEmptyAccounts] = useState(false);
-  const [chartPreference, setChartPreference] = useState<'show-all' | 'codes' | 'percentage' | 'totals'>('show-all');
-  const [showChartPrefDropdown, setShowChartPrefDropdown] = useState(false);
+  const [showAccountCodes, setShowAccountCodes] = useState(true);
+  const [showActualsAsAmount, setShowActualsAsAmount] = useState(false);
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [sidePanelForm, setSidePanelForm] = useState({
@@ -194,9 +194,6 @@ const Forecasting: React.FC = () => {
     }
     return value.toLocaleString();
   };
-
-  const showAccountCodes = chartPreference === 'show-all' || chartPreference === 'codes';
-  const showActualsAsAmount = chartPreference === 'totals';
 
   const glCodes: GLCode[] = [
     { code: '4000', name: 'Product Sales', category: 'Revenue', type: 'revenue' },
@@ -1333,13 +1330,13 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
             <button
               onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 hideEmptyAccounts
-                  ? 'bg-white text-[#7B68EE] shadow-sm border border-gray-200'
-                  : 'bg-gray-100 text-gray-600 hover:text-gray-800'
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
               title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
             >
@@ -1347,82 +1344,30 @@ const Forecasting: React.FC = () => {
               <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
             </button>
 
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Chart Preference:</label>
-              <div className="relative">
-                <button
-                  onClick={() => setShowChartPrefDropdown(!showChartPrefDropdown)}
-                  className="px-3 py-1.5 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm border border-gray-200 hover:bg-gray-50 flex items-center gap-2 min-w-[140px] justify-between"
-                >
-                  <span>
-                    {chartPreference === 'show-all' && 'Show All'}
-                    {chartPreference === 'codes' && 'Codes'}
-                    {chartPreference === 'percentage' && '%'}
-                    {chartPreference === 'totals' && 'Totals'}
-                  </span>
-                  <ChevronDown className="w-4 h-4" />
-                </button>
+            <button
+              onClick={() => setShowAccountCodes(!showAccountCodes)}
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                showAccountCodes
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+              title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
+            >
+              <Hash className="w-4 h-4 mr-1 inline" />
+              <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
+            </button>
 
-                {showChartPrefDropdown && (
-                  <div className="absolute top-full mt-1 right-0 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-                    <div className="py-1">
-                      <button
-                        onClick={() => {
-                          setChartPreference('show-all');
-                          setShowChartPrefDropdown(false);
-                        }}
-                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                          chartPreference === 'show-all'
-                            ? 'bg-[#7B68EE]/10 text-[#7B68EE] font-medium'
-                            : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        Show All
-                      </button>
-                      <button
-                        onClick={() => {
-                          setChartPreference('codes');
-                          setShowChartPrefDropdown(false);
-                        }}
-                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                          chartPreference === 'codes'
-                            ? 'bg-[#7B68EE]/10 text-[#7B68EE] font-medium'
-                            : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        Codes
-                      </button>
-                      <button
-                        onClick={() => {
-                          setChartPreference('percentage');
-                          setShowChartPrefDropdown(false);
-                        }}
-                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                          chartPreference === 'percentage'
-                            ? 'bg-[#7B68EE]/10 text-[#7B68EE] font-medium'
-                            : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        %
-                      </button>
-                      <button
-                        onClick={() => {
-                          setChartPreference('totals');
-                          setShowChartPrefDropdown(false);
-                        }}
-                        className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                          chartPreference === 'totals'
-                            ? 'bg-[#7B68EE]/10 text-[#7B68EE] font-medium'
-                            : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                      >
-                        Totals
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            <button
+              onClick={() => setShowActualsAsAmount(!showActualsAsAmount)}
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                showActualsAsAmount
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+              title={showActualsAsAmount ? 'Show actuals as percentage' : 'Show actuals as amount'}
+            >
+              <span>{showActualsAsAmount ? '$' : '%'}</span>
+            </button>
 
             <div className="relative format-dropdown-container">
               <button
