@@ -357,13 +357,10 @@ const CashFlow: React.FC = () => {
                   <button
                     key={month}
                     onClick={() => setSelectedMonth(month)}
-                    disabled={dateViewMode !== 'months'}
                     className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      dateViewMode === 'months' && selectedMonth === month
+                      selectedMonth === month
                         ? 'bg-white text-[#7B68EE] shadow-sm'
-                        : dateViewMode === 'months'
-                        ? 'text-gray-600 hover:text-gray-800'
-                        : 'text-gray-400 cursor-not-allowed'
+                        : 'text-gray-600 hover:text-gray-800'
                     }`}
                   >
                     {month}
@@ -379,13 +376,10 @@ const CashFlow: React.FC = () => {
                   <button
                     key={quarter}
                     onClick={() => setSelectedQuarter(quarter)}
-                    disabled={dateViewMode !== 'quarters'}
                     className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                      dateViewMode === 'quarters' && selectedQuarter === quarter
+                      selectedQuarter === quarter
                         ? 'bg-white text-[#7B68EE] shadow-sm'
-                        : dateViewMode === 'quarters'
-                        ? 'text-gray-600 hover:text-gray-800'
-                        : 'text-gray-400 cursor-not-allowed'
+                        : 'text-gray-600 hover:text-gray-800'
                     }`}
                   >
                     {quarter}
