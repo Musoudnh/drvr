@@ -1465,10 +1465,6 @@ const Forecasting: React.FC = () => {
                               ) : (
                                 <ChevronRight className="w-4 h-4 mr-2" />
                               )}
-                              <div 
-                                className="w-3 h-3 rounded-full mr-2"
-                                style={{ backgroundColor: getCategoryColor(category) }}
-                              />
                               {category}
                             </button>
                           </td>
