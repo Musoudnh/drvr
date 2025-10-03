@@ -1654,7 +1654,7 @@ const Forecasting: React.FC = () => {
                                               ${formatNumber(actualsAndRemaining)}
                                             </span>
                                           </div>
-                                          <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5 text-right">
+                                          <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
                                             Act: ${formatNumber(totalActuals)}
                                           </div>
                                           <div className={`text-[10px] font-medium text-right ${varianceColor}`}>
