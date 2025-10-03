@@ -1753,27 +1753,31 @@ const Forecasting: React.FC = () => {
                                                         setEditingSalesScenario(scenario.salesScenarioData);
                                                         setSelectedGLCode(glCode);
                                                         setShowSalesScenarioModal(true);
-                                                        console.log('States set - modal should be opening now');
+                                                        setScenarioMenuOpen(null);
+                                                        console.log('✅ Sales Scenario Builder should now be open!');
+                                                        return;
                                                       } else if (isSalesDriver && !scenario.salesScenarioData) {
                                                         console.error('❌ ERROR: This is a sales driver scenario but data is missing!');
                                                         console.error('This scenario was likely created before the data persistence fix.');
                                                         console.error('Please delete and recreate this scenario.');
                                                         alert('This sales driver scenario is missing its configuration data.\n\nThis happens when scenarios were created before the latest update.\n\nPlease:\n1. Delete this scenario\n2. Create a new one with the same settings\n\nThe new scenario will save all driver data correctly.');
-                                                      } else {
-                                                        console.log('⚠️ Opening Quick Scenario Modal (this is a quick scenario, not a sales driver)');
-                                                        setEditingScenario(scenario);
-                                                        setGLScenarioForm({
-                                                          ...glScenarioForm,
-                                                          title: scenario.name,
-                                                          description: scenario.description,
-                                                          adjustmentType: scenario.adjustmentType,
-                                                          adjustmentValue: scenario.adjustmentValue,
-                                                          startMonth: scenario.startMonth.split(' ')[0],
-                                                          endMonth: scenario.endMonth.split(' ')[0]
-                                                        });
-                                                        setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
-                                                        setShowEditScenarioModal(true);
+                                                        setScenarioMenuOpen(null);
+                                                        return;
                                                       }
+
+                                                      console.log('⚠️ Opening Quick Scenario Modal (this is a quick scenario, not a sales driver)');
+                                                      setEditingScenario(scenario);
+                                                      setGLScenarioForm({
+                                                        ...glScenarioForm,
+                                                        title: scenario.name,
+                                                        description: scenario.description,
+                                                        adjustmentType: scenario.adjustmentType,
+                                                        adjustmentValue: scenario.adjustmentValue,
+                                                        startMonth: scenario.startMonth.split(' ')[0],
+                                                        endMonth: scenario.endMonth.split(' ')[0]
+                                                      });
+                                                      setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                                      setShowEditScenarioModal(true);
                                                       setScenarioMenuOpen(null);
                                                     }}
                                                     className="px-2.5 py-1.5 text-xs font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
@@ -2753,6 +2757,24 @@ const Forecasting: React.FC = () => {
                           <div className="flex gap-2">
                             <button
                               onClick={() => {
+                                const isSalesDriver = scenario.isSalesDriverScenario ||
+                                  scenario.description?.includes('driver') ||
+                                  (scenario.salesScenarioData !== undefined);
+
+                                if (isSalesDriver && scenario.salesScenarioData) {
+                                  console.log('✅ (Audit Sidebar) Opening Sales Scenario Modal');
+                                  setEditingSalesScenario(scenario.salesScenarioData);
+                                  setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                  setShowSalesScenarioModal(true);
+                                  setScenarioMenuOpen(null);
+                                  setShowScenarioAuditSidebar(false);
+                                  return;
+                                } else if (isSalesDriver && !scenario.salesScenarioData) {
+                                  console.error('❌ (Audit Sidebar) Sales driver data missing');
+                                  alert('This sales driver scenario is missing its configuration data.\n\nPlease delete and recreate this scenario.');
+                                  return;
+                                }
+
                                 setEditingScenario(scenario);
                                 setGLScenarioForm({
                                   ...glScenarioForm,
