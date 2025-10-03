@@ -1677,7 +1677,7 @@ const Forecasting: React.FC = () => {
                                         className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
                                       >
                                         <Plus className="w-3 h-3" />
-                                        <span className="text-xs">Quick Scenario</span>
+                                        <span className="text-xs">Quick Driver</span>
                                       </button>
                                       <button
                                         onClick={() => {
