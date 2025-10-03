@@ -92,7 +92,7 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9BA3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#1a2028] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={saving || !name.trim()}
             >
               {saving ? (
