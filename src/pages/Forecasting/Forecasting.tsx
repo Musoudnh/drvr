@@ -1643,7 +1643,7 @@ const Forecasting: React.FC = () => {
 
                                       return (
                                         <>
-                                          <div className="text-right">
+                                          <div className="text-center">
                                             <span
                                               onClick={() => {
                                                 setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
@@ -1657,7 +1657,7 @@ const Forecasting: React.FC = () => {
                                           <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
                                             Act: ${formatNumber(totalActuals)}
                                           </div>
-                                          <div className={`text-[10px] font-medium text-right ${varianceColor}`}>
+                                          <div className={`text-[10px] font-medium text-center ${varianceColor}`}>
                                             {showActualsAsAmount
                                               ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                               : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
