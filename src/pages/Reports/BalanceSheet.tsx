@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PieChart, DollarSign, Target, Download, Save, Bell, History, ChevronDown } from 'lucide-react';
+import { PieChart, DollarSign, Target, Download, Save, Bell, History, ChevronDown, Eye, EyeOff, Hash } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 
@@ -35,6 +35,8 @@ const BalanceSheet: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [hideEmptyRows, setHideEmptyRows] = useState(false);
+  const [showAccountCodes, setShowAccountCodes] = useState(true);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const yearDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -221,6 +223,17 @@ const BalanceSheet: React.FC = () => {
     }
   };
 
+  const filterItems = (items: BalanceSheetItem[]) => {
+    if (!hideEmptyRows) return items;
+    return items.filter(item => {
+      const hasValue = displayColumns.some(col => {
+        const value = item[col.key];
+        return value !== undefined && value !== 0;
+      }) || item.total !== 0;
+      return hasValue;
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -389,6 +402,36 @@ const BalanceSheet: React.FC = () => {
           >
             Year
           </button>
+
+          <div className="h-6 w-px bg-gray-300 mx-1" />
+
+          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+            <button
+              onClick={() => setHideEmptyRows(!hideEmptyRows)}
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                hideEmptyRows
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+              title={hideEmptyRows ? 'Show empty rows' : 'Hide empty rows'}
+            >
+              {hideEmptyRows ? <EyeOff className="w-4 h-4 mr-1 inline" /> : <Eye className="w-4 h-4 mr-1 inline" />}
+              <span>{hideEmptyRows ? 'Empty Hidden' : 'Show All'}</span>
+            </button>
+
+            <button
+              onClick={() => setShowAccountCodes(!showAccountCodes)}
+              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                showAccountCodes
+                  ? 'bg-white text-[#7B68EE] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+              title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
+            >
+              <Hash className="w-4 h-4 mr-1 inline" />
+              <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
+            </button>
+          </div>
         </div>
       </Card>
 
@@ -425,7 +468,7 @@ const BalanceSheet: React.FC = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">Code</th>
+                {showAccountCodes && <th className="text-left py-3 px-4 font-semibold text-gray-700">Code</th>}
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">Account Name</th>
                 {displayColumns.map(col => (
                   <th key={col.key} className="text-right py-3 px-4 font-semibold text-gray-700">{col.label}</th>
@@ -437,14 +480,14 @@ const BalanceSheet: React.FC = () => {
             <tbody>
               {/* Current Assets */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">ASSETS</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">ASSETS</td>
               </tr>
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Current Assets</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Assets</td>
               </tr>
-              {balanceSheetData.filter(item => item.category === 'Current Assets').map((item) => (
+              {filterItems(balanceSheetData.filter(item => item.category === 'Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
                   <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
                     <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
@@ -456,7 +499,7 @@ const BalanceSheet: React.FC = () => {
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">Total Current Assets</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">Total Current Assets</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#4ADE80]">
                     {formatCurrency(getCategoryTotal('Current Assets', col.key))}
@@ -468,11 +511,11 @@ const BalanceSheet: React.FC = () => {
 
               {/* Non-Current Assets */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Assets</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Assets</td>
               </tr>
-              {balanceSheetData.filter(item => item.category === 'Non-Current Assets').map((item) => (
+              {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
                   <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
                     <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
@@ -484,7 +527,7 @@ const BalanceSheet: React.FC = () => {
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">Total Non-Current Assets</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">Total Non-Current Assets</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#4ADE80]">
                     {formatCurrency(getCategoryTotal('Non-Current Assets', col.key))}
@@ -494,7 +537,7 @@ const BalanceSheet: React.FC = () => {
                 <td className="py-3 px-4 text-right text-gray-600">64.8%</td>
               </tr>
               <tr className="bg-[#4ADE80]/20 font-bold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">TOTAL ASSETS</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL ASSETS</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
                     {formatCurrency(getCategoryTotal('Current Assets', col.key) + getCategoryTotal('Non-Current Assets', col.key))}
@@ -506,14 +549,14 @@ const BalanceSheet: React.FC = () => {
 
               {/* Liabilities */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">LIABILITIES</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">LIABILITIES</td>
               </tr>
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Current Liabilities</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Liabilities</td>
               </tr>
-              {balanceSheetData.filter(item => item.category === 'Current Liabilities').map((item) => (
+              {filterItems(balanceSheetData.filter(item => item.category === 'Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
                   <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
                     <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
@@ -525,7 +568,7 @@ const BalanceSheet: React.FC = () => {
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">Total Current Liabilities</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">Total Current Liabilities</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#F87171]">
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key))}
@@ -537,11 +580,11 @@ const BalanceSheet: React.FC = () => {
 
               {/* Non-Current Liabilities */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Liabilities</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Liabilities</td>
               </tr>
-              {balanceSheetData.filter(item => item.category === 'Non-Current Liabilities').map((item) => (
+              {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
                   <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
                     <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
@@ -553,7 +596,7 @@ const BalanceSheet: React.FC = () => {
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">Total Non-Current Liabilities</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">Total Non-Current Liabilities</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#F87171]">
                     {formatCurrency(getCategoryTotal('Non-Current Liabilities', col.key))}
@@ -563,7 +606,7 @@ const BalanceSheet: React.FC = () => {
                 <td className="py-3 px-4 text-right text-gray-600">-27.3%</td>
               </tr>
               <tr className="bg-[#F87171]/20 font-bold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">TOTAL LIABILITIES</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL LIABILITIES</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key) + getCategoryTotal('Non-Current Liabilities', col.key))}
@@ -575,11 +618,11 @@ const BalanceSheet: React.FC = () => {
 
               {/* Equity */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">EQUITY</td>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">EQUITY</td>
               </tr>
-              {balanceSheetData.filter(item => item.category === 'Equity').map((item) => (
+              {filterItems(balanceSheetData.filter(item => item.category === 'Equity')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
                   <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
                     <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
@@ -591,7 +634,7 @@ const BalanceSheet: React.FC = () => {
                 </tr>
               ))}
               <tr className="bg-[#3AB7BF]/20 font-bold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">TOTAL EQUITY</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">TOTAL EQUITY</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
                     {formatCurrency(getCategoryTotal('Equity', col.key))}
@@ -603,7 +646,7 @@ const BalanceSheet: React.FC = () => {
 
               {/* Balance Check */}
               <tr className="bg-gray-200 font-bold">
-                <td colSpan={2} className="py-3 px-4 text-[#101010]">LIABILITIES + EQUITY</td>
+                <td colSpan={showAccountCodes ? 2 : 1} className="py-3 px-4 text-[#101010]">LIABILITIES + EQUITY</td>
                 {displayColumns.map(col => (
                   <td key={col.key} className="py-3 px-4 text-right text-[#101010]">
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key) + getCategoryTotal('Non-Current Liabilities', col.key) + getCategoryTotal('Equity', col.key))}
