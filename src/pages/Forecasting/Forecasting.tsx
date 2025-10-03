@@ -1063,42 +1063,40 @@ const Forecasting: React.FC = () => {
       <div className="flex justify-between items-center">
         <div></div>
         <div className="flex items-center gap-3">
-          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-            <button
-              onClick={() => setShowSaveForecastModal(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm"
-            >
-              <Save className="w-4 h-4 mr-1 inline" />
-              Save Forecast
-            </button>
-            <button
-              onClick={() => setShowAlertsSidebar(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
-            >
-              <Bell className="w-4 h-4 mr-1 inline" />
-              Alerts
-            </button>
-            <button
-              onClick={() => setShowScenarioAuditSidebar(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
-            >
-              <History className="w-4 h-4 mr-1 inline" />
-              Applied Scenarios
-            </button>
-            <button
-              onClick={() => setShowVersionHistorySidebar(true)}
-              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
-            >
-              <History className="w-4 h-4 mr-1 inline" />
-              Version History
-            </button>
-            <button
-              className="px-2 py-1 rounded text-sm font-medium transition-colors text-gray-600 hover:text-gray-800"
-            >
-              <Download className="w-4 h-4 mr-1 inline" />
-              Export
-            </button>
-          </div>
+          <button
+            onClick={() => setShowSaveForecastModal(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Save Forecast
+          </button>
+          <button
+            onClick={() => setShowAlertsSidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Bell className="w-4 h-4 mr-2" />
+            Alerts
+          </button>
+          <button
+            onClick={() => setShowScenarioAuditSidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <History className="w-4 h-4 mr-2" />
+            Applied Scenarios
+          </button>
+          <button
+            onClick={() => setShowVersionHistorySidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <History className="w-4 h-4 mr-2" />
+            Version History
+          </button>
+          <button
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </button>
         </div>
       </div>
 
