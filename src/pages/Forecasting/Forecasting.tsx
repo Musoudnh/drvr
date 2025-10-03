@@ -1759,41 +1759,47 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Timeline Gantt - Aligned with table columns */}
-                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100 pt-2">
-                                              <div className="flex">
-                                                {months.map((month, index) => {
-                                                  const startIndex = getMonthIndex(scenario.startMonth);
-                                                  const endIndex = getMonthIndex(scenario.endMonth);
-                                                  const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                  const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
-                                                  const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                  const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
+                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100">
+                                              <table className="w-full">
+                                                <tbody>
+                                                  <tr>
+                                                    <td className="py-2 px-4 w-[200px]"></td>
+                                                    {months.map((month, index) => {
+                                                      const startIndex = getMonthIndex(scenario.startMonth);
+                                                      const endIndex = getMonthIndex(scenario.endMonth);
+                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                      const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
 
-                                                  return (
-                                                    <div
-                                                      key={index}
-                                                      className="flex-1 min-w-[120px] px-2"
-                                                    >
-                                                      <div
-                                                        className={`h-8 rounded flex items-center justify-center transition-all ${
-                                                          isActive
-                                                            ? 'bg-[#4ADE80]'
-                                                            : isInactive
-                                                              ? 'bg-gray-300'
-                                                              : 'bg-transparent'
-                                                        }`}
-                                                        title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
-                                                      >
-                                                        {showImpact && (
-                                                          <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
-                                                            {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
-                                                          </span>
-                                                        )}
-                                                      </div>
-                                                    </div>
-                                                  );
-                                                })}
-                                              </div>
+                                                      return (
+                                                        <td
+                                                          key={index}
+                                                          className="text-center px-2 py-2"
+                                                        >
+                                                          <div
+                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
+                                                              isActive
+                                                                ? 'bg-[#4ADE80]'
+                                                                : isInactive
+                                                                  ? 'bg-gray-300'
+                                                                  : 'bg-transparent'
+                                                            }`}
+                                                            title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
+                                                          >
+                                                            {showImpact && (
+                                                              <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
+                                                                {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
+                                                              </span>
+                                                            )}
+                                                          </div>
+                                                        </td>
+                                                      );
+                                                    })}
+                                                    <td className="w-32"></td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
                                             </div>
 
                                             {scenarioMenuOpen === scenario.id && (
