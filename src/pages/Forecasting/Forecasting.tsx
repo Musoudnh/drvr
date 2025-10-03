@@ -1149,7 +1149,6 @@ const Forecasting: React.FC = () => {
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <Target className="w-4 h-4 mr-2" />
             Forecasting
           </button>
           <button
@@ -1160,7 +1159,6 @@ const Forecasting: React.FC = () => {
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <PieChart className="w-4 h-4 mr-2" />
             Balance Sheet
           </button>
           <button
@@ -1171,7 +1169,6 @@ const Forecasting: React.FC = () => {
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <DollarSign className="w-4 h-4 mr-2" />
             Cash Flow
           </button>
         </div>
