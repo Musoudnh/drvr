@@ -8,6 +8,7 @@ import { VersionComparisonModal } from '../../components/Forecasting/VersionComp
 import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
 import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
 import { forecastService } from '../../services/forecastService';
+import { SalesDriverService } from '../../services/salesDriverService';
 import type { ForecastLineItem } from '../../types/forecast';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
@@ -1661,7 +1662,10 @@ const Forecasting: React.FC = () => {
                                         <span className="text-xs">Quick Scenario</span>
                                       </button>
                                       <button
-                                        onClick={() => setShowSalesScenarioModal(true)}
+                                        onClick={() => {
+                                          setSelectedGLCode(glCode);
+                                          setShowSalesScenarioModal(true);
+                                        }}
                                         className="flex items-center gap-1.5 px-2.5 py-1.5 text-white bg-[#3AB7BF] hover:bg-[#2A9BA3] rounded border border-[#3AB7BF] transition-colors"
                                       >
                                         <DollarSign className="w-3 h-3" />
@@ -3001,10 +3005,66 @@ const Forecasting: React.FC = () => {
       {/* Sales Scenario Modal */}
       <SalesScenarioModal
         isOpen={showSalesScenarioModal}
-        onClose={() => setShowSalesScenarioModal(false)}
+        onClose={() => {
+          setShowSalesScenarioModal(false);
+          setSelectedGLCode(null);
+        }}
         onSave={(scenario) => {
           setSalesScenarios([...salesScenarios, scenario]);
+
+          if (selectedGLCode) {
+            const impacts = SalesDriverService.calculateScenarioImpacts(scenario);
+            const totalAnnualImpact = impacts.reduce((sum, month) => sum + month.totalImpact, 0);
+            const totalAnnualBase = scenario.baseRevenue * 12;
+            const avgImpactPercent = totalAnnualBase > 0 ? (totalAnnualImpact / totalAnnualBase) * 100 : 0;
+
+            const driverCount = scenario.drivers?.filter(d => d.isActive).length || 0;
+            const driverNames = scenario.drivers
+              ?.filter(d => d.isActive)
+              .map(d => d.driverName)
+              .join(', ') || 'No drivers';
+
+            const newAppliedScenario: AppliedScenario = {
+              id: scenario.id || Date.now().toString(),
+              glCode: selectedGLCode.code,
+              name: scenario.name,
+              description: scenario.description || `${driverCount} driver${driverCount !== 1 ? 's' : ''}: ${driverNames}`,
+              startMonth: scenario.startMonth,
+              endMonth: scenario.endMonth,
+              adjustmentType: 'percentage',
+              adjustmentValue: Math.round(avgImpactPercent * 10) / 10,
+              appliedAt: new Date(),
+              createdBy: 'Current User',
+              isActive: true
+            };
+
+            setAppliedScenarios(prev => [...prev, newAppliedScenario]);
+
+            const startMonthIndex = months.indexOf(scenario.startMonth);
+            const endMonthIndex = months.indexOf(scenario.endMonth);
+
+            setForecastData(prev => prev.map(item => {
+              if (item.glCode === selectedGLCode.code) {
+                const itemMonth = item.month.split(' ')[0];
+                const monthImpact = impacts.find(i => i.month === itemMonth);
+
+                if (monthImpact) {
+                  const itemMonthIndex = months.indexOf(itemMonth);
+                  if (itemMonthIndex >= startMonthIndex && itemMonthIndex <= endMonthIndex) {
+                    const impactPercent = item.forecastedAmount > 0
+                      ? (monthImpact.totalImpact / item.forecastedAmount) * 100
+                      : 0;
+                    const adjustedAmount = item.forecastedAmount * (1 + impactPercent / 100);
+                    return { ...item, forecastedAmount: Math.round(adjustedAmount) };
+                  }
+                }
+              }
+              return item;
+            }));
+          }
+
           setShowSalesScenarioModal(false);
+          setSelectedGLCode(null);
         }}
       />
 
