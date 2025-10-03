@@ -285,6 +285,11 @@ const Forecasting: React.FC = () => {
 
   const availableYears = [2023, 2024, 2025, 2026, 2027];
 
+  const getMonthIndex = (monthYear: string): number => {
+    const monthName = monthYear.split(' ')[0];
+    return months.indexOf(monthName);
+  };
+
   const getDatePeriods = () => {
     if (dateViewMode === 'months') {
       return months;
@@ -1661,7 +1666,7 @@ const Forecasting: React.FC = () => {
                             </tr>
                             
                             {/* Expanded GL Code Scenarios */}
-                            {expandedGLCodes.includes(glCode.code) && (
+                            {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
                               <tr>
                                 <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
                                   <div className="bg-gray-50 p-3 mb-2 rounded">
@@ -1722,6 +1727,39 @@ const Forecasting: React.FC = () => {
                                                     ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
                                                   }
                                                 </p>
+
+                                                {/* Timeline Gantt */}
+                                                <div className="mt-3">
+                                                  <div className="grid grid-cols-12 gap-1">
+                                                    {months.map((month, index) => {
+                                                      const startIndex = getMonthIndex(scenario.startMonth);
+                                                      const endIndex = getMonthIndex(scenario.endMonth);
+                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+
+                                                      return (
+                                                        <div
+                                                          key={index}
+                                                          className={`h-6 rounded transition-all ${
+                                                            isActive
+                                                              ? 'bg-[#4ADE80]'
+                                                              : isInactive
+                                                                ? 'bg-gray-300'
+                                                                : 'bg-gray-100'
+                                                          }`}
+                                                          title={isActive || isInactive ? `${month}: ${scenario.name}` : month}
+                                                        />
+                                                      );
+                                                    })}
+                                                  </div>
+                                                  <div className="grid grid-cols-12 gap-1 mt-0.5">
+                                                    {months.map((month, index) => (
+                                                      <div key={index} className="text-[9px] text-gray-500 text-center">
+                                                        {month.charAt(0)}
+                                                      </div>
+                                                    ))}
+                                                  </div>
+                                                </div>
                                               </div>
                                               <button
                                                 onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
