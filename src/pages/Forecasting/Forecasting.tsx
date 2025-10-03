@@ -6,10 +6,12 @@ import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
+import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
 import { forecastService } from '../../services/forecastService';
 import type { ForecastLineItem } from '../../types/forecast';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
+import type { SalesScenario } from '../../types/salesDriver';
 
 interface GLCode {
   code: string;
@@ -63,6 +65,8 @@ const Forecasting: React.FC = () => {
   const deptDropdownRef = useRef<HTMLDivElement>(null);
   const [multiYearView, setMultiYearView] = useState(false);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
+  const [showSalesScenarioModal, setShowSalesScenarioModal] = useState(false);
+  const [salesScenarios, setSalesScenarios] = useState<SalesScenario[]>([]);
   const [newGLScenario, setNewGLScenario] = useState({
     name: '',
     description: '',
@@ -1644,17 +1648,26 @@ const Forecasting: React.FC = () => {
                                   <div className="bg-gray-50 border-l-4 border-[#212b36] p-3 mb-2 rounded">
                                     <h5 className="text-xs font-bold text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
 
-                                    {/* Add Scenario Button */}
-                                    <button
-                                      onClick={() => {
-                                        setSelectedGLCode(glCode);
-                                        setShowGLScenarioModal(true);
-                                      }}
-                                      className="flex items-center gap-1.5 px-2.5 py-1.5 mb-2 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
-                                    >
-                                      <Plus className="w-3 h-3" />
-                                      <span className="text-xs">Add Scenario</span>
-                                    </button>
+                                    {/* Add Scenario Buttons */}
+                                    <div className="flex gap-2 mb-2">
+                                      <button
+                                        onClick={() => {
+                                          setSelectedGLCode(glCode);
+                                          setShowGLScenarioModal(true);
+                                        }}
+                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                        <span className="text-xs">Quick Scenario</span>
+                                      </button>
+                                      <button
+                                        onClick={() => setShowSalesScenarioModal(true)}
+                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-white bg-[#3AB7BF] hover:bg-[#2A9BA3] rounded border border-[#3AB7BF] transition-colors"
+                                      >
+                                        <DollarSign className="w-3 h-3" />
+                                        <span className="text-xs">Sales Drivers</span>
+                                      </button>
+                                    </div>
 
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
                                       <p className="text-sm text-gray-600 italic">No scenarios applied yet.</p>
@@ -2984,6 +2997,16 @@ const Forecasting: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sales Scenario Modal */}
+      <SalesScenarioModal
+        isOpen={showSalesScenarioModal}
+        onClose={() => setShowSalesScenarioModal(false)}
+        onSave={(scenario) => {
+          setSalesScenarios([...salesScenarios, scenario]);
+          setShowSalesScenarioModal(false);
+        }}
+      />
 
     </div>
   );
