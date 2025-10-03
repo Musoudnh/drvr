@@ -594,8 +594,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
               activeTab === 'overview'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-purple-600 text-purple-600'
+                : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
             <Info className="w-4 h-4 inline mr-2" />
@@ -605,8 +605,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('drivers')}
             className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
               activeTab === 'drivers'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-purple-600 text-purple-600'
+                : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
             <Zap className="w-4 h-4 inline mr-2" />
@@ -616,8 +616,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('preview')}
             className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
               activeTab === 'preview'
-                ? 'border-blue-500 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-purple-600 text-purple-600'
+                : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
             <BarChart3 className="w-4 h-4 inline mr-2" />
@@ -704,31 +704,26 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-900">Active Drivers</h3>
-                <Button
-                  variant="primary"
-                  size="sm"
+                <button
                   onClick={() => setShowDriverLibrary(!showDriverLibrary)}
+                  className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Driver
-                </Button>
+                </button>
               </div>
 
               {showDriverLibrary && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-3">Driver Library</h4>
                   <div className="grid grid-cols-2 gap-3">
                     {DRIVER_TEMPLATES.map(template => {
-                      const Icon = getIconComponent(template.icon);
                       return (
                         <button
                           key={template.driverType}
                           onClick={() => addDriver(template.driverType)}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all text-left"
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
-                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                            <Icon className="w-5 h-5 text-blue-600" />
-                          </div>
                           <div>
                             <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
                             <p className="text-xs text-gray-600 mt-1">{template.description}</p>
@@ -837,37 +832,34 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           {activeTab === 'preview' && (
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-blue-900">Base Revenue</span>
-                    <DollarSign className="w-5 h-5 text-blue-600" />
+                    <span className="text-sm font-medium text-gray-900">Base Revenue</span>
                   </div>
-                  <p className="text-2xl font-bold text-blue-900">
+                  <p className="text-2xl font-bold text-gray-900">
                     ${(baseRevenue * 12).toLocaleString()}
                   </p>
-                  <p className="text-xs text-blue-700 mt-1">Annual baseline</p>
+                  <p className="text-xs text-gray-600 mt-1">Annual baseline</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-green-900">Total Impact</span>
-                    <TrendingUp className="w-5 h-5 text-green-600" />
+                    <span className="text-sm font-medium text-gray-900">Total Impact</span>
                   </div>
-                  <p className="text-2xl font-bold text-green-900">
+                  <p className="text-2xl font-bold text-gray-900">
                     ${totalImpact.toLocaleString()}
                   </p>
-                  <p className="text-xs text-green-700 mt-1">From all drivers</p>
+                  <p className="text-xs text-gray-600 mt-1">From all drivers</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-purple-900">Final Revenue</span>
-                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    <span className="text-sm font-medium text-gray-900">Final Revenue</span>
                   </div>
-                  <p className="text-2xl font-bold text-purple-900">
+                  <p className="text-2xl font-bold text-gray-900">
                     ${finalRevenue.toLocaleString()}
                   </p>
-                  <p className="text-xs text-purple-700 mt-1">
+                  <p className="text-xs text-gray-600 mt-1">
                     +{((finalRevenue / (baseRevenue * 12) - 1) * 100).toFixed(1)}% growth
                   </p>
                 </div>
@@ -920,17 +912,25 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
-          <Button variant="outline" onClick={onClose}>
+          <button
+            onClick={onClose}
+            className="px-6 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors font-medium"
+          >
             Cancel
-          </Button>
-          <Button
-            variant="primary"
+          </button>
+          <button
             onClick={handleSave}
             disabled={!scenarioName.trim()}
+            className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
           >
-            <Save className="w-4 h-4 mr-2" />
             Save Scenario
-          </Button>
+          </button>
+          <button
+            onClick={onClose}
+            className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          >
+            Contact Support
+          </button>
         </div>
       </div>
     </div>
