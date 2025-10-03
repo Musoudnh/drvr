@@ -1442,7 +1442,7 @@ const Forecasting: React.FC = () => {
                       );
                     })}
                     {dateViewMode === 'months' && (
-                      <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
+                      <th className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]">FY Total</th>
                     )}
                   </tr>
                 </thead>
@@ -1607,7 +1607,7 @@ const Forecasting: React.FC = () => {
                                 );
                               })}
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-4 text-sm">
+                                <td className="py-3 px-2 text-sm text-center">
                                   <div className="space-y-1">
                                     {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                       <input
