@@ -1350,7 +1350,7 @@ const TasksProjects: React.FC = () => {
             className="fixed inset-0 bg-black bg-opacity-50 z-40"
             onClick={() => setShowActivityLog(false)}
           />
-          <div className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-50 flex flex-col">
+          <div className="fixed top-0 right-0 h-full w-[400px] bg-white/95 backdrop-blur-md shadow-2xl z-50 flex flex-col">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-semibold text-[#101010] flex items-center">
@@ -1389,7 +1389,7 @@ const TasksProjects: React.FC = () => {
                     return (
                       <div
                         key={entry.id}
-                        className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors cursor-pointer"
+                        className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg hover:shadow-xl transition-all cursor-pointer"
                         onClick={() => {
                           const task = tasks.find(t => t.id === entry.taskId);
                           if (task) {
