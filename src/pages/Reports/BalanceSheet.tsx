@@ -37,6 +37,8 @@ const BalanceSheet: React.FC = () => {
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
   const [hideEmptyRows, setHideEmptyRows] = useState(false);
   const [showAccountCodes, setShowAccountCodes] = useState(true);
+  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
+  const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const yearDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +49,10 @@ const BalanceSheet: React.FC = () => {
       }
       if (yearDropdownRef.current && !yearDropdownRef.current.contains(event.target as Node)) {
         setYearDropdownOpen(false);
+      }
+      const formatDropdown = document.querySelector('.balance-sheet-format-dropdown');
+      if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
+        setShowFormatDropdown(false);
       }
     };
 
@@ -169,10 +175,14 @@ const BalanceSheet: React.FC = () => {
 
   const formatCurrency = (value: number): string => {
     const absValue = Math.abs(value);
-    if (absValue >= 1000000) {
-      return `${value < 0 ? '-' : ''}$${(absValue / 1000000).toFixed(2)}M`;
+    const sign = value < 0 ? '-' : '';
+
+    if (numberFormat === 'thousands') {
+      return `${sign}$${(absValue / 1000).toFixed(1)}K`;
+    } else if (numberFormat === 'millions') {
+      return `${sign}$${(absValue / 1000000).toFixed(1)}M`;
     }
-    return `${value < 0 ? '-' : ''}$${absValue.toLocaleString()}`;
+    return `${sign}$${absValue.toLocaleString()}`;
   };
 
   const getDisplayColumns = (): { key: DataKey; label: string }[] => {
@@ -431,6 +441,61 @@ const BalanceSheet: React.FC = () => {
               <Hash className="w-4 h-4 mr-1 inline" />
               <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
             </button>
+
+            <div className="relative balance-sheet-format-dropdown">
+              <button
+                onClick={() => setShowFormatDropdown(!showFormatDropdown)}
+                className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm hover:bg-gray-50 flex items-center gap-1"
+                title="Number format"
+              >
+                <span>
+                  {numberFormat === 'actual' && '1,000,000'}
+                  {numberFormat === 'thousands' && '1.0K'}
+                  {numberFormat === 'millions' && '1.0M'}
+                </span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+
+              {showFormatDropdown && (
+                <div className="absolute top-full mt-1 right-0 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                  <div className="py-1">
+                    <button
+                      onClick={() => {
+                        setNumberFormat('actual');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'actual' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1,000,000 (Actual)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNumberFormat('thousands');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'thousands' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1.0K (Thousands)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNumberFormat('millions');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'millions' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1.0M (Millions)
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Card>
