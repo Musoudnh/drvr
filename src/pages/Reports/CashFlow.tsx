@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, ChevronDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, ChevronDown, Download } from 'lucide-react';
 import Card from '../../components/UI/Card';
 
 interface WaterfallItem {
@@ -337,54 +337,17 @@ const CashFlow: React.FC = () => {
       {/* Time Period Selection Controls */}
       <Card>
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
-              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-                <button
-                  onClick={() => setDateViewMode('months')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    dateViewMode === 'months'
-                      ? 'bg-white text-[#7B68EE] shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setDateViewMode('quarters')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    dateViewMode === 'quarters'
-                      ? 'bg-white text-[#7B68EE] shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  Quarterly
-                </button>
-                <button
-                  onClick={() => setDateViewMode('years')}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                    dateViewMode === 'years'
-                      ? 'bg-white text-[#7B68EE] shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  Yearly
-                </button>
-              </div>
-            </div>
-
+          <div className="flex items-center gap-3">
             <div className="relative" ref={monthDropdownRef}>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
               <button
                 onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
-                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedMonth}</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               {monthDropdownOpen && (
-                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-2 min-w-[200px]">
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-2 min-w-[200px]">
                   <div className="grid grid-cols-3 gap-2">
                     {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
                       <button
@@ -408,16 +371,15 @@ const CashFlow: React.FC = () => {
             </div>
 
             <div className="relative" ref={quarterDropdownRef}>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
               <button
                 onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
-                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedQuarter}</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               {quarterDropdownOpen && (
-                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
                   <div className="flex flex-col gap-1">
                     {['Q1', 'Q2', 'Q3', 'Q4'].map((quarter) => (
                       <button
@@ -441,16 +403,15 @@ const CashFlow: React.FC = () => {
             </div>
 
             <div className="relative" ref={yearDropdownRef}>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
               <button
                 onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
-                className="flex items-center justify-between gap-2 bg-gray-100 rounded-lg px-4 py-2 min-w-[120px] text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedYear}</span>
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               {yearDropdownOpen && (
-                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
                   <div className="flex flex-col gap-1">
                     {[2023, 2024, 2025, 2026, 2027].map((year) => (
                       <button
@@ -472,14 +433,11 @@ const CashFlow: React.FC = () => {
                 </div>
               )}
             </div>
-          </div>
 
-          <div className="text-sm text-gray-600">
-            Viewing: <span className="font-semibold text-[#101010]">
-              {dateViewMode === 'months' && `${selectedMonth} ${selectedYear}`}
-              {dateViewMode === 'quarters' && `${selectedQuarter} ${selectedYear}`}
-              {dateViewMode === 'years' && `FY ${selectedYear}`}
-            </span>
+            <button className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
+              <Download className="w-4 h-4 mr-2" />
+              Export
+            </button>
           </div>
         </div>
       </Card>
