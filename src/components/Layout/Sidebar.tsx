@@ -37,9 +37,12 @@ import {
   GitBranch,
   Brain,
   CheckCircle,
-  Wallet
+  Wallet,
+  MoreVertical
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigationPreferences } from '../../hooks/useNavigationPreferences';
+import NavigationCustomizationModal from './NavigationCustomizationModal';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -51,6 +54,8 @@ interface NavItem {
   label: string;
   icon: React.ElementType;
   children?: NavItem[];
+  category?: string;
+  alwaysVisible?: boolean;
 }
 
 interface ChatChannel {
@@ -90,6 +95,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { id: '3', name: 'Q1 Planning', type: 'project' },
     { id: '4', name: 'Client: Acme Corp', type: 'client', unreadCount: 2 }
   ]);
+  const [showCustomizationModal, setShowCustomizationModal] = useState(false);
+  const { hiddenItems, loading: prefsLoading, saving: prefsSaving, savePreferences, resetToDefault, isItemVisible } = useNavigationPreferences();
   
   // Check if we're on an admin page
   const isAdminPage = location.pathname.startsWith('/admin');
@@ -100,43 +107,43 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                          location.pathname.startsWith('/runway');
   
   const adminNavItems: NavItem[] = [
-    { path: '/admin/profile', label: 'Account Profile', icon: User },
-    { path: '/admin/team', label: 'Team Management', icon: Users },
-    { path: '/admin/billing', label: 'Subscription', icon: CreditCard },
-    { path: '/admin/integrations', label: 'Integrations', icon: Zap },
-    { path: '/admin/security', label: 'Security & SOX', icon: Shield },
-    { path: '/alerts', label: 'Alerts', icon: AlertCircle },
-    { path: '/admin/audit', label: 'Audit Log', icon: FileText }
+    { path: '/admin/profile', label: 'Account Profile', icon: User, category: 'Admin', alwaysVisible: false },
+    { path: '/admin/team', label: 'Team Management', icon: Users, category: 'Admin', alwaysVisible: false },
+    { path: '/admin/billing', label: 'Subscription', icon: CreditCard, category: 'Admin', alwaysVisible: false },
+    { path: '/admin/integrations', label: 'Integrations', icon: Zap, category: 'Admin', alwaysVisible: false },
+    { path: '/admin/security', label: 'Security & SOX', icon: Shield, category: 'Admin', alwaysVisible: false },
+    { path: '/alerts', label: 'Alerts', icon: AlertCircle, category: 'Admin', alwaysVisible: false },
+    { path: '/admin/audit', label: 'Audit Log', icon: FileText, category: 'Admin', alwaysVisible: false }
   ];
 
   const companyNavItems: NavItem[] = [
-    { path: '/dashboard', label: 'Overview', icon: Home },
-    { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/forecasting', label: 'Forecasting', icon: Target },
-    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
-    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator },
-    { path: '/insights', label: 'Insights', icon: BarChart3 },
-    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
-    { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/chat', label: 'Chat', icon: MessageSquare }
+    { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
+    { path: '/analytics', label: 'Analysis', icon: PieChart, category: 'Main', alwaysVisible: false },
+    { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
+    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
+    { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
+    { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];
 
-  // Financial navigation items (shown when on forecasting-related pages)
   const financialNavItems: NavItem[] = [
-    { path: '/dashboard', label: 'Overview', icon: Home },
-    { path: '/analytics', label: 'Analysis', icon: PieChart },
-    { path: '/forecasting', label: 'Forecasting', icon: Target },
-    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
-    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator },
-    { path: '/insights', label: 'Insights', icon: BarChart3 },
-    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
-    { path: '/tasks', label: 'Tasks', icon: CheckCircle },
-    { path: '/chat', label: 'Chat', icon: MessageSquare }
+    { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
+    { path: '/analytics', label: 'Analysis', icon: PieChart, category: 'Main', alwaysVisible: false },
+    { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
+    { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
+    { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
+    { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];
-  // Use appropriate nav items based on current page context
-  const navItems = isAdminPage ? adminNavItems : 
-                   isFinancialPage ? financialNavItems : 
-                   companyNavItems;
+  const allNavItems = isAdminPage ? adminNavItems :
+                      isFinancialPage ? financialNavItems :
+                      companyNavItems;
+
+  const navItems = allNavItems.filter(item => item.alwaysVisible || isItemVisible(item.path));
   
   // Check if any items with children are expanded
   const hasExpandedChildren = expandedItems.some(path => 
@@ -403,6 +410,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   return (
     <div className={`h-screen transition-all duration-500 ease-in-out ${sidebarWidth} flex flex-col px-4 pb-6 gap-8 mr-3 relative`} style={{ backgroundColor: '#f8f9fb' }}>
       <nav className="flex-1 overflow-y-auto mt-8">
+        {!isCollapsed && (
+          <div className="flex items-center justify-between mb-4 px-2">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Navigation</h3>
+            <button
+              onClick={() => setShowCustomizationModal(true)}
+              className="p-1 hover:bg-gray-200 rounded transition-colors"
+              title="Customize Navigation"
+            >
+              <MoreVertical className="w-4 h-4 text-gray-500" />
+            </button>
+          </div>
+        )}
         <div className="space-y-4">
           {navItems.map(item => renderNavItem(item))}
         </div>
@@ -1059,6 +1078,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
           </button>
         </div>
       )}
+
+      {/* Navigation Customization Modal */}
+      <NavigationCustomizationModal
+        isOpen={showCustomizationModal}
+        onClose={() => setShowCustomizationModal(false)}
+        navItems={allNavItems}
+        hiddenItems={hiddenItems}
+        onSave={savePreferences}
+        onReset={resetToDefault}
+        saving={prefsSaving}
+      />
     </div>
   );
 };
