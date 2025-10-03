@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PieChart, TrendingUp, DollarSign, Building, Target, Download, Save, Bell, History, ChevronDown } from 'lucide-react';
+import { PieChart, Target, Download, Save, Bell, History, ChevronDown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 
@@ -393,37 +393,28 @@ const BalanceSheet: React.FC = () => {
       </Card>
 
       {/* Balance Sheet Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Assets</p>
-              <p className="text-2xl font-bold text-[#4ADE80] mt-1">{formatCurrency(totalAssets)}</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+8.3% from last quarter</p>
-            </div>
-            <Building className="w-8 h-8 text-[#4ADE80]" />
+          <div className="p-2">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Assets</p>
+            <p className="text-lg font-bold text-[#4ADE80] mt-2">{formatCurrency(totalAssets)}</p>
+            <p className="text-xs text-[#4ADE80] mt-1">+8.3% from last period</p>
           </div>
         </Card>
 
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Liabilities</p>
-              <p className="text-2xl font-bold text-[#F87171] mt-1">{formatCurrency(Math.abs(totalLiabilities))}</p>
-              <p className="text-sm text-gray-600 mt-1">+2.1% from last quarter</p>
-            </div>
-            <DollarSign className="w-8 h-8 text-[#F87171]" />
+          <div className="p-2">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Liabilities</p>
+            <p className="text-lg font-bold text-[#F87171] mt-2">{formatCurrency(Math.abs(totalLiabilities))}</p>
+            <p className="text-xs text-gray-500 mt-1">+2.1% from last period</p>
           </div>
         </Card>
 
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Shareholders' Equity</p>
-              <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{formatCurrency(totalEquity)}</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+12.7% from last quarter</p>
-            </div>
-            <TrendingUp className="w-8 h-8 text-[#3AB7BF]" />
+          <div className="p-2">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Shareholders' Equity</p>
+            <p className="text-lg font-bold text-[#3AB7BF] mt-2">{formatCurrency(totalEquity)}</p>
+            <p className="text-xs text-[#4ADE80] mt-1">+12.7% from last period</p>
           </div>
         </Card>
       </div>
