@@ -114,8 +114,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/analytics', label: 'Analysis', icon: PieChart },
     { path: '/forecasting', label: 'Forecasting', icon: Target },
     { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
+    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator },
     { path: '/insights', label: 'Insights', icon: BarChart3 },
-    { path: '/reports/cashflow', label: 'Cash Flow', icon: Wallet },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
@@ -127,8 +127,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/analytics', label: 'Analysis', icon: PieChart },
     { path: '/forecasting', label: 'Forecasting', icon: Target },
     { path: '/runway', label: 'Scenario Planner', icon: TrendingUp },
+    { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator },
     { path: '/insights', label: 'Insights', icon: BarChart3 },
-    { path: '/reports/cashflow', label: 'Cash Flow', icon: Wallet },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle },
     { path: '/chat', label: 'Chat', icon: MessageSquare }
