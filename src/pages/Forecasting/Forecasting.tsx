@@ -1409,13 +1409,7 @@ const Forecasting: React.FC = () => {
                       );
                     })}
                     {dateViewMode === 'months' && (
-                      <th className="text-right py-3 px-4 font-bold text-gray-800 w-48">
-                        <div className="flex flex-col">
-                          <span className="text-xs font-normal text-gray-500">Act:</span>
-                          <span className="text-sm">Actuals plus remaining</span>
-                          <span className="text-sm">non actualized months forecast</span>
-                        </div>
-                      </th>
+                      <th className="text-right py-3 px-4 font-bold text-gray-800 w-32">FY Total</th>
                     )}
                   </tr>
                 </thead>
