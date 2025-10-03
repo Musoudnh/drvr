@@ -602,7 +602,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
-            <Info className="w-4 h-4 inline mr-2" />
             Overview
           </button>
           <button
@@ -613,7 +612,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
-            <Zap className="w-4 h-4 inline mr-2" />
             Drivers ({activeDrivers.length})
           </button>
           <button
@@ -624,7 +622,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
-            <BarChart3 className="w-4 h-4 inline mr-2" />
             Preview
           </button>
           <button
@@ -635,7 +632,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 : 'border-transparent text-gray-600 hover:text-purple-600'
             }`}
           >
-            <Bot className="w-4 h-4 inline mr-2" />
             AI Driver
           </button>
         </div>
