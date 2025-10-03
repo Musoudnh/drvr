@@ -35,7 +35,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
         onClick={onClose}
       />
 
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed right-0 top-0 h-full w-[450px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
         <div className="h-full flex flex-col">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">View Settings</h2>
