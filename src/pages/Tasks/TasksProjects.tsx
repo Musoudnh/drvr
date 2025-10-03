@@ -1353,8 +1353,7 @@ const TasksProjects: React.FC = () => {
           <div className="fixed top-0 right-0 h-full w-[400px] bg-white/95 backdrop-blur-md shadow-2xl z-50 flex flex-col">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-[#101010] flex items-center">
-                  <Activity className="w-5 h-5 mr-2 text-[#4F46E5]" />
+                <h3 className="text-xl font-semibold text-[#101010]">
                   Activity Log
                 </h3>
                 <button
