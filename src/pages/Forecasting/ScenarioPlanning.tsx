@@ -703,20 +703,12 @@ const ScenarioPlanning: React.FC = () => {
             )}
           </Button>
           <Button
-            variant="outline"
-            onClick={() => setShowSalesScenarioModal(true)}
-            className="bg-[#4ADE80]/10 border-[#4ADE80]/30 text-[#4ADE80] hover:bg-[#4ADE80]/20"
-          >
-            <DollarSign className="w-4 h-4 mr-2" />
-            Sales Scenario
-          </Button>
-          <Button
             variant="primary"
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => setShowSalesScenarioModal(true)}
             className="bg-[#3AB7BF] hover:bg-[#2A9BA3] focus:ring-[#3AB7BF]"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create Scenario
+            Create Sales Scenario
           </Button>
         </div>
       </div>
@@ -825,8 +817,8 @@ const ScenarioPlanning: React.FC = () => {
         </div>
       </Card>
 
-      {/* Create/Edit Scenario Modal */}
-      {(showCreateModal || editingScenario) && (
+      {/* Old Create/Edit Scenario Modal - Replaced by Sales Scenario Modal */}
+      {false && (showCreateModal || editingScenario) && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white/95 backdrop-blur-md rounded-xl p-8 w-[900px] max-w-[95vw] max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between mb-8">
