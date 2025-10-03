@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
@@ -1187,6 +1187,13 @@ const Forecasting: React.FC = () => {
               className="px-3 py-1.5 bg-[#101010] text-white rounded-lg text-sm font-medium hover:bg-[#2a2a2a] transition-colors"
             >
               Adjust Selected
+            </button>
+            <button
+              onClick={() => {}}
+              className="px-3 py-1.5 bg-[#7B68EE] text-white rounded-lg text-sm font-medium hover:bg-[#6B58DE] transition-colors flex items-center gap-1.5"
+            >
+              <Sparkles className="w-4 h-4" />
+              Forecast with AI
             </button>
             <button
               onClick={clearSelection}
