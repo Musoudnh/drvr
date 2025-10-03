@@ -1203,99 +1203,7 @@ const Forecasting: React.FC = () => {
 
       {/* Controls */}
       <Card>
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Year:</label>
-            <div className="relative" ref={yearDropdownRef}>
-              <button
-                onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-              >
-                <span>{selectedYear}</span>
-                <ChevronDown className="w-4 h-4 ml-1" />
-              </button>
-              {yearDropdownOpen && (
-                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
-                  <div className="flex flex-col gap-1">
-                    {[2024, 2025, 2026, 2027].map((year) => (
-                      <button
-                        key={year}
-                        onClick={() => {
-                          setSelectedYear(year);
-                          setYearDropdownOpen(false);
-                        }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
-                          selectedYear === year
-                            ? 'bg-[#7B68EE] text-white'
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        {year}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Department:</label>
-            <div className="relative" ref={deptDropdownRef}>
-              <button
-                onClick={() => setDeptDropdownOpen(!deptDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-              >
-                <span>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</span>
-                <ChevronDown className="w-4 h-4 ml-1" />
-              </button>
-              {deptDropdownOpen && (
-                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
-                  <div className="flex flex-col gap-1">
-                    {[
-                      { value: 'All', label: 'All Categories' },
-                      { value: 'Revenue', label: 'Revenue' },
-                      { value: 'COGS', label: 'Cost of Goods Sold' },
-                      { value: 'OPEX', label: 'Operating Expenses' },
-                      { value: 'Other', label: 'Other' }
-                    ].map((option) => (
-                      <button
-                        key={option.value}
-                        onClick={() => {
-                          setSelectedCategory(option.value);
-                          setDeptDropdownOpen(false);
-                        }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
-                          selectedCategory === option.value
-                            ? 'bg-[#7B68EE] text-white'
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Search GL:</label>
-            <div className="relative w-[200px]">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search codes..."
-                className="w-full pl-10 pr-4 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 placeholder:text-gray-400 placeholder:font-normal"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">View:</label>
             <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
@@ -1329,6 +1237,100 @@ const Forecasting: React.FC = () => {
               >
                 Years
               </button>
+            </div>
+          </div>
+
+          <div className="h-8 w-px bg-gray-300"></div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Year:</label>
+              <div className="relative" ref={yearDropdownRef}>
+                <button
+                  onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <span>{selectedYear}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {yearDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                    <div className="flex flex-col gap-1">
+                      {[2024, 2025, 2026, 2027].map((year) => (
+                        <button
+                          key={year}
+                          onClick={() => {
+                            setSelectedYear(year);
+                            setYearDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            selectedYear === year
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {year}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Department:</label>
+              <div className="relative" ref={deptDropdownRef}>
+                <button
+                  onClick={() => setDeptDropdownOpen(!deptDropdownOpen)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <span>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {deptDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
+                    <div className="flex flex-col gap-1">
+                      {[
+                        { value: 'All', label: 'All Categories' },
+                        { value: 'Revenue', label: 'Revenue' },
+                        { value: 'COGS', label: 'Cost of Goods Sold' },
+                        { value: 'OPEX', label: 'Operating Expenses' },
+                        { value: 'Other', label: 'Other' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => {
+                            setSelectedCategory(option.value);
+                            setDeptDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            selectedCategory === option.value
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Search GL:</label>
+              <div className="relative w-[200px]">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search codes..."
+                  className="w-full pl-10 pr-4 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 placeholder:text-gray-400 placeholder:font-normal"
+                />
+              </div>
             </div>
           </div>
 
