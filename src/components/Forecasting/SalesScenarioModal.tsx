@@ -618,16 +618,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             Drivers ({activeDrivers.length})
           </button>
           <button
-            onClick={() => setActiveTab('preview')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
-              activeTab === 'preview'
-                ? 'border-purple-600 text-purple-600'
-                : 'border-transparent text-gray-600 hover:text-purple-600'
-            }`}
-          >
-            Preview
-          </button>
-          <button
             onClick={() => setActiveTab('ai')}
             className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
               activeTab === 'ai'
@@ -636,6 +626,16 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             }`}
           >
             AI Driver
+          </button>
+          <button
+            onClick={() => setActiveTab('preview')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+              activeTab === 'preview'
+                ? 'border-purple-600 text-purple-600'
+                : 'border-transparent text-gray-600 hover:text-purple-600'
+            }`}
+          >
+            Preview
           </button>
         </div>
 
