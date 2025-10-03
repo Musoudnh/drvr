@@ -1142,54 +1142,66 @@ const TasksProjects: React.FC = () => {
               </div>
             )}
             
-            <div className="flex justify-end gap-3 mt-6">
-              {isEditingTask ? (
-                <>
-                  <button
-                    onClick={() => {
-                      setIsEditingTask(false);
-                      setEditTaskForm(null);
-                    }}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (editTaskForm) {
-                        setTasks(prev => prev.map(t => t.id === editTaskForm.id ? editTaskForm : t));
-                        setSelectedTask(editTaskForm);
+            <div className="flex justify-between items-center gap-3 mt-6">
+              <button
+                onClick={() => {
+                  console.log('Schedule task:', selectedTask.title);
+                }}
+                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2"
+              >
+                <Calendar className="w-4 h-4" />
+                Schedule
+              </button>
+
+              <div className="flex gap-3">
+                {isEditingTask ? (
+                  <>
+                    <button
+                      onClick={() => {
                         setIsEditingTask(false);
-                      }
-                    }}
-                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
-                  >
-                    Save Changes
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      setEditTaskForm(selectedTask);
-                      setIsEditingTask(true);
-                    }}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    Edit Task
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowTaskDetail(false);
-                      setIsEditingTask(false);
-                      setEditTaskForm(null);
-                    }}
-                    className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
-                  >
-                    Close
-                  </button>
-                </>
-              )}
+                        setEditTaskForm(null);
+                      }}
+                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (editTaskForm) {
+                          setTasks(prev => prev.map(t => t.id === editTaskForm.id ? editTaskForm : t));
+                          setSelectedTask(editTaskForm);
+                          setIsEditingTask(false);
+                        }
+                      }}
+                      className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+                    >
+                      Save Changes
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditTaskForm(selectedTask);
+                        setIsEditingTask(true);
+                      }}
+                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      Edit Task
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowTaskDetail(false);
+                        setIsEditingTask(false);
+                        setEditTaskForm(null);
+                      }}
+                      className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors"
+                    >
+                      Close
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
