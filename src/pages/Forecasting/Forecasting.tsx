@@ -107,6 +107,8 @@ const Forecasting: React.FC = () => {
   const [hideEmptyAccounts, setHideEmptyAccounts] = useState(false);
   const [showAccountCodes, setShowAccountCodes] = useState(true);
   const [showActualsAsAmount, setShowActualsAsAmount] = useState(false);
+  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
+  const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -182,6 +184,15 @@ const Forecasting: React.FC = () => {
       'Jul': 1.18, 'Aug': 1.10, 'Sep': 1.06, 'Oct': 1.02, 'Nov': 0.92, 'Dec': 0.88
     };
     return factors[month] || 1.0;
+  };
+
+  const formatNumber = (value: number): string => {
+    if (numberFormat === 'thousands') {
+      return `${(value / 1000).toFixed(1)}K`;
+    } else if (numberFormat === 'millions') {
+      return `${(value / 1000000).toFixed(1)}M`;
+    }
+    return value.toLocaleString();
   };
 
   const glCodes: GLCode[] = [
@@ -543,6 +554,10 @@ const Forecasting: React.FC = () => {
       }
       if (deptDropdownRef.current && !deptDropdownRef.current.contains(event.target as Node)) {
         setDeptDropdownOpen(false);
+      }
+      const formatDropdown = document.querySelector('.format-dropdown-container');
+      if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
+        setShowFormatDropdown(false);
       }
     };
 
@@ -1353,6 +1368,61 @@ const Forecasting: React.FC = () => {
             >
               <span>{showActualsAsAmount ? '$' : '%'}</span>
             </button>
+
+            <div className="relative format-dropdown-container">
+              <button
+                onClick={() => setShowFormatDropdown(!showFormatDropdown)}
+                className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm hover:bg-gray-50 flex items-center gap-1"
+                title="Number format"
+              >
+                <span>
+                  {numberFormat === 'actual' && '1,000,000'}
+                  {numberFormat === 'thousands' && '1.0K'}
+                  {numberFormat === 'millions' && '1.0M'}
+                </span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
+
+              {showFormatDropdown && (
+                <div className="absolute top-full mt-1 right-0 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                  <div className="py-1">
+                    <button
+                      onClick={() => {
+                        setNumberFormat('actual');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'actual' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1,000,000 (Actual)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNumberFormat('thousands');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'thousands' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1.0K (Thousands)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNumberFormat('millions');
+                        setShowFormatDropdown(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                        numberFormat === 'millions' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                      }`}
+                    >
+                      1.0M (Millions)
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Card>
@@ -1537,7 +1607,7 @@ const Forecasting: React.FC = () => {
                                             }}
                                             className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}
                                           >
-                                            ${aggregatedAmount.toLocaleString()}
+                                            ${formatNumber(aggregatedAmount)}
                                           </span>
                                         )}
                                       </div>
@@ -1550,11 +1620,11 @@ const Forecasting: React.FC = () => {
                                           return (
                                             <>
                                               <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
-                                                Act: ${monthData.actualAmount.toLocaleString()}
+                                                Act: ${formatNumber(monthData.actualAmount)}
                                               </div>
                                               <div className={`text-[10px] font-medium ${varianceColor}`}>
                                                 {showActualsAsAmount
-                                                  ? `${varianceDollar >= 0 ? '+' : ''}$${Math.abs(varianceDollar).toLocaleString()}`
+                                                  ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                                   : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
                                                 }
                                               </div>
@@ -1622,15 +1692,15 @@ const Forecasting: React.FC = () => {
                                               }}
                                               className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block font-medium text-[#101010]"
                                             >
-                                              ${actualsAndRemaining.toLocaleString()}
+                                              ${formatNumber(actualsAndRemaining)}
                                             </span>
                                           </div>
                                           <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5 text-right">
-                                            Act: ${totalActuals.toLocaleString()}
+                                            Act: ${formatNumber(totalActuals)}
                                           </div>
                                           <div className={`text-[10px] font-medium text-right ${varianceColor}`}>
                                             {showActualsAsAmount
-                                              ? `${varianceDollar >= 0 ? '+' : ''}$${Math.abs(varianceDollar).toLocaleString()}`
+                                              ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                               : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
                                             }
                                           </div>
