@@ -482,6 +482,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
                   <div
                     key={task.id}
                     className="flex border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                    onDoubleClick={() => onTaskClick?.(task)}
                   >
                     <div className="w-64 flex-shrink-0 p-4 border-r border-gray-200">
                       <div className="flex items-center justify-between">

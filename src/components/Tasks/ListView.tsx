@@ -97,6 +97,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
           }`}
           onMouseEnter={() => setHoveredTask(task.id)}
           onMouseLeave={() => setHoveredTask(null)}
+          onDoubleClick={() => onTaskClick(task)}
         >
           <div className="flex items-center px-4 py-3">
             <div

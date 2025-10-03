@@ -352,6 +352,11 @@ const TasksProjects: React.FC = () => {
           style={{
             ...provided.draggableProps.style,
           }}
+          onDoubleClick={() => {
+            setSelectedTask(task);
+            setShowTaskDetail(true);
+            setIsEditingTask(false);
+          }}
         >
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
