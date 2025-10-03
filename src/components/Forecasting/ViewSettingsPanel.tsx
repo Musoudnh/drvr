@@ -35,7 +35,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
         onClick={onClose}
       />
 
-      <div className="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out">
         <div className="h-full flex flex-col">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">View Settings</h2>
@@ -76,7 +76,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onHideEmptyAccountsChange(!hideEmptyAccounts)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      hideEmptyAccounts ? 'bg-blue-600' : 'bg-gray-300'
+                      hideEmptyAccounts ? 'bg-[#9333EA]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -100,7 +100,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onShowAccountCodesChange(!showAccountCodes)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      showAccountCodes ? 'bg-blue-600' : 'bg-gray-300'
+                      showAccountCodes ? 'bg-[#9333EA]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -130,7 +130,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onShowActualsAsAmountChange(!showActualsAsAmount)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      showActualsAsAmount ? 'bg-blue-600' : 'bg-gray-300'
+                      showActualsAsAmount ? 'bg-[#9333EA]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -153,7 +153,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('actual')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'actual'
-                      ? 'bg-blue-50 border-2 border-blue-500 text-blue-700'
+                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -162,7 +162,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1,000,000</div>
                   </div>
                   {numberFormat === 'actual' && (
-                    <div className="w-2 h-2 rounded-full bg-blue-600" />
+                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
                   )}
                 </button>
 
@@ -170,7 +170,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('thousands')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'thousands'
-                      ? 'bg-blue-50 border-2 border-blue-500 text-blue-700'
+                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -179,7 +179,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1,000.0K</div>
                   </div>
                   {numberFormat === 'thousands' && (
-                    <div className="w-2 h-2 rounded-full bg-blue-600" />
+                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
                   )}
                 </button>
 
@@ -187,7 +187,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('millions')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'millions'
-                      ? 'bg-blue-50 border-2 border-blue-500 text-blue-700'
+                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -196,7 +196,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1.0M</div>
                   </div>
                   {numberFormat === 'millions' && (
-                    <div className="w-2 h-2 rounded-full bg-blue-600" />
+                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
                   )}
                 </button>
               </div>
