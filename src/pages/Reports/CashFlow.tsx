@@ -384,8 +384,8 @@ const CashFlow: React.FC = () => {
                 <ChevronDown className="w-4 h-4" />
               </button>
               {monthDropdownOpen && (
-                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
-                  <div className="grid grid-cols-3 gap-1">
+                <div className="absolute top-full mt-1 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-2 min-w-[200px]">
+                  <div className="grid grid-cols-3 gap-2">
                     {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
                       <button
                         key={month}
@@ -393,7 +393,7 @@ const CashFlow: React.FC = () => {
                           setSelectedMonth(month);
                           setMonthDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                        className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
                           selectedMonth === month
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
