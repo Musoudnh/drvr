@@ -30,22 +30,16 @@ interface BalanceSheetItem {
 const BalanceSheet: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('quarters');
-  const [selectedMonth, setSelectedMonth] = useState<string>('Jan');
+  const [dateViewMode, setDateViewMode] = useState<'quarters' | 'years'>('quarters');
   const [selectedQuarter, setSelectedQuarter] = useState('Q1');
   const [selectedYear, setSelectedYear] = useState(2025);
-  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
-  const monthDropdownRef = useRef<HTMLDivElement>(null);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const yearDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
-        setMonthDropdownOpen(false);
-      }
       if (quarterDropdownRef.current && !quarterDropdownRef.current.contains(event.target as Node)) {
         setQuarterDropdownOpen(false);
       }
@@ -180,9 +174,7 @@ const BalanceSheet: React.FC = () => {
   };
 
   const getDisplayColumns = (): { key: DataKey; label: string }[] => {
-    if (dateViewMode === 'months') {
-      return [{ key: getMonthKey(selectedMonth), label: selectedMonth }];
-    } else if (dateViewMode === 'quarters') {
+    if (dateViewMode === 'quarters') {
       return [
         { key: 'q1', label: 'Q1' },
         { key: 'q2', label: 'Q2' },
@@ -208,9 +200,7 @@ const BalanceSheet: React.FC = () => {
   };
 
   const getCurrentPeriodKey = (): DataKey => {
-    if (dateViewMode === 'months') {
-      return getMonthKey(selectedMonth);
-    } else if (dateViewMode === 'quarters') {
+    if (dateViewMode === 'quarters') {
       return getQuarterKey(selectedQuarter);
     } else {
       return 'total';
@@ -224,9 +214,7 @@ const BalanceSheet: React.FC = () => {
   const totalEquity = getCategoryTotal('Equity', currentPeriodKey);
 
   const getTitle = (): string => {
-    if (dateViewMode === 'months') {
-      return `Balance Sheet - ${selectedMonth} ${selectedYear}`;
-    } else if (dateViewMode === 'quarters') {
+    if (dateViewMode === 'quarters') {
       return `Balance Sheet - ${selectedQuarter} ${selectedYear}`;
     } else {
       return `Balance Sheet - ${selectedYear} (Year to Date)`;
@@ -311,40 +299,6 @@ const BalanceSheet: React.FC = () => {
       {/* Time Period Selection Controls */}
       <Card>
         <div className="flex items-center gap-3">
-          {dateViewMode === 'months' && (
-            <div className="relative" ref={monthDropdownRef}>
-              <button
-                onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-              >
-                <span>{selectedMonth}</span>
-                <ChevronDown className="w-4 h-4 ml-1" />
-              </button>
-              {monthDropdownOpen && (
-                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-2 min-w-[200px]">
-                  <div className="grid grid-cols-3 gap-2">
-                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
-                      <button
-                        key={month}
-                        onClick={() => {
-                          setSelectedMonth(month);
-                          setMonthDropdownOpen(false);
-                        }}
-                        className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                          selectedMonth === month
-                            ? 'bg-[#7B68EE] text-white'
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        {month}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
           {dateViewMode === 'quarters' && (
             <div className="relative" ref={quarterDropdownRef}>
               <button
@@ -416,16 +370,6 @@ const BalanceSheet: React.FC = () => {
           <div className="h-6 w-px bg-gray-300 mx-1" />
 
           <button
-            onClick={() => setDateViewMode('months')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-              dateViewMode === 'months'
-                ? 'bg-[#7B68EE] text-white shadow-sm'
-                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
-            }`}
-          >
-            Month
-          </button>
-          <button
             onClick={() => setDateViewMode('quarters')}
             className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
               dateViewMode === 'quarters'
@@ -495,19 +439,17 @@ const BalanceSheet: React.FC = () => {
                 {displayColumns.map(col => (
                   <th key={col.key} className="text-right py-3 px-4 font-semibold text-gray-700">{col.label}</th>
                 ))}
-                {dateViewMode !== 'months' && (
-                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Total</th>
-                )}
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">Total</th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">% of Total</th>
               </tr>
             </thead>
             <tbody>
               {/* Current Assets */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">ASSETS</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">ASSETS</td>
               </tr>
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Assets</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Current Assets</td>
               </tr>
               {balanceSheetData.filter(item => item.category === 'Current Assets').map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -518,9 +460,7 @@ const BalanceSheet: React.FC = () => {
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  {dateViewMode !== 'months' && (
-                    <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  )}
+                  <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
@@ -531,15 +471,13 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Current Assets', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
-                  <td className="py-3 px-4 text-right text-[#4ADE80]">{formatCurrency(getCategoryTotal('Current Assets', 'total'))}</td>
-                )}
+                <td className="py-3 px-4 text-right text-[#4ADE80]">{formatCurrency(getCategoryTotal('Current Assets', 'total'))}</td>
                 <td className="py-3 px-4 text-right text-gray-600">35.2%</td>
               </tr>
 
               {/* Non-Current Assets */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Assets</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Assets</td>
               </tr>
               {balanceSheetData.filter(item => item.category === 'Non-Current Assets').map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -550,9 +488,7 @@ const BalanceSheet: React.FC = () => {
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  {dateViewMode !== 'months' && (
-                    <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  )}
+                  <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
@@ -563,9 +499,7 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Non-Current Assets', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#4ADE80]">{formatCurrency(getCategoryTotal('Non-Current Assets', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-gray-600">64.8%</td>
               </tr>
               <tr className="bg-[#4ADE80]/20 font-bold">
@@ -575,18 +509,16 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Current Assets', col.key) + getCategoryTotal('Non-Current Assets', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#101010]">{formatCurrency(getCategoryTotal('Current Assets', 'total') + getCategoryTotal('Non-Current Assets', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-[#101010]">100%</td>
               </tr>
 
               {/* Liabilities */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">LIABILITIES</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">LIABILITIES</td>
               </tr>
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Liabilities</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Current Liabilities</td>
               </tr>
               {balanceSheetData.filter(item => item.category === 'Current Liabilities').map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -597,9 +529,7 @@ const BalanceSheet: React.FC = () => {
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  {dateViewMode !== 'months' && (
                     <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  )}
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
@@ -610,15 +540,13 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#F87171]">{formatCurrency(getCategoryTotal('Current Liabilities', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-gray-600">-16.0%</td>
               </tr>
 
               {/* Non-Current Liabilities */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Liabilities</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Liabilities</td>
               </tr>
               {balanceSheetData.filter(item => item.category === 'Non-Current Liabilities').map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -629,9 +557,7 @@ const BalanceSheet: React.FC = () => {
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  {dateViewMode !== 'months' && (
                     <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  )}
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
@@ -642,9 +568,7 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Non-Current Liabilities', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#F87171]">{formatCurrency(getCategoryTotal('Non-Current Liabilities', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-gray-600">-27.3%</td>
               </tr>
               <tr className="bg-[#F87171]/20 font-bold">
@@ -654,15 +578,13 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key) + getCategoryTotal('Non-Current Liabilities', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#101010]">{formatCurrency(getCategoryTotal('Current Liabilities', 'total') + getCategoryTotal('Non-Current Liabilities', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-[#101010]">-43.3%</td>
               </tr>
 
               {/* Equity */}
               <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (dateViewMode !== 'months' ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">EQUITY</td>
+                <td colSpan={displayColumns.length + 4} className="py-2 px-4 font-bold text-[#101010]">EQUITY</td>
               </tr>
               {balanceSheetData.filter(item => item.category === 'Equity').map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -673,9 +595,7 @@ const BalanceSheet: React.FC = () => {
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  {dateViewMode !== 'months' && (
                     <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  )}
                   <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
@@ -686,9 +606,7 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Equity', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#101010]">{formatCurrency(getCategoryTotal('Equity', 'total'))}</td>
-                )}
                 <td className="py-3 px-4 text-right text-[#101010]">54.4%</td>
               </tr>
 
@@ -700,11 +618,9 @@ const BalanceSheet: React.FC = () => {
                     {formatCurrency(getCategoryTotal('Current Liabilities', col.key) + getCategoryTotal('Non-Current Liabilities', col.key) + getCategoryTotal('Equity', col.key))}
                   </td>
                 ))}
-                {dateViewMode !== 'months' && (
                   <td className="py-3 px-4 text-right text-[#101010]">
                     {formatCurrency(getCategoryTotal('Current Liabilities', 'total') + getCategoryTotal('Non-Current Liabilities', 'total') + getCategoryTotal('Equity', 'total'))}
                   </td>
-                )}
                 <td className="py-3 px-4 text-right text-[#101010]">11.1%</td>
               </tr>
             </tbody>
