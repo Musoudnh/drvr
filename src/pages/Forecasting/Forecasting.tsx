@@ -119,6 +119,12 @@ const Forecasting: React.FC = () => {
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
+
+  // Debug: Log component version
+  React.useEffect(() => {
+    console.log('🚀 Forecasting Component Loaded - Sales Driver Edit Fix v2.0');
+  }, []);
+
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
