@@ -1686,6 +1686,11 @@ const Forecasting: React.FC = () => {
                                               <div className="flex-1">
                                                 <div className="flex items-center gap-2">
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
+                                                  {scenario.isSalesDriverScenario && (
+                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#3AB7BF]/10 text-[#3AB7BF]">
+                                                      Sales Drivers
+                                                    </span>
+                                                  )}
                                                   <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
                                                     scenario.isActive
                                                       ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
@@ -1717,11 +1722,25 @@ const Forecasting: React.FC = () => {
                                                 <div className="flex gap-2">
                                                   <button
                                                     onClick={() => {
-                                                      if (scenario.isSalesDriverScenario && scenario.salesScenarioData) {
+                                                      const isSalesDriver = scenario.isSalesDriverScenario ||
+                                                        scenario.description?.includes('driver') ||
+                                                        (scenario.salesScenarioData !== undefined);
+
+                                                      console.log('Adjust clicked:', {
+                                                        scenarioName: scenario.name,
+                                                        isSalesDriverScenario: scenario.isSalesDriverScenario,
+                                                        hasSalesScenarioData: !!scenario.salesScenarioData,
+                                                        description: scenario.description,
+                                                        isSalesDriver
+                                                      });
+
+                                                      if (isSalesDriver && scenario.salesScenarioData) {
+                                                        console.log('Opening Sales Scenario Modal with data:', scenario.salesScenarioData);
                                                         setEditingSalesScenario(scenario.salesScenarioData);
                                                         setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
                                                         setShowSalesScenarioModal(true);
                                                       } else {
+                                                        console.log('Opening Quick Scenario Modal');
                                                         setEditingScenario(scenario);
                                                         setGLScenarioForm({
                                                           ...glScenarioForm,
