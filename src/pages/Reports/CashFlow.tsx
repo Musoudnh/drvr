@@ -345,35 +345,32 @@ const CashFlow: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/forecasting')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/forecasting'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <Target className="w-4 h-4 mr-2" />
             Forecasting
           </button>
           <button
             onClick={() => navigate('/reports/balance')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <PieChart className="w-4 h-4 mr-2" />
             Balance Sheet
           </button>
           <button
             onClick={() => navigate('/reports/cashflow')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
             }`}
           >
-            <DollarSign className="w-4 h-4 mr-2" />
             Cash Flow
           </button>
         </div>
