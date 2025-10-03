@@ -1744,9 +1744,16 @@ const Forecasting: React.FC = () => {
 
                                                       if (isSalesDriver && scenario.salesScenarioData) {
                                                         console.log('✅ Opening Sales Scenario Modal with data:', scenario.salesScenarioData);
+                                                        const glCode = glCodes.find(gl => gl.code === scenario.glCode) || null;
+                                                        console.log('Setting states:', {
+                                                          editingSalesScenario: scenario.salesScenarioData,
+                                                          selectedGLCode: glCode,
+                                                          showSalesScenarioModal: true
+                                                        });
                                                         setEditingSalesScenario(scenario.salesScenarioData);
-                                                        setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
+                                                        setSelectedGLCode(glCode);
                                                         setShowSalesScenarioModal(true);
+                                                        console.log('States set - modal should be opening now');
                                                       } else {
                                                         console.log('⚠️ Opening Quick Scenario Modal - salesScenarioData missing!');
                                                         setEditingScenario(scenario);
