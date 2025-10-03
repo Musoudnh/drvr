@@ -20,31 +20,37 @@ import { addMonths, startOfMonth, format } from 'date-fns';
 
 export class DriverCalculator {
   static volumeVsPrice(inputs: VolumePriceInputs): DriverCalculationResult {
-    const units = inputs.base_units * (1 + inputs.growth_units_pct / 100);
-    const price = inputs.base_asp * (1 + inputs.price_adjustment_pct / 100);
-    const revenue = units * price;
+    const adjustedUnits = inputs.base_units * (1 + inputs.growth_units_pct / 100);
+    const adjustedPrice = inputs.base_asp * (1 + inputs.price_adjustment_pct / 100);
+    const revenue = adjustedUnits * adjustedPrice;
 
     return {
       revenue,
-      units,
+      units: adjustedUnits,
       breakdown: {
-        adjusted_units: units,
-        adjusted_price: price,
-        units_growth: inputs.growth_units_pct,
-        price_growth: inputs.price_adjustment_pct,
+        base_units: inputs.base_units,
+        base_asp: inputs.base_asp,
+        adjusted_units: adjustedUnits,
+        adjusted_price: adjustedPrice,
+        units_growth_pct: inputs.growth_units_pct,
+        price_adjustment_pct: inputs.price_adjustment_pct,
       },
     };
   }
 
   static customerAcquisition(inputs: CACInputs): DriverCalculationResult {
-    const customers = inputs.marketing_spend / inputs.cac;
-    const revenue = customers * inputs.arpu * inputs.period_months;
+    const newCustomers = inputs.marketing_spend / inputs.cac;
+    const revenue = newCustomers * inputs.arpu * inputs.period_months;
 
     return {
       revenue,
-      customers,
+      customers: newCustomers,
       breakdown: {
-        new_customers: customers,
+        marketing_spend: inputs.marketing_spend,
+        cac: inputs.cac,
+        new_customers: newCustomers,
+        arpu: inputs.arpu,
+        period_months: inputs.period_months,
         ltv: inputs.arpu * inputs.period_months,
         cac_ratio: (inputs.arpu * inputs.period_months) / inputs.cac,
       },
@@ -60,25 +66,33 @@ export class DriverCalculator {
       revenue,
       customers: retainedCustomers,
       breakdown: {
-        retention_rate: retentionRate * 100,
-        churned_customers: inputs.starting_customers - retainedCustomers,
+        starting_customers: inputs.starting_customers,
+        churn_rate_pct: inputs.churn_rate_pct,
+        retention_rate_pct: retentionRate * 100,
+        period_months: inputs.period_months,
         retained_customers: retainedCustomers,
+        churned_customers: inputs.starting_customers - retainedCustomers,
+        arpu: inputs.arpu,
       },
     };
   }
 
   static conversionFunnel(inputs: FunnelInputs): DriverCalculationResult {
     const opportunities = inputs.leads * (inputs.lead_to_opportunity_pct / 100);
-    const customers = opportunities * (inputs.opportunity_to_close_pct / 100);
-    const revenue = customers * inputs.arpu;
+    const closedCustomers = opportunities * (inputs.opportunity_to_close_pct / 100);
+    const revenue = closedCustomers * inputs.arpu;
 
     return {
       revenue,
-      customers,
+      customers: closedCustomers,
       breakdown: {
+        leads: inputs.leads,
+        lead_to_opportunity_pct: inputs.lead_to_opportunity_pct,
+        opportunity_to_close_pct: inputs.opportunity_to_close_pct,
         opportunities,
-        closed_customers: customers,
-        conversion_rate: (inputs.lead_to_opportunity_pct / 100) * (inputs.opportunity_to_close_pct / 100) * 100,
+        closed_customers: closedCustomers,
+        overall_conversion_rate: (inputs.lead_to_opportunity_pct / 100) * (inputs.opportunity_to_close_pct / 100) * 100,
+        arpu: inputs.arpu,
       },
     };
   }
@@ -91,59 +105,74 @@ export class DriverCalculator {
       revenue,
       breakdown: {
         base_revenue: inputs.base_revenue,
+        month_index: monthIndex % 12,
         seasonality_index: seasonalityIndex,
-        adjustment: (seasonalityIndex - 1) * 100,
+        adjustment_pct: (seasonalityIndex - 1) * 100,
       },
     };
   }
 
   static contractTermsRenewals(inputs: ContractTermsInputs): DriverCalculationResult {
-    const newRevenue = inputs.new_customers * inputs.arpu * inputs.contract_length_months;
+    const newContractRevenue = inputs.new_customers * inputs.arpu * inputs.contract_length_months;
     const renewalRevenue = inputs.new_customers * (inputs.renewal_rate_pct / 100) * inputs.arpu * inputs.contract_length_months;
-    const totalRevenue = newRevenue + renewalRevenue;
+    const totalRevenue = newContractRevenue + renewalRevenue;
 
     return {
       revenue: totalRevenue,
       customers: inputs.new_customers,
       breakdown: {
-        new_contract_revenue: newRevenue,
-        renewal_revenue: renewalRevenue,
-        total_contract_value: totalRevenue,
+        new_customers: inputs.new_customers,
+        contract_length_months: inputs.contract_length_months,
+        renewal_rate_pct: inputs.renewal_rate_pct,
+        arpu: inputs.arpu,
+        new_contract_revenue: newContractRevenue,
         expected_renewals: inputs.new_customers * (inputs.renewal_rate_pct / 100),
+        renewal_revenue: renewalRevenue,
+        total_revenue: totalRevenue,
       },
     };
   }
 
   static salesRepProductivity(inputs: SalesProductivityInputs): DriverCalculationResult {
     const rampUpDiscount = Math.min(inputs.ramp_up_period / 12, 1) * 0.5;
-    const effectiveQuota = inputs.quota_per_rep * (1 - rampUpDiscount);
-    const revenue = inputs.sales_reps * effectiveQuota;
+    const revenue = inputs.sales_reps * inputs.quota_per_rep * (1 - rampUpDiscount);
 
     return {
       revenue,
       breakdown: {
-        effective_quota: effectiveQuota,
-        ramp_discount: rampUpDiscount * 100,
+        sales_reps: inputs.sales_reps,
+        quota_per_rep: inputs.quota_per_rep,
+        ramp_up_period: inputs.ramp_up_period,
+        ramp_up_discount_pct: rampUpDiscount * 100,
+        productivity_multiplier: 1 - rampUpDiscount,
         total_capacity: inputs.sales_reps * inputs.quota_per_rep,
-        productivity_rate: (1 - rampUpDiscount) * 100,
+        effective_revenue: revenue,
       },
     };
   }
 
   static discountingPromotions(inputs: DiscountingInputs): DriverCalculationResult {
     const discountedPrice = inputs.base_asp * (1 - inputs.discount_pct / 100);
-    const volumeIncrease = inputs.discount_pct * inputs.volume_elasticity;
-    const adjustedUnits = inputs.base_units * (1 + volumeIncrease / 100);
+    const volumeIncreasePct = inputs.discount_pct * inputs.volume_elasticity;
+    const adjustedUnits = inputs.base_units * (1 + volumeIncreasePct / 100);
     const revenue = discountedPrice * adjustedUnits;
+    const baseRevenue = inputs.base_asp * inputs.base_units;
 
     return {
       revenue,
       units: adjustedUnits,
       breakdown: {
+        base_asp: inputs.base_asp,
+        discount_pct: inputs.discount_pct,
         discounted_price: discountedPrice,
+        base_units: inputs.base_units,
+        volume_elasticity: inputs.volume_elasticity,
+        volume_lift_pct: volumeIncreasePct,
         adjusted_units: adjustedUnits,
-        volume_lift: volumeIncrease,
-        revenue_impact: ((revenue - inputs.base_asp * inputs.base_units) / (inputs.base_asp * inputs.base_units)) * 100,
+        base_revenue: baseRevenue,
+        discounted_revenue: revenue,
+        net_revenue_impact: revenue - baseRevenue,
+        net_revenue_impact_pct: ((revenue - baseRevenue) / baseRevenue) * 100,
       },
     };
   }
