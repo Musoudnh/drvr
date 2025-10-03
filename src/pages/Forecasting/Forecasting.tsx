@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
@@ -56,6 +56,10 @@ const Forecasting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedYear, setSelectedYear] = useState(2025);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
+  const yearDropdownRef = useRef<HTMLDivElement>(null);
+  const deptDropdownRef = useRef<HTMLDivElement>(null);
   const [multiYearView, setMultiYearView] = useState(false);
   const [showGLScenarioModal, setShowGLScenarioModal] = useState(false);
   const [newGLScenario, setNewGLScenario] = useState({
@@ -531,6 +535,20 @@ const Forecasting: React.FC = () => {
       console.error('Failed to load version history:', error);
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (yearDropdownRef.current && !yearDropdownRef.current.contains(event.target as Node)) {
+        setYearDropdownOpen(false);
+      }
+      if (deptDropdownRef.current && !deptDropdownRef.current.contains(event.target as Node)) {
+        setDeptDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (showVersionHistorySidebar) {
@@ -1171,31 +1189,78 @@ const Forecasting: React.FC = () => {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">Year:</label>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
-            >
-              <option value={2024}>2024</option>
-              <option value={2025}>2025</option>
-              <option value={2026}>2026</option>
-              <option value={2027}>2027</option>
-            </select>
+            <div className="relative" ref={yearDropdownRef}>
+              <button
+                onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              >
+                <span>{selectedYear}</span>
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
+              {yearDropdownOpen && (
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                  <div className="flex flex-col gap-1">
+                    {[2024, 2025, 2026, 2027].map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => {
+                          setSelectedYear(year);
+                          setYearDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          selectedYear === year
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {year}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">Department:</label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
-            >
-              <option value="All">All Categories</option>
-              <option value="Revenue">Revenue</option>
-              <option value="COGS">Cost of Goods Sold</option>
-              <option value="OPEX">Operating Expenses</option>
-              <option value="Other">Other</option>
-            </select>
+            <div className="relative" ref={deptDropdownRef}>
+              <button
+                onClick={() => setDeptDropdownOpen(!deptDropdownOpen)}
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              >
+                <span>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</span>
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
+              {deptDropdownOpen && (
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
+                  <div className="flex flex-col gap-1">
+                    {[
+                      { value: 'All', label: 'All Categories' },
+                      { value: 'Revenue', label: 'Revenue' },
+                      { value: 'COGS', label: 'Cost of Goods Sold' },
+                      { value: 'OPEX', label: 'Operating Expenses' },
+                      { value: 'Other', label: 'Other' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setSelectedCategory(option.value);
+                          setDeptDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          selectedCategory === option.value
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2 flex-1 min-w-[200px]">
