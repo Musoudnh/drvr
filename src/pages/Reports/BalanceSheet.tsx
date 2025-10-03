@@ -227,11 +227,6 @@ const BalanceSheet: React.FC = () => {
                 </div>
               )}
             </div>
-
-            <button className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </button>
           </div>
         </div>
       </Card>
