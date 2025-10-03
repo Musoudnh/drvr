@@ -7,7 +7,6 @@ import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModa
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
 import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
-import DriverLibraryModal from '../../components/Forecasting/DriverLibraryModal';
 import { forecastService } from '../../services/forecastService';
 import { SalesDriverService } from '../../services/salesDriverService';
 import type { ForecastLineItem } from '../../types/forecast';
@@ -1181,13 +1180,6 @@ const Forecasting: React.FC = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowDriverLibraryModal(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-          >
-            <Calculator className="w-4 h-4 mr-2" />
-            Driver Library
-          </button>
-          <button
             onClick={() => setShowSaveForecastModal(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
@@ -1199,7 +1191,7 @@ const Forecasting: React.FC = () => {
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
-            Applied Scenarios
+            Applied Drivers
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
@@ -2482,14 +2474,6 @@ const Forecasting: React.FC = () => {
         onNumberFormatChange={setNumberFormat}
       />
 
-      <DriverLibraryModal
-        isOpen={showDriverLibraryModal}
-        onClose={() => setShowDriverLibraryModal(false)}
-        onDriverApplied={(instanceId) => {
-          console.log('Driver applied:', instanceId);
-        }}
-      />
-
       {/* Bulk Adjustment Modal */}
       {showBulkAdjustPanel && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -2751,14 +2735,14 @@ const Forecasting: React.FC = () => {
         </div>
       )}
 
-      {/* Applied Scenarios Audit Sidebar */}
+      {/* Applied Drivers Audit Sidebar */
       {showScenarioAuditSidebar && (
         <div className="fixed inset-0 bg-black/30 z-50 flex justify-end">
           <div className="w-[500px] bg-white/95 backdrop-blur-md h-full shadow-2xl flex flex-col">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-[#101010]">Applied Scenarios</h3>
+                  <h3 className="text-xl font-bold text-[#101010]">Applied Drivers</h3>
                   <p className="text-sm text-gray-600 mt-1">Audit history of all scenario changes</p>
                 </div>
                 <button
