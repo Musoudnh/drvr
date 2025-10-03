@@ -1078,9 +1078,9 @@ const Forecasting: React.FC = () => {
             Forecasting
           </button>
           <button
-            onClick={() => navigate('/reports/balance-sheet')}
+            onClick={() => navigate('/reports/balance')}
             className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
-              location.pathname === '/reports/balance-sheet'
+              location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
             }`}
@@ -1089,9 +1089,9 @@ const Forecasting: React.FC = () => {
             Balance Sheet
           </button>
           <button
-            onClick={() => navigate('/reports/cash-flow')}
+            onClick={() => navigate('/reports/cashflow')}
             className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
-              location.pathname === '/reports/cash-flow'
+              location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
             }`}
