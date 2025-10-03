@@ -7,7 +7,6 @@ import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModa
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
 import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
-import DriverLibraryModal from '../../components/Forecasting/DriverLibraryModal';
 import { forecastService } from '../../services/forecastService';
 import { SalesDriverService } from '../../services/salesDriverService';
 import type { ForecastLineItem } from '../../types/forecast';
@@ -120,7 +119,6 @@ const Forecasting: React.FC = () => {
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
-  const [showDriverLibraryModal, setShowDriverLibraryModal] = useState(false);
 
   // Debug: Log component version
   React.useEffect(() => {
@@ -1180,13 +1178,6 @@ const Forecasting: React.FC = () => {
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowDriverLibraryModal(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-          >
-            <Calculator className="w-4 h-4 mr-2" />
-            Driver Library
-          </button>
           <button
             onClick={() => setShowSaveForecastModal(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
@@ -2486,13 +2477,6 @@ const Forecasting: React.FC = () => {
         onNumberFormatChange={setNumberFormat}
       />
 
-      <DriverLibraryModal
-        isOpen={showDriverLibraryModal}
-        onClose={() => setShowDriverLibraryModal(false)}
-        onDriverApplied={(instanceId) => {
-          console.log('Driver applied:', instanceId);
-        }}
-      />
 
       {/* Bulk Adjustment Modal */}
       {showBulkAdjustPanel && (
