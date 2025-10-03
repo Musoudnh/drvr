@@ -365,45 +365,43 @@ const CashFlow: React.FC = () => {
               </div>
             </div>
 
-            {dateViewMode === 'months' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                <select
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(e.target.value)}
-                  className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                >
-                  <option value="Jan">January</option>
-                  <option value="Feb">February</option>
-                  <option value="Mar">March</option>
-                  <option value="Apr">April</option>
-                  <option value="May">May</option>
-                  <option value="Jun">June</option>
-                  <option value="Jul">July</option>
-                  <option value="Aug">August</option>
-                  <option value="Sep">September</option>
-                  <option value="Oct">October</option>
-                  <option value="Nov">November</option>
-                  <option value="Dec">December</option>
-                </select>
-              </div>
-            )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                disabled={dateViewMode !== 'months'}
+                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="Jan">January</option>
+                <option value="Feb">February</option>
+                <option value="Mar">March</option>
+                <option value="Apr">April</option>
+                <option value="May">May</option>
+                <option value="Jun">June</option>
+                <option value="Jul">July</option>
+                <option value="Aug">August</option>
+                <option value="Sep">September</option>
+                <option value="Oct">October</option>
+                <option value="Nov">November</option>
+                <option value="Dec">December</option>
+              </select>
+            </div>
 
-            {dateViewMode === 'quarters' && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
-                <select
-                  value={selectedQuarter}
-                  onChange={(e) => setSelectedQuarter(e.target.value)}
-                  className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                >
-                  <option value="Q1">Q1 (Jan - Mar)</option>
-                  <option value="Q2">Q2 (Apr - Jun)</option>
-                  <option value="Q3">Q3 (Jul - Sep)</option>
-                  <option value="Q4">Q4 (Oct - Dec)</option>
-                </select>
-              </div>
-            )}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
+              <select
+                value={selectedQuarter}
+                onChange={(e) => setSelectedQuarter(e.target.value)}
+                disabled={dateViewMode !== 'quarters'}
+                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="Q1">Q1 (Jan - Mar)</option>
+                <option value="Q2">Q2 (Apr - Jun)</option>
+                <option value="Q3">Q3 (Jul - Sep)</option>
+                <option value="Q4">Q4 (Oct - Dec)</option>
+              </select>
+            </div>
           </div>
 
           <div className="text-sm text-gray-600">
@@ -415,53 +413,6 @@ const CashFlow: React.FC = () => {
           </div>
         </div>
       </Card>
-
-      {/* Cash Flow Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Cash Inflow</p>
-              <p className="text-2xl font-bold text-[#4ADE80] mt-1">{formatCurrency(summaryMetrics.cashInflow)}</p>
-              <p className="text-sm text-gray-500 mt-2">
-                {dateViewMode === 'months' && 'Total for the period'}
-                {dateViewMode === 'quarters' && 'Quarterly total'}
-                {dateViewMode === 'years' && 'Annual total'}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Cash Outflow</p>
-              <p className="text-2xl font-bold text-[#F87171] mt-1">{formatCurrency(summaryMetrics.cashOutflow)}</p>
-              <p className="text-sm text-gray-500 mt-2">
-                {dateViewMode === 'months' && 'Total for the period'}
-                {dateViewMode === 'quarters' && 'Quarterly total'}
-                {dateViewMode === 'years' && 'Annual total'}
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Net Cash Flow</p>
-              <p className={`text-2xl font-bold mt-1 ${summaryMetrics.netCashFlow >= 0 ? 'text-[#3AB7BF]' : 'text-[#F87171]'}`}>
-                {formatCurrency(summaryMetrics.netCashFlow)}
-              </p>
-              <p className="text-sm text-gray-500 mt-2">
-                {dateViewMode === 'months' && 'Total for the period'}
-                {dateViewMode === 'quarters' && 'Quarterly total'}
-                {dateViewMode === 'years' && 'Annual total'}
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
 
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
