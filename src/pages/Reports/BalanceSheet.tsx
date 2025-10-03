@@ -18,15 +18,22 @@ interface BalanceSheetItem {
 const BalanceSheet: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('quarters');
+  const [selectedMonth, setSelectedMonth] = useState<string>('Jan');
   const [selectedQuarter, setSelectedQuarter] = useState('Q1');
-  const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const [selectedYear, setSelectedYear] = useState(2025);
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const yearDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
+        setMonthDropdownOpen(false);
+      }
       if (quarterDropdownRef.current && !quarterDropdownRef.current.contains(event.target as Node)) {
         setQuarterDropdownOpen(false);
       }
@@ -162,8 +169,42 @@ const BalanceSheet: React.FC = () => {
 
       {/* Time Period Selection Controls */}
       <Card>
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3">
+          {dateViewMode === 'months' && (
+            <div className="relative" ref={monthDropdownRef}>
+              <button
+                onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              >
+                <span>{selectedMonth}</span>
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
+              {monthDropdownOpen && (
+                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-2 min-w-[200px]">
+                  <div className="grid grid-cols-3 gap-2">
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
+                      <button
+                        key={month}
+                        onClick={() => {
+                          setSelectedMonth(month);
+                          setMonthDropdownOpen(false);
+                        }}
+                        className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
+                          selectedMonth === month
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {month}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {dateViewMode === 'quarters' && (
             <div className="relative" ref={quarterDropdownRef}>
               <button
                 onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
@@ -195,7 +236,9 @@ const BalanceSheet: React.FC = () => {
                 </div>
               )}
             </div>
+          )}
 
+          {dateViewMode === 'years' && (
             <div className="relative" ref={yearDropdownRef}>
               <button
                 onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
@@ -227,7 +270,40 @@ const BalanceSheet: React.FC = () => {
                 </div>
               )}
             </div>
-          </div>
+          )}
+
+          <div className="h-6 w-px bg-gray-300 mx-1" />
+
+          <button
+            onClick={() => setDateViewMode('months')}
+            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+              dateViewMode === 'months'
+                ? 'bg-[#7B68EE] text-white shadow-sm'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
+            }`}
+          >
+            Month
+          </button>
+          <button
+            onClick={() => setDateViewMode('quarters')}
+            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+              dateViewMode === 'quarters'
+                ? 'bg-[#7B68EE] text-white shadow-sm'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
+            }`}
+          >
+            Quarter
+          </button>
+          <button
+            onClick={() => setDateViewMode('years')}
+            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+              dateViewMode === 'years'
+                ? 'bg-[#7B68EE] text-white shadow-sm'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
+            }`}
+          >
+            Year
+          </button>
         </div>
       </Card>
 
