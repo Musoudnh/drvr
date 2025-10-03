@@ -5,6 +5,7 @@ import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModal';
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
+import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
 import { forecastService } from '../../services/forecastService';
 import type { ForecastLineItem } from '../../types/forecast';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
@@ -109,6 +110,7 @@ const Forecasting: React.FC = () => {
   const [showActualsAsAmount, setShowActualsAsAmount] = useState(false);
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
+  const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -1330,100 +1332,14 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
-            <button
-              onClick={() => setHideEmptyAccounts(!hideEmptyAccounts)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                hideEmptyAccounts
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={hideEmptyAccounts ? 'Show empty accounts' : 'Hide empty accounts'}
-            >
-              {hideEmptyAccounts ? <EyeOff className="w-4 h-4 mr-1 inline" /> : <Eye className="w-4 h-4 mr-1 inline" />}
-              <span>{hideEmptyAccounts ? 'Empty Hidden' : 'Show All'}</span>
-            </button>
-
-            <button
-              onClick={() => setShowAccountCodes(!showAccountCodes)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                showAccountCodes
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={showAccountCodes ? 'Hide account codes' : 'Show account codes'}
-            >
-              <Hash className="w-4 h-4 mr-1 inline" />
-              <span>{showAccountCodes ? 'Codes' : 'No Codes'}</span>
-            </button>
-
-            <button
-              onClick={() => setShowActualsAsAmount(!showActualsAsAmount)}
-              className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
-                showActualsAsAmount
-                  ? 'bg-white text-[#7B68EE] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
-              title={showActualsAsAmount ? 'Show actuals as percentage' : 'Show actuals as amount'}
-            >
-              <span>{showActualsAsAmount ? '$' : '%'}</span>
-            </button>
-
-            <div className="relative format-dropdown-container">
-              <button
-                onClick={() => setShowFormatDropdown(!showFormatDropdown)}
-                className="px-2 py-1 rounded text-sm font-medium transition-colors bg-white text-[#7B68EE] shadow-sm hover:bg-gray-50 flex items-center gap-1"
-                title="Number format"
-              >
-                <span>
-                  {numberFormat === 'actual' && '1,000,000'}
-                  {numberFormat === 'thousands' && '1.0K'}
-                  {numberFormat === 'millions' && '1.0M'}
-                </span>
-                <ChevronDown className="w-3 h-3" />
-              </button>
-
-              {showFormatDropdown && (
-                <div className="absolute top-full mt-1 right-0 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-                  <div className="py-1">
-                    <button
-                      onClick={() => {
-                        setNumberFormat('actual');
-                        setShowFormatDropdown(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
-                        numberFormat === 'actual' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
-                      }`}
-                    >
-                      1,000,000 (Actual)
-                    </button>
-                    <button
-                      onClick={() => {
-                        setNumberFormat('thousands');
-                        setShowFormatDropdown(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
-                        numberFormat === 'thousands' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
-                      }`}
-                    >
-                      1.0K (Thousands)
-                    </button>
-                    <button
-                      onClick={() => {
-                        setNumberFormat('millions');
-                        setShowFormatDropdown(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
-                        numberFormat === 'millions' ? 'bg-blue-50 text-[#7B68EE] font-medium' : 'text-gray-700'
-                      }`}
-                    >
-                      1.0M (Millions)
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <button
+            onClick={() => setShowViewSettingsPanel(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            title="View settings"
+          >
+            <Settings className="w-4 h-4 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">View Settings</span>
+          </button>
         </div>
       </Card>
 
@@ -2394,6 +2310,19 @@ const Forecasting: React.FC = () => {
           version2Id={comparisonVersions[1]}
         />
       )}
+
+      <ViewSettingsPanel
+        isOpen={showViewSettingsPanel}
+        onClose={() => setShowViewSettingsPanel(false)}
+        hideEmptyAccounts={hideEmptyAccounts}
+        onHideEmptyAccountsChange={setHideEmptyAccounts}
+        showAccountCodes={showAccountCodes}
+        onShowAccountCodesChange={setShowAccountCodes}
+        showActualsAsAmount={showActualsAsAmount}
+        onShowActualsAsAmountChange={setShowActualsAsAmount}
+        numberFormat={numberFormat}
+        onNumberFormatChange={setNumberFormat}
+      />
 
       {/* Bulk Adjustment Modal */}
       {showBulkAdjustPanel && (
