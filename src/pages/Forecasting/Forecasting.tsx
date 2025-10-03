@@ -1177,14 +1177,14 @@ const Forecasting: React.FC = () => {
 
       {/* Selection Actions Bar */}
       {selectedCells.length > 0 && (
-        <div className="bg-[#3AB7BF]/10 border border-[#3AB7BF] rounded-lg p-4 flex items-center justify-between">
+        <div className="bg-[#E6E0FF] border border-[#7B68EE] rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="text-sm font-medium text-[#101010]">
               {selectedCells.length} cell{selectedCells.length > 1 ? 's' : ''} selected
             </span>
             <button
               onClick={() => setShowBulkAdjustPanel(true)}
-              className="px-3 py-1.5 bg-[#101010] text-white rounded-lg text-sm font-medium hover:bg-[#2a2a2a] transition-colors"
+              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
             >
               Adjust Selected
             </button>
