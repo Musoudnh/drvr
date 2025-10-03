@@ -290,6 +290,27 @@ const Forecasting: React.FC = () => {
     return months.indexOf(monthName);
   };
 
+  const getScenarioMonthImpact = (scenario: AppliedScenario, month: string, glCode: string): number => {
+    const startIndex = getMonthIndex(scenario.startMonth);
+    const endIndex = getMonthIndex(scenario.endMonth);
+    const monthIndex = months.indexOf(month);
+
+    if (monthIndex < startIndex || monthIndex > endIndex || !scenario.isActive) {
+      return 0;
+    }
+
+    const monthKey = `${month} ${selectedYear}`;
+    const baseAmount = forecastData.find(
+      item => item.glCode === glCode && item.month === monthKey
+    )?.forecastedAmount || 0;
+
+    if (scenario.adjustmentType === 'percentage') {
+      return (baseAmount * scenario.adjustmentValue) / 100;
+    } else {
+      return scenario.adjustmentValue;
+    }
+  };
+
   const getDatePeriods = () => {
     if (dateViewMode === 'months') {
       return months;
@@ -1728,36 +1749,42 @@ const Forecasting: React.FC = () => {
                                                   }
                                                 </p>
 
-                                                {/* Timeline Gantt */}
-                                                <div className="mt-3">
-                                                  <div className="grid grid-cols-12 gap-1">
+                                                {/* Timeline Gantt - Aligned with table columns */}
+                                                <div className="mt-3 flex items-center">
+                                                  <div className="w-48"></div>
+                                                  <div className="flex-1 flex gap-0">
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
                                                       const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
                                                       const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                      const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
 
                                                       return (
                                                         <div
                                                           key={index}
-                                                          className={`h-6 rounded transition-all ${
-                                                            isActive
-                                                              ? 'bg-[#4ADE80]'
-                                                              : isInactive
-                                                                ? 'bg-gray-300'
-                                                                : 'bg-gray-100'
-                                                          }`}
-                                                          title={isActive || isInactive ? `${month}: ${scenario.name}` : month}
-                                                        />
+                                                          className="flex-1 px-2"
+                                                        >
+                                                          <div
+                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
+                                                              isActive
+                                                                ? 'bg-[#4ADE80]'
+                                                                : isInactive
+                                                                  ? 'bg-gray-300'
+                                                                  : 'bg-transparent'
+                                                            }`}
+                                                            title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
+                                                          >
+                                                            {showImpact && (
+                                                              <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
+                                                                {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
+                                                              </span>
+                                                            )}
+                                                          </div>
+                                                        </div>
                                                       );
                                                     })}
-                                                  </div>
-                                                  <div className="grid grid-cols-12 gap-1 mt-0.5">
-                                                    {months.map((month, index) => (
-                                                      <div key={index} className="text-[9px] text-gray-500 text-center">
-                                                        {month.charAt(0)}
-                                                      </div>
-                                                    ))}
                                                   </div>
                                                 </div>
                                               </div>
