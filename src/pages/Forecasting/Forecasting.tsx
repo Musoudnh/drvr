@@ -1754,8 +1754,13 @@ const Forecasting: React.FC = () => {
                                                         setSelectedGLCode(glCode);
                                                         setShowSalesScenarioModal(true);
                                                         console.log('States set - modal should be opening now');
+                                                      } else if (isSalesDriver && !scenario.salesScenarioData) {
+                                                        console.error('❌ ERROR: This is a sales driver scenario but data is missing!');
+                                                        console.error('This scenario was likely created before the data persistence fix.');
+                                                        console.error('Please delete and recreate this scenario.');
+                                                        alert('This sales driver scenario is missing its configuration data.\n\nThis happens when scenarios were created before the latest update.\n\nPlease:\n1. Delete this scenario\n2. Create a new one with the same settings\n\nThe new scenario will save all driver data correctly.');
                                                       } else {
-                                                        console.log('⚠️ Opening Quick Scenario Modal - salesScenarioData missing!');
+                                                        console.log('⚠️ Opening Quick Scenario Modal (this is a quick scenario, not a sales driver)');
                                                         setEditingScenario(scenario);
                                                         setGLScenarioForm({
                                                           ...glScenarioForm,
