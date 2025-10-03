@@ -1728,7 +1728,7 @@ const Forecasting: React.FC = () => {
                                                 <div className="flex items-center gap-2">
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
                                                   {scenario.isSalesDriverScenario && (
-                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#3AB7BF]/10 text-[#3AB7BF]">
+                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
                                                       Sales Driver
                                                     </span>
                                                   )}
@@ -1764,11 +1764,11 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Timeline Gantt - Aligned with table columns */}
-                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100">
-                                              <table className="w-full">
+                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100 pt-2">
+                                              <table className="w-full table-fixed">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-2 px-4 w-[200px]"></td>
+                                                    <td className="py-2 px-2 w-[200px]"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -1783,7 +1783,7 @@ const Forecasting: React.FC = () => {
                                                           className="text-center px-2 py-2"
                                                         >
                                                           <div
-                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
+                                                            className={`h-8 rounded flex items-center justify-center transition-all mx-auto ${
                                                               isActive
                                                                 ? 'bg-[#4ADE80]'
                                                                 : isInactive
@@ -1801,7 +1801,7 @@ const Forecasting: React.FC = () => {
                                                         </td>
                                                       );
                                                     })}
-                                                    <td className="w-32"></td>
+                                                    <td className="py-2 px-2 w-32"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
