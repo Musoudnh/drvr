@@ -1168,13 +1168,13 @@ const Forecasting: React.FC = () => {
 
       {/* Controls */}
       <Card>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700">Year:</label>
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-              className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
             >
               <option value={2024}>2024</option>
               <option value={2025}>2025</option>
@@ -1182,13 +1182,13 @@ const Forecasting: React.FC = () => {
               <option value={2027}>2027</option>
             </select>
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700">Department:</label>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50"
             >
               <option value="All">All Categories</option>
               <option value="Revenue">Revenue</option>
@@ -1197,10 +1197,10 @@ const Forecasting: React.FC = () => {
               <option value="Other">Other</option>
             </select>
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search GL Codes</label>
-            <div className="relative">
+
+          <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+            <label className="text-sm font-medium text-gray-700">Search GL:</label>
+            <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
