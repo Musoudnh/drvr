@@ -866,8 +866,8 @@ const Forecasting: React.FC = () => {
                       glScenarioForm.startYear === new Date().getFullYear() &&
                       glScenarioForm.endMonth === 'Dec' &&
                       glScenarioForm.endYear === selectedYear)
-                      ? 'border-[#9333EA] bg-[#9333EA]/5 text-[#9333EA]'
-                      : 'border-gray-300 hover:border-[#9333EA]/40 text-gray-700'
+                      ? 'border-[#7B68EE] bg-[#7B68EE]/5 text-[#7B68EE]'
+                      : 'border-gray-300 hover:border-[#7B68EE]/40 text-gray-700'
                   }`}
                 >
                   <div className="font-medium text-sm">Select Month Range</div>
@@ -901,8 +901,8 @@ const Forecasting: React.FC = () => {
                     glScenarioForm.startYear === new Date().getFullYear() &&
                     glScenarioForm.endMonth === 'Dec' &&
                     glScenarioForm.endYear === selectedYear
-                      ? 'border-[#9333EA] bg-[#9333EA]/5 text-[#9333EA]'
-                      : 'border-gray-300 hover:border-[#9333EA]/40 text-gray-700'
+                      ? 'border-[#7B68EE] bg-[#7B68EE]/5 text-[#7B68EE]'
+                      : 'border-gray-300 hover:border-[#7B68EE]/40 text-gray-700'
                   }`}
                 >
                   <div className="font-medium text-sm">From This Month Forward</div>
