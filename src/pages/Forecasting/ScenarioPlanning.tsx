@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Target, Plus, Copy, Play, BarChart3, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, X, Save, CreditCard as Edit3, Trash2, Download, Share2, RefreshCw, Brain, Lightbulb, Calculator, DollarSign, Users, Zap, Eye, Settings, Filter, Calendar, ArrowRight, ArrowUp, ArrowDown, Minus, Info, Lock, Unlock } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
+import type { SalesScenario } from '../../types/salesDriver';
 
 interface ScenarioAssumptions {
   revenueGrowth: number;
@@ -163,6 +165,8 @@ const ScenarioPlanning: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'comparison' | 'detailed'>('grid');
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [comparisonMetrics, setComparisonMetrics] = useState<string[]>(['revenue', 'profit', 'cashFlow', 'runway']);
+  const [showSalesScenarioModal, setShowSalesScenarioModal] = useState(false);
+  const [salesScenarios, setSalesScenarios] = useState<SalesScenario[]>([]);
   
   const [newScenario, setNewScenario] = useState({
     name: '',
@@ -680,7 +684,7 @@ const ScenarioPlanning: React.FC = () => {
           <p className="text-gray-600 mt-2">Model different business scenarios and compare outcomes with real-time calculations</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Button 
+          <Button
             variant="outline"
             onClick={generateAIInsights}
             disabled={isGeneratingAI || selectedScenarios.length === 0}
@@ -698,8 +702,16 @@ const ScenarioPlanning: React.FC = () => {
               </>
             )}
           </Button>
-          <Button 
-            variant="primary" 
+          <Button
+            variant="outline"
+            onClick={() => setShowSalesScenarioModal(true)}
+            className="bg-[#4ADE80]/10 border-[#4ADE80]/30 text-[#4ADE80] hover:bg-[#4ADE80]/20"
+          >
+            <DollarSign className="w-4 h-4 mr-2" />
+            Sales Scenario
+          </Button>
+          <Button
+            variant="primary"
             onClick={() => setShowCreateModal(true)}
             className="bg-[#3AB7BF] hover:bg-[#2A9BA3] focus:ring-[#3AB7BF]"
           >
@@ -1205,6 +1217,16 @@ const ScenarioPlanning: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Sales Scenario Modal */}
+      <SalesScenarioModal
+        isOpen={showSalesScenarioModal}
+        onClose={() => setShowSalesScenarioModal(false)}
+        onSave={(scenario) => {
+          setSalesScenarios([...salesScenarios, scenario]);
+          setShowSalesScenarioModal(false);
+        }}
+      />
     </div>
   );
 };
