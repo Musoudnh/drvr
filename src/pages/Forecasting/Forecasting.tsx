@@ -13,6 +13,7 @@ import type { ForecastLineItem } from '../../types/forecast';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
 import type { SalesScenario } from '../../types/salesDriver';
+import { getViewSettings, updateViewSetting } from '../../utils/viewSettings';
 
 interface GLCode {
   code: string;
@@ -113,10 +114,10 @@ const Forecasting: React.FC = () => {
   const [versionHistory, setVersionHistory] = useState<any[]>([]);
   const [selectedVersionForAction, setSelectedVersionForAction] = useState<string | null>(null);
   const [dateViewMode, setDateViewMode] = useState<'months' | 'quarters' | 'years'>('months');
-  const [hideEmptyAccounts, setHideEmptyAccounts] = useState(false);
-  const [showAccountCodes, setShowAccountCodes] = useState(true);
-  const [showActualsAsAmount, setShowActualsAsAmount] = useState(false);
-  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
+  const [hideEmptyAccounts, setHideEmptyAccounts] = useState(() => getViewSettings().hideEmptyAccounts);
+  const [showAccountCodes, setShowAccountCodes] = useState(() => getViewSettings().showAccountCodes);
+  const [showActualsAsAmount, setShowActualsAsAmount] = useState(() => getViewSettings().showActualsAsAmount);
+  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
 
@@ -2465,13 +2466,25 @@ const Forecasting: React.FC = () => {
         isOpen={showViewSettingsPanel}
         onClose={() => setShowViewSettingsPanel(false)}
         hideEmptyAccounts={hideEmptyAccounts}
-        onHideEmptyAccountsChange={setHideEmptyAccounts}
+        onHideEmptyAccountsChange={(value) => {
+          setHideEmptyAccounts(value);
+          updateViewSetting('hideEmptyAccounts', value);
+        }}
         showAccountCodes={showAccountCodes}
-        onShowAccountCodesChange={setShowAccountCodes}
+        onShowAccountCodesChange={(value) => {
+          setShowAccountCodes(value);
+          updateViewSetting('showAccountCodes', value);
+        }}
         showActualsAsAmount={showActualsAsAmount}
-        onShowActualsAsAmountChange={setShowActualsAsAmount}
+        onShowActualsAsAmountChange={(value) => {
+          setShowActualsAsAmount(value);
+          updateViewSetting('showActualsAsAmount', value);
+        }}
         numberFormat={numberFormat}
-        onNumberFormatChange={setNumberFormat}
+        onNumberFormatChange={(value) => {
+          setNumberFormat(value);
+          updateViewSetting('numberFormat', value);
+        }}
       />
 
 

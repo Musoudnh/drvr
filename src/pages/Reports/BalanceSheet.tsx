@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PieChart, DollarSign, Target, Download, Save, Bell, History, ChevronDown, Eye, EyeOff, Hash } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
+import { getViewSettings, updateViewSetting } from '../../utils/viewSettings';
 
 interface BalanceSheetItem {
   code: string;
@@ -35,9 +36,9 @@ const BalanceSheet: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(2025);
   const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
-  const [hideEmptyRows, setHideEmptyRows] = useState(false);
-  const [showAccountCodes, setShowAccountCodes] = useState(true);
-  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>('actual');
+  const [hideEmptyRows, setHideEmptyRows] = useState(() => getViewSettings().hideEmptyAccounts);
+  const [showAccountCodes, setShowAccountCodes] = useState(() => getViewSettings().showAccountCodes);
+  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const yearDropdownRef = useRef<HTMLDivElement>(null);
@@ -417,7 +418,11 @@ const BalanceSheet: React.FC = () => {
 
           <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
             <button
-              onClick={() => setHideEmptyRows(!hideEmptyRows)}
+              onClick={() => {
+                const newValue = !hideEmptyRows;
+                setHideEmptyRows(newValue);
+                updateViewSetting('hideEmptyAccounts', newValue);
+              }}
               className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 hideEmptyRows
                   ? 'bg-white text-[#7B68EE] shadow-sm'
@@ -430,7 +435,11 @@ const BalanceSheet: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setShowAccountCodes(!showAccountCodes)}
+              onClick={() => {
+                const newValue = !showAccountCodes;
+                setShowAccountCodes(newValue);
+                updateViewSetting('showAccountCodes', newValue);
+              }}
               className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
                 showAccountCodes
                   ? 'bg-white text-[#7B68EE] shadow-sm'
@@ -462,6 +471,7 @@ const BalanceSheet: React.FC = () => {
                     <button
                       onClick={() => {
                         setNumberFormat('actual');
+                        updateViewSetting('numberFormat', 'actual');
                         setShowFormatDropdown(false);
                       }}
                       className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
@@ -473,6 +483,7 @@ const BalanceSheet: React.FC = () => {
                     <button
                       onClick={() => {
                         setNumberFormat('thousands');
+                        updateViewSetting('numberFormat', 'thousands');
                         setShowFormatDropdown(false);
                       }}
                       className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
@@ -484,6 +495,7 @@ const BalanceSheet: React.FC = () => {
                     <button
                       onClick={() => {
                         setNumberFormat('millions');
+                        updateViewSetting('numberFormat', 'millions');
                         setShowFormatDropdown(false);
                       }}
                       className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
