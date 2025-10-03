@@ -397,7 +397,7 @@ const BalanceSheet: React.FC = () => {
         <Card>
           <div className="p-2">
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Assets</p>
-            <p className="text-lg font-bold text-[#4ADE80] mt-2">{formatCurrency(totalAssets)}</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(totalAssets)}</p>
             <p className="text-xs text-[#4ADE80] mt-1">+8.3% from last period</p>
           </div>
         </Card>
@@ -405,7 +405,7 @@ const BalanceSheet: React.FC = () => {
         <Card>
           <div className="p-2">
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Liabilities</p>
-            <p className="text-lg font-bold text-[#F87171] mt-2">{formatCurrency(Math.abs(totalLiabilities))}</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(Math.abs(totalLiabilities))}</p>
             <p className="text-xs text-gray-500 mt-1">+2.1% from last period</p>
           </div>
         </Card>
@@ -413,7 +413,7 @@ const BalanceSheet: React.FC = () => {
         <Card>
           <div className="p-2">
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Shareholders' Equity</p>
-            <p className="text-lg font-bold text-[#3AB7BF] mt-2">{formatCurrency(totalEquity)}</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(totalEquity)}</p>
             <p className="text-xs text-[#4ADE80] mt-1">+12.7% from last period</p>
           </div>
         </Card>
