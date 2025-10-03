@@ -1609,6 +1609,7 @@ const Forecasting: React.FC = () => {
                                         .reduce((sum, item) => sum + item.forecastedAmount, 0);
                                       const actualsAndRemaining = totalActuals + remainingForecast;
                                       const variance = totalForecast !== 0 ? ((actualsAndRemaining - totalForecast) / totalForecast) * 100 : 0;
+                                      const varianceDollar = actualsAndRemaining - totalForecast;
                                       const varianceColor = getVarianceColor(variance, glCode.code);
 
                                       return (
@@ -1625,10 +1626,13 @@ const Forecasting: React.FC = () => {
                                             </span>
                                           </div>
                                           <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5 text-right">
-                                            Budget: ${totalForecast.toLocaleString()}
+                                            Act: ${totalActuals.toLocaleString()}
                                           </div>
                                           <div className={`text-[10px] font-medium text-right ${varianceColor}`}>
-                                            {variance >= 0 ? '+' : ''}{variance.toFixed(1)}%
+                                            {showActualsAsAmount
+                                              ? `${varianceDollar >= 0 ? '+' : ''}$${Math.abs(varianceDollar).toLocaleString()}`
+                                              : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
+                                            }
                                           </div>
                                         </>
                                       );
