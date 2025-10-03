@@ -315,21 +315,6 @@ const CashFlow: React.FC = () => {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-              >
-                <option value={2023}>2023</option>
-                <option value={2024}>2024</option>
-                <option value={2025}>2025</option>
-                <option value={2026}>2026</option>
-                <option value={2027}>2027</option>
-              </select>
-            </div>
-
-            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">View</label>
               <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
                 <button
@@ -367,40 +352,65 @@ const CashFlow: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-              <select
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                disabled={dateViewMode !== 'months'}
-                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="Jan">January</option>
-                <option value="Feb">February</option>
-                <option value="Mar">March</option>
-                <option value="Apr">April</option>
-                <option value="May">May</option>
-                <option value="Jun">June</option>
-                <option value="Jul">July</option>
-                <option value="Aug">August</option>
-                <option value="Sep">September</option>
-                <option value="Oct">October</option>
-                <option value="Nov">November</option>
-                <option value="Dec">December</option>
-              </select>
+              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+                {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month) => (
+                  <button
+                    key={month}
+                    onClick={() => setSelectedMonth(month)}
+                    disabled={dateViewMode !== 'months'}
+                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      dateViewMode === 'months' && selectedMonth === month
+                        ? 'bg-white text-[#7B68EE] shadow-sm'
+                        : dateViewMode === 'months'
+                        ? 'text-gray-600 hover:text-gray-800'
+                        : 'text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {month}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Quarter</label>
-              <select
-                value={selectedQuarter}
-                onChange={(e) => setSelectedQuarter(e.target.value)}
-                disabled={dateViewMode !== 'quarters'}
-                className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="Q1">Q1 (Jan - Mar)</option>
-                <option value="Q2">Q2 (Apr - Jun)</option>
-                <option value="Q3">Q3 (Jul - Sep)</option>
-                <option value="Q4">Q4 (Oct - Dec)</option>
-              </select>
+              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+                {['Q1', 'Q2', 'Q3', 'Q4'].map((quarter) => (
+                  <button
+                    key={quarter}
+                    onClick={() => setSelectedQuarter(quarter)}
+                    disabled={dateViewMode !== 'quarters'}
+                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      dateViewMode === 'quarters' && selectedQuarter === quarter
+                        ? 'bg-white text-[#7B68EE] shadow-sm'
+                        : dateViewMode === 'quarters'
+                        ? 'text-gray-600 hover:text-gray-800'
+                        : 'text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {quarter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+              <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
+                {[2023, 2024, 2025, 2026, 2027].map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year)}
+                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                      selectedYear === year
+                        ? 'bg-white text-[#7B68EE] shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
