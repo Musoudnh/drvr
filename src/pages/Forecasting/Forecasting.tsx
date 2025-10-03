@@ -1495,8 +1495,18 @@ const Forecasting: React.FC = () => {
                                               </div>
                                             </>
                                           );
+                                        } else {
+                                          return (
+                                            <>
+                                              <div className="text-[10px] text-gray-400 font-semibold bg-gray-100 rounded px-1 py-0.5">
+                                                Act: -
+                                              </div>
+                                              <div className="text-[10px] font-medium text-gray-400">
+                                                -
+                                              </div>
+                                            </>
+                                          );
                                         }
-                                        return null;
                                       })()}
                                     </div>
                                   </td>
