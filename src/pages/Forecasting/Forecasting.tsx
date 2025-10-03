@@ -1675,10 +1675,10 @@ const Forecasting: React.FC = () => {
                                           setSelectedGLCode(glCode);
                                           setShowSalesScenarioModal(true);
                                         }}
-                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-white bg-[#3AB7BF] hover:bg-[#2A9BA3] rounded border border-[#3AB7BF] transition-colors"
+                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
                                       >
-                                        <DollarSign className="w-3 h-3" />
-                                        <span className="text-xs">Sales Drivers</span>
+                                        <Plus className="w-3 h-3" />
+                                        <span className="text-xs">+ Sales Driver</span>
                                       </button>
                                     </div>
 
