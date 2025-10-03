@@ -16,7 +16,9 @@ import {
   DollarSign,
   BarChart3,
   Zap,
-  Info
+  Info,
+  Bot,
+  Send
 } from 'lucide-react';
 import Button from '../UI/Button';
 import DriverImpactWaterfall from './DriverImpactWaterfall';
@@ -61,7 +63,9 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const [activeDrivers, setActiveDrivers] = useState<SalesDriver[]>(initialScenario?.drivers || []);
   const [showDriverLibrary, setShowDriverLibrary] = useState(false);
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'drivers' | 'preview'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'drivers' | 'preview' | 'ai'>('overview');
+  const [aiMessages, setAiMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const [aiInput, setAiInput] = useState('');
 
   const getIconComponent = (iconName: string) => {
     const icons: { [key: string]: any } = {
@@ -623,6 +627,17 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <BarChart3 className="w-4 h-4 inline mr-2" />
             Preview
           </button>
+          <button
+            onClick={() => setActiveTab('ai')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+              activeTab === 'ai'
+                ? 'border-purple-600 text-purple-600'
+                : 'border-transparent text-gray-600 hover:text-purple-600'
+            }`}
+          >
+            <Bot className="w-4 h-4 inline mr-2" />
+            AI Driver
+          </button>
         </div>
 
         {/* Content */}
@@ -825,6 +840,92 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     );
                   })
                 )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'ai' && (
+            <div className="flex flex-col h-[500px]">
+              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+                {aiMessages.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center">
+                    <Bot className="w-16 h-16 text-purple-400 mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Driver Assistant</h3>
+                    <p className="text-gray-600 max-w-md">
+                      Discuss your assumptions with AI to help build your sales drivers.
+                      The AI can suggest parameters and help you think through your scenarios.
+                    </p>
+                  </div>
+                ) : (
+                  aiMessages.map((msg, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex ${
+                        msg.role === 'user' ? 'justify-end' : 'justify-start'
+                      }`}
+                    >
+                      <div
+                        className={`max-w-[70%] rounded-lg px-4 py-3 ${
+                          msg.role === 'user'
+                            ? 'bg-purple-600 text-white'
+                            : 'bg-gray-100 text-gray-900'
+                        }`}
+                      >
+                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="border-t border-gray-200 pt-4">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={aiInput}
+                    onChange={(e) => setAiInput(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && aiInput.trim()) {
+                        const userMessage = aiInput.trim();
+                        setAiMessages([...aiMessages, { role: 'user', content: userMessage }]);
+                        setAiInput('');
+
+                        setTimeout(() => {
+                          setAiMessages(prev => [
+                            ...prev,
+                            {
+                              role: 'assistant',
+                              content: `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
+                            }
+                          ]);
+                        }, 1000);
+                      }
+                    }}
+                    placeholder="Discuss your assumptions with AI..."
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                  <button
+                    onClick={() => {
+                      if (aiInput.trim()) {
+                        const userMessage = aiInput.trim();
+                        setAiMessages([...aiMessages, { role: 'user', content: userMessage }]);
+                        setAiInput('');
+
+                        setTimeout(() => {
+                          setAiMessages(prev => [
+                            ...prev,
+                            {
+                              role: 'assistant',
+                              content: `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
+                            }
+                          ]);
+                        }, 1000);
+                      }
+                    }}
+                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    <Send className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           )}
