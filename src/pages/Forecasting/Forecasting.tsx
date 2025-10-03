@@ -1682,7 +1682,7 @@ const Forecasting: React.FC = () => {
                               <tr>
                                 <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
                                   <div className="bg-gray-50 p-3 mb-2 rounded">
-                                    <h5 className="text-xs text-[#101010] mb-2">Scenarios for {glCode.name}</h5>
+                                    <h5 className="text-xs text-[#101010] mb-2">Drivers for {glCode.name}</h5>
 
                                     {/* Add Scenario Buttons */}
                                     <div className="flex gap-2 mb-2">
