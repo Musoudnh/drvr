@@ -487,9 +487,6 @@ const CashFlow: React.FC = () => {
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-[#101010]">Cash Flow Waterfall</h2>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Budget to Actual Bridge</span>
-          </div>
         </div>
         <div className="space-y-1">
           {waterfallData.map((item, index) => {
