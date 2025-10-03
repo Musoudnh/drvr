@@ -925,12 +925,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           >
             Save Scenario
           </button>
-          <button
-            onClick={onClose}
-            className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-          >
-            Contact Support
-          </button>
         </div>
       </div>
     </div>
