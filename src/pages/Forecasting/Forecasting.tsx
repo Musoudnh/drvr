@@ -1729,7 +1729,12 @@ const Forecasting: React.FC = () => {
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
                                                   {scenario.isSalesDriverScenario && (
                                                     <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#3AB7BF]/10 text-[#3AB7BF]">
-                                                      Sales Drivers
+                                                      Sales Driver
+                                                    </span>
+                                                  )}
+                                                  {!scenario.isSalesDriverScenario && (
+                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
+                                                      Quick Driver
                                                     </span>
                                                   )}
                                                   <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
@@ -2036,7 +2041,7 @@ const Forecasting: React.FC = () => {
                  }
                }}
                disabled={!isScenarioValid()}
-               className="px-4 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+               className="px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Apply Scenario
              </button>
@@ -2195,7 +2200,7 @@ const Forecasting: React.FC = () => {
                  }
                }}
                disabled={!isScenarioValid()}
-               className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2EA5AD] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+               className="px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2A2A2A] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
              >
                Update Scenario
              </button>
