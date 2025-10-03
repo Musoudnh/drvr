@@ -1195,13 +1195,6 @@ const Forecasting: React.FC = () => {
             Save Forecast
           </button>
           <button
-            onClick={() => setShowAlertsSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-          >
-            <Bell className="w-4 h-4 mr-2" />
-            Alerts
-          </button>
-          <button
             onClick={() => setShowScenarioAuditSidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
@@ -1214,6 +1207,13 @@ const Forecasting: React.FC = () => {
           >
             <History className="w-4 h-4 mr-2" />
             Version History
+          </button>
+          <button
+            onClick={() => setShowAlertsSidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <Bell className="w-4 h-4 mr-2" />
+            Alerts
           </button>
           <button
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
