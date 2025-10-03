@@ -295,6 +295,14 @@ const CashFlow: React.FC = () => {
     return maxRevenue;
   }, []);
 
+  const displayScale = useMemo(() => {
+    if (!currentPeriodData) return maxRevenueForScale;
+
+    const currentRevenue = currentPeriodData.revenue;
+
+    return currentRevenue;
+  }, [currentPeriodData, maxRevenueForScale]);
+
   const summaryMetrics = useMemo(() => {
     if (!currentPeriodData) {
       return { cashInflow: 0, cashOutflow: 0, netCashFlow: 0 };
@@ -555,7 +563,7 @@ const CashFlow: React.FC = () => {
               const startPosition = getWaterfallPosition(index);
               const endPosition = getCalculatedValue(index);
               const displayValue = item.type === 'subtotal' || item.type === 'ending' ? endPosition : item.value;
-              const maxValue = maxRevenueForScale;
+              const maxValue = displayScale;
               const minValue = 0;
               const range = maxValue - minValue;
 
