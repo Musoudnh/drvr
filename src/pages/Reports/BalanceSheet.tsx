@@ -621,26 +621,26 @@ const BalanceSheet: React.FC = () => {
 
       {/* Financial Ratios */}
       <Card title="Key Financial Ratios">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
-            <p className="text-2xl font-bold text-[#4ADE80]">2.19</p>
-            <p className="text-sm text-gray-600 mt-1">Current Ratio</p>
-            <p className="text-xs text-gray-500">Industry avg: 1.85</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Current Ratio</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">2.19</p>
+            <p className="text-xs text-gray-500 mt-1">Industry avg: 1.85</p>
           </div>
-          <div className="text-center p-4 bg-[#3AB7BF]/10 rounded-lg">
-            <p className="text-2xl font-bold text-[#3AB7BF]">0.44</p>
-            <p className="text-sm text-gray-600 mt-1">Debt-to-Equity</p>
-            <p className="text-xs text-gray-500">Industry avg: 0.65</p>
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Debt-to-Equity</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">0.44</p>
+            <p className="text-xs text-gray-500 mt-1">Industry avg: 0.65</p>
           </div>
-          <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
-            <p className="text-2xl font-bold text-[#F59E0B]">56.2%</p>
-            <p className="text-sm text-gray-600 mt-1">Equity Ratio</p>
-            <p className="text-xs text-gray-500">Industry avg: 48.3%</p>
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Equity Ratio</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">56.2%</p>
+            <p className="text-xs text-gray-500 mt-1">Industry avg: 48.3%</p>
           </div>
-          <div className="text-center p-4 bg-[#8B5CF6]/10 rounded-lg">
-            <p className="text-2xl font-bold text-[#8B5CF6]">15.8%</p>
-            <p className="text-sm text-gray-600 mt-1">ROE</p>
-            <p className="text-xs text-gray-500">Industry avg: 12.4%</p>
+          <div className="p-4 bg-white border border-gray-200 rounded-lg">
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">ROE</p>
+            <p className="text-lg font-bold text-gray-900 mt-2">15.8%</p>
+            <p className="text-xs text-gray-500 mt-1">Industry avg: 12.4%</p>
           </div>
         </div>
       </Card>
