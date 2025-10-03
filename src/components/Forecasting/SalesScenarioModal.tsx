@@ -18,7 +18,9 @@ import {
   Zap,
   Info,
   Bot,
-  Send
+  Send,
+  Upload,
+  Paperclip
 } from 'lucide-react';
 import Button from '../UI/Button';
 import DriverImpactWaterfall from './DriverImpactWaterfall';
@@ -64,8 +66,9 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const [showDriverLibrary, setShowDriverLibrary] = useState(false);
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'drivers' | 'preview' | 'ai'>('overview');
-  const [aiMessages, setAiMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
+  const [aiMessages, setAiMessages] = useState<Array<{role: 'user' | 'assistant', content: string, file?: {name: string, size: number, type: string}}>>([]);
   const [aiInput, setAiInput] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const getIconComponent = (iconName: string) => {
     const icons: { [key: string]: any } = {
@@ -851,6 +854,9 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       Discuss your assumptions with AI to help build your sales drivers.
                       The AI can suggest parameters and help you think through your scenarios.
                     </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Upload files like spreadsheets, reports, or financial data for AI analysis.
+                    </p>
                   </div>
                 ) : (
                   aiMessages.map((msg, idx) => (
@@ -867,6 +873,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                             : 'bg-gray-100 text-gray-900'
                         }`}
                       >
+                        {msg.file && (
+                          <div className="flex items-center gap-2 mb-2 pb-2 border-b border-purple-500/30">
+                            <Paperclip className="w-4 h-4" />
+                            <div className="text-xs">
+                              <div className="font-medium">{msg.file.name}</div>
+                              <div className="opacity-80">{(msg.file.size / 1024).toFixed(1)} KB</div>
+                            </div>
+                          </div>
+                        )}
                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                       </div>
                     </div>
@@ -874,23 +889,73 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 )}
               </div>
               <div className="border-t border-gray-200 pt-4">
+                {uploadedFiles.length > 0 && (
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {uploadedFiles.map((file, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm"
+                      >
+                        <Paperclip className="w-4 h-4 text-purple-600" />
+                        <span className="text-purple-900 font-medium">{file.name}</span>
+                        <span className="text-purple-600">({(file.size / 1024).toFixed(1)} KB)</span>
+                        <button
+                          onClick={() => {
+                            setUploadedFiles(uploadedFiles.filter((_, i) => i !== idx));
+                          }}
+                          className="ml-2 text-purple-600 hover:text-purple-800"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="flex gap-2">
+                  <input
+                    type="file"
+                    id="ai-file-upload"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        setUploadedFiles([...uploadedFiles, ...Array.from(e.target.files)]);
+                      }
+                    }}
+                    className="hidden"
+                    accept=".csv,.xlsx,.xls,.pdf,.txt,.json"
+                    multiple
+                  />
+                  <button
+                    onClick={() => document.getElementById('ai-file-upload')?.click()}
+                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    title="Upload files"
+                  >
+                    <Upload className="w-5 h-5" />
+                  </button>
                   <input
                     type="text"
                     value={aiInput}
                     onChange={(e) => setAiInput(e.target.value)}
                     onKeyPress={(e) => {
-                      if (e.key === 'Enter' && aiInput.trim()) {
-                        const userMessage = aiInput.trim();
-                        setAiMessages([...aiMessages, { role: 'user', content: userMessage }]);
+                      if (e.key === 'Enter' && (aiInput.trim() || uploadedFiles.length > 0)) {
+                        const userMessage = aiInput.trim() || 'Uploaded files for review';
+                        const fileInfo = uploadedFiles.length > 0 ? {
+                          name: uploadedFiles[0].name,
+                          size: uploadedFiles[0].size,
+                          type: uploadedFiles[0].type
+                        } : undefined;
+
+                        setAiMessages([...aiMessages, { role: 'user', content: userMessage, file: fileInfo }]);
                         setAiInput('');
+                        setUploadedFiles([]);
 
                         setTimeout(() => {
                           setAiMessages(prev => [
                             ...prev,
                             {
                               role: 'assistant',
-                              content: `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
+                              content: fileInfo
+                                ? `I've analyzed your file "${fileInfo.name}". Based on the data, I can help you:\n\n• Extract key metrics and trends\n• Suggest appropriate driver parameters\n• Identify growth patterns\n• Recommend scenario assumptions\n\nWhat would you like to focus on?`
+                                : `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
                             }
                           ]);
                         }, 1000);
@@ -901,17 +966,26 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   />
                   <button
                     onClick={() => {
-                      if (aiInput.trim()) {
-                        const userMessage = aiInput.trim();
-                        setAiMessages([...aiMessages, { role: 'user', content: userMessage }]);
+                      if (aiInput.trim() || uploadedFiles.length > 0) {
+                        const userMessage = aiInput.trim() || 'Uploaded files for review';
+                        const fileInfo = uploadedFiles.length > 0 ? {
+                          name: uploadedFiles[0].name,
+                          size: uploadedFiles[0].size,
+                          type: uploadedFiles[0].type
+                        } : undefined;
+
+                        setAiMessages([...aiMessages, { role: 'user', content: userMessage, file: fileInfo }]);
                         setAiInput('');
+                        setUploadedFiles([]);
 
                         setTimeout(() => {
                           setAiMessages(prev => [
                             ...prev,
                             {
                               role: 'assistant',
-                              content: `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
+                              content: fileInfo
+                                ? `I've analyzed your file "${fileInfo.name}". Based on the data, I can help you:\n\n• Extract key metrics and trends\n• Suggest appropriate driver parameters\n• Identify growth patterns\n• Recommend scenario assumptions\n\nWhat would you like to focus on?`
+                                : `I can help you with that. Based on your input, I suggest:\n\n• Consider your historical growth rates\n• Factor in market conditions\n• Account for seasonal variations\n\nWhat specific driver parameters would you like to explore?`
                             }
                           ]);
                         }, 1000);
