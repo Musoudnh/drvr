@@ -1726,21 +1726,23 @@ const Forecasting: React.FC = () => {
                                                         scenario.description?.includes('driver') ||
                                                         (scenario.salesScenarioData !== undefined);
 
-                                                      console.log('Adjust clicked:', {
+                                                      console.log('🔧 Adjust clicked:', {
                                                         scenarioName: scenario.name,
                                                         isSalesDriverScenario: scenario.isSalesDriverScenario,
                                                         hasSalesScenarioData: !!scenario.salesScenarioData,
+                                                        salesScenarioData: scenario.salesScenarioData,
                                                         description: scenario.description,
-                                                        isSalesDriver
+                                                        isSalesDriver,
+                                                        fullScenario: scenario
                                                       });
 
                                                       if (isSalesDriver && scenario.salesScenarioData) {
-                                                        console.log('Opening Sales Scenario Modal with data:', scenario.salesScenarioData);
+                                                        console.log('✅ Opening Sales Scenario Modal with data:', scenario.salesScenarioData);
                                                         setEditingSalesScenario(scenario.salesScenarioData);
                                                         setSelectedGLCode(glCodes.find(gl => gl.code === scenario.glCode) || null);
                                                         setShowSalesScenarioModal(true);
                                                       } else {
-                                                        console.log('Opening Quick Scenario Modal');
+                                                        console.log('⚠️ Opening Quick Scenario Modal - salesScenarioData missing!');
                                                         setEditingScenario(scenario);
                                                         setGLScenarioForm({
                                                           ...glScenarioForm,
@@ -3075,6 +3077,15 @@ const Forecasting: React.FC = () => {
               isSalesDriverScenario: true,
               salesScenarioData: scenario
             };
+
+            console.log('💾 Saving Applied Scenario:', {
+              name: updatedAppliedScenario.name,
+              isSalesDriverScenario: updatedAppliedScenario.isSalesDriverScenario,
+              hasSalesScenarioData: !!updatedAppliedScenario.salesScenarioData,
+              driverCount: scenario.drivers?.length,
+              drivers: scenario.drivers,
+              fullScenario: updatedAppliedScenario
+            });
 
             if (isEditing) {
               setAppliedScenarios(prev => prev.map(s =>
