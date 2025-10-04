@@ -1802,34 +1802,30 @@ const Forecasting: React.FC = () => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
                                                       const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
                                                       const impact = getScenarioMonthImpact(scenario, month, glCode.code);
                                                       const hasActivity = isActive && impact !== 0;
 
                                                       return (
-                                                        <td key={index} className="py-3 px-2 text-center">
-                                                          <div className="space-y-1">
+                                                        <td key={index} className="py-3 text-center px-2">
+                                                          <div className="space-y-1 relative">
+                                                            <div className="rounded px-1 font-semibold text-sm" style={{ height: '20px' }}></div>
                                                             <div
-                                                              className="rounded transition-all flex items-center justify-center text-sm font-semibold"
+                                                              className="text-sm font-medium rounded px-1 py-0.5 flex items-center justify-center"
                                                               style={{
-                                                                height: '48px',
                                                                 backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
-                                                                boxSizing: 'border-box',
-                                                                padding: '8px'
+                                                                color: hasActivity ? 'white' : 'transparent',
+                                                                minHeight: '24px'
                                                               }}
                                                               title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
                                                             >
-                                                              {hasActivity && (
-                                                                <span className="text-white whitespace-nowrap">
-                                                                  {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
-                                                                </span>
-                                                              )}
+                                                              {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
                                                             </div>
+                                                            <div className="text-sm font-medium" style={{ height: '20px' }}></div>
                                                           </div>
                                                         </td>
                                                       );
                                                     })}
-                                                    <td className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]"></td>
+                                                    <td className="py-3 px-2 text-sm text-center border-l border-gray-300"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
