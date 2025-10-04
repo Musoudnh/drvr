@@ -277,8 +277,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative" style={{ height: '400px' }}>
-          <div className="absolute left-0 top-0 bottom-8 flex flex-col justify-between text-xs text-gray-500 pr-2">
+        <div className="relative mb-8" style={{ height: '300px' }}>
+          <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-500 pr-2">
             <span>{formatCurrency(maxValue)}</span>
             <span>{formatCurrency(maxValue * 0.75)}</span>
             <span>{formatCurrency(maxValue * 0.5)}</span>
@@ -286,16 +286,16 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <span>$0</span>
           </div>
 
-          <div className="absolute left-12 right-0 top-0 bottom-0">
+          <div className="absolute left-12 right-0 top-0" style={{ height: 'calc(100% - 24px)' }}>
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-end pb-8">
+              <div className="absolute inset-0 flex items-end">
                 {monthlyData.map((data, index) => (
                   <div key={index} className="flex-1 flex flex-col items-center justify-end group px-1">
                     <div
-                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative z-10"
-                      style={{ height: `${data.actual * scale}%`, minHeight: '2px' }}
+                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
+                      style={{ height: `${data.actual * scale}%`, minHeight: '4px' }}
                     >
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50">
                         {formatCurrency(data.actual)}
                       </div>
                     </div>
@@ -303,7 +303,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 ))}
               </div>
 
-              <svg className="absolute inset-0 pointer-events-none z-20" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ paddingBottom: '32px' }}>
+              <svg className="absolute inset-0 pointer-events-none overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
                 <path
                   d={getBudgetPathD(monthlyData)}
                   fill="none"
@@ -362,15 +362,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   );
                 })}
               </svg>
-
-              <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-600 font-medium z-30">
-                {monthlyData.map((data, index) => (
-                  <div key={index} className="flex-1 text-center">
-                    {data.month}
-                  </div>
-                ))}
-              </div>
             </div>
+          </div>
+
+          <div className="absolute left-12 right-0 bottom-0 flex justify-between text-xs text-gray-600 font-medium">
+            {monthlyData.map((data, index) => (
+              <div key={index} className="flex-1 text-center">
+                {data.month}
+              </div>
+            ))}
           </div>
         </div>
 
