@@ -292,10 +292,10 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 {monthlyData.map((data, index) => (
                   <div key={index} className="flex-1 flex flex-col items-center justify-end group px-1">
                     <div
-                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
-                      style={{ height: `${data.actual * scale}%` }}
+                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative z-10"
+                      style={{ height: `${data.actual * scale}%`, minHeight: '2px' }}
                     >
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-20">
                         {formatCurrency(data.actual)}
                       </div>
                     </div>
@@ -303,12 +303,12 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 ))}
               </div>
 
-              <svg className="absolute inset-0 pointer-events-none" style={{ paddingBottom: '32px' }}>
+              <svg className="absolute inset-0 pointer-events-none z-20" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ paddingBottom: '32px' }}>
                 <path
                   d={getBudgetPathD(monthlyData)}
                   fill="none"
                   stroke="#7B68EE"
-                  strokeWidth="3"
+                  strokeWidth="0.5"
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
@@ -318,13 +318,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   return (
                     <circle
                       key={`budget-${index}`}
-                      cx={`${x}%`}
-                      cy={`${y}%`}
-                      r="4"
+                      cx={x}
+                      cy={y}
+                      r="0.8"
                       fill="#7B68EE"
                       stroke="white"
-                      strokeWidth="2"
-                      className="cursor-pointer hover:r-6 transition-all"
+                      strokeWidth="0.3"
+                      vectorEffect="non-scaling-stroke"
+                      className="cursor-pointer"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       <title>{data.month} Budget: {formatCurrency(data.budget)}</title>
                     </circle>
@@ -335,7 +337,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   d={getPriorYearPathD(monthlyData)}
                   fill="none"
                   stroke="#3B82F6"
-                  strokeWidth="3"
+                  strokeWidth="0.5"
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
@@ -345,13 +347,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   return (
                     <circle
                       key={`py-${index}`}
-                      cx={`${x}%`}
-                      cy={`${y}%`}
-                      r="4"
+                      cx={x}
+                      cy={y}
+                      r="0.8"
                       fill="#3B82F6"
                       stroke="white"
-                      strokeWidth="2"
-                      className="cursor-pointer hover:r-6 transition-all"
+                      strokeWidth="0.3"
+                      vectorEffect="non-scaling-stroke"
+                      className="cursor-pointer"
+                      style={{ pointerEvents: 'auto' }}
                     >
                       <title>{data.month} Prior Year: {formatCurrency(data.priorYear)}</title>
                     </circle>
@@ -359,7 +363,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 })}
               </svg>
 
-              <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-600 font-medium">
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-600 font-medium z-30">
                 {monthlyData.map((data, index) => (
                   <div key={index} className="flex-1 text-center">
                     {data.month}
