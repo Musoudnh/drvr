@@ -107,28 +107,62 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
           <p className="text-gray-500">No projects found</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-3">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
               className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
               onClick={() => onEdit(project)}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-[#101010] mb-1">{project.header}</h3>
-                  <div className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${getStatusColor(project.status)}`}>
-                    {getStatusIcon(project.status)}
-                    {project.status}
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1 flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className="font-semibold text-[#101010]">{project.header}</h3>
+                      <div className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border ${getStatusColor(project.status)}`}>
+                        {getStatusIcon(project.status)}
+                        {project.status}
+                      </div>
+                      {project.scenario !== 'Base Case' && (
+                        <span className="text-xs font-medium text-[#7B68EE] px-2 py-1 bg-[#7B68EE]/10 rounded">{project.scenario}</span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 line-clamp-1">{project.description}</p>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-sm text-gray-600">
+                    {project.department && (
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Dept:</span>
+                        <span>{project.department}</span>
+                      </div>
+                    )}
+                    {project.completion_date && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(project.completion_date).toLocaleDateString()}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="w-4 h-4" />
+                      <span>${project.budget_total.toLocaleString()}</span>
+                    </div>
+                    {project.assigned_users.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4" />
+                        <span>{project.assigned_users.length}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
+
                 <div className="relative">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setMenuOpen(menuOpen === project.id ? null : project.id);
                     }}
-                    className="p-1 hover:bg-gray-100 rounded"
+                    className="p-2 hover:bg-gray-100 rounded"
                   >
                     <MoreVertical className="w-4 h-4 text-gray-400" />
                   </button>
@@ -160,39 +194,6 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
                   )}
                 </div>
               </div>
-
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">{project.description}</p>
-
-              <div className="space-y-2 text-sm">
-                {project.department && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <span className="font-medium">Department:</span>
-                    <span>{project.department}</span>
-                  </div>
-                )}
-                {project.completion_date && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Calendar className="w-3 h-3" />
-                    <span>{new Date(project.completion_date).toLocaleDateString()}</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2 text-gray-600">
-                  <DollarSign className="w-3 h-3" />
-                  <span>Budget: ${project.budget_total.toLocaleString()}</span>
-                </div>
-                {project.assigned_users.length > 0 && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Users className="w-3 h-3" />
-                    <span>{project.assigned_users.length} assigned</span>
-                  </div>
-                )}
-              </div>
-
-              {project.scenario !== 'Base Case' && (
-                <div className="mt-3 pt-3 border-t border-gray-200">
-                  <span className="text-xs font-medium text-[#7B68EE]">{project.scenario}</span>
-                </div>
-              )}
             </div>
           ))}
         </div>
