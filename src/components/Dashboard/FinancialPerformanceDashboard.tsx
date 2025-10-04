@@ -61,7 +61,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
   const getPriorYearPathD = (data: MonthlyData[]): string => {
     const points = data.map((d, index) => {
-      const x = (index / (data.length - 1)) * 100;
+      const barWidth = 100 / data.length;
+      const x = (index * barWidth) + (barWidth / 2);
       const y = 100 - (d.priorYear * scale);
       return { x, y };
     });
@@ -83,7 +84,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
   const getBudgetPathD = (data: MonthlyData[]): string => {
     const points = data.map((d, index) => {
-      const x = (index / (data.length - 1)) * 100;
+      const barWidth = 100 / data.length;
+      const x = (index * barWidth) + (barWidth / 2);
       const y = 100 - (d.budget * scale);
       return { x, y };
     });
@@ -286,9 +288,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
           <div className="absolute left-12 right-0 top-0 bottom-0">
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-end justify-between pb-8 gap-2">
+              <div className="absolute inset-0 flex items-end pb-8">
                 {monthlyData.map((data, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center justify-end group">
+                  <div key={index} className="flex-1 flex flex-col items-center justify-end group px-1">
                     <div
                       className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
                       style={{ height: `${data.actual * scale}%` }}
@@ -310,7 +312,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
-                  const x = (index / (monthlyData.length - 1)) * 100;
+                  const barWidth = 100 / monthlyData.length;
+                  const x = (index * barWidth) + (barWidth / 2);
                   const y = 100 - (data.budget * scale);
                   return (
                     <circle
@@ -336,7 +339,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
-                  const x = (index / (monthlyData.length - 1)) * 100;
+                  const barWidth = 100 / monthlyData.length;
+                  const x = (index * barWidth) + (barWidth / 2);
                   const y = 100 - (data.priorYear * scale);
                   return (
                     <circle
