@@ -1508,10 +1508,10 @@ const Forecasting: React.FC = () => {
                               </td>
                               {dateViewMode === 'months' && glIndex === 0 && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top">
-                                  <div className="flex flex-col gap-1">
-                                    <div>Budget:</div>
-                                    <div>Act:</div>
-                                    <div>Change:</div>
+                                  <div className="space-y-1">
+                                    <div className="h-[20px] flex items-center">Budget:</div>
+                                    <div className="h-[18px] flex items-center">Act:</div>
+                                    <div className="h-[18px] flex items-center">Change:</div>
                                   </div>
                                 </td>
                               )}
