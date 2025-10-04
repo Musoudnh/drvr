@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2, Calendar, DollarSign, Users, Search, ChevronDown } from 'lucide-react';
+import { X, Plus, Trash2, Users, Search, ChevronDown } from 'lucide-react';
 import type { RoadmapProject, RoadmapMilestone, ProjectStatus, ProjectScenario } from '../../types/roadmap';
 import { roadmapService } from '../../services/roadmapService';
 import { useAuth } from '../../context/AuthContext';
@@ -39,7 +39,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
     department: '',
     status: 'Draft' as ProjectStatus,
     scenario: 'Base Case' as ProjectScenario,
-    gl_accounts: [] as string[],
     assigned_users: [] as string[],
     budget_total: 0
   });
@@ -58,6 +57,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
   const [glSearchTerm, setGlSearchTerm] = useState('');
   const [userSearchTerm, setUserSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [departmentDropdownOpen, setDepartmentDropdownOpen] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [scenarioDropdownOpen, setScenarioDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    loadGLAccounts();
+    loadTeamMembers();
+  }, []);
 
   useEffect(() => {
     if (project) {
@@ -68,14 +75,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
         department: project.department,
         status: project.status,
         scenario: project.scenario,
-        gl_accounts: project.gl_accounts,
         assigned_users: project.assigned_users,
         budget_total: project.budget_total
       });
       loadMilestones(project.id);
     }
-    loadGLAccounts();
-    loadTeamMembers();
   }, [project]);
 
   useEffect(() => {
@@ -145,7 +149,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
       if (project) {
         await roadmapService.updateProject(project.id, {
           ...formData,
-          gl_accounts
+          gl_accounts,
+          actual_total: project.actual_total
         });
       } else {
         await roadmapService.createProject({
@@ -160,6 +165,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
       onSave();
     } catch (error) {
       console.error('Error saving project:', error);
+      alert('Failed to save project. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -311,19 +317,47 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Department
               </label>
-              <select
-                value={formData.department}
-                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-              >
-                <option value="">Select Department</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="R&D">R&D</option>
-                <option value="Operations">Operations</option>
-                <option value="Finance">Finance</option>
-                <option value="HR">HR</option>
-              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setDepartmentDropdownOpen(!departmentDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{formData.department || 'Select Department'}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {departmentDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1">
+                    <div className="flex flex-col gap-1">
+                      {[
+                        { value: '', label: 'Select Department' },
+                        { value: 'Sales', label: 'Sales' },
+                        { value: 'Marketing', label: 'Marketing' },
+                        { value: 'R&D', label: 'R&D' },
+                        { value: 'Operations', label: 'Operations' },
+                        { value: 'Finance', label: 'Finance' },
+                        { value: 'HR', label: 'HR' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, department: option.value });
+                            setDepartmentDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            formData.department === option.value
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -332,32 +366,88 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Status
               </label>
-              <select
-                value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as ProjectStatus })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-              >
-                <option value="Draft">Draft</option>
-                <option value="Pending Approval">Pending Approval</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Completed">Completed</option>
-              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{formData.status}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {statusDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1">
+                    <div className="flex flex-col gap-1">
+                      {[
+                        { value: 'Draft', label: 'Draft' },
+                        { value: 'Pending Approval', label: 'Pending Approval' },
+                        { value: 'Approved', label: 'Approved' },
+                        { value: 'Rejected', label: 'Rejected' },
+                        { value: 'Completed', label: 'Completed' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, status: option.value as ProjectStatus });
+                            setStatusDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            formData.status === option.value
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Scenario
               </label>
-              <select
-                value={formData.scenario}
-                onChange={(e) => setFormData({ ...formData, scenario: e.target.value as ProjectScenario })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-              >
-                <option value="Base Case">Base Case</option>
-                <option value="Best Case">Best Case</option>
-                <option value="Downside Case">Downside Case</option>
-              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setScenarioDropdownOpen(!scenarioDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{formData.scenario}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                {scenarioDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1">
+                    <div className="flex flex-col gap-1">
+                      {[
+                        { value: 'Base Case', label: 'Base Case' },
+                        { value: 'Best Case', label: 'Best Case' },
+                        { value: 'Downside Case', label: 'Downside Case' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, scenario: option.value as ProjectScenario });
+                            setScenarioDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            formData.scenario === option.value
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
