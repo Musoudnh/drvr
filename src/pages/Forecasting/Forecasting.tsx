@@ -1695,44 +1695,6 @@ const Forecasting: React.FC = () => {
                               )}
                             </tr>
 
-                            {/* Gantt Chart Row - Shows active scenarios as bars */}
-                            {dateViewMode === 'months' && appliedScenarios.filter(s => s.glCode === glCode.code && s.isActive).length > 0 && (
-                              <tr className="bg-white">
-                                <td className="py-0 px-4"></td>
-                                <td className="py-0 px-2"></td>
-                                {datePeriods.map((period, periodIndex) => {
-                                  const periodKey = `${period} ${selectedYear}`;
-                                  const activeScenarios = appliedScenarios.filter(s =>
-                                    s.glCode === glCode.code &&
-                                    s.isActive &&
-                                    getMonthIndex(s.startMonth) <= periodIndex &&
-                                    getMonthIndex(s.endMonth) >= periodIndex
-                                  );
-
-                                  return (
-                                    <td key={periodIndex} className="py-1 px-2 text-center">
-                                      {activeScenarios.length > 0 ? (
-                                        <div className="flex flex-col gap-0.5">
-                                          {activeScenarios.map(scenario => {
-                                            const impact = getScenarioMonthImpact(scenario, period, glCode.code);
-                                            return (
-                                              <div
-                                                key={scenario.id}
-                                                className="h-2 rounded bg-[#4ADE80] w-full"
-                                                title={`${scenario.name}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}`}
-                                              />
-                                            );
-                                          })}
-                                        </div>
-                                      ) : (
-                                        <div className="h-2 w-full"></div>
-                                      )}
-                                    </td>
-                                  );
-                                })}
-                                <td className="py-1 px-2"></td>
-                              </tr>
-                            )}
 
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
@@ -1811,6 +1773,28 @@ const Forecasting: React.FC = () => {
                                               </button>
                                             </div>
 
+                                            {/* Gantt Bar for this scenario */}
+                                            <div className="mt-2 flex items-center gap-1">
+                                              {months.map((month, index) => {
+                                                const startIndex = getMonthIndex(scenario.startMonth);
+                                                const endIndex = getMonthIndex(scenario.endMonth);
+                                                const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                const showBar = isActive || isInactive;
+
+                                                return (
+                                                  <div
+                                                    key={index}
+                                                    className="flex-1 h-2 rounded transition-all"
+                                                    style={{
+                                                      backgroundColor: isActive ? '#4ADE80' : isInactive ? '#D1D5DB' : 'transparent'
+                                                    }}
+                                                    title={showBar ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : ''}
+                                                  />
+                                                );
+                                              })}
+                                            </div>
 
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -2310,9 +2294,18 @@ const Forecasting: React.FC = () => {
                       onChange={(e) => setSidePanelForm({...sidePanelForm, startMonth: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                     >
-                      {months.map(month => (
-                        <option key={month} value={month}>{month}</option>
-                      ))}
+                      {months.map(month => {
+                        const monthData = forecastData.find(item =>
+                          item.glCode === editingScenario?.glCode &&
+                          item.month === `${month} ${selectedYear}`
+                        );
+                        const isActualized = monthData?.actualAmount !== undefined;
+                        return (
+                          <option key={month} value={month} disabled={isActualized}>
+                            {month}{isActualized ? ' (Actualized)' : ''}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div>
@@ -2322,9 +2315,18 @@ const Forecasting: React.FC = () => {
                       onChange={(e) => setSidePanelForm({...sidePanelForm, endMonth: e.target.value})}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                     >
-                      {months.map(month => (
-                        <option key={month} value={month}>{month}</option>
-                      ))}
+                      {months.map(month => {
+                        const monthData = forecastData.find(item =>
+                          item.glCode === editingScenario?.glCode &&
+                          item.month === `${month} ${selectedYear}`
+                        );
+                        const isActualized = monthData?.actualAmount !== undefined;
+                        return (
+                          <option key={month} value={month} disabled={isActualized}>
+                            {month}{isActualized ? ' (Actualized)' : ''}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
