@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Plus, Trash2, Users, Search, ChevronDown } from 'lucide-react';
+import { X, Plus, Trash2, Users, Search, ChevronDown, Calendar } from 'lucide-react';
 import type { RoadmapProject, RoadmapMilestone, ProjectStatus, ProjectScenario } from '../../types/roadmap';
 import { roadmapService } from '../../services/roadmapService';
 import { useAuth } from '../../context/AuthContext';
@@ -800,9 +800,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <button
               type="button"
-              onClick={() => {}}
-              className="px-4 py-2 bg-white text-[#7B68EE] border border-[#7B68EE] rounded-lg hover:bg-[#7B68EE] hover:text-white transition-colors"
+              onClick={() => {
+                console.log('Schedule project');
+              }}
+              className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2"
             >
+              <Calendar className="w-4 h-4" />
               Schedule
             </button>
             <div className="flex gap-3">
