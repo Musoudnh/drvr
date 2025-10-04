@@ -4,6 +4,7 @@ import type { RoadmapProject, RoadmapMilestone, ProjectStatus, ProjectScenario }
 import { roadmapService } from '../../services/roadmapService';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
+import BudgetScheduler from './BudgetScheduler';
 
 interface ProjectModalProps {
   project: RoadmapProject | null;
@@ -64,6 +65,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
   const [departmentDropdownOpen, setDepartmentDropdownOpen] = useState(false);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const [scenarioDropdownOpen, setScenarioDropdownOpen] = useState(false);
+  const [showBudgetScheduler, setShowBudgetScheduler] = useState(false);
 
   useEffect(() => {
     loadGLAccounts();
@@ -800,9 +802,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <button
               type="button"
-              onClick={() => {
-                console.log('Schedule project');
-              }}
+              onClick={() => setShowBudgetScheduler(true)}
               className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-2"
             >
               <Calendar className="w-4 h-4" />
@@ -827,6 +827,20 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
         </form>
       </div>
+
+      {showBudgetScheduler && (
+        <BudgetScheduler
+          projectId={project?.id}
+          fiscalYear={formData.fiscal_year}
+          totalBudget={formData.budget_total}
+          onClose={() => setShowBudgetScheduler(false)}
+          onSave={(allocations, ganttRows) => {
+            console.log('Budget allocations:', allocations);
+            console.log('Gantt rows:', ganttRows);
+            setShowBudgetScheduler(false);
+          }}
+        />
+      )}
     </div>
   );
 };
