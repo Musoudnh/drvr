@@ -318,6 +318,22 @@ export const roadmapService = {
     return data;
   },
 
+  async updateIdeaStatus(ideaId: string, status: string, adminFeedback: string = ''): Promise<RoadmapIdea> {
+    const { data, error } = await supabase
+      .from('roadmap_ideas')
+      .update({
+        status,
+        admin_feedback: adminFeedback,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', ideaId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
   async convertIdeaToProject(ideaId: string, userId: string): Promise<RoadmapProject> {
     const { data: idea, error: fetchError } = await supabase
       .from('roadmap_ideas')

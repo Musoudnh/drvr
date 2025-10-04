@@ -2,7 +2,7 @@ export type ProjectStatus = 'Draft' | 'Pending Approval' | 'Approved' | 'Rejecte
 export type ProjectScenario = 'Base Case' | 'Best Case' | 'Downside Case';
 export type MilestoneStatus = 'Not Started' | 'In Progress' | 'Completed' | 'Blocked';
 export type ApprovalAction = 'approved' | 'rejected' | 'submitted';
-export type IdeaStatus = 'pitched' | 'converted' | 'rejected';
+export type IdeaStatus = 'pitched' | 'converted' | 'rejected' | 'more_input_needed';
 
 export interface RoadmapProject {
   id: string;
@@ -73,6 +73,7 @@ export interface RoadmapIdea {
   upvoted_by: string[];
   status: IdeaStatus;
   converted_to_project_id: string | null;
+  admin_feedback: string;
   created_at: string;
   updated_at: string;
 }
