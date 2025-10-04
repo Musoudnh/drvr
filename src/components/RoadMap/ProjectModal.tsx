@@ -834,9 +834,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           fiscalYear={formData.fiscal_year}
           totalBudget={formData.budget_total}
           onClose={() => setShowBudgetScheduler(false)}
-          onSave={(allocations, ganttRows) => {
+          onSave={(allocations) => {
             console.log('Budget allocations:', allocations);
-            console.log('Gantt rows:', ganttRows);
             setShowBudgetScheduler(false);
           }}
         />
