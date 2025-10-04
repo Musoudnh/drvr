@@ -87,6 +87,30 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const [aiInput, setAiInput] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
+  const [startMonthDropdownOpen, setStartMonthDropdownOpen] = useState(false);
+  const [endMonthDropdownOpen, setEndMonthDropdownOpen] = useState(false);
+  const [startYearDropdownOpen, setStartYearDropdownOpen] = useState(false);
+  const startMonthDropdownRef = React.useRef<HTMLDivElement>(null);
+  const endMonthDropdownRef = React.useRef<HTMLDivElement>(null);
+  const startYearDropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (startMonthDropdownRef.current && !startMonthDropdownRef.current.contains(event.target as Node)) {
+        setStartMonthDropdownOpen(false);
+      }
+      if (endMonthDropdownRef.current && !endMonthDropdownRef.current.contains(event.target as Node)) {
+        setEndMonthDropdownOpen(false);
+      }
+      if (startYearDropdownRef.current && !startYearDropdownRef.current.contains(event.target as Node)) {
+        setStartYearDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const getIconComponent = (iconName: string) => {
     const icons: { [key: string]: any } = {
       TrendingUp,
@@ -1312,54 +1336,131 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
-                  <select
-                    value={startMonth}
-                    onChange={(e) => setStartMonth(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  >
-                    {MONTHS.map(m => {
-                      const monthData = forecastData.find((item: any) =>
-                        item.glCode === glCode &&
-                        item.month === `${m} ${selectedYear}`
-                      );
-                      const isActualized = monthData?.actualAmount !== undefined;
-                      return (
-                        <option key={m} value={m} disabled={isActualized}>
-                          {m}{isActualized ? ' (Actualized)' : ''}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <div className="relative" ref={startMonthDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setStartMonthDropdownOpen(!startMonthDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{startMonth}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {startMonthDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                        <div className="flex flex-col gap-1">
+                          {MONTHS.map(m => {
+                            const monthData = forecastData.find((item: any) =>
+                              item.glCode === glCode &&
+                              item.month === `${m} ${selectedYear}`
+                            );
+                            const isActualized = monthData?.actualAmount !== undefined;
+                            return (
+                              <button
+                                key={m}
+                                type="button"
+                                disabled={isActualized}
+                                onClick={() => {
+                                  setStartMonth(m);
+                                  setStartMonthDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                  startMonth === m
+                                    ? 'bg-[#7B68EE] text-white'
+                                    : isActualized
+                                    ? 'text-gray-400 cursor-not-allowed'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {m}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
-                  <select
-                    value={endMonth}
-                    onChange={(e) => setEndMonth(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  >
-                    {MONTHS.map(m => {
-                      const monthData = forecastData.find((item: any) =>
-                        item.glCode === glCode &&
-                        item.month === `${m} ${selectedYear}`
-                      );
-                      const isActualized = monthData?.actualAmount !== undefined;
-                      return (
-                        <option key={m} value={m} disabled={isActualized}>
-                          {m}{isActualized ? ' (Actualized)' : ''}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <div className="relative" ref={endMonthDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setEndMonthDropdownOpen(!endMonthDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{endMonth}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {endMonthDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                        <div className="flex flex-col gap-1">
+                          {MONTHS.map(m => {
+                            const monthData = forecastData.find((item: any) =>
+                              item.glCode === glCode &&
+                              item.month === `${m} ${selectedYear}`
+                            );
+                            const isActualized = monthData?.actualAmount !== undefined;
+                            return (
+                              <button
+                                key={m}
+                                type="button"
+                                disabled={isActualized}
+                                onClick={() => {
+                                  setEndMonth(m);
+                                  setEndMonthDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                  endMonth === m
+                                    ? 'bg-[#7B68EE] text-white'
+                                    : isActualized
+                                    ? 'text-gray-400 cursor-not-allowed'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {m}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-                  <input
-                    type="number"
-                    value={startYear}
-                    onChange={(e) => setStartYear(parseInt(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  />
+                  <div className="relative" ref={startYearDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setStartYearDropdownOpen(!startYearDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{startYear}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {startYearDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                        <div className="flex flex-col gap-1">
+                          {[2024, 2025, 2026, 2027].map((year) => (
+                            <button
+                              key={year}
+                              type="button"
+                              onClick={() => {
+                                setStartYear(year);
+                                setStartYearDropdownOpen(false);
+                              }}
+                              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                startYear === year
+                                  ? 'bg-[#7B68EE] text-white'
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                            >
+                              {year}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
