@@ -1,6 +1,7 @@
 import React from 'react';
 import { TrendingUp, DollarSign, Users, AlertCircle, BarChart3, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import Card from '../../components/UI/Card';
+import FinancialPerformanceDashboard from '../../components/Dashboard/FinancialPerformanceDashboard';
 
 const CompanyDashboard: React.FC = () => {
   const metrics = [
@@ -31,6 +32,9 @@ const CompanyDashboard: React.FC = () => {
           </Card>
         ))}
       </div>
+
+      {/* Financial Performance Dashboard */}
+      <FinancialPerformanceDashboard />
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 gap-4">
