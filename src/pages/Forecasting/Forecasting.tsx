@@ -846,7 +846,7 @@ const Forecasting: React.FC = () => {
                   type="number"
                   value={glScenarioForm.numberOfTrips}
                   onChange={(e) => setGLScenarioForm({...glScenarioForm, numberOfTrips: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 />
               </div>
               <div>
@@ -855,7 +855,7 @@ const Forecasting: React.FC = () => {
                   type="number"
                   value={glScenarioForm.averageTripCost}
                   onChange={(e) => setGLScenarioForm({...glScenarioForm, averageTripCost: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 />
               </div>
             </div>
@@ -870,7 +870,7 @@ const Forecasting: React.FC = () => {
               <select
                 value={glScenarioForm.adjustmentType}
                 onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
               >
                 <option value="percentage">Percentage Change</option>
                 <option value="fixed">Fixed Amount</option>
@@ -1046,7 +1046,7 @@ const Forecasting: React.FC = () => {
                 type="number"
                 value={glScenarioForm.adjustmentValue}
                 onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '100'}
               />
             </div>
@@ -1945,7 +1945,7 @@ const Forecasting: React.FC = () => {
                  type="text"
                  value={glScenarioForm.title}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  placeholder="e.g., Q2 Marketing Campaign"
                />
              </div>
@@ -1955,7 +1955,7 @@ const Forecasting: React.FC = () => {
                <textarea
                  value={glScenarioForm.description}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  rows={3}
                  placeholder="Describe the scenario and its impact"
                />
@@ -2102,7 +2102,7 @@ const Forecasting: React.FC = () => {
                  type="text"
                  value={glScenarioForm.title}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  placeholder="e.g., Q2 Marketing Campaign"
                />
              </div>
@@ -2112,7 +2112,7 @@ const Forecasting: React.FC = () => {
                <textarea
                  value={glScenarioForm.description}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  rows={3}
                  placeholder="Describe the scenario and its impact"
                />
@@ -2271,7 +2271,7 @@ const Forecasting: React.FC = () => {
                   <select
                     value={sidePanelForm.selectedGLCode}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, selectedGLCode: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent appearance-none bg-white"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent appearance-none"
                   >
                     <option value="">Choose GL Account...</option>
                     {glCodes.map(glCode => (
@@ -2292,7 +2292,7 @@ const Forecasting: React.FC = () => {
                     type="text"
                     value={sidePanelForm.scenarioName}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, scenarioName: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     placeholder="e.g., Q2 Marketing Campaign"
                   />
                 </div>
@@ -2302,7 +2302,7 @@ const Forecasting: React.FC = () => {
                   <textarea
                     value={sidePanelForm.description}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, description: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     rows={3}
                     placeholder="Describe the scenario and its business context"
                   />
@@ -2373,7 +2373,7 @@ const Forecasting: React.FC = () => {
                   <select
                     value={sidePanelForm.adjustmentType}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   >
                     <option value="percentage">Percentage Change (%)</option>
                     <option value="fixed">Fixed Amount ($)</option>
@@ -2388,7 +2388,7 @@ const Forecasting: React.FC = () => {
                     type="number"
                     value={sidePanelForm.adjustmentValue}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     step={sidePanelForm.adjustmentType === 'percentage' ? '0.1' : '100'}
                     placeholder={sidePanelForm.adjustmentType === 'percentage' ? '15.5' : '50000'}
                   />
@@ -2570,7 +2570,7 @@ const Forecasting: React.FC = () => {
                 <select
                   value={bulkAdjustment.type}
                   onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, type: e.target.value as 'percentage' | 'fixed' | 'set' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="percentage">Percentage Change</option>
                   <option value="fixed">Fixed Amount Change</option>
@@ -2588,7 +2588,7 @@ const Forecasting: React.FC = () => {
                   type="number"
                   value={bulkAdjustment.value}
                   onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, value: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   placeholder="Enter value"
                   step={bulkAdjustment.type === 'percentage' ? '0.1' : '1'}
                 />
