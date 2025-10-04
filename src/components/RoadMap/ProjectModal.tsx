@@ -141,15 +141,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
-      console.error('No user found');
       alert('You must be logged in to save a project.');
       return;
     }
 
-    console.log('Starting save...');
-    console.log('User:', user);
-    console.log('Form data:', formData);
-    console.log('Budget lines:', budgetLines);
+    console.log('=== SAVE DEBUG ===');
+    console.log('user.id:', user.id, 'type:', typeof user.id);
+    console.log('Full user object:', JSON.stringify(user, null, 2));
 
     setLoading(true);
     try {
