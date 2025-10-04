@@ -585,7 +585,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="fixed right-0 top-0 bottom-0 z-50 w-[900px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+      <div className="fixed right-0 top-0 bottom-0 z-50 w-[600px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
