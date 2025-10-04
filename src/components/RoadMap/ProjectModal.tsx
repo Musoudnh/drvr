@@ -140,32 +140,53 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user) {
+      console.error('No user found');
+      alert('You must be logged in to save a project.');
+      return;
+    }
+
+    console.log('Starting save...');
+    console.log('User:', user);
+    console.log('Form data:', formData);
+    console.log('Budget lines:', budgetLines);
 
     setLoading(true);
     try {
       const gl_accounts = budgetLines.map(line => line.gl_code);
+      console.log('GL accounts:', gl_accounts);
 
       if (project) {
-        await roadmapService.updateProject(project.id, {
+        console.log('Updating existing project:', project.id);
+        const result = await roadmapService.updateProject(project.id, {
           ...formData,
           gl_accounts,
           actual_total: project.actual_total
         });
+        console.log('Update result:', result);
       } else {
-        await roadmapService.createProject({
+        console.log('Creating new project');
+        const projectData = {
           ...formData,
           gl_accounts,
           user_id: user.id,
           actual_total: 0,
           attachments: [],
           version: 1
-        });
+        };
+        console.log('Project data to save:', projectData);
+        const result = await roadmapService.createProject(projectData);
+        console.log('Create result:', result);
       }
+      console.log('Save successful, calling onSave()');
       onSave();
     } catch (error) {
       console.error('Error saving project:', error);
-      alert('Failed to save project. Please try again.');
+      if (error instanceof Error) {
+        alert(`Failed to save project: ${error.message}`);
+      } else {
+        alert('Failed to save project. Please check console for details.');
+      }
     } finally {
       setLoading(false);
     }
