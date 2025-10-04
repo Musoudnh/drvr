@@ -159,16 +159,30 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
       if (project) {
         console.log('Updating existing project:', project.id);
         const result = await roadmapService.updateProject(project.id, {
-          ...formData,
+          header: formData.header,
+          description: formData.description,
+          completion_date: formData.completion_date || null,
+          department: formData.department,
+          status: formData.status,
+          scenario: formData.scenario,
           gl_accounts,
+          assigned_users: formData.assigned_users,
+          budget_total: formData.budget_total,
           actual_total: project.actual_total
         });
         console.log('Update result:', result);
       } else {
         console.log('Creating new project');
         const projectData = {
-          ...formData,
+          header: formData.header,
+          description: formData.description,
+          completion_date: formData.completion_date || null,
+          department: formData.department,
+          status: formData.status,
+          scenario: formData.scenario,
           gl_accounts,
+          assigned_users: formData.assigned_users,
+          budget_total: formData.budget_total,
           user_id: user.id,
           actual_total: 0,
           attachments: [],
