@@ -1588,7 +1588,7 @@ const Forecasting: React.FC = () => {
                                                 }
                                               }
                                             }}
-                                            className={isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}
+                                            className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
                                           >
                                             ${formatNumber(aggregatedAmount)}
                                           </span>
