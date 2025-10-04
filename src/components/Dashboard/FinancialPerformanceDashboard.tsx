@@ -215,34 +215,34 @@ const FinancialPerformanceDashboard: React.FC = () => {
               </button>
 
               {showColorSettings && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-50">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Customize Chart Colors</h4>
-                  <div className="space-y-3">
+                <div className="absolute right-0 top-full mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
+                  <h4 className="text-xs font-semibold text-gray-900 mb-2">Colors</h4>
+                  <div className="space-y-2">
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Actual Bar Color</label>
+                      <label className="block text-xs text-gray-600 mb-1">Actual Bar</label>
                       <input
                         type="color"
                         value={barColor}
                         onChange={(e) => setBarColor(e.target.value)}
-                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Budget Line Color</label>
+                      <label className="block text-xs text-gray-600 mb-1">Budget Line</label>
                       <input
                         type="color"
                         value={budgetLineColor}
                         onChange={(e) => setBudgetLineColor(e.target.value)}
-                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Prior Year Line Color</label>
+                      <label className="block text-xs text-gray-600 mb-1">Prior Year</label>
                       <input
                         type="color"
                         value={pyLineColor}
                         onChange={(e) => setPyLineColor(e.target.value)}
-                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
                       />
                     </div>
                   </div>
