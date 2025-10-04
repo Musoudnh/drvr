@@ -1809,7 +1809,7 @@ const Forecasting: React.FC = () => {
                                                         <td key={index} className="py-3 text-center px-2 min-w-[120px]">
                                                           <div className="space-y-1 relative">
                                                             <div></div>
-                                                            <div className={`text-sm font-medium rounded px-1 py-0.5 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`} style={{ marginLeft: '-4px' }}>
+                                                            <div className={`text-sm font-medium rounded px-1 py-0.5 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`} style={{ marginLeft: '-12px' }}>
                                                               {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
                                                             </div>
                                                             <div></div>
