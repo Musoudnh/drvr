@@ -188,10 +188,12 @@ const Forecasting: React.FC = () => {
   const [startYearDropdownOpen, setStartYearDropdownOpen] = useState(false);
   const [endMonthDropdownOpen, setEndMonthDropdownOpen] = useState(false);
   const [endYearDropdownOpen, setEndYearDropdownOpen] = useState(false);
+  const [adjustmentTypeDropdownOpen, setAdjustmentTypeDropdownOpen] = useState(false);
   const startMonthDropdownRef = useRef<HTMLDivElement>(null);
   const startYearDropdownRef = useRef<HTMLDivElement>(null);
   const endMonthDropdownRef = useRef<HTMLDivElement>(null);
   const endYearDropdownRef = useRef<HTMLDivElement>(null);
+  const adjustmentTypeDropdownRef = useRef<HTMLDivElement>(null);
 
   // Helper functions - moved before useState to avoid initialization errors
   const getBaseAmount = (glCode: string): number => {
@@ -619,6 +621,9 @@ const Forecasting: React.FC = () => {
       if (endYearDropdownRef.current && !endYearDropdownRef.current.contains(event.target as Node)) {
         setEndYearDropdownOpen(false);
       }
+      if (adjustmentTypeDropdownRef.current && !adjustmentTypeDropdownRef.current.contains(event.target as Node)) {
+        setAdjustmentTypeDropdownOpen(false);
+      }
       const formatDropdown = document.querySelector('.format-dropdown-container');
       if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
         setShowFormatDropdown(false);
@@ -888,14 +893,50 @@ const Forecasting: React.FC = () => {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
-              <select
-                value={glScenarioForm.adjustmentType}
-                onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-              >
-                <option value="percentage">Percentage Change</option>
-                <option value="fixed">Fixed Amount</option>
-              </select>
+              <div className="relative" ref={adjustmentTypeDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setAdjustmentTypeDropdownOpen(!adjustmentTypeDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{glScenarioForm.adjustmentType === 'percentage' ? 'Percentage Change' : 'Fixed Amount'}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {adjustmentTypeDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setGLScenarioForm({...glScenarioForm, adjustmentType: 'percentage'});
+                          setAdjustmentTypeDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          glScenarioForm.adjustmentType === 'percentage'
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        Percentage Change
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setGLScenarioForm({...glScenarioForm, adjustmentType: 'fixed'});
+                          setAdjustmentTypeDropdownOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          glScenarioForm.adjustmentType === 'fixed'
+                            ? 'bg-[#7B68EE] text-white'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        Fixed Amount
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             
             {/* Date Range Selection */}
@@ -1026,7 +1067,7 @@ const Forecasting: React.FC = () => {
                                           : 'text-gray-600 hover:bg-gray-100'
                                       }`}
                                     >
-                                      {month}{isActualized ? ' (Actualized)' : ''}
+                                      {month}
                                     </button>
                                   );
                                 })}
@@ -1107,7 +1148,7 @@ const Forecasting: React.FC = () => {
                                           : 'text-gray-600 hover:bg-gray-100'
                                       }`}
                                     >
-                                      {month}{isActualized ? ' (Actualized)' : ''}
+                                      {month}
                                     </button>
                                   );
                                 })}
