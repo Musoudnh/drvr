@@ -31,16 +31,11 @@ export const useNavigationPreferences = () => {
   const savePreferences = useCallback(async (newHiddenItems: string[]) => {
     if (!user?.id) return false;
 
-    console.log('🔵 Saving preferences:', newHiddenItems);
     setSaving(true);
     try {
       const success = await navigationPreferencesService.savePreferences(user.id, newHiddenItems);
       if (success) {
-        console.log('✅ Save successful, updating state with:', newHiddenItems);
         setHiddenItems([...newHiddenItems]);
-        console.log('✅ State updated');
-      } else {
-        console.log('❌ Save failed');
       }
       return success;
     } catch (error) {
