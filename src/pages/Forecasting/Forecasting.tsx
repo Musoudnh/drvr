@@ -1364,7 +1364,7 @@ const Forecasting: React.FC = () => {
           </div>
 
           {(dateViewMode === 'quarters' || dateViewMode === 'years') && (
-            <div className="h-8 w-px bg-gray-300"></div>
+            <div className="h-8 w-px bg-gray-400"></div>
           )}
 
           <div className="flex items-center gap-2">
