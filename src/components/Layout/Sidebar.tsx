@@ -126,6 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
+    { path: '/roadmap/approvals', label: 'Approvals', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];
@@ -139,6 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
+    { path: '/roadmap/approvals', label: 'Approvals', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];

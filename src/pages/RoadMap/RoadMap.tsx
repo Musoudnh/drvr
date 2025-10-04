@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Plus, Filter, Search } from 'lucide-react';
+import { MapPin, Plus, Filter, Search, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 import ProjectsList from '../../components/RoadMap/ProjectsList';
 import ForecastView from '../../components/RoadMap/ForecastView';
@@ -12,6 +13,7 @@ import type { RoadmapProject, RoadmapIdea, RoadmapApproval } from '../../types/r
 type TabType = 'projects' | 'forecast' | 'ideas' | 'compare';
 
 const RoadMap: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<TabType>('projects');
   const [projects, setProjects] = useState<RoadmapProject[]>([]);
   const [ideas, setIdeas] = useState<RoadmapIdea[]>([]);
@@ -74,13 +76,22 @@ const RoadMap: React.FC = () => {
           <h1 className="text-2xl font-bold text-[#101010]">Road Map</h1>
           <p className="text-gray-600 mt-1">Manage projects, budgets, and strategic initiatives</p>
         </div>
-        <button
-          onClick={handleCreateProject}
-          className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          New Project
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => navigate('/roadmap/approvals')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
+            <CheckCircle className="w-4 h-4" />
+            View Approvals
+          </button>
+          <button
+            onClick={handleCreateProject}
+            className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            New Project
+          </button>
+        </div>
       </div>
 
       <Card>
