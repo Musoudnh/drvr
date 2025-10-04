@@ -314,7 +314,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
                 contentStyle={{ borderRadius: '10px' }}
               />
-              <Legend verticalAlign="top" height={36} />
 
               <Bar
                 dataKey="Actual"
