@@ -4,12 +4,12 @@ import Card from '../../components/UI/Card';
 import ProjectsList from '../../components/RoadMap/ProjectsList';
 import ForecastView from '../../components/RoadMap/ForecastView';
 import IdeasBoard from '../../components/RoadMap/IdeasBoard';
-import AuditTrail from '../../components/RoadMap/AuditTrail';
+import CompareProjects from '../../components/RoadMap/CompareProjects';
 import ProjectModal from '../../components/RoadMap/ProjectModal';
 import { roadmapService } from '../../services/roadmapService';
 import type { RoadmapProject, RoadmapIdea, RoadmapApproval } from '../../types/roadmap';
 
-type TabType = 'projects' | 'forecast' | 'ideas' | 'audit';
+type TabType = 'projects' | 'forecast' | 'ideas' | 'compare';
 
 const RoadMap: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('projects');
@@ -64,7 +64,7 @@ const RoadMap: React.FC = () => {
     { id: 'projects' as TabType, label: 'Projects', icon: MapPin },
     { id: 'forecast' as TabType, label: 'Forecast', icon: MapPin },
     { id: 'ideas' as TabType, label: 'Ideas', icon: MapPin },
-    { id: 'audit' as TabType, label: 'Audit', icon: MapPin }
+    { id: 'compare' as TabType, label: 'Compare', icon: MapPin }
   ];
 
   return (
@@ -123,8 +123,8 @@ const RoadMap: React.FC = () => {
               {activeTab === 'ideas' && (
                 <IdeasBoard ideas={ideas} onRefresh={loadData} />
               )}
-              {activeTab === 'audit' && (
-                <AuditTrail projects={projects} />
+              {activeTab === 'compare' && (
+                <CompareProjects projects={projects} />
               )}
             </>
           )}
