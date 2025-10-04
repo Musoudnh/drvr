@@ -6,7 +6,16 @@ export type DriverType =
   | 'seasonality'
   | 'contract_terms'
   | 'rep_productivity'
-  | 'discounting';
+  | 'discounting'
+  | 'payroll_headcount'
+  | 'payroll_salary'
+  | 'payroll_merit'
+  | 'marketing_channels'
+  | 'marketing_cac'
+  | 'marketing_roi'
+  | 'equipment_purchase'
+  | 'equipment_financing'
+  | 'equipment_maintenance';
 
 export interface BaseSalesDriver {
   id: string;
@@ -80,6 +89,72 @@ export interface DiscountingParameters {
   marginImpactPercent: number;
 }
 
+export interface PayrollHeadcountParameters {
+  departmentName: string;
+  currentHeadcount: number;
+  plannedHires: { month: string; count: number }[];
+}
+
+export interface PayrollSalaryParameters {
+  departmentName: string;
+  avgSalary: number;
+  benefitsPct: number;
+  taxesPct: number;
+  bonusPct: number;
+  commissionPct?: number;
+}
+
+export interface PayrollMeritParameters {
+  departmentName: string;
+  annualIncreasePct: number;
+  effectiveMonth: string;
+}
+
+export interface MarketingChannelsParameters {
+  channelName: string;
+  monthlyBudget: number;
+  costPerLead: number;
+  leadToCustomerRate: number;
+  avgARRPerCustomer: number;
+  grossMarginPct: number;
+}
+
+export interface MarketingCACParameters {
+  totalSpend: number;
+  leadsGenerated: number;
+  customersAcquired: number;
+  conversionRate: number;
+}
+
+export interface MarketingROIParameters {
+  campaignSpend: number;
+  attributedRevenue: number;
+  grossMarginPct: number;
+}
+
+export interface EquipmentPurchaseParameters {
+  assetName: string;
+  purchaseCost: number;
+  purchaseMonth: string;
+  usefulLifeYears: number;
+  salvageValue: number;
+  depreciationMethod: 'straight-line' | 'accelerated';
+}
+
+export interface EquipmentFinancingParameters {
+  assetName: string;
+  purchaseCost: number;
+  paymentTermMonths: number;
+  interestRatePct: number;
+  downPaymentPct: number;
+}
+
+export interface EquipmentMaintenanceParameters {
+  assetName: string;
+  purchaseCost: number;
+  maintenancePct: number;
+}
+
 export type DriverParameters =
   | VolumePriceParameters
   | CACParameters
@@ -88,7 +163,16 @@ export type DriverParameters =
   | SeasonalityParameters
   | ContractTermsParameters
   | RepProductivityParameters
-  | DiscountingParameters;
+  | DiscountingParameters
+  | PayrollHeadcountParameters
+  | PayrollSalaryParameters
+  | PayrollMeritParameters
+  | MarketingChannelsParameters
+  | MarketingCACParameters
+  | MarketingROIParameters
+  | EquipmentPurchaseParameters
+  | EquipmentFinancingParameters
+  | EquipmentMaintenanceParameters;
 
 export interface SalesDriver extends BaseSalesDriver {
   parameters: DriverParameters;
@@ -259,5 +343,125 @@ export const DRIVER_TEMPLATES: DriverTemplate[] = [
     } as DiscountingParameters,
     icon: 'Percent',
     category: 'acquisition'
+  },
+  {
+    name: 'Department Headcount',
+    description: 'Track headcount by department with planned hires',
+    driverType: 'payroll_headcount',
+    defaultParameters: {
+      departmentName: 'Engineering',
+      currentHeadcount: 10,
+      plannedHires: []
+    } as PayrollHeadcountParameters,
+    icon: 'Users',
+    category: 'efficiency'
+  },
+  {
+    name: 'Salary & Benefits',
+    description: 'Average salary, benefits, taxes, and bonuses per department',
+    driverType: 'payroll_salary',
+    defaultParameters: {
+      departmentName: 'Engineering',
+      avgSalary: 120000,
+      benefitsPct: 22,
+      taxesPct: 9,
+      bonusPct: 10,
+      commissionPct: 0
+    } as PayrollSalaryParameters,
+    icon: 'DollarSign',
+    category: 'efficiency'
+  },
+  {
+    name: 'Merit Increases',
+    description: 'Annual salary increase percentage by department',
+    driverType: 'payroll_merit',
+    defaultParameters: {
+      departmentName: 'Engineering',
+      annualIncreasePct: 5,
+      effectiveMonth: 'Jan'
+    } as PayrollMeritParameters,
+    icon: 'TrendingUp',
+    category: 'efficiency'
+  },
+  {
+    name: 'Marketing Channels',
+    description: 'Budget allocation across paid search, social, content & SEO',
+    driverType: 'marketing_channels',
+    defaultParameters: {
+      channelName: 'Paid Search',
+      monthlyBudget: 25000,
+      costPerLead: 50,
+      leadToCustomerRate: 10,
+      avgARRPerCustomer: 1200,
+      grossMarginPct: 80
+    } as MarketingChannelsParameters,
+    icon: 'BarChart3',
+    category: 'acquisition'
+  },
+  {
+    name: 'CAC & Conversion',
+    description: 'Cost per lead and lead-to-customer conversion rates',
+    driverType: 'marketing_cac',
+    defaultParameters: {
+      totalSpend: 50000,
+      leadsGenerated: 1000,
+      customersAcquired: 100,
+      conversionRate: 10
+    } as MarketingCACParameters,
+    icon: 'Users',
+    category: 'acquisition'
+  },
+  {
+    name: 'Marketing ROI',
+    description: 'Revenue attributed vs spend per channel',
+    driverType: 'marketing_roi',
+    defaultParameters: {
+      campaignSpend: 25000,
+      attributedRevenue: 75000,
+      grossMarginPct: 70
+    } as MarketingROIParameters,
+    icon: 'TrendingUp',
+    category: 'acquisition'
+  },
+  {
+    name: 'Equipment Purchase',
+    description: 'Track CapEx purchases with depreciation schedules',
+    driverType: 'equipment_purchase',
+    defaultParameters: {
+      assetName: 'Developer Laptops',
+      purchaseCost: 30000,
+      purchaseMonth: 'Jan',
+      usefulLifeYears: 3,
+      salvageValue: 3000,
+      depreciationMethod: 'straight-line'
+    } as EquipmentPurchaseParameters,
+    icon: 'FileText',
+    category: 'efficiency'
+  },
+  {
+    name: 'Financing & Leasing',
+    description: 'Monthly payments, interest rates, and payment terms',
+    driverType: 'equipment_financing',
+    defaultParameters: {
+      assetName: 'Cloud Server Hardware',
+      purchaseCost: 80000,
+      paymentTermMonths: 24,
+      interestRatePct: 8,
+      downPaymentPct: 20
+    } as EquipmentFinancingParameters,
+    icon: 'DollarSign',
+    category: 'efficiency'
+  },
+  {
+    name: 'Maintenance Costs',
+    description: 'Ongoing maintenance as percentage of purchase cost',
+    driverType: 'equipment_maintenance',
+    defaultParameters: {
+      assetName: 'Server Equipment',
+      purchaseCost: 80000,
+      maintenancePct: 2
+    } as EquipmentMaintenanceParameters,
+    icon: 'RefreshCw',
+    category: 'efficiency'
   }
 ];

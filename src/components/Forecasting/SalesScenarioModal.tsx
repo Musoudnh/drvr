@@ -36,7 +36,16 @@ import {
   SeasonalityParameters,
   ContractTermsParameters,
   RepProductivityParameters,
-  DiscountingParameters
+  DiscountingParameters,
+  PayrollHeadcountParameters,
+  PayrollSalaryParameters,
+  PayrollMeritParameters,
+  MarketingChannelsParameters,
+  MarketingCACParameters,
+  MarketingROIParameters,
+  EquipmentPurchaseParameters,
+  EquipmentFinancingParameters,
+  EquipmentMaintenanceParameters
 } from '../../types/salesDriver';
 import { SalesDriverService } from '../../services/salesDriverService';
 
@@ -572,6 +581,543 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </div>
         );
 
+      case 'payroll_headcount':
+        const payrollHCParams = params as PayrollHeadcountParameters;
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <input
+                type="text"
+                value={payrollHCParams.departmentName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollHCParams, departmentName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Current Headcount</label>
+              <input
+                type="number"
+                value={payrollHCParams.currentHeadcount}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollHCParams, currentHeadcount: parseInt(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Planned Hires</label>
+              <p className="text-xs text-gray-500 mb-2">Add hire plans by month (e.g., "2025-11" for November 2025)</p>
+              {payrollHCParams.plannedHires.map((hire, idx) => (
+                <div key={idx} className="flex items-center gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={hire.month}
+                    onChange={(e) => {
+                      const newHires = [...payrollHCParams.plannedHires];
+                      newHires[idx].month = e.target.value;
+                      updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
+                    }}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="2025-11"
+                  />
+                  <input
+                    type="number"
+                    value={hire.count}
+                    onChange={(e) => {
+                      const newHires = [...payrollHCParams.plannedHires];
+                      newHires[idx].count = parseInt(e.target.value);
+                      updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
+                    }}
+                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    placeholder="Count"
+                  />
+                  <button
+                    onClick={() => {
+                      const newHires = payrollHCParams.plannedHires.filter((_, i) => i !== idx);
+                      updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
+                    }}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newHires = [...payrollHCParams.plannedHires, { month: '', count: 1 }];
+                  updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
+                }}
+                className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
+              >
+                <Plus className="w-4 h-4 mr-1" /> Add Hire Plan
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'payroll_salary':
+        const payrollSalParams = params as PayrollSalaryParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <input
+                type="text"
+                value={payrollSalParams.departmentName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, departmentName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Average Salary</label>
+              <input
+                type="number"
+                value={payrollSalParams.avgSalary}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, avgSalary: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Benefits %</label>
+              <input
+                type="number"
+                value={payrollSalParams.benefitsPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, benefitsPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Taxes %</label>
+              <input
+                type="number"
+                value={payrollSalParams.taxesPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, taxesPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Bonus %</label>
+              <input
+                type="number"
+                value={payrollSalParams.bonusPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, bonusPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Commission % (Optional)</label>
+              <input
+                type="number"
+                value={payrollSalParams.commissionPct || 0}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollSalParams, commissionPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
+      case 'payroll_merit':
+        const payrollMeritParams = params as PayrollMeritParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <input
+                type="text"
+                value={payrollMeritParams.departmentName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollMeritParams, departmentName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Annual Increase %</label>
+              <input
+                type="number"
+                value={payrollMeritParams.annualIncreasePct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollMeritParams, annualIncreasePct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Effective Month</label>
+              <select
+                value={payrollMeritParams.effectiveMonth}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...payrollMeritParams, effectiveMonth: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                {MONTHS.map(month => (
+                  <option key={month} value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        );
+
+      case 'marketing_channels':
+        const mktChannelParams = params as MarketingChannelsParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Channel Name</label>
+              <input
+                type="text"
+                value={mktChannelParams.channelName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, channelName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Budget</label>
+              <input
+                type="number"
+                value={mktChannelParams.monthlyBudget}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, monthlyBudget: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Lead</label>
+              <input
+                type="number"
+                value={mktChannelParams.costPerLead}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, costPerLead: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Lead to Customer Rate %</label>
+              <input
+                type="number"
+                value={mktChannelParams.leadToCustomerRate}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, leadToCustomerRate: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Avg ARR Per Customer</label>
+              <input
+                type="number"
+                value={mktChannelParams.avgARRPerCustomer}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, avgARRPerCustomer: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Gross Margin %</label>
+              <input
+                type="number"
+                value={mktChannelParams.grossMarginPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktChannelParams, grossMarginPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
+      case 'marketing_cac':
+        const mktCACParams = params as MarketingCACParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Total Spend</label>
+              <input
+                type="number"
+                value={mktCACParams.totalSpend}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktCACParams, totalSpend: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Leads Generated</label>
+              <input
+                type="number"
+                value={mktCACParams.leadsGenerated}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktCACParams, leadsGenerated: parseInt(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Customers Acquired</label>
+              <input
+                type="number"
+                value={mktCACParams.customersAcquired}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktCACParams, customersAcquired: parseInt(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Conversion Rate %</label>
+              <input
+                type="number"
+                value={mktCACParams.conversionRate}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktCACParams, conversionRate: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
+      case 'marketing_roi':
+        const mktROIParams = params as MarketingROIParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Spend</label>
+              <input
+                type="number"
+                value={mktROIParams.campaignSpend}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktROIParams, campaignSpend: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attributed Revenue</label>
+              <input
+                type="number"
+                value={mktROIParams.attributedRevenue}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktROIParams, attributedRevenue: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Gross Margin %</label>
+              <input
+                type="number"
+                value={mktROIParams.grossMarginPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...mktROIParams, grossMarginPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
+      case 'equipment_purchase':
+        const eqPurchaseParams = params as EquipmentPurchaseParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <input
+                type="text"
+                value={eqPurchaseParams.assetName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, assetName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <input
+                type="number"
+                value={eqPurchaseParams.purchaseCost}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, purchaseCost: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Month</label>
+              <select
+                value={eqPurchaseParams.purchaseMonth}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, purchaseMonth: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                {MONTHS.map(month => (
+                  <option key={month} value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Useful Life (Years)</label>
+              <input
+                type="number"
+                value={eqPurchaseParams.usefulLifeYears}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, usefulLifeYears: parseInt(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Salvage Value</label>
+              <input
+                type="number"
+                value={eqPurchaseParams.salvageValue}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, salvageValue: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Depreciation Method</label>
+              <select
+                value={eqPurchaseParams.depreciationMethod}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqPurchaseParams, depreciationMethod: e.target.value as 'straight-line' | 'accelerated' }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="straight-line">Straight-Line</option>
+                <option value="accelerated">Accelerated</option>
+              </select>
+            </div>
+          </div>
+        );
+
+      case 'equipment_financing':
+        const eqFinanceParams = params as EquipmentFinancingParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <input
+                type="text"
+                value={eqFinanceParams.assetName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqFinanceParams, assetName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <input
+                type="number"
+                value={eqFinanceParams.purchaseCost}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqFinanceParams, purchaseCost: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Payment Term (Months)</label>
+              <input
+                type="number"
+                value={eqFinanceParams.paymentTermMonths}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqFinanceParams, paymentTermMonths: parseInt(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Interest Rate %</label>
+              <input
+                type="number"
+                value={eqFinanceParams.interestRatePct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqFinanceParams, interestRatePct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Down Payment %</label>
+              <input
+                type="number"
+                value={eqFinanceParams.downPaymentPct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqFinanceParams, downPaymentPct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
+      case 'equipment_maintenance':
+        const eqMaintParams = params as EquipmentMaintenanceParameters;
+        return (
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <input
+                type="text"
+                value={eqMaintParams.assetName}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqMaintParams, assetName: e.target.value }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <input
+                type="number"
+                value={eqMaintParams.purchaseCost}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqMaintParams, purchaseCost: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Maintenance %</label>
+              <input
+                type="number"
+                value={eqMaintParams.maintenancePct}
+                onChange={(e) => updateDriver(driver.id, {
+                  parameters: { ...eqMaintParams, maintenancePct: parseFloat(e.target.value) }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -768,99 +1314,48 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                         </button>
                       );
                     })}
-                    {driverCategory === 'payroll' && (
-                      <>
+                    {driverCategory === 'payroll' && DRIVER_TEMPLATES.filter(t => t.driverType.startsWith('payroll_')).map(template => {
+                      return (
                         <button
-                          onClick={() => alert('Department Headcount driver - Coming soon')}
+                          key={template.driverType}
+                          onClick={() => addDriver(template.driverType)}
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Department Headcount</h5>
-                            <p className="text-xs text-gray-600 mt-1">Track headcount by department with planned hires</p>
+                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
+                      );
+                    })}
+                    {driverCategory === 'marketing' && DRIVER_TEMPLATES.filter(t => t.driverType.startsWith('marketing_')).map(template => {
+                      return (
                         <button
-                          onClick={() => alert('Salary & Benefits driver - Coming soon')}
+                          key={template.driverType}
+                          onClick={() => addDriver(template.driverType)}
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Salary & Benefits</h5>
-                            <p className="text-xs text-gray-600 mt-1">Average salary, benefits, taxes, and bonuses per department</p>
+                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
+                      );
+                    })}
+                    {driverCategory === 'equipment' && DRIVER_TEMPLATES.filter(t => t.driverType.startsWith('equipment_')).map(template => {
+                      return (
                         <button
-                          onClick={() => alert('Merit Increases driver - Coming soon')}
+                          key={template.driverType}
+                          onClick={() => addDriver(template.driverType)}
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Merit Increases</h5>
-                            <p className="text-xs text-gray-600 mt-1">Annual salary increase percentage by department</p>
+                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
-                      </>
-                    )}
-                    {driverCategory === 'marketing' && (
-                      <>
-                        <button
-                          onClick={() => alert('Marketing Channels driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Marketing Channels</h5>
-                            <p className="text-xs text-gray-600 mt-1">Budget allocation across paid search, social, content & SEO</p>
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => alert('CAC & Conversion driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">CAC & Conversion</h5>
-                            <p className="text-xs text-gray-600 mt-1">Cost per lead and lead-to-customer conversion rates</p>
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => alert('Marketing ROI driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Marketing ROI</h5>
-                            <p className="text-xs text-gray-600 mt-1">Revenue attributed vs spend per channel</p>
-                          </div>
-                        </button>
-                      </>
-                    )}
-                    {driverCategory === 'equipment' && (
-                      <>
-                        <button
-                          onClick={() => alert('Equipment Purchase driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Equipment Purchase</h5>
-                            <p className="text-xs text-gray-600 mt-1">Track CapEx purchases with depreciation schedules</p>
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => alert('Financing & Leasing driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Financing & Leasing</h5>
-                            <p className="text-xs text-gray-600 mt-1">Monthly payments, interest rates, and payment terms</p>
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => alert('Maintenance Costs driver - Coming soon')}
-                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
-                        >
-                          <div>
-                            <h5 className="font-medium text-gray-900 text-sm">Maintenance Costs</h5>
-                            <p className="text-xs text-gray-600 mt-1">Ongoing maintenance as percentage of purchase cost</p>
-                          </div>
-                        </button>
-                      </>
-                    )}
+                      );
+                    })}
                   </div>
                 </div>
               )}
