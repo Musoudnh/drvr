@@ -1913,9 +1913,16 @@ const Forecasting: React.FC = () => {
 
      {/* GL Scenario Modal */}
      {showGLScenarioModal && selectedGLCode && (
-       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-         <div className="bg-white shadow-2xl rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-           <div className="flex items-center justify-between mb-6">
+       <>
+         <div
+           className="fixed inset-0 bg-black bg-opacity-50 z-40"
+           onClick={() => {
+             setShowGLScenarioModal(false);
+             setSelectedGLCode(null);
+           }}
+         />
+         <div className="fixed right-0 top-0 bottom-0 z-50 w-[600px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+           <div className="flex items-center justify-between p-6 border-b border-gray-200">
              <h3 className="text-xl font-semibold text-[#101010]">
                Add Scenario for {selectedGLCode.name} ({selectedGLCode.code})
              </h3>
@@ -1924,13 +1931,13 @@ const Forecasting: React.FC = () => {
                  setShowGLScenarioModal(false);
                  setSelectedGLCode(null);
                }}
-               className="p-1 hover:bg-gray-100 rounded"
+               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
              >
-               <X className="w-4 h-4 text-gray-400" />
+               <X className="w-5 h-5 text-gray-500" />
              </button>
            </div>
-           
-           <div className="space-y-4">
+
+           <div className="flex-1 overflow-y-auto p-6 space-y-4">
              <div>
                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
                <input
@@ -1959,8 +1966,8 @@ const Forecasting: React.FC = () => {
                <p className="text-sm text-gray-700">{getImpactPreview()}</p>
              </div>
            </div>
-           
-           <div className="flex justify-end gap-3 mt-6">
+
+           <div className="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
              <button
                onClick={() => {
                  setShowGLScenarioModal(false);
@@ -2056,7 +2063,7 @@ const Forecasting: React.FC = () => {
              </button>
            </div>
          </div>
-       </div>
+       </>
      )}
 
      {/* Edit Scenario Modal */}
