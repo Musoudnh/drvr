@@ -1271,16 +1271,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-900">Active Drivers</h3>
                 <div className="flex items-center gap-3">
-                  <select
-                    value={driverCategory}
-                    onChange={(e) => setDriverCategory(e.target.value as any)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  >
-                    <option value="sales">Sales</option>
-                    <option value="payroll">Payroll</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="equipment">Equipment</option>
-                  </select>
                   <button
                     onClick={() => setShowDriverLibrary(!showDriverLibrary)}
                     className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
@@ -1293,14 +1283,21 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
               {showDriverLibrary && (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-3">
-                    {driverCategory === 'sales' && 'Sales Driver Library'}
-                    {driverCategory === 'payroll' && 'Payroll Driver Library'}
-                    {driverCategory === 'marketing' && 'Marketing Driver Library'}
-                    {driverCategory === 'equipment' && 'Equipment Driver Library'}
-                  </h4>
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="font-medium text-gray-900">Driver Library</h4>
+                    <select
+                      value={driverCategory}
+                      onChange={(e) => setDriverCategory(e.target.value as any)}
+                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                      <option value="sales">Sales Drivers</option>
+                      <option value="payroll">Payroll Drivers</option>
+                      <option value="marketing">Marketing Drivers</option>
+                      <option value="equipment">Equipment Drivers</option>
+                    </select>
+                  </div>
                   <div className="grid grid-cols-2 gap-3">
-                    {driverCategory === 'sales' && DRIVER_TEMPLATES.map(template => {
+                    {driverCategory === 'sales' && DRIVER_TEMPLATES.filter(t => !t.driverType.startsWith('payroll_') && !t.driverType.startsWith('marketing_') && !t.driverType.startsWith('equipment_')).map(template => {
                       return (
                         <button
                           key={template.driverType}
