@@ -1477,7 +1477,7 @@ const Forecasting: React.FC = () => {
                         {expandedCategories.includes(category) && categoryGLCodes.map((glCode, glIndex) => (
                           <React.Fragment key={glCode.code}>
                             <tr className="border-b border-gray-100 hover:bg-gray-50 group">
-                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50 border-r border-gray-300">
+                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
                                     <div className="font-semibold text-[#101010]">
