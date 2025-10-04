@@ -1363,6 +1363,10 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
+          {(dateViewMode === 'quarters' || dateViewMode === 'years') && (
+            <div className="h-8 w-px bg-gray-300"></div>
+          )}
+
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-gray-700">Search GL:</label>
             <div className="relative w-[200px]">
@@ -1527,7 +1531,7 @@ const Forecasting: React.FC = () => {
                                 return (
                                   <td
                                     key={periodIndex}
-                                    className={`py-3 text-sm ${
+                                    className={`py-3 ${
                                       isOuterYear ? 'bg-gray-50/50' : ''
                                     } ${
                                       dateViewMode === 'months'
@@ -1536,15 +1540,15 @@ const Forecasting: React.FC = () => {
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      <div className={`rounded px-1 text-sm ${
-                                        isOuterYear ? 'font-normal text-gray-500' : 'font-medium'
+                                      <div className={`rounded px-1 ${
+                                        isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
                                       } ${
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
                                           : !isActualized && dateViewMode === 'months'
                                             ? 'cursor-pointer hover:bg-[#EEF2FF]'
                                             : ''
-                                      }`}>
+                                      } text-sm`}>
                                         {isEditing ? (
                                           <input
                                             type="text"
@@ -1561,7 +1565,7 @@ const Forecasting: React.FC = () => {
                                               if (e.key === 'Enter') handleCellSave();
                                               if (e.key === 'Escape') handleCellCancel();
                                             }}
-                                            className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-xs"
+                                            className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
                                             autoFocus
                                             onFocus={(e) => e.target.select()}
                                           />
