@@ -1536,8 +1536,8 @@ const Forecasting: React.FC = () => {
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      <div className={`rounded px-1 ${
-                                        isOuterYear ? 'font-normal text-gray-500 text-xs' : 'font-medium'
+                                      <div className={`rounded px-1 text-sm ${
+                                        isOuterYear ? 'font-normal text-gray-500' : 'font-medium'
                                       } ${
                                         isSelected
                                           ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
@@ -1590,10 +1590,10 @@ const Forecasting: React.FC = () => {
                                           const varianceColor = getVarianceColor(variance, glCode.code);
                                           return (
                                             <>
-                                              <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
+                                              <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                                 ${formatNumber(monthData.actualAmount)}
                                               </div>
-                                              <div className={`text-[10px] font-medium ${varianceColor}`}>
+                                              <div className={`text-sm font-medium ${varianceColor}`}>
                                                 {showActualsAsAmount
                                                   ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                                   : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
@@ -1604,10 +1604,10 @@ const Forecasting: React.FC = () => {
                                         } else {
                                           return (
                                             <>
-                                              <div className="text-[10px] text-gray-400 font-semibold bg-gray-100 rounded px-1 py-0.5">
+                                              <div className="text-sm text-gray-400 font-medium bg-gray-100 rounded px-1 py-0.5">
                                                 -
                                               </div>
-                                              <div className="text-[10px] font-medium text-gray-400">
+                                              <div className="text-sm font-medium text-gray-400">
                                                 -
                                               </div>
                                             </>
@@ -1666,10 +1666,10 @@ const Forecasting: React.FC = () => {
                                               ${formatNumber(actualsAndRemaining)}
                                             </span>
                                           </div>
-                                          <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
+                                          <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                             ${formatNumber(totalActuals)}
                                           </div>
-                                          <div className={`text-[10px] font-medium text-center ${varianceColor}`}>
+                                          <div className={`text-sm font-medium text-center ${varianceColor}`}>
                                             {showActualsAsAmount
                                               ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                               : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
