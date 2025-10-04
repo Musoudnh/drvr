@@ -75,6 +75,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const [showDriverLibrary, setShowDriverLibrary] = useState(false);
   const [driverCategory, setDriverCategory] = useState<'sales' | 'payroll' | 'marketing' | 'equipment'>('sales');
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
+  const [editingDriver, setEditingDriver] = useState<SalesDriver | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'drivers' | 'preview' | 'ai'>('overview');
   const [aiMessages, setAiMessages] = useState<Array<{role: 'user' | 'assistant', content: string, file?: {name: string, size: number, type: string}}>>([]);
   const [aiInput, setAiInput] = useState('');
@@ -112,7 +113,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
     setActiveDrivers([...activeDrivers, newDriver]);
     setShowDriverLibrary(false);
-    setExpandedDriver(newDriver.id);
+    setEditingDriver(newDriver);
   };
 
   const removeDriver = (driverId: string) => {
@@ -1364,7 +1365,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       onChange={(e) => setDriverCategory(e.target.value as any)}
                       className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
-                      <option value="sales">Sales Drivers</option>
+                      <option value="sales">Customer Drivers</option>
                       <option value="payroll">Payroll Drivers</option>
                       <option value="marketing">Marketing Drivers</option>
                       <option value="equipment">Equipment Drivers</option>
@@ -1445,107 +1446,71 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     const isExpanded = expandedDriver === driver.id;
 
                     return (
-                      <div key={driver.id} className="border border-gray-200 rounded-lg overflow-hidden">
-                        <div className="flex items-center justify-between p-4 bg-gray-50">
-                          <div className="flex items-center flex-1">
-                            <button
-                              onClick={() => setExpandedDriver(isExpanded ? null : driver.id)}
-                              className="mr-3"
-                            >
-                              {isExpanded ? (
-                                <ChevronDown className="w-5 h-5 text-gray-600" />
-                              ) : (
-                                <ChevronRight className="w-5 h-5 text-gray-600" />
-                              )}
-                            </button>
-                            <div>
-                              <h4 className="font-medium text-gray-900">{driver.driverName}</h4>
-                              <p className="text-xs text-gray-500">{template?.description}</p>
+                      <div key={driver.id} className="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                        <div className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center flex-1">
+                              <Icon className="w-5 h-5 text-gray-600 mr-3" />
+                              <div>
+                                <h4 className="font-medium text-gray-900">{driver.driverName}</h4>
+                                <p className="text-xs text-gray-500">{template?.description}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <label className="flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={driver.isActive}
+                                  onChange={(e) => updateDriver(driver.id, { isActive: e.target.checked })}
+                                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                />
+                                <span className="ml-2 text-sm text-gray-700">Active</span>
+                              </label>
+                              <button
+                                onClick={() => setEditingDriver(driver)}
+                                className="px-3 py-1 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition-colors"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => removeDriver(driver.id)}
+                                className="p-2 hover:bg-red-100 rounded-lg text-red-600 transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <label className="flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={driver.isActive}
-                                onChange={(e) => updateDriver(driver.id, { isActive: e.target.checked })}
-                                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                              />
-                              <span className="ml-2 text-sm text-gray-700">Active</span>
-                            </label>
-                            <button
-                              onClick={() => removeDriver(driver.id)}
-                              className="p-2 hover:bg-red-100 rounded-lg text-red-600 transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+
+                          <div className="mt-3 pt-3 border-t border-gray-200">
+                            <div className="grid grid-cols-12 gap-1">
+                              {MONTHS.map((month, idx) => {
+                                const startIdx = MONTHS.indexOf(driver.startMonth);
+                                const endIdx = MONTHS.indexOf(driver.endMonth);
+                                const isActive = idx >= startIdx && idx <= endIdx && driver.isActive;
+                                const monthlyImpact = calculateMonthlyImpact(driver, idx);
+
+                                return (
+                                  <div
+                                    key={month}
+                                    className={`flex flex-col items-center p-1.5 rounded text-center border transition-colors ${
+                                      isActive
+                                        ? 'bg-blue-50 border-blue-300'
+                                        : 'bg-gray-50 border-gray-200'
+                                    }`}
+                                    title={`${month}: ${isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : 'Not applied'}`}
+                                  >
+                                    <div className="text-[9px] font-medium text-gray-600 mb-0.5">{month}</div>
+                                    <div className={`text-[10px] font-semibold ${
+                                      isActive ? 'text-blue-900' : 'text-gray-300'
+                                    }`}>
+                                      {isActive ? `$${(monthlyImpact / 1000).toFixed(0)}k` : '-'}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
-
-                        {isExpanded && (
-                          <div className="p-4 border-t border-gray-200 bg-white">
-                            {renderDriverParameters(driver)}
-
-                            <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-200">
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Apply From</label>
-                                <select
-                                  value={driver.startMonth}
-                                  onChange={(e) => updateDriver(driver.id, { startMonth: e.target.value })}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                >
-                                  {MONTHS.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                  ))}
-                                </select>
-                              </div>
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Apply Until</label>
-                                <select
-                                  value={driver.endMonth}
-                                  onChange={(e) => updateDriver(driver.id, { endMonth: e.target.value })}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                >
-                                  {MONTHS.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                  ))}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div className="mt-4 pt-4 border-t border-gray-200">
-                              <h5 className="text-sm font-medium text-gray-700 mb-3">Monthly Impact</h5>
-                              <div className="overflow-x-auto">
-                                <div className="inline-flex gap-2 min-w-full">
-                                  {MONTHS.map((month, idx) => {
-                                    const startIdx = MONTHS.indexOf(driver.startMonth);
-                                    const endIdx = MONTHS.indexOf(driver.endMonth);
-                                    const isActive = idx >= startIdx && idx <= endIdx;
-                                    const monthlyImpact = calculateMonthlyImpact(driver, idx);
-
-                                    return (
-                                      <div
-                                        key={month}
-                                        className={`flex-1 min-w-[80px] p-2 rounded text-center border ${
-                                          isActive
-                                            ? 'bg-blue-50 border-blue-300'
-                                            : 'bg-gray-50 border-gray-200'
-                                        }`}
-                                      >
-                                        <div className="text-xs font-medium text-gray-700 mb-1">{month}</div>
-                                        <div className={`text-sm font-semibold ${
-                                          isActive ? 'text-blue-900' : 'text-gray-400'
-                                        }`}>
-                                          {isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : '-'}
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     );
                   })
@@ -1809,6 +1774,76 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Right Panel - Edit Driver */}
+      {editingDriver && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-30 z-[60]"
+            onClick={() => setEditingDriver(null)}
+          />
+          <div className="fixed right-0 top-0 bottom-0 z-[70] w-[500px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">Edit Driver</h3>
+                <p className="text-sm text-gray-600 mt-1">{editingDriver.driverName}</p>
+              </div>
+              <button
+                onClick={() => setEditingDriver(null)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6">
+              {renderDriverParameters(editingDriver)}
+
+              <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Apply From</label>
+                  <select
+                    value={editingDriver.startMonth}
+                    onChange={(e) => {
+                      updateDriver(editingDriver.id, { startMonth: e.target.value });
+                      setEditingDriver({ ...editingDriver, startMonth: e.target.value });
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    {MONTHS.map(m => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Apply Until</label>
+                  <select
+                    value={editingDriver.endMonth}
+                    onChange={(e) => {
+                      updateDriver(editingDriver.id, { endMonth: e.target.value });
+                      setEditingDriver({ ...editingDriver, endMonth: e.target.value });
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    {MONTHS.map(m => (
+                      <option key={m} value={m}>{m}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+              <button
+                onClick={() => setEditingDriver(null)}
+                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
