@@ -205,50 +205,52 @@ const FinancialPerformanceDashboard: React.FC = () => {
               <div className="w-8 h-1 rounded" style={{ backgroundColor: pyLineColor }}></div>
               <span className="text-sm text-gray-600">Prior Year (Line)</span>
             </div>
-            <button
-              onClick={() => setShowColorSettings(!showColorSettings)}
-              className="ml-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Customize colors"
-            >
-              <Settings className="w-5 h-5 text-gray-600" />
-            </button>
-          </div>
-        </div>
+            <div className="relative ml-2">
+              <button
+                onClick={() => setShowColorSettings(!showColorSettings)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Customize colors"
+              >
+                <Settings className="w-5 h-5 text-gray-600" />
+              </button>
 
-        {showColorSettings && (
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Customize Chart Colors</h4>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">Actual Bar Color</label>
-                <input
-                  type="color"
-                  value={barColor}
-                  onChange={(e) => setBarColor(e.target.value)}
-                  className="w-full h-10 rounded cursor-pointer"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">Budget Line Color</label>
-                <input
-                  type="color"
-                  value={budgetLineColor}
-                  onChange={(e) => setBudgetLineColor(e.target.value)}
-                  className="w-full h-10 rounded cursor-pointer"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-600 mb-1">Prior Year Line Color</label>
-                <input
-                  type="color"
-                  value={pyLineColor}
-                  onChange={(e) => setPyLineColor(e.target.value)}
-                  className="w-full h-10 rounded cursor-pointer"
-                />
-              </div>
+              {showColorSettings && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 p-4 z-50">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Customize Chart Colors</h4>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">Actual Bar Color</label>
+                      <input
+                        type="color"
+                        value={barColor}
+                        onChange={(e) => setBarColor(e.target.value)}
+                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">Budget Line Color</label>
+                      <input
+                        type="color"
+                        value={budgetLineColor}
+                        onChange={(e) => setBudgetLineColor(e.target.value)}
+                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">Prior Year Line Color</label>
+                      <input
+                        type="color"
+                        value={pyLineColor}
+                        onChange={(e) => setPyLineColor(e.target.value)}
+                        className="w-full h-10 rounded cursor-pointer border border-gray-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
 
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-50 rounded-lg p-4">
@@ -294,11 +296,19 @@ const FinancialPerformanceDashboard: React.FC = () => {
               data={monthlyData}
               margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 12, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={{ stroke: '#e5e7eb' }}
+              />
               <YAxis
                 tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
                 width={80}
+                tick={{ fontSize: 12, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={{ stroke: '#e5e7eb' }}
               />
               <Tooltip
                 formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
