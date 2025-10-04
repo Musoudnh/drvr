@@ -1430,10 +1430,18 @@ const Forecasting: React.FC = () => {
                         >
                           {dateViewMode === 'years' ? (
                             <div className="flex flex-col">
-                              <span className={`text-base ${
+                              <span className={`text-sm ${
                                 isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>FY{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">Jan-Dec</span>
+                              <span className="text-xs font-normal text-gray-400">
+                                {(() => {
+                                  const year = parseInt(labelData.label);
+                                  const currentYear = new Date().getFullYear();
+                                  if (year < currentYear) return 'Actuals';
+                                  if (year === currentYear) return 'Act + Fcst';
+                                  return 'Forecast';
+                                })()}
+                              </span>
                             </div>
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
@@ -1462,7 +1470,7 @@ const Forecasting: React.FC = () => {
                       <React.Fragment key={category}>
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={datePeriods.length + 2} className="py-3 px-4">
+                          <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-3 px-4">
                             <button
                               onClick={() => toggleCategory(category)}
                               className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
@@ -1510,16 +1518,12 @@ const Forecasting: React.FC = () => {
                                   </div>
                                 </div>
                               </td>
-                              {(dateViewMode === 'months' || dateViewMode === 'quarters' || dateViewMode === 'years') && (
+                              {dateViewMode === 'months' && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
                                   <div className="space-y-1">
                                     <div className="h-[20px] flex items-center">Budget:</div>
-                                    {dateViewMode === 'months' && (
-                                      <>
-                                        <div className="h-[18px] flex items-center">Act:</div>
-                                        <div className="h-[18px] flex items-center">Change:</div>
-                                      </>
-                                    )}
+                                    <div className="h-[18px] flex items-center">Act:</div>
+                                    <div className="h-[18px] flex items-center">Change:</div>
                                   </div>
                                 </td>
                               )}
@@ -1694,7 +1698,7 @@ const Forecasting: React.FC = () => {
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
                               <tr>
-                                <td colSpan={datePeriods.length + 2} className="py-0">
+                                <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
                                   <div className="bg-gray-50 p-3 mb-2 rounded">
                                     <h5 className="text-xs text-[#101010] mb-2">Drivers for {glCode.name}</h5>
 
