@@ -173,7 +173,7 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
 
           {/* Settings Button */}
           <Link
-            to="/admin/settings"
+            to="/admin/profile"
             className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
             title="Settings"
           >
