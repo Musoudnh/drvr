@@ -1793,19 +1793,11 @@ const Forecasting: React.FC = () => {
 
                                             {/* Activity Cards for this scenario */}
                                             <div className="mt-2">
-                                              <table className="w-full" style={{ tableLayout: 'fixed' }}>
-                                                <colgroup>
-                                                  <col style={{ width: 'auto' }} />
-                                                  <col style={{ width: 'auto' }} />
-                                                  {months.map((_, idx) => (
-                                                    <col key={idx} />
-                                                  ))}
-                                                  <col style={{ width: 'auto' }} />
-                                                </colgroup>
+                                              <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td className="py-3 px-4 text-sm sticky left-0 bg-white"></td>
+                                                    <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -1815,27 +1807,29 @@ const Forecasting: React.FC = () => {
                                                       const hasActivity = isActive && impact !== 0;
 
                                                       return (
-                                                        <td key={index} className="px-2">
-                                                          <div
-                                                            className="rounded transition-all flex items-center justify-center"
-                                                            style={{
-                                                              height: '48px',
-                                                              backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
-                                                              boxSizing: 'border-box',
-                                                              padding: '8px'
-                                                            }}
-                                                            title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
-                                                          >
-                                                            {hasActivity && (
-                                                              <span className="text-sm font-semibold text-white whitespace-nowrap">
-                                                                {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
-                                                              </span>
-                                                            )}
+                                                        <td key={index} className="py-3 px-2 text-center">
+                                                          <div className="space-y-1">
+                                                            <div
+                                                              className="rounded transition-all flex items-center justify-center text-sm font-semibold"
+                                                              style={{
+                                                                height: '48px',
+                                                                backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
+                                                                boxSizing: 'border-box',
+                                                                padding: '8px'
+                                                              }}
+                                                              title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
+                                                            >
+                                                              {hasActivity && (
+                                                                <span className="text-white whitespace-nowrap">
+                                                                  {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
+                                                                </span>
+                                                              )}
+                                                            </div>
                                                           </div>
                                                         </td>
                                                       );
                                                     })}
-                                                    <td></td>
+                                                    <td className="text-center py-3 px-2 font-bold text-gray-800 min-w-[120px]"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
