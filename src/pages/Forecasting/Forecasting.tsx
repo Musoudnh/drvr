@@ -1817,7 +1817,6 @@ const Forecasting: React.FC = () => {
                                                         </td>
                                                       );
                                                     })}
-                                                    <td className="py-3 px-2 text-sm text-center border-l border-gray-300 min-w-[120px]"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
