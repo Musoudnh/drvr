@@ -31,10 +31,6 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
 }) => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const cellWidth = 80;
-  const cellHeight = 48;
-  const labelWidth = 120;
-
   const [allocations, setAllocations] = useState<MonthAllocation[]>(
     months.map((_, index) => ({
       month: index,
@@ -98,19 +94,6 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
     setGanttRows(ganttRows.filter(row => row.id !== id));
   };
 
-  const getGanttBarStyle = (startMonth: number, endMonth: number) => {
-    const left = startMonth * cellWidth;
-    const width = (endMonth - startMonth + 1) * cellWidth;
-
-    return {
-      left: `${left}px`,
-      width: `${width}px`,
-      height: `${cellHeight - 16}px`,
-      top: '50%',
-      transform: 'translateY(-50%)'
-    };
-  };
-
   const totalAllocatedBudget = allocations.reduce((sum, a) => sum + a.budget, 0);
   const totalActual = allocations.reduce((sum, a) => sum + a.actual, 0);
 
@@ -132,116 +115,95 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
         <div className="p-6">
           <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
-              <div style={{ minWidth: labelWidth + (months.length * cellWidth) }}>
-                <div className="flex border-b border-gray-200 bg-gray-50">
-                  <div
-                    className="flex-shrink-0 flex items-center justify-center font-semibold text-sm text-gray-700 border-r border-gray-200"
-                    style={{ width: labelWidth, height: cellHeight }}
-                  >
-                    Month
+              <div className="min-w-[1200px]">
+                {/* Month Headers - EXACTLY like HiringRunway */}
+                <div className="flex mb-4">
+                  <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Month</div>
+                  <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
+                    {months.map((month, index) => (
+                      <div key={index} className="text-xs font-bold text-gray-700 text-center">
+                        {month}
+                      </div>
+                    ))}
                   </div>
-                  {months.map((month, index) => (
-                    <div
-                      key={month}
-                      className="flex-shrink-0 flex items-center justify-center font-semibold text-sm text-gray-700 border-r border-gray-200"
-                      style={{ width: cellWidth, height: cellHeight }}
-                    >
-                      {month}
-                    </div>
-                  ))}
                 </div>
 
-                <div className="flex border-b border-gray-200 bg-white">
-                  <div
-                    className="flex-shrink-0 flex items-center px-3 font-medium text-sm text-gray-700 border-r border-gray-200"
-                    style={{ width: labelWidth, height: cellHeight }}
-                  >
+                {/* Budget Row - EXACTLY like HiringRunway */}
+                <div className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm">
+                  <div className="w-48 text-sm font-medium text-[#101010] p-2">
                     Budget
                   </div>
-                  {allocations.map((alloc, index) => (
-                    <div
-                      key={`budget-${index}`}
-                      className="flex-shrink-0 flex items-center justify-center border-r border-gray-200"
-                      style={{ width: cellWidth, height: cellHeight }}
-                    >
-                      <input
-                        type="number"
-                        value={alloc.budget}
-                        onChange={(e) => handleBudgetChange(index, parseFloat(e.target.value) || 0)}
-                        className="w-full h-full text-center text-sm border-0 focus:ring-2 focus:ring-[#7B68EE] focus:outline-none"
-                        style={{ padding: '4px' }}
-                      />
-                    </div>
-                  ))}
+                  <div className="flex-1 grid grid-cols-12 gap-1">
+                    {allocations.map((alloc, index) => (
+                      <div key={`budget-${index}`} className="h-8 mx-1 flex items-center justify-center">
+                        <input
+                          type="number"
+                          value={alloc.budget}
+                          onChange={(e) => handleBudgetChange(index, parseFloat(e.target.value) || 0)}
+                          className="w-full h-full text-center text-xs border border-gray-200 rounded focus:ring-2 focus:ring-[#7B68EE] focus:outline-none"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex border-b border-gray-200 bg-white">
-                  <div
-                    className="flex-shrink-0 flex items-center px-3 font-medium text-sm text-gray-700 border-r border-gray-200"
-                    style={{ width: labelWidth, height: cellHeight }}
-                  >
+                {/* Actuals Row - EXACTLY like HiringRunway */}
+                <div className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                  <div className="w-48 text-sm font-medium text-[#101010] p-2">
                     Actuals
                   </div>
-                  {allocations.map((alloc, index) => (
-                    <div
-                      key={`actual-${index}`}
-                      className="flex-shrink-0 flex items-center justify-center p-2 border-r border-gray-200"
-                      style={{ width: cellWidth, height: cellHeight }}
-                    >
-                      <div className="w-full h-full bg-blue-100 border border-blue-300 rounded flex items-center justify-center text-xs font-semibold text-blue-700">
-                        ${(alloc.actual / 1000).toFixed(0)}k
+                  <div className="flex-1 grid grid-cols-12 gap-1">
+                    {allocations.map((alloc, index) => (
+                      <div
+                        key={`actual-${index}`}
+                        className="h-8 rounded-lg mx-1"
+                        style={{ backgroundColor: '#93C5FD' }}
+                        title={`Actual: $${alloc.actual.toLocaleString()}`}
+                      >
+                        <div className="flex items-center justify-center h-full text-xs font-semibold text-blue-900">
+                          ${(alloc.actual / 1000).toFixed(0)}k
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
+                {/* Gantt Rows - EXACTLY like HiringRunway */}
                 {ganttRows.map((row) => (
-                  <div key={row.id} className="flex border-b border-gray-100 bg-white">
-                    <div
-                      className="flex-shrink-0 flex items-center px-3 border-r border-gray-200 group"
-                      style={{ width: labelWidth, height: cellHeight }}
-                    >
-                      <span className="text-sm text-gray-700 flex-1 truncate">{row.label}</span>
-                      <button
-                        onClick={() => handleRemoveGanttRow(row.id)}
-                        className="opacity-0 group-hover:opacity-100 ml-2 p-1 hover:bg-red-100 rounded transition-opacity"
-                      >
-                        <X className="w-3 h-3 text-red-600" />
-                      </button>
-                    </div>
-                    <div
-                      className="flex-shrink-0 relative"
-                      style={{ width: months.length * cellWidth, height: cellHeight }}
-                    >
-                      {months.map((_, index) => (
-                        <div
-                          key={`cell-${row.id}-${index}`}
-                          className="absolute top-0 border-r border-gray-100"
-                          style={{
-                            left: index * cellWidth,
-                            width: cellWidth,
-                            height: cellHeight
-                          }}
-                        />
-                      ))}
-                      <div
-                        className="absolute bg-green-500 rounded shadow-sm flex items-center justify-center"
-                        style={getGanttBarStyle(row.startMonth, row.endMonth)}
-                      >
-                        <span className="text-xs font-semibold text-white truncate px-2">
-                          {row.label}
-                        </span>
+                  <div key={row.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate group">
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 rounded-full mr-3 bg-green-500" />
+                        <span className="flex-1 truncate">{row.label}</span>
+                        <button
+                          onClick={() => handleRemoveGanttRow(row.id)}
+                          className="opacity-0 group-hover:opacity-100 ml-2 p-1 hover:bg-red-100 rounded transition-opacity"
+                        >
+                          <X className="w-3 h-3 text-red-600" />
+                        </button>
                       </div>
+                    </div>
+                    <div className="flex-1 grid grid-cols-12 gap-1">
+                      {months.map((month, index) => {
+                        const isActive = index >= row.startMonth && index <= row.endMonth;
+
+                        return (
+                          <div
+                            key={index}
+                            className="h-8 rounded-lg mx-1"
+                            style={{ backgroundColor: isActive ? '#4ADE80' : 'transparent' }}
+                            title={isActive ? `${row.label}` : ''}
+                          />
+                        );
+                      })}
                     </div>
                   </div>
                 ))}
 
+                {/* Adding Gantt Row - EXACTLY like HiringRunway */}
                 {isAddingGantt && (
-                  <div className="flex border-b border-gray-200 bg-green-50">
-                    <div
-                      className="flex-shrink-0 flex items-center px-3 border-r border-gray-200"
-                      style={{ width: labelWidth, height: cellHeight }}
-                    >
+                  <div className="flex mb-3 items-center bg-green-50 rounded-lg border-2 border-green-300 shadow-sm">
+                    <div className="w-48 p-2">
                       <input
                         type="text"
                         value={newGanttLabel}
@@ -250,43 +212,26 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:outline-none"
                       />
                     </div>
-                    <div
-                      className="flex-shrink-0 relative"
-                      style={{ width: months.length * cellWidth, height: cellHeight }}
-                    >
-                      {months.map((_, index) => {
+                    <div className="flex-1 grid grid-cols-12 gap-1">
+                      {months.map((month, index) => {
                         const isInRange = selectedStartMonth !== null && selectedEndMonth !== null &&
                                          index >= Math.min(selectedStartMonth, selectedEndMonth) &&
                                          index <= Math.max(selectedStartMonth, selectedEndMonth);
+                        const isActive = isInRange;
 
                         return (
                           <div
-                            key={`new-cell-${index}`}
+                            key={`new-${index}`}
                             onClick={() => handleMonthClick(index)}
-                            className={`absolute top-0 border-r border-gray-200 cursor-pointer transition-colors ${
-                              isInRange ? 'bg-green-200' : 'hover:bg-green-100'
-                            }`}
+                            className="h-8 rounded-lg mx-1 cursor-pointer transition-colors"
                             style={{
-                              left: index * cellWidth,
-                              width: cellWidth,
-                              height: cellHeight
+                              backgroundColor: isActive ? '#4ADE80' : 'transparent',
+                              border: isActive ? 'none' : '1px dashed #9CA3AF'
                             }}
+                            title={`Click to ${selectedStartMonth === null ? 'set start' : 'set end'} month`}
                           />
                         );
                       })}
-                      {selectedStartMonth !== null && selectedEndMonth !== null && (
-                        <div
-                          className="absolute bg-green-500 rounded shadow-sm flex items-center justify-center pointer-events-none"
-                          style={getGanttBarStyle(
-                            Math.min(selectedStartMonth, selectedEndMonth),
-                            Math.max(selectedStartMonth, selectedEndMonth)
-                          )}
-                        >
-                          <span className="text-xs font-semibold text-white truncate px-2">
-                            {newGanttLabel || 'New Phase'}
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}
@@ -348,13 +293,14 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
           </div>
 
           <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="text-sm font-semibold text-blue-900 mb-2">Instructions:</h4>
+            <h4 className="text-sm font-semibold text-blue-900 mb-2">How to Use:</h4>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Adjust budget values for each month by clicking on the Budget row cells</li>
-              <li>• The Actuals row shows current spending aligned under each month</li>
-              <li>• Click "Add Gantt Row" to create a new timeline</li>
-              <li>• Click on month cells to select start and end months for your Gantt bar</li>
-              <li>• The green box will span exactly from start to end month, perfectly aligned</li>
+              <li>• Edit budget values for each month in the Budget row</li>
+              <li>• The Actuals row (blue boxes) shows spending - perfectly aligned under each month</li>
+              <li>• Click "Add Gantt Row" to create a new timeline phase</li>
+              <li>• Click on month cells to select start and end months</li>
+              <li>• The green boxes will span exactly across your selected months, aligned perfectly</li>
+              <li>• Example: Selecting Nov-Dec creates a green bar that sits exactly under Nov and Dec</li>
             </ul>
           </div>
         </div>
