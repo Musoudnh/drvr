@@ -224,7 +224,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                         type="color"
                         value={barColor}
                         onChange={(e) => setBarColor(e.target.value)}
-                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border-0"
+                        style={{ background: 'none' }}
                       />
                     </div>
                     <div>
@@ -233,7 +234,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                         type="color"
                         value={budgetLineColor}
                         onChange={(e) => setBudgetLineColor(e.target.value)}
-                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border-0"
+                        style={{ background: 'none' }}
                       />
                     </div>
                     <div>
@@ -242,7 +244,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                         type="color"
                         value={pyLineColor}
                         onChange={(e) => setPyLineColor(e.target.value)}
-                        className="w-full h-8 rounded-lg cursor-pointer border border-gray-300"
+                        className="w-full h-8 rounded-lg cursor-pointer border-0"
+                        style={{ background: 'none' }}
                       />
                     </div>
                   </div>
