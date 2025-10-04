@@ -45,20 +45,34 @@ export const roadmapService = {
   },
 
   async createProject(project: Omit<RoadmapProject, 'id' | 'created_at' | 'updated_at'>): Promise<RoadmapProject> {
+    console.log('roadmapService.createProject called with:', project);
+
     const { data, error } = await supabase
       .from('roadmap_projects')
       .insert(project)
       .select()
       .single();
 
-    if (error) throw error;
+    console.log('Insert result:', { data, error });
 
-    await this.createVersion(data.id, 1, data, project.user_id);
+    if (error) {
+      console.error('Supabase insert error:', error);
+      throw error;
+    }
+
+    try {
+      await this.createVersion(data.id, 1, data, project.user_id);
+      console.log('Version created successfully');
+    } catch (versionError) {
+      console.error('Error creating version (non-fatal):', versionError);
+    }
 
     return data;
   },
 
   async updateProject(id: string, updates: Partial<RoadmapProject>): Promise<RoadmapProject> {
+    console.log('roadmapService.updateProject called with:', { id, updates });
+
     const { data, error } = await supabase
       .from('roadmap_projects')
       .update({ ...updates, updated_at: new Date().toISOString() })
@@ -66,11 +80,21 @@ export const roadmapService = {
       .select()
       .single();
 
-    if (error) throw error;
+    console.log('Update result:', { data, error });
 
-    const newVersion = data.version + 1;
-    await this.updateProjectVersion(id, newVersion);
-    await this.createVersion(id, newVersion, data, data.user_id);
+    if (error) {
+      console.error('Supabase update error:', error);
+      throw error;
+    }
+
+    try {
+      const newVersion = data.version + 1;
+      await this.updateProjectVersion(id, newVersion);
+      await this.createVersion(id, newVersion, data, data.user_id);
+      console.log('Version updated successfully');
+    } catch (versionError) {
+      console.error('Error updating version (non-fatal):', versionError);
+    }
 
     return data;
   },
