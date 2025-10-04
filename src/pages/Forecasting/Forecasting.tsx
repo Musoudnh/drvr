@@ -184,6 +184,15 @@ const Forecasting: React.FC = () => {
     adjustmentValue: 0
   });
 
+  const [startMonthDropdownOpen, setStartMonthDropdownOpen] = useState(false);
+  const [startYearDropdownOpen, setStartYearDropdownOpen] = useState(false);
+  const [endMonthDropdownOpen, setEndMonthDropdownOpen] = useState(false);
+  const [endYearDropdownOpen, setEndYearDropdownOpen] = useState(false);
+  const startMonthDropdownRef = useRef<HTMLDivElement>(null);
+  const startYearDropdownRef = useRef<HTMLDivElement>(null);
+  const endMonthDropdownRef = useRef<HTMLDivElement>(null);
+  const endYearDropdownRef = useRef<HTMLDivElement>(null);
+
   // Helper functions - moved before useState to avoid initialization errors
   const getBaseAmount = (glCode: string): number => {
     const baseAmounts: { [key: string]: number } = {
@@ -598,6 +607,18 @@ const Forecasting: React.FC = () => {
       if (deptDropdownRef.current && !deptDropdownRef.current.contains(event.target as Node)) {
         setDeptDropdownOpen(false);
       }
+      if (startMonthDropdownRef.current && !startMonthDropdownRef.current.contains(event.target as Node)) {
+        setStartMonthDropdownOpen(false);
+      }
+      if (startYearDropdownRef.current && !startYearDropdownRef.current.contains(event.target as Node)) {
+        setStartYearDropdownOpen(false);
+      }
+      if (endMonthDropdownRef.current && !endMonthDropdownRef.current.contains(event.target as Node)) {
+        setEndMonthDropdownOpen(false);
+      }
+      if (endYearDropdownRef.current && !endYearDropdownRef.current.contains(event.target as Node)) {
+        setEndYearDropdownOpen(false);
+      }
       const formatDropdown = document.querySelector('.format-dropdown-container');
       if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
         setShowFormatDropdown(false);
@@ -970,67 +991,163 @@ const Forecasting: React.FC = () => {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
                       <div className="grid grid-cols-2 gap-2">
-                        <select
-                          value={glScenarioForm.startMonth}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
-                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                        >
-                          {months.map(month => {
-                            const monthData = forecastData.find(item =>
-                              item.glCode === selectedGLCode?.code &&
-                              item.month === `${month} ${selectedYear}`
-                            );
-                            const isActualized = monthData?.actualAmount !== undefined;
-                            return (
-                              <option key={month} value={month} disabled={isActualized}>
-                                {month}{isActualized ? ' (Actualized)' : ''}
-                              </option>
-                            );
-                          })}
-                        </select>
-                        <select
-                          value={glScenarioForm.startYear}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                        >
-                          <option value={2024}>2024</option>
-                          <option value={2025}>2025</option>
-                          <option value={2026}>2026</option>
-                          <option value={2027}>2027</option>
-                        </select>
+                        <div className="relative" ref={startMonthDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setStartMonthDropdownOpen(!startMonthDropdownOpen)}
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{glScenarioForm.startMonth}</span>
+                            <ChevronDown className="w-4 h-4 ml-1" />
+                          </button>
+                          {startMonthDropdownOpen && (
+                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                              <div className="flex flex-col gap-1">
+                                {months.map(month => {
+                                  const monthData = forecastData.find(item =>
+                                    item.glCode === selectedGLCode?.code &&
+                                    item.month === `${month} ${selectedYear}`
+                                  );
+                                  const isActualized = monthData?.actualAmount !== undefined;
+                                  return (
+                                    <button
+                                      key={month}
+                                      type="button"
+                                      disabled={isActualized}
+                                      onClick={() => {
+                                        setGLScenarioForm({...glScenarioForm, startMonth: month});
+                                        setStartMonthDropdownOpen(false);
+                                      }}
+                                      className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                        glScenarioForm.startMonth === month
+                                          ? 'bg-[#7B68EE] text-white'
+                                          : isActualized
+                                          ? 'text-gray-400 cursor-not-allowed'
+                                          : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
+                                    >
+                                      {month}{isActualized ? ' (Actualized)' : ''}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative" ref={startYearDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setStartYearDropdownOpen(!startYearDropdownOpen)}
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{glScenarioForm.startYear}</span>
+                            <ChevronDown className="w-4 h-4 ml-1" />
+                          </button>
+                          {startYearDropdownOpen && (
+                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                              <div className="flex flex-col gap-1">
+                                {[2024, 2025, 2026, 2027].map((year) => (
+                                  <button
+                                    key={year}
+                                    type="button"
+                                    onClick={() => {
+                                      setGLScenarioForm({...glScenarioForm, startYear: year});
+                                      setStartYearDropdownOpen(false);
+                                    }}
+                                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                      glScenarioForm.startYear === year
+                                        ? 'bg-[#7B68EE] text-white'
+                                        : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                  >
+                                    {year}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
                       <div className="grid grid-cols-2 gap-2">
-                        <select
-                          value={glScenarioForm.endMonth}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
-                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                        >
-                          {months.map(month => {
-                            const monthData = forecastData.find(item =>
-                              item.glCode === selectedGLCode?.code &&
-                              item.month === `${month} ${selectedYear}`
-                            );
-                            const isActualized = monthData?.actualAmount !== undefined;
-                            return (
-                              <option key={month} value={month} disabled={isActualized}>
-                                {month}{isActualized ? ' (Actualized)' : ''}
-                              </option>
-                            );
-                          })}
-                        </select>
-                        <select
-                          value={glScenarioForm.endYear}
-                          onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                        >
-                          <option value={2024}>2024</option>
-                          <option value={2025}>2025</option>
-                          <option value={2026}>2026</option>
-                          <option value={2027}>2027</option>
-                        </select>
+                        <div className="relative" ref={endMonthDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setEndMonthDropdownOpen(!endMonthDropdownOpen)}
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{glScenarioForm.endMonth}</span>
+                            <ChevronDown className="w-4 h-4 ml-1" />
+                          </button>
+                          {endMonthDropdownOpen && (
+                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                              <div className="flex flex-col gap-1">
+                                {months.map(month => {
+                                  const monthData = forecastData.find(item =>
+                                    item.glCode === selectedGLCode?.code &&
+                                    item.month === `${month} ${selectedYear}`
+                                  );
+                                  const isActualized = monthData?.actualAmount !== undefined;
+                                  return (
+                                    <button
+                                      key={month}
+                                      type="button"
+                                      disabled={isActualized}
+                                      onClick={() => {
+                                        setGLScenarioForm({...glScenarioForm, endMonth: month});
+                                        setEndMonthDropdownOpen(false);
+                                      }}
+                                      className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                        glScenarioForm.endMonth === month
+                                          ? 'bg-[#7B68EE] text-white'
+                                          : isActualized
+                                          ? 'text-gray-400 cursor-not-allowed'
+                                          : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
+                                    >
+                                      {month}{isActualized ? ' (Actualized)' : ''}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div className="relative" ref={endYearDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setEndYearDropdownOpen(!endYearDropdownOpen)}
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{glScenarioForm.endYear}</span>
+                            <ChevronDown className="w-4 h-4 ml-1" />
+                          </button>
+                          {endYearDropdownOpen && (
+                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                              <div className="flex flex-col gap-1">
+                                {[2024, 2025, 2026, 2027].map((year) => (
+                                  <button
+                                    key={year}
+                                    type="button"
+                                    onClick={() => {
+                                      setGLScenarioForm({...glScenarioForm, endYear: year});
+                                      setEndYearDropdownOpen(false);
+                                    }}
+                                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                      glScenarioForm.endYear === year
+                                        ? 'bg-[#7B68EE] text-white'
+                                        : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
+                                  >
+                                    {year}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
