@@ -64,6 +64,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
   const [activeDrivers, setActiveDrivers] = useState<SalesDriver[]>(initialScenario?.drivers || []);
   const [showDriverLibrary, setShowDriverLibrary] = useState(false);
+  const [driverCategory, setDriverCategory] = useState<'sales' | 'payroll' | 'marketing' | 'equipment'>('sales');
   const [expandedDriver, setExpandedDriver] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'drivers' | 'preview' | 'ai'>('overview');
   const [aiMessages, setAiMessages] = useState<Array<{role: 'user' | 'assistant', content: string, file?: {name: string, size: number, type: string}}>>([]);
@@ -723,20 +724,37 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-900">Active Drivers</h3>
-                <button
-                  onClick={() => setShowDriverLibrary(!showDriverLibrary)}
-                  className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Driver
-                </button>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={driverCategory}
+                    onChange={(e) => setDriverCategory(e.target.value as any)}
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  >
+                    <option value="sales">Sales</option>
+                    <option value="payroll">Payroll</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="equipment">Equipment</option>
+                  </select>
+                  <button
+                    onClick={() => setShowDriverLibrary(!showDriverLibrary)}
+                    className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Driver
+                  </button>
+                </div>
               </div>
 
               {showDriverLibrary && (
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Driver Library</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">
+                    {driverCategory === 'sales' && 'Sales Driver Library'}
+                    {driverCategory === 'payroll' && 'Payroll Driver Library'}
+                    {driverCategory === 'marketing' && 'Marketing Driver Library'}
+                    {driverCategory === 'equipment' && 'Equipment Driver Library'}
+                  </h4>
                   <div className="grid grid-cols-2 gap-3">
-                    {DRIVER_TEMPLATES.map(template => {
+                    {driverCategory === 'sales' && DRIVER_TEMPLATES.map(template => {
                       return (
                         <button
                           key={template.driverType}
@@ -750,6 +768,99 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                         </button>
                       );
                     })}
+                    {driverCategory === 'payroll' && (
+                      <>
+                        <button
+                          onClick={() => alert('Department Headcount driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Department Headcount</h5>
+                            <p className="text-xs text-gray-600 mt-1">Track headcount by department with planned hires</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('Salary & Benefits driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Salary & Benefits</h5>
+                            <p className="text-xs text-gray-600 mt-1">Average salary, benefits, taxes, and bonuses per department</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('Merit Increases driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Merit Increases</h5>
+                            <p className="text-xs text-gray-600 mt-1">Annual salary increase percentage by department</p>
+                          </div>
+                        </button>
+                      </>
+                    )}
+                    {driverCategory === 'marketing' && (
+                      <>
+                        <button
+                          onClick={() => alert('Marketing Channels driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Marketing Channels</h5>
+                            <p className="text-xs text-gray-600 mt-1">Budget allocation across paid search, social, content & SEO</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('CAC & Conversion driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">CAC & Conversion</h5>
+                            <p className="text-xs text-gray-600 mt-1">Cost per lead and lead-to-customer conversion rates</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('Marketing ROI driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Marketing ROI</h5>
+                            <p className="text-xs text-gray-600 mt-1">Revenue attributed vs spend per channel</p>
+                          </div>
+                        </button>
+                      </>
+                    )}
+                    {driverCategory === 'equipment' && (
+                      <>
+                        <button
+                          onClick={() => alert('Equipment Purchase driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Equipment Purchase</h5>
+                            <p className="text-xs text-gray-600 mt-1">Track CapEx purchases with depreciation schedules</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('Financing & Leasing driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Financing & Leasing</h5>
+                            <p className="text-xs text-gray-600 mt-1">Monthly payments, interest rates, and payment terms</p>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => alert('Maintenance Costs driver - Coming soon')}
+                          className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
+                        >
+                          <div>
+                            <h5 className="font-medium text-gray-900 text-sm">Maintenance Costs</h5>
+                            <p className="text-xs text-gray-600 mt-1">Ongoing maintenance as percentage of purchase cost</p>
+                          </div>
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
