@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings } from 'lucide-react';
 import {
   ComposedChart,
   Line,
@@ -21,6 +21,10 @@ interface MonthlyData {
 
 const FinancialPerformanceDashboard: React.FC = () => {
   const [selectedYear] = useState(new Date().getFullYear());
+  const [showColorSettings, setShowColorSettings] = useState(false);
+  const [barColor, setBarColor] = useState('#4ade80');
+  const [budgetLineColor, setBudgetLineColor] = useState('#7B68EE');
+  const [pyLineColor, setPyLineColor] = useState('#3B82F6');
 
   const monthlyData: MonthlyData[] = [
     { month: 'Jan', Budget: 450000, Actual: 485000, PY: 420000 },
@@ -190,19 +194,61 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#4ADE80] rounded"></div>
+              <div className="w-4 h-4 rounded" style={{ backgroundColor: barColor }}></div>
               <span className="text-sm text-gray-600">Actual (Bar)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-1 bg-[#7B68EE] rounded"></div>
+              <div className="w-8 h-1 rounded" style={{ backgroundColor: budgetLineColor }}></div>
               <span className="text-sm text-gray-600">Budget (Line)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-1 bg-[#3B82F6] rounded"></div>
+              <div className="w-8 h-1 rounded" style={{ backgroundColor: pyLineColor }}></div>
               <span className="text-sm text-gray-600">Prior Year (Line)</span>
             </div>
+            <button
+              onClick={() => setShowColorSettings(!showColorSettings)}
+              className="ml-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="Customize colors"
+            >
+              <Settings className="w-5 h-5 text-gray-600" />
+            </button>
           </div>
         </div>
+
+        {showColorSettings && (
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3">Customize Chart Colors</h4>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Actual Bar Color</label>
+                <input
+                  type="color"
+                  value={barColor}
+                  onChange={(e) => setBarColor(e.target.value)}
+                  className="w-full h-10 rounded cursor-pointer"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Budget Line Color</label>
+                <input
+                  type="color"
+                  value={budgetLineColor}
+                  onChange={(e) => setBudgetLineColor(e.target.value)}
+                  className="w-full h-10 rounded cursor-pointer"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Prior Year Line Color</label>
+                <input
+                  type="color"
+                  value={pyLineColor}
+                  onChange={(e) => setPyLineColor(e.target.value)}
+                  className="w-full h-10 rounded cursor-pointer"
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-50 rounded-lg p-4">
@@ -263,9 +309,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
               <Bar
                 dataKey="Actual"
                 name="Actual"
-                fill="#4ade80"
+                fill={barColor}
                 radius={[6, 6, 0, 0]}
-                barSize={40}
+                barSize={80}
                 isAnimationActive={true}
               />
 
@@ -273,9 +319,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 type="monotone"
                 dataKey="Budget"
                 name="Budget"
-                stroke="#7B68EE"
+                stroke={budgetLineColor}
                 strokeWidth={3}
-                dot={{ r: 5, fill: '#7B68EE', strokeWidth: 2, stroke: '#fff' }}
+                dot={{ r: 5, fill: budgetLineColor, strokeWidth: 2, stroke: '#fff' }}
                 activeDot={{ r: 7 }}
                 isAnimationActive={true}
               />
@@ -284,9 +330,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 type="monotone"
                 dataKey="PY"
                 name="Prior Year"
-                stroke="#3B82F6"
+                stroke={pyLineColor}
                 strokeWidth={3}
-                dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+                dot={{ r: 5, fill: pyLineColor, strokeWidth: 2, stroke: '#fff' }}
                 activeDot={{ r: 7 }}
                 isAnimationActive={true}
               />
