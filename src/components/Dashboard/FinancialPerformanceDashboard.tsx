@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar } from 'lucide-react';
+import {
+  ComposedChart,
+  Line,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 interface MonthlyData {
   month: string;
-  budget: number;
-  actual: number;
-  priorYear: number;
+  Budget: number;
+  Actual: number;
+  PY: number;
 }
 
 const FinancialPerformanceDashboard: React.FC = () => {
   const [selectedYear] = useState(new Date().getFullYear());
 
   const monthlyData: MonthlyData[] = [
-    { month: 'Jan', budget: 450000, actual: 485000, priorYear: 420000 },
-    { month: 'Feb', budget: 460000, actual: 472000, priorYear: 435000 },
-    { month: 'Mar', budget: 475000, actual: 495000, priorYear: 445000 },
-    { month: 'Apr', budget: 480000, actual: 490000, priorYear: 455000 },
-    { month: 'May', budget: 490000, actual: 505000, priorYear: 470000 },
-    { month: 'Jun', budget: 500000, actual: 515000, priorYear: 480000 },
-    { month: 'Jul', budget: 510000, actual: 525000, priorYear: 490000 },
-    { month: 'Aug', budget: 520000, actual: 535000, priorYear: 500000 },
-    { month: 'Sep', budget: 530000, actual: 545000, priorYear: 510000 },
-    { month: 'Oct', budget: 540000, actual: 555000, priorYear: 520000 },
-    { month: 'Nov', budget: 550000, actual: 565000, priorYear: 530000 },
-    { month: 'Dec', budget: 560000, actual: 575000, priorYear: 540000 }
+    { month: 'Jan', Budget: 450000, Actual: 485000, PY: 420000 },
+    { month: 'Feb', Budget: 460000, Actual: 472000, PY: 435000 },
+    { month: 'Mar', Budget: 475000, Actual: 495000, PY: 445000 },
+    { month: 'Apr', Budget: 480000, Actual: 490000, PY: 455000 },
+    { month: 'May', Budget: 490000, Actual: 505000, PY: 470000 },
+    { month: 'Jun', Budget: 500000, Actual: 515000, PY: 480000 },
+    { month: 'Jul', Budget: 510000, Actual: 525000, PY: 490000 },
+    { month: 'Aug', Budget: 520000, Actual: 535000, PY: 500000 },
+    { month: 'Sep', Budget: 530000, Actual: 545000, PY: 510000 },
+    { month: 'Oct', Budget: 540000, Actual: 554000, PY: 520000 },
+    { month: 'Nov', Budget: 550000, Actual: 565000, PY: 530000 },
+    { month: 'Dec', Budget: 560000, Actual: 575000, PY: 540000 }
   ];
 
   const predictiveData = [
@@ -41,7 +52,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
     { month: 'Dec', historical: null, prediction: 593000 }
   ];
 
-  const maxValue = Math.max(...monthlyData.map(d => Math.max(d.budget, d.actual, d.priorYear)));
+  const maxValue = Math.max(...monthlyData.map(d => Math.max(d.Budget, d.Actual, d.PY)));
   const maxPredictiveValue = Math.max(...predictiveData.map(d => d.prediction || 0));
   const scale = 100 / maxValue;
   const predictiveScale = 100 / maxPredictiveValue;
@@ -53,57 +64,11 @@ const FinancialPerformanceDashboard: React.FC = () => {
     return `$${(value / 1000).toFixed(0)}K`;
   };
 
-  const totalBudget = monthlyData.reduce((sum, d) => sum + d.budget, 0);
-  const totalActual = monthlyData.reduce((sum, d) => sum + d.actual, 0);
+  const totalBudget = monthlyData.reduce((sum, d) => sum + d.Budget, 0);
+  const totalActual = monthlyData.reduce((sum, d) => sum + d.Actual, 0);
   const variance = totalActual - totalBudget;
   const variancePercent = ((variance / totalBudget) * 100).toFixed(1);
-  const yoyGrowth = ((totalActual - monthlyData.reduce((sum, d) => sum + d.priorYear, 0)) / monthlyData.reduce((sum, d) => sum + d.priorYear, 0) * 100).toFixed(1);
-
-  const getPriorYearPathD = (data: MonthlyData[]): string => {
-    const points = data.map((d, index) => {
-      const barWidth = 100 / data.length;
-      const x = (index * barWidth) + (barWidth / 2);
-      const y = 100 - (d.priorYear / maxValue * 100);
-      return { x, y };
-    });
-
-    if (points.length === 0) return '';
-
-    let path = `M ${points[0].x} ${points[0].y}`;
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const current = points[i];
-      const next = points[i + 1];
-      const controlX = (current.x + next.x) / 2;
-
-      path += ` C ${controlX} ${current.y}, ${controlX} ${next.y}, ${next.x} ${next.y}`;
-    }
-
-    return path;
-  };
-
-  const getBudgetPathD = (data: MonthlyData[]): string => {
-    const points = data.map((d, index) => {
-      const barWidth = 100 / data.length;
-      const x = (index * barWidth) + (barWidth / 2);
-      const y = 100 - (d.budget / maxValue * 100);
-      return { x, y };
-    });
-
-    if (points.length === 0) return '';
-
-    let path = `M ${points[0].x} ${points[0].y}`;
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const current = points[i];
-      const next = points[i + 1];
-      const controlX = (current.x + next.x) / 2;
-
-      path += ` C ${controlX} ${current.y}, ${controlX} ${next.y}, ${next.x} ${next.y}`;
-    }
-
-    return path;
-  };
+  const yoyGrowth = ((totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) / monthlyData.reduce((sum, d) => sum + d.PY, 0) * 100).toFixed(1);
 
   const getPredictivePathD = (): string => {
     const points = predictiveData.map((d, index) => {
@@ -277,108 +242,64 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative mb-8" style={{ height: '320px' }}>
-          <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-500 pr-2 w-10 text-right">
-            <span>{formatCurrency(maxValue)}</span>
-            <span>{formatCurrency(maxValue * 0.75)}</span>
-            <span>{formatCurrency(maxValue * 0.5)}</span>
-            <span>{formatCurrency(maxValue * 0.25)}</span>
-            <span>$0</span>
-          </div>
+        <div className="w-full mb-8" style={{ height: '400px' }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart
+              data={monthlyData}
+              margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+              <YAxis
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+                width={80}
+              />
+              <Tooltip
+                formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
+                contentStyle={{ borderRadius: '10px' }}
+              />
+              <Legend verticalAlign="top" height={36} />
 
-          <div className="absolute left-12 right-0 top-0 bottom-6 border border-gray-200 bg-white">
-            <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-end gap-0.5 px-0.5">
-                {monthlyData.map((data, index) => {
-                  const heightPercent = (data.actual / maxValue) * 100;
-                  return (
-                    <div key={index} className="flex-1 flex flex-col items-center justify-end group">
-                      <div
-                        className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
-                        style={{ height: `${heightPercent}%` }}
-                      >
-                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
-                          {formatCurrency(data.actual)}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Bar
+                dataKey="Actual"
+                name="Actual"
+                fill="#4ade80"
+                radius={[6, 6, 0, 0]}
+                barSize={18}
+                isAnimationActive={true}
+              />
 
-              <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }} preserveAspectRatio="none" viewBox="0 0 100 100">
-                <path
-                  d={getBudgetPathD(monthlyData)}
-                  fill="none"
-                  stroke="#7B68EE"
-                  strokeWidth="0.4"
-                  vectorEffect="non-scaling-stroke"
-                />
-                {monthlyData.map((data, index) => {
-                  const barWidth = 100 / monthlyData.length;
-                  const x = (index * barWidth) + (barWidth / 2);
-                  const y = 100 - (data.budget / maxValue * 100);
-                  return (
-                    <circle
-                      key={`budget-${index}`}
-                      cx={x}
-                      cy={y}
-                      r="1"
-                      fill="#7B68EE"
-                      stroke="white"
-                      strokeWidth="0.4"
-                      vectorEffect="non-scaling-stroke"
-                    >
-                      <title>{data.month} Budget: {formatCurrency(data.budget)}</title>
-                    </circle>
-                  );
-                })}
+              <Line
+                type="monotone"
+                dataKey="Budget"
+                name="Budget"
+                stroke="#7B68EE"
+                strokeWidth={3}
+                dot={{ r: 5, fill: '#7B68EE', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 7 }}
+                isAnimationActive={true}
+              />
 
-                <path
-                  d={getPriorYearPathD(monthlyData)}
-                  fill="none"
-                  stroke="#3B82F6"
-                  strokeWidth="0.4"
-                  vectorEffect="non-scaling-stroke"
-                />
-                {monthlyData.map((data, index) => {
-                  const barWidth = 100 / monthlyData.length;
-                  const x = (index * barWidth) + (barWidth / 2);
-                  const y = 100 - (data.priorYear / maxValue * 100);
-                  return (
-                    <circle
-                      key={`py-${index}`}
-                      cx={x}
-                      cy={y}
-                      r="1"
-                      fill="#3B82F6"
-                      stroke="white"
-                      strokeWidth="0.4"
-                      vectorEffect="non-scaling-stroke"
-                    >
-                      <title>{data.month} Prior Year: {formatCurrency(data.priorYear)}</title>
-                    </circle>
-                  );
-                })}
-              </svg>
-            </div>
-          </div>
-
-          <div className="absolute left-12 right-0 bottom-0 flex justify-between text-xs text-gray-600 font-medium h-6 items-center">
-            {monthlyData.map((data, index) => (
-              <div key={index} className="flex-1 text-center">
-                {data.month}
-              </div>
-            ))}
-          </div>
+              <Line
+                type="monotone"
+                dataKey="PY"
+                name="Prior Year"
+                stroke="#3B82F6"
+                strokeWidth={3}
+                dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 7 }}
+                isAnimationActive={true}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
         </div>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <div className="grid grid-cols-12 gap-2 text-xs">
             {monthlyData.map((data, index) => {
-              const variance = data.actual - data.budget;
-              const variancePercent = ((variance / data.budget) * 100).toFixed(1);
-              const pyGrowth = ((data.actual - data.priorYear) / data.priorYear * 100).toFixed(1);
+              const variance = data.Actual - data.Budget;
+              const variancePercent = ((variance / data.Budget) * 100).toFixed(1);
+              const pyGrowth = ((data.Actual - data.PY) / data.PY * 100).toFixed(1);
 
               return (
                 <div key={index} className="bg-gray-50 rounded p-2">
@@ -386,15 +307,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   <div className="space-y-1">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Budget:</span>
-                      <span className="font-medium">{formatCurrency(data.budget)}</span>
+                      <span className="font-medium">{formatCurrency(data.Budget)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Actual:</span>
-                      <span className="font-medium text-green-600">{formatCurrency(data.actual)}</span>
+                      <span className="font-medium text-green-600">{formatCurrency(data.Actual)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">PY:</span>
-                      <span className="font-medium text-blue-600">{formatCurrency(data.priorYear)}</span>
+                      <span className="font-medium text-blue-600">{formatCurrency(data.PY)}</span>
                     </div>
                     <div className="pt-1 border-t border-gray-200">
                       <div className={`flex items-center gap-1 ${parseFloat(variancePercent) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
