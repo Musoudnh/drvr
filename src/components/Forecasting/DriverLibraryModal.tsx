@@ -249,211 +249,210 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
           </button>
         </div>
 
-          {showCreateForm ? (
-            <div className="p-6 overflow-y-auto flex-1">
-              <button
-                onClick={() => {
-                  setShowCreateForm(false);
-                  setSelectedTemplate(null);
-                }}
-                className="mb-4 text-purple-600 hover:text-purple-700 text-sm font-medium"
-              >
-                ← Back to Library
-              </button>
+        {showCreateForm ? (
+          <div className="p-6 overflow-y-auto flex-1">
+            <button
+              onClick={() => {
+                setShowCreateForm(false);
+                setSelectedTemplate(null);
+              }}
+              className="mb-4 text-purple-600 hover:text-purple-700 text-sm font-medium"
+            >
+              ← Back to Library
+            </button>
 
-              {selectedTemplate && (
-                <div className="space-y-6">
-                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <div className="flex items-start gap-3">
-                      <div className="text-purple-600 mt-1">
-                        {DRIVER_ICONS[selectedTemplate.type as DriverType]}
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          {selectedTemplate.name}
-                        </h3>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {selectedTemplate.description}
+            {selectedTemplate && (
+              <div className="space-y-6">
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <div className="flex items-start gap-3">
+                    <div className="text-purple-600 mt-1">
+                      {DRIVER_ICONS[selectedTemplate.type as DriverType]}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {selectedTemplate.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {selectedTemplate.description}
+                      </p>
+                      <div className="mt-2 p-2 bg-white rounded border border-purple-200">
+                        <p className="text-xs text-gray-500 font-mono">
+                          {selectedTemplate.formula}
                         </p>
-                        <div className="mt-2 p-2 bg-white rounded border border-purple-200">
-                          <p className="text-xs text-gray-500 font-mono">
-                            {selectedTemplate.formula}
-                          </p>
-                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Instance Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={instanceName}
-                      onChange={(e) => setInstanceName(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="Enter a name for this driver instance"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Start Date <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        End Date <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h4 className="font-semibold text-gray-900">Input Parameters</h4>
-                    {selectedTemplate.input_schema.map(renderInputField)}
-                  </div>
-
-                  <div className="flex justify-end gap-3 pt-4 border-t">
-                    <button
-                      onClick={() => {
-                        setShowCreateForm(false);
-                        setSelectedTemplate(null);
-                      }}
-                      className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                      disabled={loading}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleCreateInstance}
-                      disabled={loading || !instanceName || !startDate || !endDate}
-                      className="px-6 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {loading ? 'Creating...' : 'Create & Calculate'}
-                    </button>
                   </div>
                 </div>
-              )}
-            </div>
-          ) : (
-            <>
-              <div className="border-b border-gray-200">
-                <div className="flex gap-4 px-6">
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Instance Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={instanceName}
+                    onChange={(e) => setInstanceName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter a name for this driver instance"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Start Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      End Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-900">Input Parameters</h4>
+                  {selectedTemplate.input_schema.map(renderInputField)}
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4 border-t">
                   <button
-                    onClick={() => setActiveTab('library')}
-                    className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                      activeTab === 'library'
-                        ? 'border-purple-600 text-purple-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700'
-                    }`}
+                    onClick={() => {
+                      setShowCreateForm(false);
+                      setSelectedTemplate(null);
+                    }}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    disabled={loading}
                   >
-                    Driver Library ({templates.length})
+                    Cancel
                   </button>
                   <button
-                    onClick={() => setActiveTab('instances')}
-                    className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                      activeTab === 'instances'
-                        ? 'border-purple-600 text-purple-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700'
-                    }`}
+                    onClick={handleCreateInstance}
+                    disabled={loading || !instanceName || !startDate || !endDate}
+                    className="px-6 py-2 bg-[#9333EA] text-white rounded-lg hover:bg-[#7C3AED] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    Active Drivers ({instances.length})
+                    {loading ? 'Creating...' : 'Create & Calculate'}
                   </button>
                 </div>
               </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className="border-b border-gray-200">
+              <div className="flex gap-4 px-6">
+                <button
+                  onClick={() => setActiveTab('library')}
+                  className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'library'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Driver Library ({templates.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('instances')}
+                  className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'instances'
+                      ? 'border-purple-600 text-purple-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Active Drivers ({instances.length})
+                </button>
+              </div>
+            </div>
 
-              <div className="p-6 overflow-y-auto flex-1">
-                {activeTab === 'library' ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    {templates.map(template => (
-                      <button
-                        key={template.id}
-                        onClick={() => handleSelectTemplate(template)}
-                        className="text-left p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:shadow-md transition-all group"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="text-gray-400 group-hover:text-purple-600 transition-colors">
-                            {DRIVER_ICONS[template.type as DriverType]}
+            <div className="p-6 overflow-y-auto flex-1">
+              {activeTab === 'library' ? (
+                <div className="grid grid-cols-2 gap-4">
+                  {templates.map(template => (
+                    <button
+                      key={template.id}
+                      onClick={() => handleSelectTemplate(template)}
+                      className="text-left p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:shadow-md transition-all group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="text-gray-400 group-hover:text-purple-600 transition-colors">
+                          {DRIVER_ICONS[template.type as DriverType]}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                            {template.name}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                            {template.description}
+                          </p>
+                          <div className="mt-2 flex items-center gap-2">
+                            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                              {template.input_schema.length} inputs
+                            </span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                              {template.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                              {template.description}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {instances.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Calculator className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600">No active drivers yet</p>
+                      <button
+                        onClick={() => setActiveTab('library')}
+                        className="mt-4 text-purple-600 hover:text-purple-700 font-medium"
+                      >
+                        Browse Driver Library
+                      </button>
+                    </div>
+                  ) : (
+                    instances.map(instance => (
+                      <div
+                        key={instance.id}
+                        className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900">{instance.name}</h3>
+                            <p className="text-sm text-gray-600 mt-1">
+                              {instance.template?.name}
                             </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">
-                                {template.input_schema.length} inputs
+                            <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
+                              <span>
+                                Period: {instance.configuration.period_start} to{' '}
+                                {instance.configuration.period_end}
                               </span>
                             </div>
                           </div>
+                          <button
+                            onClick={() => handleDeleteInstance(instance.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         </div>
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {instances.length === 0 ? (
-                      <div className="text-center py-12">
-                        <Calculator className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-600">No active drivers yet</p>
-                        <button
-                          onClick={() => setActiveTab('library')}
-                          className="mt-4 text-purple-600 hover:text-purple-700 font-medium"
-                        >
-                          Browse Driver Library
-                        </button>
                       </div>
-                    ) : (
-                      instances.map(instance => (
-                        <div
-                          key={instance.id}
-                          className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-gray-900">{instance.name}</h3>
-                              <p className="text-sm text-gray-600 mt-1">
-                                {instance.template?.name}
-                              </p>
-                              <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
-                                <span>
-                                  Period: {instance.configuration.period_start} to{' '}
-                                  {instance.configuration.period_end}
-                                </span>
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => handleDeleteInstance(instance.id)}
-                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
