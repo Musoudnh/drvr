@@ -135,7 +135,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   </div>
                   <div className="flex-1 grid grid-cols-12 gap-1">
                     {allocations.map((alloc, index) => (
-                      <div key={`budget-${index}`} className="h-8 mx-1 flex items-center justify-center">
+                      <div key={`budget-${index}`} className="h-8 flex items-center justify-center">
                         <input
                           type="number"
                           value={alloc.budget}
@@ -156,7 +156,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                     {allocations.map((alloc, index) => (
                       <div
                         key={`actual-${index}`}
-                        className="h-8 rounded-lg mx-1"
+                        className="h-8 rounded-lg"
                         style={{ backgroundColor: '#93C5FD' }}
                         title={`Actual: $${alloc.actual.toLocaleString()}`}
                       >
@@ -190,7 +190,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                         return (
                           <div
                             key={index}
-                            className="h-8 rounded-lg mx-1"
+                            className="h-8 rounded-lg"
                             style={{ backgroundColor: isActive ? '#4ADE80' : 'transparent' }}
                             title={isActive ? `${row.label}` : ''}
                           />
@@ -223,7 +223,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                           <div
                             key={`new-${index}`}
                             onClick={() => handleMonthClick(index)}
-                            className="h-8 rounded-lg mx-1 cursor-pointer transition-colors"
+                            className="h-8 rounded-lg cursor-pointer transition-colors"
                             style={{
                               backgroundColor: isActive ? '#4ADE80' : 'transparent',
                               border: isActive ? 'none' : '1px dashed #9CA3AF'
