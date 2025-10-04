@@ -1718,14 +1718,14 @@ const Forecasting: React.FC = () => {
                                             return (
                                               <div
                                                 key={scenario.id}
-                                                className="h-2 rounded bg-[#4ADE80]"
+                                                className="h-2 rounded bg-[#4ADE80] w-full"
                                                 title={`${scenario.name}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}`}
                                               />
                                             );
                                           })}
                                         </div>
                                       ) : (
-                                        <div className="h-2"></div>
+                                        <div className="h-2 w-full"></div>
                                       )}
                                     </td>
                                   );
@@ -1811,50 +1811,6 @@ const Forecasting: React.FC = () => {
                                               </button>
                                             </div>
 
-                                            {/* Timeline Gantt - Aligned with table columns */}
-                                            <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100 pt-2">
-                                              <table className="w-full">
-                                                <tbody>
-                                                  <tr>
-                                                    <td className="py-2 px-4 w-64"></td>
-                                                    <td className="py-2 px-2 w-20"></td>
-                                                    {months.map((month, index) => {
-                                                      const startIndex = getMonthIndex(scenario.startMonth);
-                                                      const endIndex = getMonthIndex(scenario.endMonth);
-                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
-                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                      const showImpact = (isActive || isInactive) && Math.abs(impact) > 0;
-
-                                                      return (
-                                                        <td
-                                                          key={index}
-                                                          className="text-center px-2 py-2 min-w-[120px]"
-                                                        >
-                                                          <div
-                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
-                                                              isActive
-                                                                ? 'bg-[#4ADE80]'
-                                                                : isInactive
-                                                                  ? 'bg-gray-300'
-                                                                  : 'bg-transparent'
-                                                            }`}
-                                                            title={showImpact ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : month}
-                                                          >
-                                                            {showImpact && (
-                                                              <span className={`text-[10px] font-semibold ${isActive ? 'text-white' : 'text-gray-600'}`}>
-                                                                {impact >= 0 ? '+' : '-'}${formatNumber(Math.abs(impact))}
-                                                              </span>
-                                                            )}
-                                                          </div>
-                                                        </td>
-                                                      );
-                                                    })}
-                                                    <td className="py-2 px-2 min-w-[120px]"></td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </div>
 
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
