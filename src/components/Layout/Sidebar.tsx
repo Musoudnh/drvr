@@ -38,7 +38,8 @@ import {
   Brain,
   CheckCircle,
   Wallet,
-  MoreVertical
+  MoreVertical,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigationPreferences } from '../../hooks/useNavigationPreferences';
@@ -124,6 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator, category: 'Financial Tools', alwaysVisible: false },
     { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
+    { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];
@@ -136,6 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/financials/sandbox', label: 'Sandbox', icon: Calculator, category: 'Financial Tools', alwaysVisible: false },
     { path: '/insights', label: 'Insights', icon: BarChart3, category: 'Analysis', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
+    { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
     { path: '/tasks', label: 'Tasks', icon: CheckCircle, category: 'Management', alwaysVisible: false },
     { path: '/chat', label: 'Chat', icon: MessageSquare, category: 'Communication', alwaysVisible: false }
   ];
