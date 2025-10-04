@@ -1792,7 +1792,7 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Gantt Bar for this scenario */}
-                                            <div className="mt-2 flex items-center" style={{ marginLeft: '80px' }}>
+                                            <div className="mt-2 flex items-center">
                                               {months.map((month, index) => {
                                                 const startIndex = getMonthIndex(scenario.startMonth);
                                                 const endIndex = getMonthIndex(scenario.endMonth);
@@ -1804,10 +1804,13 @@ const Forecasting: React.FC = () => {
                                                 return (
                                                   <div
                                                     key={index}
-                                                    className="h-2 rounded transition-all px-2"
+                                                    className="h-2 rounded transition-all"
                                                     style={{
-                                                      width: '120px',
-                                                      minWidth: '120px',
+                                                      width: '136px',
+                                                      minWidth: '136px',
+                                                      paddingLeft: '8px',
+                                                      paddingRight: '8px',
+                                                      boxSizing: 'border-box',
                                                       backgroundColor: isActive ? '#4ADE80' : isInactive ? '#D1D5DB' : 'transparent'
                                                     }}
                                                     title={showBar ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : ''}
