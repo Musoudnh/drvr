@@ -1506,7 +1506,7 @@ const Forecasting: React.FC = () => {
                                   </div>
                                 </div>
                               </td>
-                              {dateViewMode === 'months' && glIndex === 0 && (
+                              {dateViewMode === 'months' && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top">
                                   <div className="space-y-1">
                                     <div className="h-[20px] flex items-center">Budget:</div>
@@ -1514,9 +1514,6 @@ const Forecasting: React.FC = () => {
                                     <div className="h-[18px] flex items-center">Change:</div>
                                   </div>
                                 </td>
-                              )}
-                              {dateViewMode === 'months' && glIndex > 0 && (
-                                <td className="py-3 px-2"></td>
                               )}
                               {datePeriods.map((period, periodIndex) => {
                                 const aggregatedAmount = getAggregatedAmount(glCode.code, period);
@@ -1594,7 +1591,7 @@ const Forecasting: React.FC = () => {
                                           return (
                                             <>
                                               <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
-                                                Act: ${formatNumber(monthData.actualAmount)}
+                                                ${formatNumber(monthData.actualAmount)}
                                               </div>
                                               <div className={`text-[10px] font-medium ${varianceColor}`}>
                                                 {showActualsAsAmount
@@ -1608,7 +1605,7 @@ const Forecasting: React.FC = () => {
                                           return (
                                             <>
                                               <div className="text-[10px] text-gray-400 font-semibold bg-gray-100 rounded px-1 py-0.5">
-                                                Act: -
+                                                -
                                               </div>
                                               <div className="text-[10px] font-medium text-gray-400">
                                                 -
