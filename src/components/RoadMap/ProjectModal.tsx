@@ -797,21 +797,30 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
             </div>
           )}
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <button
               type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              onClick={() => {}}
+              className="px-4 py-2 bg-white text-[#7B68EE] border border-[#7B68EE] rounded-lg hover:bg-[#7B68EE] hover:text-white transition-colors"
             >
-              Cancel
+              Schedule
             </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors disabled:opacity-50"
-            >
-              {loading ? 'Saving...' : 'Save Project'}
-            </button>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#101010] transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Saving...' : 'Save Project'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
