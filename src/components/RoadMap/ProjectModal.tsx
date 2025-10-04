@@ -180,13 +180,18 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
       }
       console.log('Save successful, calling onSave()');
       onSave();
-    } catch (error) {
-      console.error('Error saving project:', error);
-      if (error instanceof Error) {
-        alert(`Failed to save project: ${error.message}`);
-      } else {
-        alert('Failed to save project. Please check console for details.');
-      }
+    } catch (error: any) {
+      console.error('FULL ERROR OBJECT:', JSON.stringify(error, null, 2));
+      console.error('Error type:', typeof error);
+      console.error('Error keys:', Object.keys(error || {}));
+
+      let errorMsg = 'Unknown error';
+      if (error?.message) errorMsg = error.message;
+      else if (error?.error_description) errorMsg = error.error_description;
+      else if (error?.hint) errorMsg = error.hint;
+      else if (typeof error === 'string') errorMsg = error;
+
+      alert(`SAVE FAILED:\n\n${errorMsg}\n\nFull error logged to console.`);
     } finally {
       setLoading(false);
     }
