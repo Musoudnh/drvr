@@ -59,10 +59,32 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const variancePercent = ((variance / totalBudget) * 100).toFixed(1);
   const yoyGrowth = ((totalActual - monthlyData.reduce((sum, d) => sum + d.priorYear, 0)) / monthlyData.reduce((sum, d) => sum + d.priorYear, 0) * 100).toFixed(1);
 
-  const getPathD = (data: MonthlyData[]): string => {
+  const getPriorYearPathD = (data: MonthlyData[]): string => {
     const points = data.map((d, index) => {
       const x = (index / (data.length - 1)) * 100;
       const y = 100 - (d.priorYear * scale);
+      return { x, y };
+    });
+
+    if (points.length === 0) return '';
+
+    let path = `M ${points[0].x} ${points[0].y}`;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const current = points[i];
+      const next = points[i + 1];
+      const controlX = (current.x + next.x) / 2;
+
+      path += ` C ${controlX} ${current.y}, ${controlX} ${next.y}, ${next.x} ${next.y}`;
+    }
+
+    return path;
+  };
+
+  const getBudgetPathD = (data: MonthlyData[]): string => {
+    const points = data.map((d, index) => {
+      const x = (index / (data.length - 1)) * 100;
+      const y = 100 - (d.budget * scale);
       return { x, y };
     });
 
@@ -201,16 +223,16 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-[#7B68EE] rounded"></div>
-              <span className="text-sm text-gray-600">Budget</span>
-            </div>
-            <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-[#4ADE80] rounded"></div>
-              <span className="text-sm text-gray-600">Actual</span>
+              <span className="text-sm text-gray-600">Actual (Bar)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-1 h-8 bg-[#3B82F6] rounded"></div>
-              <span className="text-sm text-gray-600">Prior Year</span>
+              <div className="w-8 h-1 bg-[#7B68EE] rounded"></div>
+              <span className="text-sm text-gray-600">Budget (Line)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-1 bg-[#3B82F6] rounded"></div>
+              <span className="text-sm text-gray-600">Prior Year (Line)</span>
             </div>
           </div>
         </div>
@@ -264,25 +286,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
           <div className="absolute left-12 right-0 top-0 bottom-0">
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-end justify-between pb-8 gap-1">
+              <div className="absolute inset-0 flex items-end justify-between pb-8 gap-2">
                 {monthlyData.map((data, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center justify-end gap-1 group">
-                    <div className="w-full flex gap-1 items-end">
-                      <div
-                        className="flex-1 bg-[#7B68EE] rounded-t transition-all duration-300 group-hover:bg-[#6B58DE] relative"
-                        style={{ height: `${data.budget * scale}%` }}
-                      >
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          {formatCurrency(data.budget)}
-                        </div>
-                      </div>
-                      <div
-                        className="flex-1 bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
-                        style={{ height: `${data.actual * scale}%` }}
-                      >
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          {formatCurrency(data.actual)}
-                        </div>
+                  <div key={index} className="flex-1 flex flex-col items-center justify-end group">
+                    <div
+                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
+                      style={{ height: `${data.actual * scale}%` }}
+                    >
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                        {formatCurrency(data.actual)}
                       </div>
                     </div>
                   </div>
@@ -291,7 +303,33 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
               <svg className="absolute inset-0 pointer-events-none" style={{ paddingBottom: '32px' }}>
                 <path
-                  d={getPathD(monthlyData)}
+                  d={getBudgetPathD(monthlyData)}
+                  fill="none"
+                  stroke="#7B68EE"
+                  strokeWidth="3"
+                  vectorEffect="non-scaling-stroke"
+                />
+                {monthlyData.map((data, index) => {
+                  const x = (index / (monthlyData.length - 1)) * 100;
+                  const y = 100 - (data.budget * scale);
+                  return (
+                    <circle
+                      key={`budget-${index}`}
+                      cx={`${x}%`}
+                      cy={`${y}%`}
+                      r="4"
+                      fill="#7B68EE"
+                      stroke="white"
+                      strokeWidth="2"
+                      className="cursor-pointer hover:r-6 transition-all"
+                    >
+                      <title>{data.month} Budget: {formatCurrency(data.budget)}</title>
+                    </circle>
+                  );
+                })}
+
+                <path
+                  d={getPriorYearPathD(monthlyData)}
                   fill="none"
                   stroke="#3B82F6"
                   strokeWidth="3"
@@ -302,7 +340,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   const y = 100 - (data.priorYear * scale);
                   return (
                     <circle
-                      key={index}
+                      key={`py-${index}`}
                       cx={`${x}%`}
                       cy={`${y}%`}
                       r="4"
@@ -311,7 +349,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                       strokeWidth="2"
                       className="cursor-pointer hover:r-6 transition-all"
                     >
-                      <title>{data.month}: {formatCurrency(data.priorYear)}</title>
+                      <title>{data.month} Prior Year: {formatCurrency(data.priorYear)}</title>
                     </circle>
                   );
                 })}
