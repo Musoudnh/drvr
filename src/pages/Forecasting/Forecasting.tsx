@@ -973,7 +973,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.startMonth}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
+                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         >
                           {months.map(month => {
                             const monthData = forecastData.find(item =>
@@ -991,7 +991,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.startYear}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, startYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
+                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         >
                           <option value={2024}>2024</option>
                           <option value={2025}>2025</option>
@@ -1006,7 +1006,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.endMonth}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
+                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         >
                           {months.map(month => {
                             const monthData = forecastData.find(item =>
@@ -1024,7 +1024,7 @@ const Forecasting: React.FC = () => {
                         <select
                           value={glScenarioForm.endYear}
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, endYear: parseInt(e.target.value)})}
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
+                          className="px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         >
                           <option value={2024}>2024</option>
                           <option value={2025}>2025</option>
@@ -2321,7 +2321,7 @@ const Forecasting: React.FC = () => {
                     <select
                       value={sidePanelForm.startMonth}
                       onChange={(e) => setSidePanelForm({...sidePanelForm, startMonth: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     >
                       {months.map(month => {
                         const monthData = forecastData.find(item =>
@@ -2342,7 +2342,7 @@ const Forecasting: React.FC = () => {
                     <select
                       value={sidePanelForm.endMonth}
                       onChange={(e) => setSidePanelForm({...sidePanelForm, endMonth: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     >
                       {months.map(month => {
                         const monthData = forecastData.find(item =>
