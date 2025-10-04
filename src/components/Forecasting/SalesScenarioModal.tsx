@@ -1211,7 +1211,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Sales Scenario Builder</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Customer Scenario Builder</h2>
             <p className="text-sm text-gray-600 mt-1">Build advanced revenue scenarios with multiple drivers</p>
           </div>
           <button
