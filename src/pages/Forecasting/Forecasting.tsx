@@ -1694,7 +1694,46 @@ const Forecasting: React.FC = () => {
                                 </td>
                               )}
                             </tr>
-                            
+
+                            {/* Gantt Chart Row - Shows active scenarios as bars */}
+                            {dateViewMode === 'months' && appliedScenarios.filter(s => s.glCode === glCode.code && s.isActive).length > 0 && (
+                              <tr className="bg-white">
+                                <td className="py-0 px-4"></td>
+                                <td className="py-0 px-2"></td>
+                                {datePeriods.map((period, periodIndex) => {
+                                  const periodKey = `${period} ${selectedYear}`;
+                                  const activeScenarios = appliedScenarios.filter(s =>
+                                    s.glCode === glCode.code &&
+                                    s.isActive &&
+                                    getMonthIndex(s.startMonth) <= periodIndex &&
+                                    getMonthIndex(s.endMonth) >= periodIndex
+                                  );
+
+                                  return (
+                                    <td key={periodIndex} className="py-1 px-2 text-center">
+                                      {activeScenarios.length > 0 ? (
+                                        <div className="flex flex-col gap-0.5">
+                                          {activeScenarios.map(scenario => {
+                                            const impact = getScenarioMonthImpact(scenario, period, glCode.code);
+                                            return (
+                                              <div
+                                                key={scenario.id}
+                                                className="h-2 rounded bg-[#4ADE80]"
+                                                title={`${scenario.name}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}`}
+                                              />
+                                            );
+                                          })}
+                                        </div>
+                                      ) : (
+                                        <div className="h-2"></div>
+                                      )}
+                                    </td>
+                                  );
+                                })}
+                                <td className="py-1 px-2"></td>
+                              </tr>
+                            )}
+
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
                               <tr>
