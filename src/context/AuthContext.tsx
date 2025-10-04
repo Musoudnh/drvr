@@ -24,7 +24,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>({
-    id: '1',
+    id: '00000000-0000-0000-0000-000000000001',
     email: 'john.doe@company.com',
     name: 'John Doe',
     role: 'company',
@@ -36,16 +36,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Mock user data based on email domain
     const mockUser: User = {
-      id: '1',
+      id: '00000000-0000-0000-0000-000000000001',
       email,
       name: email.split('@')[0],
       role: email.includes('admin') ? 'admin' : 'company',
       company: 'Acme Corp'
     };
-    
+
     setUser(mockUser);
     setIsLoading(false);
   };
