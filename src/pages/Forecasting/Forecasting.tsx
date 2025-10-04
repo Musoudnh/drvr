@@ -1774,10 +1774,11 @@ const Forecasting: React.FC = () => {
 
                                             {/* Timeline Gantt - Aligned with table columns */}
                                             <div className="mt-3 -mx-2.5 -mb-2.5 border-t border-gray-100 pt-2">
-                                              <table className="w-full table-fixed">
+                                              <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-2 px-2 w-[200px]"></td>
+                                                    <td className="py-2 px-4 w-64"></td>
+                                                    <td className="py-2 px-2 w-20"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -1789,10 +1790,10 @@ const Forecasting: React.FC = () => {
                                                       return (
                                                         <td
                                                           key={index}
-                                                          className="text-center px-2 py-2"
+                                                          className="text-center px-2 py-2 min-w-[120px]"
                                                         >
                                                           <div
-                                                            className={`h-8 rounded flex items-center justify-center transition-all mx-auto ${
+                                                            className={`h-8 rounded flex items-center justify-center transition-all ${
                                                               isActive
                                                                 ? 'bg-[#4ADE80]'
                                                                 : isInactive
@@ -1810,7 +1811,7 @@ const Forecasting: React.FC = () => {
                                                         </td>
                                                       );
                                                     })}
-                                                    <td className="py-2 px-2 w-32"></td>
+                                                    <td className="py-2 px-2 min-w-[120px]"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
