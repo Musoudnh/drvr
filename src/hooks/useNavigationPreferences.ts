@@ -31,11 +31,17 @@ export const useNavigationPreferences = () => {
   const savePreferences = useCallback(async (newHiddenItems: string[]) => {
     if (!user?.id) return false;
 
+    console.log('🟢 [HOOK] savePreferences called with:', newHiddenItems);
+    console.log('🟢 [HOOK] Current hiddenItems state:', hiddenItems);
+
     setSaving(true);
     try {
       const success = await navigationPreferencesService.savePreferences(user.id, newHiddenItems);
+      console.log('🟢 [HOOK] Service returned:', success);
       if (success) {
+        console.log('🟢 [HOOK] Updating hiddenItems state to:', newHiddenItems);
         setHiddenItems([...newHiddenItems]);
+        console.log('🟢 [HOOK] State updated!');
       }
       return success;
     } catch (error) {
@@ -44,7 +50,7 @@ export const useNavigationPreferences = () => {
     } finally {
       setSaving(false);
     }
-  }, [user?.id]);
+  }, [user?.id, hiddenItems]);
 
   const toggleItemVisibility = useCallback((path: string) => {
     setHiddenItems(prev => {
@@ -57,7 +63,9 @@ export const useNavigationPreferences = () => {
   }, []);
 
   const isItemVisible = useCallback((path: string) => {
-    return !hiddenItems.includes(path);
+    const visible = !hiddenItems.includes(path);
+    console.log(`🔍 [HOOK] isItemVisible(${path}):`, visible, 'hiddenItems:', hiddenItems);
+    return visible;
   }, [hiddenItems]);
 
   const resetToDefault = useCallback(async () => {

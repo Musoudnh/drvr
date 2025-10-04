@@ -25,11 +25,15 @@ export const navigationPreferencesService = {
   },
 
   async savePreferences(userId: string, hiddenItems: string[]): Promise<boolean> {
+    console.log('🔵 [SERVICE] savePreferences called', { userId, hiddenItems });
+
     const { data: existing, error: selectError } = await supabase
       .from('user_navigation_preferences')
       .select('id')
       .eq('user_id', userId)
       .maybeSingle();
+
+    console.log('🔵 [SERVICE] Existing check:', { existing, selectError });
 
     if (selectError) {
       console.error('Error checking for existing preferences:', selectError);
@@ -37,6 +41,7 @@ export const navigationPreferencesService = {
     }
 
     if (existing) {
+      console.log('🔵 [SERVICE] Updating existing record...');
       const { error } = await supabase
         .from('user_navigation_preferences')
         .update({
@@ -45,11 +50,14 @@ export const navigationPreferencesService = {
         })
         .eq('user_id', userId);
 
+      console.log('🔵 [SERVICE] Update error:', error);
+
       if (error) {
         console.error('Error updating navigation preferences:', error);
         return false;
       }
     } else {
+      console.log('🔵 [SERVICE] Inserting new record...');
       const { error } = await supabase
         .from('user_navigation_preferences')
         .insert({
@@ -57,12 +65,15 @@ export const navigationPreferencesService = {
           hidden_items: hiddenItems
         });
 
+      console.log('🔵 [SERVICE] Insert error:', error);
+
       if (error) {
         console.error('Error creating navigation preferences:', error);
         return false;
       }
     }
 
+    console.log('🔵 [SERVICE] Save successful, returning true');
     return true;
   },
 
