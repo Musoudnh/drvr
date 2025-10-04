@@ -7,19 +7,33 @@ interface ForecastViewProps {
 }
 
 const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
-  const [scenarioFilter, setScenarioFilter] = useState<ProjectScenario | 'All'>('All');
+  const currentYear = new Date().getFullYear();
+  const [scenarioFilter, setScenarioFilter] = useState<ProjectScenario>('Base Case');
   const [departmentFilter, setDepartmentFilter] = useState('All');
-  const [periodFilter, setPeriodFilter] = useState('All Time');
+  const [fiscalYearFilter, setFiscalYearFilter] = useState(currentYear + 1);
+
+  const getProjectBudgetForScenario = (project: RoadmapProject): number => {
+    switch (scenarioFilter) {
+      case 'Base Case':
+        return project.budget_base_case || project.budget_total;
+      case 'Best Case':
+        return project.budget_best_case || project.budget_total;
+      case 'Downside Case':
+        return project.budget_downside_case || project.budget_total;
+      default:
+        return project.budget_total;
+    }
+  };
 
   const filteredProjects = projects.filter(project => {
-    const matchesScenario = scenarioFilter === 'All' || project.scenario === scenarioFilter;
     const matchesDepartment = departmentFilter === 'All' || project.department === departmentFilter;
-    return matchesScenario && matchesDepartment;
+    const matchesFiscalYear = project.fiscal_year === fiscalYearFilter;
+    return matchesDepartment && matchesFiscalYear;
   });
 
   const departments = ['All', ...Array.from(new Set(projects.map(p => p.department).filter(Boolean)))];
 
-  const totalBudget = filteredProjects.reduce((sum, p) => sum + p.budget_total, 0);
+  const totalBudget = filteredProjects.reduce((sum, p) => sum + getProjectBudgetForScenario(p), 0);
   const totalActual = filteredProjects.reduce((sum, p) => sum + p.actual_total, 0);
   const variance = totalBudget - totalActual;
   const variancePercent = totalBudget > 0 ? (variance / totalBudget) * 100 : 0;
@@ -29,7 +43,7 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
     if (!acc[dept]) {
       acc[dept] = { budget: 0, actual: 0, count: 0 };
     }
-    acc[dept].budget += project.budget_total;
+    acc[dept].budget += getProjectBudgetForScenario(project);
     acc[dept].actual += project.actual_total;
     acc[dept].count += 1;
     return acc;
@@ -38,36 +52,51 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4 mb-6">
-        <select
-          value={scenarioFilter}
-          onChange={(e) => setScenarioFilter(e.target.value as ProjectScenario | 'All')}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-        >
-          <option value="All">All Scenarios</option>
-          <option value="Base Case">Base Case</option>
-          <option value="Best Case">Best Case</option>
-          <option value="Downside Case">Downside Case</option>
-        </select>
-        <select
-          value={departmentFilter}
-          onChange={(e) => setDepartmentFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-        >
-          {departments.map(dept => (
-            <option key={dept} value={dept}>{dept}</option>
-          ))}
-        </select>
-        <select
-          value={periodFilter}
-          onChange={(e) => setPeriodFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-        >
-          <option value="All Time">All Time</option>
-          <option value="This Quarter">This Quarter</option>
-          <option value="This Year">This Year</option>
-          <option value="Next Quarter">Next Quarter</option>
-          <option value="Next Year">Next Year</option>
-        </select>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">Fiscal Year</label>
+          <select
+            value={fiscalYearFilter}
+            onChange={(e) => setFiscalYearFilter(parseInt(e.target.value))}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212B36] focus:border-transparent"
+          >
+            {[2024, 2025, 2026, 2027, 2028].map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">Scenario</label>
+          <select
+            value={scenarioFilter}
+            onChange={(e) => setScenarioFilter(e.target.value as ProjectScenario)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212B36] focus:border-transparent"
+          >
+            <option value="Base Case">Base Case</option>
+            <option value="Best Case">Best Case</option>
+            <option value="Downside Case">Downside Case</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">Department</label>
+          <select
+            value={departmentFilter}
+            onChange={(e) => setDepartmentFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#212B36] focus:border-transparent"
+          >
+            {departments.map(dept => (
+              <option key={dept} value={dept}>{dept}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex items-end">
+          <div className="px-4 py-2 bg-gray-100 rounded-lg text-sm">
+            <span className="font-medium text-gray-700">Viewing:</span>
+            <span className="ml-2 text-gray-900">{fiscalYearFilter} {scenarioFilter}</span>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -156,14 +185,19 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
             </thead>
             <tbody>
               {filteredProjects.map((project) => {
-                const variance = project.budget_total - project.actual_total;
+                const projectBudget = getProjectBudgetForScenario(project);
+                const variance = projectBudget - project.actual_total;
                 return (
                   <tr key={project.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 px-4 text-sm text-[#101010]">{project.header}</td>
                     <td className="py-3 px-4 text-sm text-gray-600">{project.department}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">{project.scenario}</td>
+                    <td className="py-3 px-4 text-sm text-gray-600">
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                        {scenarioFilter}
+                      </span>
+                    </td>
                     <td className="py-3 px-4 text-sm text-right text-gray-600">
-                      ${project.budget_total.toLocaleString()}
+                      ${projectBudget.toLocaleString()}
                     </td>
                     <td className="py-3 px-4 text-sm text-right text-gray-600">
                       ${project.actual_total.toLocaleString()}

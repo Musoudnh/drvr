@@ -40,7 +40,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
     status: 'Draft' as ProjectStatus,
     scenario: 'Base Case' as ProjectScenario,
     assigned_users: [] as string[],
-    budget_total: 0
+    budget_total: 0,
+    budget_base_case: 0,
+    budget_best_case: 0,
+    budget_downside_case: 0,
+    fiscal_year: new Date().getFullYear() + 1
   });
 
   const [milestones, setMilestones] = useState<RoadmapMilestone[]>([]);
@@ -76,7 +80,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
         status: project.status,
         scenario: project.scenario,
         assigned_users: project.assigned_users,
-        budget_total: project.budget_total
+        budget_total: project.budget_total,
+        budget_base_case: project.budget_base_case || 0,
+        budget_best_case: project.budget_best_case || 0,
+        budget_downside_case: project.budget_downside_case || 0,
+        fiscal_year: project.fiscal_year || new Date().getFullYear() + 1
       });
       loadMilestones(project.id);
     }
@@ -491,7 +499,80 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Budget by GL Account
+              Fiscal Year
+            </label>
+            <select
+              value={formData.fiscal_year}
+              onChange={(e) => setFormData({ ...formData, fiscal_year: parseInt(e.target.value) })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+            >
+              {[2024, 2025, 2026, 2027, 2028].map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Scenario-Based Budgets
+            </label>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-2">
+                  Base Case
+                </label>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <input
+                    type="number"
+                    value={formData.budget_base_case}
+                    onChange={(e) => setFormData({ ...formData, budget_base_case: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-2">
+                  Best Case
+                </label>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <input
+                    type="number"
+                    value={formData.budget_best_case}
+                    onChange={(e) => setFormData({ ...formData, budget_best_case: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-2">
+                  Downside Case
+                </label>
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <input
+                    type="number"
+                    value={formData.budget_downside_case}
+                    onChange={(e) => setFormData({ ...formData, budget_downside_case: parseFloat(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Set independent budgets for each scenario to plan for different business conditions.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Budget by GL Account (Optional)
             </label>
 
             {budgetLines.length > 0 && (

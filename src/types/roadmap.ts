@@ -1,7 +1,8 @@
 export type ProjectStatus = 'Draft' | 'Pending Approval' | 'Approved' | 'Rejected' | 'Completed';
 export type ProjectScenario = 'Base Case' | 'Best Case' | 'Downside Case';
+export type ProjectVisibility = 'private_draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'active' | 'completed';
 export type MilestoneStatus = 'Not Started' | 'In Progress' | 'Completed' | 'Blocked';
-export type ApprovalAction = 'approved' | 'rejected' | 'submitted';
+export type ApprovalAction = 'approved' | 'rejected' | 'submitted' | 'revision_requested';
 export type IdeaStatus = 'pitched' | 'converted' | 'rejected' | 'more_input_needed';
 
 export interface RoadmapProject {
@@ -17,6 +18,13 @@ export interface RoadmapProject {
   assigned_users: string[];
   budget_total: number;
   actual_total: number;
+  budget_base_case: number;
+  budget_best_case: number;
+  budget_downside_case: number;
+  fiscal_year: number;
+  project_visibility: ProjectVisibility;
+  submitted_at: string | null;
+  approved_at: string | null;
   attachments: Attachment[];
   version: number;
   created_at: string;

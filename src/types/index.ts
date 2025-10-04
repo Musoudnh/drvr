@@ -7,6 +7,16 @@ export interface User {
   avatar?: string;
 }
 
+export type {
+  Department,
+  UserRole,
+  ApprovalThreshold,
+  DepartmentBudgetAllocation,
+  ProjectApprovalWorkflow,
+  DepartmentWithBudget,
+  RoleType
+} from './department';
+
 export interface Company {
   id: string;
   name: string;

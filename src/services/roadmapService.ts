@@ -205,6 +205,35 @@ export const roadmapService = {
   },
 
   async submitForApproval(projectId: string, userId: string): Promise<void> {
+    const project = await this.getProjectById(projectId);
+    if (!project) throw new Error('Project not found');
+
+    const budget = project.budget_total || project.budget_base_case || 0;
+
+    const { departmentService } = await import('./departmentService');
+    const threshold = await departmentService.getApprovalThresholdForAmount(budget);
+
+    if (!threshold) {
+      throw new Error('No approval threshold found for this budget amount');
+    }
+
+    const now = new Date();
+    const slaDeadline = new Date(now.getTime() + threshold.sla_hours * 60 * 60 * 1000);
+
+    await departmentService.createProjectApprovalWorkflow({
+      project_id: projectId,
+      threshold_tier_id: threshold.id,
+      current_step: 1,
+      total_steps: threshold.required_roles.length,
+      required_approvers: threshold.required_roles,
+      completed_approvers: [],
+      pending_approvers: threshold.required_roles,
+      workflow_status: 'pending',
+      submitted_at: now.toISOString(),
+      completed_at: null,
+      sla_deadline: slaDeadline.toISOString()
+    });
+
     await this.createApproval({
       project_id: projectId,
       user_id: userId,
@@ -212,10 +241,29 @@ export const roadmapService = {
       notes: ''
     });
 
-    await this.updateProject(projectId, { status: 'Pending Approval' });
+    await this.updateProject(projectId, {
+      status: 'Pending Approval',
+      project_visibility: 'submitted',
+      submitted_at: now.toISOString()
+    });
   },
 
-  async approveProject(projectId: string, userId: string, notes: string = ''): Promise<void> {
+  async approveProject(projectId: string, userId: string, userRole: string, notes: string = ''): Promise<void> {
+    const { departmentService } = await import('./departmentService');
+    const workflow = await departmentService.getProjectApprovalWorkflow(projectId);
+
+    if (!workflow) {
+      throw new Error('No approval workflow found for this project');
+    }
+
+    if (!workflow.pending_approvers.includes(userRole)) {
+      throw new Error('User role not authorized to approve at this stage');
+    }
+
+    const completedApprovers = [...workflow.completed_approvers, userRole];
+    const pendingApprovers = workflow.pending_approvers.filter(role => role !== userRole);
+    const isFullyApproved = pendingApprovers.length === 0;
+
     await this.createApproval({
       project_id: projectId,
       user_id: userId,
@@ -223,10 +271,39 @@ export const roadmapService = {
       notes
     });
 
-    await this.updateProject(projectId, { status: 'Approved' });
+    await departmentService.updateProjectApprovalWorkflow(workflow.id, {
+      current_step: workflow.current_step + 1,
+      completed_approvers: completedApprovers,
+      pending_approvers: pendingApprovers,
+      workflow_status: isFullyApproved ? 'approved' : 'in_progress',
+      completed_at: isFullyApproved ? new Date().toISOString() : null
+    });
+
+    if (isFullyApproved) {
+      await this.updateProject(projectId, {
+        status: 'Approved',
+        project_visibility: 'approved',
+        approved_at: new Date().toISOString()
+      });
+    } else {
+      await this.updateProject(projectId, {
+        status: 'Pending Approval',
+        project_visibility: 'under_review'
+      });
+    }
   },
 
   async rejectProject(projectId: string, userId: string, notes: string): Promise<void> {
+    const { departmentService } = await import('./departmentService');
+    const workflow = await departmentService.getProjectApprovalWorkflow(projectId);
+
+    if (workflow) {
+      await departmentService.updateProjectApprovalWorkflow(workflow.id, {
+        workflow_status: 'rejected',
+        completed_at: new Date().toISOString()
+      });
+    }
+
     await this.createApproval({
       project_id: projectId,
       user_id: userId,
@@ -234,7 +311,33 @@ export const roadmapService = {
       notes
     });
 
-    await this.updateProject(projectId, { status: 'Rejected' });
+    await this.updateProject(projectId, {
+      status: 'Rejected',
+      project_visibility: 'rejected'
+    });
+  },
+
+  async requestRevision(projectId: string, userId: string, notes: string): Promise<void> {
+    const { departmentService } = await import('./departmentService');
+    const workflow = await departmentService.getProjectApprovalWorkflow(projectId);
+
+    if (workflow) {
+      await departmentService.updateProjectApprovalWorkflow(workflow.id, {
+        workflow_status: 'revision_requested'
+      });
+    }
+
+    await this.createApproval({
+      project_id: projectId,
+      user_id: userId,
+      action: 'revision_requested',
+      notes
+    });
+
+    await this.updateProject(projectId, {
+      status: 'Draft',
+      project_visibility: 'private_draft'
+    });
   },
 
   async getVersions(projectId: string): Promise<RoadmapVersion[]> {
