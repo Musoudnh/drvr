@@ -1507,7 +1507,7 @@ const Forecasting: React.FC = () => {
                                 </div>
                               </td>
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top">
+                                <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
                                   <div className="space-y-1">
                                     <div className="h-[20px] flex items-center">Budget:</div>
                                     <div className="h-[18px] flex items-center">Act:</div>
