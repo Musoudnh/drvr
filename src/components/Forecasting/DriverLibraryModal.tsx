@@ -238,20 +238,19 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
         onClick={onClose}
       />
 
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Sales Driver Library</h2>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
+      <div className="fixed right-0 top-0 bottom-0 z-50 w-[800px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-900">Sales Driver Library</h2>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
 
           {showCreateForm ? (
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+            <div className="p-6 overflow-y-auto flex-1">
               <button
                 onClick={() => {
                   setShowCreateForm(false);
@@ -377,7 +376,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              <div className="p-6 overflow-y-auto flex-1">
                 {activeTab === 'library' ? (
                   <div className="grid grid-cols-2 gap-4">
                     {templates.map(template => (

@@ -579,8 +579,13 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-2xl w-[1200px] max-w-[95vw] max-h-[90vh] flex flex-col">
+    <>
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        onClick={onClose}
+      />
+
+      <div className="fixed right-0 top-0 bottom-0 z-50 w-[900px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
@@ -1095,7 +1100,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
