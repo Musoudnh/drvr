@@ -1619,7 +1619,7 @@ const Forecasting: React.FC = () => {
                                 );
                               })}
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-2 text-sm text-center">
+                                <td className="py-3 px-2 text-sm text-center border-l border-gray-300">
                                   <div className="space-y-1">
                                     {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                       <input
@@ -1667,7 +1667,7 @@ const Forecasting: React.FC = () => {
                                             </span>
                                           </div>
                                           <div className="text-[10px] text-[#212b36] font-semibold bg-gray-100 rounded px-1 py-0.5">
-                                            Act: ${formatNumber(totalActuals)}
+                                            ${formatNumber(totalActuals)}
                                           </div>
                                           <div className={`text-[10px] font-medium text-center ${varianceColor}`}>
                                             {showActualsAsAmount
