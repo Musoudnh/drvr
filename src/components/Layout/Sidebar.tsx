@@ -148,7 +148,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                       isFinancialPage ? financialNavItems :
                       companyNavItems;
 
-  const navItems = allNavItems.filter(item => item.alwaysVisible || isItemVisible(item.path));
+  console.log('🔍 Hidden items:', hiddenItems);
+  console.log('🔍 All nav items count:', allNavItems.length);
+
+  const navItems = allNavItems.filter(item => {
+    const visible = item.alwaysVisible || isItemVisible(item.path);
+    console.log(`🔍 Item ${item.path}: alwaysVisible=${item.alwaysVisible}, isItemVisible=${isItemVisible(item.path)}, visible=${visible}`);
+    return visible;
+  });
+
+  console.log('🔍 Filtered nav items count:', navItems.length);
   
   // Check if any items with children are expanded
   const hasExpandedChildren = expandedItems.some(path => 
