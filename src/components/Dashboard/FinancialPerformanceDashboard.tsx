@@ -100,92 +100,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-6 text-white">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-lg font-semibold">Monthly Revenue Performance with AI Predictions</h3>
-            <p className="text-sm text-gray-300 mt-1">12-Month Forward-Looking Forecast</p>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 text-green-400 rounded-lg">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
-          </div>
-        </div>
-
-        <div className="relative h-64 mb-6">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="predictiveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
-                <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#3B82F6" stopOpacity="0.3" />
-                <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#8B5CF6" stopOpacity="0.2" />
-                <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
-              </linearGradient>
-            </defs>
-
-            <path
-              d={`${getPredictivePathD()} L 100 100 L 0 100 Z`}
-              fill="url(#predictiveGradient)"
-              opacity="0.5"
-            />
-
-            <path
-              d={getPredictivePathD()}
-              fill="none"
-              stroke="#3B82F6"
-              strokeWidth="0.5"
-              strokeDasharray={`0 ${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
-            />
-
-            <path
-              d={getPredictivePathD()}
-              fill="none"
-              stroke="#8B5CF6"
-              strokeWidth="0.5"
-              strokeDasharray={`${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
-              strokeDashoffset={`-${(predictionStartIndex / predictiveData.length) * 100}`}
-            />
-          </svg>
-
-          <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-gray-400">
-            {predictiveData.map((d, i) => (
-              <div key={i} className="text-center" style={{ width: `${100 / predictiveData.length}%` }}>
-                {d.month}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white/10 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-              <span className="text-xs text-gray-300">Historical</span>
-            </div>
-            <div className="text-2xl font-bold">{formatCurrency(predictiveData.find(d => d.historical !== null)?.historical || 0)}</div>
-            <div className="text-xs text-gray-400 mt-1">Last Recorded Month</div>
-          </div>
-
-          <div className="bg-white/10 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-              <span className="text-xs text-gray-300">AI Prediction (Next 6M)</span>
-            </div>
-            <div className="text-2xl font-bold">{formatCurrency(predictiveData[predictiveData.length - 1].prediction)}</div>
-            <div className="text-xs text-gray-400 mt-1">Predicted by {predictiveData[predictiveData.length - 1].month}</div>
-          </div>
-
-          <div className="bg-white/10 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-              <span className="text-xs text-gray-300">Confidence Band</span>
-            </div>
-            <div className="text-2xl font-bold">±{variancePercent}%</div>
-            <div className="text-xs text-gray-400 mt-1">Prediction accuracy</div>
-          </div>
-        </div>
-      </div>
-
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -350,6 +264,92 @@ const FinancialPerformanceDashboard: React.FC = () => {
               />
             </ComposedChart>
           </ResponsiveContainer>
+        </div>
+
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-6 text-white">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold">Monthly Revenue Performance with AI Predictions</h3>
+              <p className="text-sm text-gray-300 mt-1">12-Month Forward-Looking Forecast</p>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 text-green-400 rounded-lg">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
+            </div>
+          </div>
+
+          <div className="relative h-64 mb-6">
+            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="predictiveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+                  <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#3B82F6" stopOpacity="0.3" />
+                  <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#8B5CF6" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+
+              <path
+                d={`${getPredictivePathD()} L 100 100 L 0 100 Z`}
+                fill="url(#predictiveGradient)"
+                opacity="0.5"
+              />
+
+              <path
+                d={getPredictivePathD()}
+                fill="none"
+                stroke="#3B82F6"
+                strokeWidth="0.5"
+                strokeDasharray={`0 ${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
+              />
+
+              <path
+                d={getPredictivePathD()}
+                fill="none"
+                stroke="#8B5CF6"
+                strokeWidth="0.5"
+                strokeDasharray={`${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
+                strokeDashoffset={`-${(predictionStartIndex / predictiveData.length) * 100}`}
+              />
+            </svg>
+
+            <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-gray-400">
+              {predictiveData.map((d, i) => (
+                <div key={i} className="text-center" style={{ width: `${100 / predictiveData.length}%` }}>
+                  {d.month}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white/10 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                <span className="text-xs text-gray-300">Historical</span>
+              </div>
+              <div className="text-2xl font-bold">{formatCurrency(predictiveData.find(d => d.historical !== null)?.historical || 0)}</div>
+              <div className="text-xs text-gray-400 mt-1">Last Recorded Month</div>
+            </div>
+
+            <div className="bg-white/10 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                <span className="text-xs text-gray-300">AI Prediction (Next 6M)</span>
+              </div>
+              <div className="text-2xl font-bold">{formatCurrency(predictiveData[predictiveData.length - 1].prediction)}</div>
+              <div className="text-xs text-gray-400 mt-1">Predicted by {predictiveData[predictiveData.length - 1].month}</div>
+            </div>
+
+            <div className="bg-white/10 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+                <span className="text-xs text-gray-300">Confidence Band</span>
+              </div>
+              <div className="text-2xl font-bold">±{variancePercent}%</div>
+              <div className="text-xs text-gray-400 mt-1">Prediction accuracy</div>
+            </div>
+          </div>
         </div>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
