@@ -1792,37 +1792,53 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Activity Cards for this scenario */}
-                                            <div className="mt-2 flex items-center gap-2" style={{ marginLeft: '384px' }}>
-                                              {months.map((month, index) => {
-                                                const startIndex = getMonthIndex(scenario.startMonth);
-                                                const endIndex = getMonthIndex(scenario.endMonth);
-                                                const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
-                                                const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                const hasActivity = isActive && impact !== 0;
+                                            <div className="mt-2">
+                                              <table className="w-full" style={{ tableLayout: 'fixed' }}>
+                                                <colgroup>
+                                                  <col style={{ width: 'auto' }} />
+                                                  <col style={{ width: 'auto' }} />
+                                                  {months.map((_, idx) => (
+                                                    <col key={idx} />
+                                                  ))}
+                                                  <col style={{ width: 'auto' }} />
+                                                </colgroup>
+                                                <tbody>
+                                                  <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    {months.map((month, index) => {
+                                                      const startIndex = getMonthIndex(scenario.startMonth);
+                                                      const endIndex = getMonthIndex(scenario.endMonth);
+                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                      const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                      const hasActivity = isActive && impact !== 0;
 
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="rounded transition-all flex items-center justify-center"
-                                                    style={{
-                                                      width: '120px',
-                                                      height: '48px',
-                                                      minWidth: '120px',
-                                                      backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
-                                                      boxSizing: 'border-box',
-                                                      padding: '8px'
-                                                    }}
-                                                    title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
-                                                  >
-                                                    {hasActivity && (
-                                                      <span className="text-sm font-semibold text-white">
-                                                        {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
-                                                      </span>
-                                                    )}
-                                                  </div>
-                                                );
-                                              })}
+                                                      return (
+                                                        <td key={index} className="px-2">
+                                                          <div
+                                                            className="rounded transition-all flex items-center justify-center"
+                                                            style={{
+                                                              height: '48px',
+                                                              backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
+                                                              boxSizing: 'border-box',
+                                                              padding: '8px'
+                                                            }}
+                                                            title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
+                                                          >
+                                                            {hasActivity && (
+                                                              <span className="text-sm font-semibold text-white whitespace-nowrap">
+                                                                {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
+                                                              </span>
+                                                            )}
+                                                          </div>
+                                                        </td>
+                                                      );
+                                                    })}
+                                                    <td></td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
                                             </div>
 
                                             {scenarioMenuOpen === scenario.id && (
