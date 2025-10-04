@@ -174,12 +174,11 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   </div>
                 </div>
 
-                {/* Gantt Rows - EXACTLY like HiringRunway */}
+                {/* Gantt Rows - styled like Actuals */}
                 {ganttRows.map((row) => (
                   <div key={row.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
                     <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate group">
                       <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full mr-3 bg-green-500" />
                         <span className="flex-1 truncate">{row.label}</span>
                         <button
                           onClick={() => handleRemoveGanttRow(row.id)}
@@ -198,7 +197,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                           <div
                             key={index}
                             className="h-8 rounded-lg"
-                            style={{ backgroundColor: isActive ? '#4ADE80' : 'transparent' }}
+                            style={{ backgroundColor: isActive ? '#4ADE80' : '#E5E7EB' }}
                             title={isActive ? `${row.label}` : ''}
                           />
                         );
@@ -207,9 +206,9 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   </div>
                 ))}
 
-                {/* Adding Gantt Row - EXACTLY like HiringRunway */}
+                {/* Adding Gantt Row - styled like Actuals */}
                 {isAddingGantt && (
-                  <div className="flex mb-3 items-center bg-green-50 rounded-lg border-2 border-green-300 shadow-sm">
+                  <div className="flex mb-3 items-center bg-white rounded-lg border-2 border-green-400 shadow-sm">
                     <div className="w-48 p-2">
                       <input
                         type="text"
@@ -233,8 +232,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                             onClick={() => handleMonthClick(absoluteMonthIndex)}
                             className="h-8 rounded-lg cursor-pointer transition-colors"
                             style={{
-                              backgroundColor: isActive ? '#4ADE80' : 'transparent',
-                              border: isActive ? 'none' : '1px dashed #9CA3AF'
+                              backgroundColor: isActive ? '#4ADE80' : '#E5E7EB'
                             }}
                             title={`Click to ${selectedStartMonth === null ? 'set start' : 'set end'} month`}
                           />
