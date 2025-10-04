@@ -1402,6 +1402,31 @@ const Forecasting: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-white z-10">
+                  {dateViewMode === 'months' && (
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-2 px-4 w-64 sticky left-0 bg-white"></th>
+                      <th colSpan={datePeriods.length + 1} className="py-2">
+                        <div className="flex items-center justify-center gap-6 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-[#101010] rounded"></div>
+                            <span className="font-medium">Budget</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-gray-600 rounded"></div>
+                            <span className="font-medium">Actual</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-green-700 rounded"></div>
+                            <span className="font-medium">Change (positive)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-700 rounded"></div>
+                            <span className="font-medium">Change (negative)</span>
+                          </div>
+                        </div>
+                      </th>
+                    </tr>
+                  )}
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
                     {datePeriods.map((period, index) => {
