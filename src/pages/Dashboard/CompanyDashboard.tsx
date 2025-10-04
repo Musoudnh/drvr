@@ -37,46 +37,6 @@ const CompanyDashboard: React.FC = () => {
       <FinancialPerformanceDashboard />
 
 
-      {/* Detailed Analytics */}
-      <Card title="Monthly Performance">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-2 px-3 font-semibold text-gray-700 text-xs">Metric</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Current</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Previous</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">Budget</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Previous</th>
-                <th className="text-right py-2 px-3 font-semibold text-gray-700 text-xs">vs Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { metric: 'Revenue', current: '$847,245', previous: '$753,200', budget: '$825,000', change: '+12.5%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
-                { metric: 'Gross Profit', current: '$526,272', previous: '$467,488', budget: '$512,250', change: '+12.6%', vsBudget: '+2.7%', positive: true, budgetPositive: true },
-                { metric: 'Operational Expenses', current: '$265,890', previous: '$248,120', budget: '$275,000', change: '+7.2%', vsBudget: '-3.3%', positive: false, budgetPositive: true },
-                { metric: 'Net Income', current: '$224,065', previous: '$185,340', budget: '$195,000', change: '+20.9%', vsBudget: '+14.9%', positive: true, budgetPositive: true },
-                { metric: 'Net Margin', current: '26.4%', previous: '24.6%', budget: '23.6%', change: '+1.8%', vsBudget: '+2.8%', positive: true, budgetPositive: true }
-              ].map((row, index) => (
-                <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-2 px-3 font-medium text-[#101010] text-sm">{row.metric}</td>
-                  <td className="py-2 px-3 text-right font-medium text-[#101010] text-sm">{row.current}</td>
-                  <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.previous}</td>
-                  <td className="py-2 px-3 text-right text-gray-600 text-sm">{row.budget}</td>
-                  <td className={`py-2 px-3 text-right font-medium text-sm ${row.positive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
-                    {row.change}
-                  </td>
-                  <td className={`py-2 px-3 text-right font-medium text-sm ${row.budgetPositive ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
-                    {row.vsBudget}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-
       {/* Recent Activity */}
       <div className="grid grid-cols-1 gap-4">
         <Card title="AI Financial Summary">
