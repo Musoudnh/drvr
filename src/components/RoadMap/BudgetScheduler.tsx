@@ -20,6 +20,8 @@ interface BudgetSchedulerProps {
   totalBudget: number;
   onClose: () => void;
   onSave: (allocations: MonthAllocation[], ganttRows: GanttRow[]) => void;
+  visibleMonthStart?: number;
+  visibleMonthEnd?: number;
 }
 
 const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
@@ -27,13 +29,17 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
   fiscalYear,
   totalBudget,
   onClose,
-  onSave
+  onSave,
+  visibleMonthStart = 0,
+  visibleMonthEnd = 11
 }) => {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = allMonths.slice(visibleMonthStart, visibleMonthEnd + 1);
+  const monthStartIndex = visibleMonthStart;
 
   const [allocations, setAllocations] = useState<MonthAllocation[]>(
     months.map((_, index) => ({
-      month: index,
+      month: monthStartIndex + index,
       budget: Math.round(totalBudget / 12),
       actual: Math.round((totalBudget / 12) * (Math.random() * 0.3 + 0.7))
     }))
@@ -119,7 +125,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                 {/* Month Headers - EXACTLY like HiringRunway */}
                 <div className="flex mb-4">
                   <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Month</div>
-                  <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
+                  <div className="flex-1 gap-1 bg-gray-100 rounded-r-lg p-3" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                     {months.map((month, index) => (
                       <div key={index} className="text-xs font-bold text-gray-700 text-center">
                         {month}
@@ -133,7 +139,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   <div className="w-48 text-sm font-medium text-[#101010] p-2">
                     Budget
                   </div>
-                  <div className="flex-1 grid grid-cols-12 gap-1">
+                  <div className="flex-1 gap-1" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                     {allocations.map((alloc, index) => (
                       <div key={`budget-${index}`} className="h-8 flex items-center justify-center">
                         <input
@@ -152,7 +158,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   <div className="w-48 text-sm font-medium text-[#101010] p-2">
                     Actuals
                   </div>
-                  <div className="flex-1 grid grid-cols-12 gap-1">
+                  <div className="flex-1 gap-1" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                     {allocations.map((alloc, index) => (
                       <div
                         key={`actual-${index}`}
@@ -183,9 +189,10 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                         </button>
                       </div>
                     </div>
-                    <div className="flex-1 grid grid-cols-12 gap-1">
+                    <div className="flex-1 gap-1" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                       {months.map((month, index) => {
-                        const isActive = index >= row.startMonth && index <= row.endMonth;
+                        const absoluteMonthIndex = monthStartIndex + index;
+                        const isActive = absoluteMonthIndex >= row.startMonth && absoluteMonthIndex <= row.endMonth;
 
                         return (
                           <div
@@ -212,17 +219,18 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                         className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:outline-none"
                       />
                     </div>
-                    <div className="flex-1 grid grid-cols-12 gap-1">
+                    <div className="flex-1 gap-1" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                       {months.map((month, index) => {
+                        const absoluteMonthIndex = monthStartIndex + index;
                         const isInRange = selectedStartMonth !== null && selectedEndMonth !== null &&
-                                         index >= Math.min(selectedStartMonth, selectedEndMonth) &&
-                                         index <= Math.max(selectedStartMonth, selectedEndMonth);
+                                         absoluteMonthIndex >= Math.min(selectedStartMonth, selectedEndMonth) &&
+                                         absoluteMonthIndex <= Math.max(selectedStartMonth, selectedEndMonth);
                         const isActive = isInRange;
 
                         return (
                           <div
                             key={`new-${index}`}
-                            onClick={() => handleMonthClick(index)}
+                            onClick={() => handleMonthClick(absoluteMonthIndex)}
                             className="h-8 rounded-lg cursor-pointer transition-colors"
                             style={{
                               backgroundColor: isActive ? '#4ADE80' : 'transparent',
