@@ -63,7 +63,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
     const points = data.map((d, index) => {
       const barWidth = 100 / data.length;
       const x = (index * barWidth) + (barWidth / 2);
-      const y = 100 - (d.priorYear * scale);
+      const y = 100 - (d.priorYear / maxValue * 100);
       return { x, y };
     });
 
@@ -86,7 +86,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
     const points = data.map((d, index) => {
       const barWidth = 100 / data.length;
       const x = (index * barWidth) + (barWidth / 2);
-      const y = 100 - (d.budget * scale);
+      const y = 100 - (d.budget / maxValue * 100);
       return { x, y };
     });
 
@@ -277,8 +277,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative mb-8" style={{ height: '300px' }}>
-          <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-500 pr-2">
+        <div className="relative mb-8" style={{ height: '320px' }}>
+          <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between text-xs text-gray-500 pr-2 w-10 text-right">
             <span>{formatCurrency(maxValue)}</span>
             <span>{formatCurrency(maxValue * 0.75)}</span>
             <span>{formatCurrency(maxValue * 0.5)}</span>
@@ -286,47 +286,48 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <span>$0</span>
           </div>
 
-          <div className="absolute left-12 right-0 top-0" style={{ height: 'calc(100% - 24px)' }}>
+          <div className="absolute left-12 right-0 top-0 bottom-6 border border-gray-200 bg-white">
             <div className="relative w-full h-full">
-              <div className="absolute inset-0 flex items-end">
-                {monthlyData.map((data, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center justify-end group px-1">
-                    <div
-                      className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
-                      style={{ height: `${data.actual * scale}%`, minHeight: '4px' }}
-                    >
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50">
-                        {formatCurrency(data.actual)}
+              <div className="absolute inset-0 flex items-end gap-0.5 px-0.5">
+                {monthlyData.map((data, index) => {
+                  const heightPercent = (data.actual / maxValue) * 100;
+                  return (
+                    <div key={index} className="flex-1 flex flex-col items-center justify-end group">
+                      <div
+                        className="w-full bg-[#4ADE80] rounded-t transition-all duration-300 group-hover:bg-[#3ACE70] relative"
+                        style={{ height: `${heightPercent}%` }}
+                      >
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
+                          {formatCurrency(data.actual)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
-              <svg className="absolute inset-0 pointer-events-none overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+              <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }} preserveAspectRatio="none" viewBox="0 0 100 100">
                 <path
                   d={getBudgetPathD(monthlyData)}
                   fill="none"
                   stroke="#7B68EE"
-                  strokeWidth="0.5"
+                  strokeWidth="0.4"
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
                   const barWidth = 100 / monthlyData.length;
                   const x = (index * barWidth) + (barWidth / 2);
-                  const y = 100 - (data.budget * scale);
+                  const y = 100 - (data.budget / maxValue * 100);
                   return (
                     <circle
                       key={`budget-${index}`}
                       cx={x}
                       cy={y}
-                      r="0.8"
+                      r="1"
                       fill="#7B68EE"
                       stroke="white"
-                      strokeWidth="0.3"
+                      strokeWidth="0.4"
                       vectorEffect="non-scaling-stroke"
-                      className="cursor-pointer"
-                      style={{ pointerEvents: 'auto' }}
                     >
                       <title>{data.month} Budget: {formatCurrency(data.budget)}</title>
                     </circle>
@@ -337,25 +338,23 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   d={getPriorYearPathD(monthlyData)}
                   fill="none"
                   stroke="#3B82F6"
-                  strokeWidth="0.5"
+                  strokeWidth="0.4"
                   vectorEffect="non-scaling-stroke"
                 />
                 {monthlyData.map((data, index) => {
                   const barWidth = 100 / monthlyData.length;
                   const x = (index * barWidth) + (barWidth / 2);
-                  const y = 100 - (data.priorYear * scale);
+                  const y = 100 - (data.priorYear / maxValue * 100);
                   return (
                     <circle
                       key={`py-${index}`}
                       cx={x}
                       cy={y}
-                      r="0.8"
+                      r="1"
                       fill="#3B82F6"
                       stroke="white"
-                      strokeWidth="0.3"
+                      strokeWidth="0.4"
                       vectorEffect="non-scaling-stroke"
-                      className="cursor-pointer"
-                      style={{ pointerEvents: 'auto' }}
                     >
                       <title>{data.month} Prior Year: {formatCurrency(data.priorYear)}</title>
                     </circle>
@@ -365,7 +364,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="absolute left-12 right-0 bottom-0 flex justify-between text-xs text-gray-600 font-medium">
+          <div className="absolute left-12 right-0 bottom-0 flex justify-between text-xs text-gray-600 font-medium h-6 items-center">
             {monthlyData.map((data, index) => (
               <div key={index} className="flex-1 text-center">
                 {data.month}
