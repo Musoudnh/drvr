@@ -1796,7 +1796,6 @@ const Forecasting: React.FC = () => {
                                               <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-3 px-4 text-sm sticky left-0 bg-white"></td>
                                                     <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
