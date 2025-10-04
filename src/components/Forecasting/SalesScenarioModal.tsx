@@ -1482,7 +1482,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           </div>
 
                           <div className="mt-3 pt-3 border-t border-gray-200">
-                            <div className="grid grid-cols-12 gap-1">
+                            <div className="flex overflow-x-auto">
                               {MONTHS.map((month, idx) => {
                                 const startIdx = MONTHS.indexOf(driver.startMonth);
                                 const endIdx = MONTHS.indexOf(driver.endMonth);
@@ -1492,18 +1492,18 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 return (
                                   <div
                                     key={month}
-                                    className={`flex flex-col items-center p-1.5 rounded text-center border transition-colors ${
+                                    className={`flex flex-col items-center justify-center min-w-[120px] h-16 border-r border-l-0 first:border-l transition-colors ${
                                       isActive
-                                        ? 'bg-blue-50 border-blue-300'
-                                        : 'bg-gray-50 border-gray-200'
+                                        ? 'bg-blue-100 border-blue-400'
+                                        : 'bg-gray-100 border-gray-300'
                                     }`}
                                     title={`${month}: ${isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : 'Not applied'}`}
                                   >
-                                    <div className="text-[9px] font-medium text-gray-600 mb-0.5">{month}</div>
-                                    <div className={`text-[10px] font-semibold ${
-                                      isActive ? 'text-blue-900' : 'text-gray-300'
+                                    <div className="text-xs font-semibold text-gray-700 mb-1">{month}</div>
+                                    <div className={`text-sm font-bold ${
+                                      isActive ? 'text-blue-900' : 'text-gray-400'
                                     }`}>
-                                      {isActive ? `$${(monthlyImpact / 1000).toFixed(0)}k` : '-'}
+                                      {isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : '-'}
                                     </div>
                                   </div>
                                 );
