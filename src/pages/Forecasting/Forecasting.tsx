@@ -1796,7 +1796,8 @@ const Forecasting: React.FC = () => {
                                               <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300"></td>
+                                                    <td className="py-3 px-4 text-sm sticky left-0 bg-white w-64"></td>
+                                                    <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300 w-20"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -1805,7 +1806,7 @@ const Forecasting: React.FC = () => {
                                                       const hasActivity = isActive && impact !== 0;
 
                                                       return (
-                                                        <td key={index} className="py-3 text-center px-2">
+                                                        <td key={index} className="py-3 text-center px-2 min-w-[120px]">
                                                           <div className="space-y-1 relative">
                                                             <div></div>
                                                             <div className={`text-sm font-medium rounded px-1 py-0.5 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`}>
@@ -1816,7 +1817,7 @@ const Forecasting: React.FC = () => {
                                                         </td>
                                                       );
                                                     })}
-                                                    <td className="py-3 px-2 text-sm text-center border-l border-gray-300"></td>
+                                                    <td className="py-3 px-2 text-sm text-center border-l border-gray-300 min-w-[120px]"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
