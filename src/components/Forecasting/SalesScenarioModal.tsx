@@ -125,6 +125,80 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
     ));
   };
 
+  const calculateMonthlyImpact = (driver: SalesDriver, monthIndex: number): number => {
+    const startIdx = MONTHS.indexOf(driver.startMonth);
+    const endIdx = MONTHS.indexOf(driver.endMonth);
+
+    if (monthIndex < startIdx || monthIndex > endIdx) {
+      return 0;
+    }
+
+    switch (driver.driverType) {
+      case 'volume_price':
+        const vpParams = driver.parameters as VolumePriceParameters;
+        return (vpParams.baseUnits * vpParams.basePrice * vpParams.volumeGrowthPercent / 100) +
+               (vpParams.baseUnits * vpParams.basePrice * vpParams.priceGrowthPercent / 100);
+
+      case 'cac':
+        const cacParams = driver.parameters as CACParameters;
+        return cacParams.customersAcquired * cacParams.averageRevenuePerCustomer;
+
+      case 'retention':
+        const retParams = driver.parameters as RetentionParameters;
+        const churnReduction = (retParams.currentChurnRatePercent - retParams.targetChurnRatePercent) / 100;
+        return retParams.currentMRR * churnReduction;
+
+      case 'payroll_headcount':
+        const payrollHCParams = driver.parameters as PayrollHeadcountParameters;
+        return payrollHCParams.currentHeadcount * 10000;
+
+      case 'payroll_salary':
+        const payrollSalParams = driver.parameters as PayrollSalaryParameters;
+        const monthlyBase = payrollSalParams.avgSalary / 12;
+        const benefits = monthlyBase * (payrollSalParams.benefitsPct / 100);
+        const taxes = monthlyBase * (payrollSalParams.taxesPct / 100);
+        const bonus = monthlyBase * (payrollSalParams.bonusPct / 100);
+        return monthlyBase + benefits + taxes + bonus;
+
+      case 'payroll_merit':
+        const payrollMeritParams = driver.parameters as PayrollMeritParameters;
+        return 50000 * (payrollMeritParams.annualIncreasePct / 100);
+
+      case 'marketing_channels':
+        const mktChannelParams = driver.parameters as MarketingChannelsParameters;
+        const leads = mktChannelParams.monthlyBudget / mktChannelParams.costPerLead;
+        const customers = leads * (mktChannelParams.leadToCustomerRate / 100);
+        return customers * mktChannelParams.avgARRPerCustomer / 12;
+
+      case 'marketing_cac':
+        const mktCACParams = driver.parameters as MarketingCACParameters;
+        return mktCACParams.customersAcquired * 1000;
+
+      case 'marketing_roi':
+        const mktROIParams = driver.parameters as MarketingROIParameters;
+        return mktROIParams.attributedRevenue - mktROIParams.campaignSpend;
+
+      case 'equipment_purchase':
+        const eqPurchaseParams = driver.parameters as EquipmentPurchaseParameters;
+        const depreciationMonths = eqPurchaseParams.usefulLifeYears * 12;
+        return (eqPurchaseParams.purchaseCost - eqPurchaseParams.salvageValue) / depreciationMonths;
+
+      case 'equipment_financing':
+        const eqFinanceParams = driver.parameters as EquipmentFinancingParameters;
+        const principal = eqFinanceParams.purchaseCost * (1 - eqFinanceParams.downPaymentPct / 100);
+        const monthlyRate = (eqFinanceParams.interestRatePct / 100) / 12;
+        const payment = (monthlyRate * principal) / (1 - Math.pow(1 + monthlyRate, -eqFinanceParams.paymentTermMonths));
+        return payment;
+
+      case 'equipment_maintenance':
+        const eqMaintParams = driver.parameters as EquipmentMaintenanceParameters;
+        return (eqMaintParams.purchaseCost * eqMaintParams.maintenancePct / 100) / 12;
+
+      default:
+        return 5000 + (monthIndex * 500);
+    }
+  };
+
   const calculatePreview = () => {
     if (!initialScenario && activeDrivers.length === 0) return [];
 
@@ -1436,6 +1510,38 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                     <option key={m} value={m}>{m}</option>
                                   ))}
                                 </select>
+                              </div>
+                            </div>
+
+                            <div className="mt-4 pt-4 border-t border-gray-200">
+                              <h5 className="text-sm font-medium text-gray-700 mb-3">Monthly Impact</h5>
+                              <div className="overflow-x-auto">
+                                <div className="inline-flex gap-2 min-w-full">
+                                  {MONTHS.map((month, idx) => {
+                                    const startIdx = MONTHS.indexOf(driver.startMonth);
+                                    const endIdx = MONTHS.indexOf(driver.endMonth);
+                                    const isActive = idx >= startIdx && idx <= endIdx;
+                                    const monthlyImpact = calculateMonthlyImpact(driver, idx);
+
+                                    return (
+                                      <div
+                                        key={month}
+                                        className={`flex-1 min-w-[80px] p-2 rounded text-center border ${
+                                          isActive
+                                            ? 'bg-blue-50 border-blue-300'
+                                            : 'bg-gray-50 border-gray-200'
+                                        }`}
+                                      >
+                                        <div className="text-xs font-medium text-gray-700 mb-1">{month}</div>
+                                        <div className={`text-sm font-semibold ${
+                                          isActive ? 'text-blue-900' : 'text-gray-400'
+                                        }`}>
+                                          {isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : '-'}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                           </div>
