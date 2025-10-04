@@ -135,6 +135,25 @@ const MonthsView: React.FC<MonthsViewProps> = ({
         <span className="text-sm font-semibold text-gray-700 min-w-[200px]">{rowLabel}</span>
       </div>
 
+      <div className="flex items-center gap-4 mb-3 ml-2">
+        <div className="flex items-center gap-2 text-xs text-gray-600">
+          <div className="w-3 h-3 bg-gray-900 rounded"></div>
+          <span className="font-medium">Budget</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-gray-600">
+          <div className="w-3 h-3 bg-gray-900 rounded"></div>
+          <span className="font-medium">Actual</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-gray-600">
+          <div className="w-3 h-3 bg-green-700 rounded"></div>
+          <span className="font-medium">% Change (positive)</span>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-gray-600">
+          <div className="w-3 h-3 bg-red-700 rounded"></div>
+          <span className="font-medium">% Change (negative)</span>
+        </div>
+      </div>
+
       <div className="overflow-x-auto">
         <div className="inline-flex gap-2 min-w-full">
           {localMonths.map((monthData) => {
