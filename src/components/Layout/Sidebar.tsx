@@ -427,7 +427,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             </button>
           </div>
         )}
-        <div className="space-y-4">
+        <div className="space-y-4" key={`nav-items-${hiddenItems.join(',')}`}>
           {navItems.map(item => renderNavItem(item))}
         </div>
       </nav>

@@ -35,7 +35,7 @@ export const useNavigationPreferences = () => {
     try {
       const success = await navigationPreferencesService.savePreferences(user.id, newHiddenItems);
       if (success) {
-        setHiddenItems(newHiddenItems);
+        setHiddenItems([...newHiddenItems]);
       }
       return success;
     } catch (error) {
