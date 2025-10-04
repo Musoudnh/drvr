@@ -1792,7 +1792,7 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Gantt Bar for this scenario */}
-                                            <div className="mt-2 flex items-center">
+                                            <div className="mt-2 flex items-center" style={{ marginLeft: '384px' }}>
                                               {months.map((month, index) => {
                                                 const startIndex = getMonthIndex(scenario.startMonth);
                                                 const endIndex = getMonthIndex(scenario.endMonth);
