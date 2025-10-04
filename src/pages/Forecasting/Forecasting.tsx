@@ -1712,7 +1712,9 @@ const Forecasting: React.FC = () => {
                               {dateViewMode === 'months' && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
                                   <div className="space-y-1">
-                                    <div className="h-[20px] flex items-center">Budget:</div>
+                                    <div className="h-[20px] flex items-center">
+                                      {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
+                                    </div>
                                     <div className="h-[18px] flex items-center">Act:</div>
                                     <div className="h-[18px] flex items-center">Change:</div>
                                   </div>
