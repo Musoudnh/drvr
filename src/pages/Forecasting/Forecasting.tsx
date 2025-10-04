@@ -1809,18 +1809,10 @@ const Forecasting: React.FC = () => {
                                                         <td key={index} className="py-3 text-center px-2">
                                                           <div className="space-y-1 relative">
                                                             <div className="rounded px-1 font-semibold text-sm" style={{ height: '20px' }}></div>
-                                                            <div
-                                                              className="text-sm font-medium rounded px-1 py-0.5 flex items-center justify-center"
-                                                              style={{
-                                                                backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
-                                                                color: hasActivity ? 'white' : 'transparent',
-                                                                minHeight: '24px'
-                                                              }}
-                                                              title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
-                                                            >
+                                                            <div className={`text-sm font-medium rounded px-1 py-0.5 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`}>
                                                               {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
                                                             </div>
-                                                            <div className="text-sm font-medium" style={{ height: '20px' }}></div>
+                                                            <div className="text-sm font-medium text-gray-400">-</div>
                                                           </div>
                                                         </td>
                                                       );
