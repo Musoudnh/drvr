@@ -1492,18 +1492,17 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 return (
                                   <div
                                     key={month}
-                                    className={`flex flex-col items-center justify-center min-w-[120px] h-16 border-r border-l-0 first:border-l transition-colors ${
+                                    className={`px-2 text-center min-w-[120px] transition-colors ${
                                       isActive
-                                        ? 'bg-blue-100 border-blue-400'
-                                        : 'bg-gray-100 border-gray-300'
+                                        ? 'bg-blue-500'
+                                        : 'bg-gray-200'
                                     }`}
                                     title={`${month}: ${isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : 'Not applied'}`}
                                   >
-                                    <div className="text-xs font-semibold text-gray-700 mb-1">{month}</div>
-                                    <div className={`text-sm font-bold ${
-                                      isActive ? 'text-blue-900' : 'text-gray-400'
-                                    }`}>
-                                      {isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : '-'}
+                                    <div className="py-1 h-12 flex items-center justify-center">
+                                      <div className="text-xs font-bold text-white">
+                                        {isActive ? `$${(monthlyImpact / 1000).toFixed(0)}k` : ''}
+                                      </div>
                                     </div>
                                   </div>
                                 );
@@ -1527,7 +1526,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <Bot className="w-16 h-16 text-purple-400 mb-4" />
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Driver Assistant</h3>
                     <p className="text-gray-600 max-w-md">
-                      Discuss your assumptions with AI to help build your sales drivers.
+                      Discuss your assumptions with AI to help build your customer drivers.
                       The AI can suggest parameters and help you think through your scenarios.
                     </p>
                     <p className="text-sm text-gray-500 mt-2">

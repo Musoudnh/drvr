@@ -1722,7 +1722,7 @@ const Forecasting: React.FC = () => {
                                         className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
                                       >
                                         <Plus className="w-3 h-3" />
-                                        <span className="text-xs">Sales Driver</span>
+                                        <span className="text-xs">Customer Driver</span>
                                       </button>
                                     </div>
 
@@ -1738,7 +1738,7 @@ const Forecasting: React.FC = () => {
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
                                                   {scenario.isSalesDriverScenario && (
                                                     <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
-                                                      Sales Driver
+                                                      Customer Driver
                                                     </span>
                                                   )}
                                                   {!scenario.isSalesDriverScenario && (
