@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Area,
 } from 'recharts';
 
 interface MonthlyData {
@@ -42,18 +43,18 @@ const FinancialPerformanceDashboard: React.FC = () => {
   ];
 
   const predictiveData = [
-    { month: 'Jan', historical: 485000, prediction: 485000 },
-    { month: 'Feb', historical: 472000, prediction: 472000 },
-    { month: 'Mar', historical: 495000, prediction: 495000 },
-    { month: 'Apr', historical: 490000, prediction: 490000 },
-    { month: 'May', historical: 505000, prediction: 505000 },
-    { month: 'Jun', historical: 515000, prediction: 515000 },
-    { month: 'Jul', historical: 525000, prediction: 530000 },
-    { month: 'Aug', historical: null, prediction: 542000 },
-    { month: 'Sep', historical: null, prediction: 555000 },
-    { month: 'Oct', historical: null, prediction: 568000 },
-    { month: 'Nov', historical: null, prediction: 580000 },
-    { month: 'Dec', historical: null, prediction: 593000 }
+    { month: 'Jan', historical: 485000, prediction: 485000, upper: 500000, lower: 470000 },
+    { month: 'Feb', historical: 472000, prediction: 472000, upper: 487000, lower: 457000 },
+    { month: 'Mar', historical: 495000, prediction: 495000, upper: 510000, lower: 480000 },
+    { month: 'Apr', historical: 490000, prediction: 490000, upper: 505000, lower: 475000 },
+    { month: 'May', historical: 505000, prediction: 505000, upper: 520000, lower: 490000 },
+    { month: 'Jun', historical: 515000, prediction: 515000, upper: 530000, lower: 500000 },
+    { month: 'Jul', historical: 525000, prediction: 530000, upper: 546000, lower: 514000 },
+    { month: 'Aug', historical: null, prediction: 542000, upper: 564000, lower: 520000 },
+    { month: 'Sep', historical: null, prediction: 555000, upper: 583000, lower: 527000 },
+    { month: 'Oct', historical: null, prediction: 568000, upper: 602000, lower: 534000 },
+    { month: 'Nov', historical: null, prediction: 580000, upper: 620000, lower: 540000 },
+    { month: 'Dec', historical: null, prediction: 593000, upper: 638000, lower: 548000 }
   ];
 
   const maxValue = Math.max(...monthlyData.map(d => Math.max(d.Budget, d.Actual, d.PY)));
@@ -266,88 +267,121 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-6 text-white">
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-semibold">Monthly Revenue Performance with AI Predictions</h3>
-              <p className="text-sm text-gray-300 mt-1">12-Month Forward-Looking Forecast</p>
+              <h3 className="text-lg font-semibold text-gray-900">Monthly Revenue Performance with AI Predictions</h3>
+              <p className="text-sm text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 text-green-400 rounded-lg">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-600 rounded-lg border border-green-200">
               <TrendingUp className="w-4 h-4" />
               <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
             </div>
           </div>
 
-          <div className="relative h-64 mb-6">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="predictiveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
-                  <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#3B82F6" stopOpacity="0.3" />
-                  <stop offset={`${(predictionStartIndex / predictiveData.length) * 100}%`} stopColor="#8B5CF6" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
-                </linearGradient>
-              </defs>
+          <div className="w-full mb-6" style={{ height: '300px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                data={predictiveData}
+                margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis
+                  dataKey="month"
+                  tick={{ fontSize: 12, fill: '#9ca3af' }}
+                  axisLine={{ stroke: '#e5e7eb' }}
+                  tickLine={{ stroke: '#e5e7eb' }}
+                />
+                <YAxis
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+                  width={80}
+                  tick={{ fontSize: 12, fill: '#9ca3af' }}
+                  axisLine={{ stroke: '#e5e7eb' }}
+                  tickLine={{ stroke: '#e5e7eb' }}
+                />
+                <Tooltip
+                  formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
+                  contentStyle={{ borderRadius: '10px' }}
+                />
 
-              <path
-                d={`${getPredictivePathD()} L 100 100 L 0 100 Z`}
-                fill="url(#predictiveGradient)"
-                opacity="0.5"
-              />
+                <defs>
+                  <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
+                  </linearGradient>
+                </defs>
 
-              <path
-                d={getPredictivePathD()}
-                fill="none"
-                stroke="#3B82F6"
-                strokeWidth="0.5"
-                strokeDasharray={`0 ${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
-              />
+                <Area
+                  type="monotone"
+                  dataKey="upper"
+                  stroke="none"
+                  fill="url(#confidenceBand)"
+                  fillOpacity={1}
+                  isAnimationActive={true}
+                />
 
-              <path
-                d={getPredictivePathD()}
-                fill="none"
-                stroke="#8B5CF6"
-                strokeWidth="0.5"
-                strokeDasharray={`${(predictionStartIndex / predictiveData.length) * 100} ${100 - (predictionStartIndex / predictiveData.length) * 100}`}
-                strokeDashoffset={`-${(predictionStartIndex / predictiveData.length) * 100}`}
-              />
-            </svg>
+                <Area
+                  type="monotone"
+                  dataKey="lower"
+                  stroke="none"
+                  fill="#ffffff"
+                  fillOpacity={1}
+                  isAnimationActive={true}
+                />
 
-            <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-gray-400">
-              {predictiveData.map((d, i) => (
-                <div key={i} className="text-center" style={{ width: `${100 / predictiveData.length}%` }}>
-                  {d.month}
-                </div>
-              ))}
-            </div>
+                <Line
+                  type="monotone"
+                  dataKey="historical"
+                  name="Actuals"
+                  stroke="#3B82F6"
+                  strokeWidth={3}
+                  dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 7 }}
+                  connectNulls={false}
+                  isAnimationActive={true}
+                />
+
+                <Line
+                  type="monotone"
+                  dataKey="prediction"
+                  name="AI Prediction"
+                  stroke="#8B5CF6"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
+                  dot={{ r: 5, fill: '#8B5CF6', strokeWidth: 2, stroke: '#fff' }}
+                  activeDot={{ r: 7 }}
+                  isAnimationActive={true}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white/10 rounded-lg p-4">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-xs text-gray-300">Historical</span>
+                <span className="text-xs text-gray-700 font-medium">Historical</span>
               </div>
-              <div className="text-2xl font-bold">{formatCurrency(predictiveData.find(d => d.historical !== null)?.historical || 0)}</div>
-              <div className="text-xs text-gray-400 mt-1">Last Recorded Month</div>
+              <div className="text-2xl font-bold text-gray-900">{formatCurrency(515000)}</div>
+              <div className="text-xs text-gray-600 mt-1">Last Recorded Month</div>
             </div>
 
-            <div className="bg-white/10 rounded-lg p-4">
+            <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                <span className="text-xs text-gray-300">AI Prediction (Next 6M)</span>
+                <span className="text-xs text-gray-700 font-medium">AI Prediction (Next 6M)</span>
               </div>
-              <div className="text-2xl font-bold">{formatCurrency(predictiveData[predictiveData.length - 1].prediction)}</div>
-              <div className="text-xs text-gray-400 mt-1">Predicted by {predictiveData[predictiveData.length - 1].month}</div>
+              <div className="text-2xl font-bold text-gray-900">{formatCurrency(593000)}</div>
+              <div className="text-xs text-gray-600 mt-1">Predicted by Dec</div>
             </div>
 
-            <div className="bg-white/10 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                <span className="text-xs text-gray-300">Confidence Band</span>
+                <span className="text-xs text-gray-700 font-medium">Confidence Band</span>
               </div>
-              <div className="text-2xl font-bold">±{variancePercent}%</div>
-              <div className="text-xs text-gray-400 mt-1">Prediction accuracy</div>
+              <div className="text-2xl font-bold text-gray-900">±{variancePercent}%</div>
+              <div className="text-xs text-gray-600 mt-1">Prediction accuracy</div>
             </div>
           </div>
         </div>
