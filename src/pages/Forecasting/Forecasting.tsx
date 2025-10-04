@@ -975,9 +975,18 @@ const Forecasting: React.FC = () => {
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, startMonth: e.target.value})}
                           className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
-                          {months.map(month => (
-                            <option key={month} value={month}>{month}</option>
-                          ))}
+                          {months.map(month => {
+                            const monthData = forecastData.find(item =>
+                              item.glCode === selectedGLCode?.code &&
+                              item.month === `${month} ${selectedYear}`
+                            );
+                            const isActualized = monthData?.actualAmount !== undefined;
+                            return (
+                              <option key={month} value={month} disabled={isActualized}>
+                                {month}{isActualized ? ' (Actualized)' : ''}
+                              </option>
+                            );
+                          })}
                         </select>
                         <select
                           value={glScenarioForm.startYear}
@@ -999,9 +1008,18 @@ const Forecasting: React.FC = () => {
                           onChange={(e) => setGLScenarioForm({...glScenarioForm, endMonth: e.target.value})}
                           className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9333EA] focus:border-transparent"
                         >
-                          {months.map(month => (
-                            <option key={month} value={month}>{month}</option>
-                          ))}
+                          {months.map(month => {
+                            const monthData = forecastData.find(item =>
+                              item.glCode === selectedGLCode?.code &&
+                              item.month === `${month} ${selectedYear}`
+                            );
+                            const isActualized = monthData?.actualAmount !== undefined;
+                            return (
+                              <option key={month} value={month} disabled={isActualized}>
+                                {month}{isActualized ? ' (Actualized)' : ''}
+                              </option>
+                            );
+                          })}
                         </select>
                         <select
                           value={glScenarioForm.endYear}
@@ -1774,7 +1792,7 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Gantt Bar for this scenario */}
-                                            <div className="mt-2 flex items-center gap-1">
+                                            <div className="mt-2 flex items-center" style={{ marginLeft: '80px' }}>
                                               {months.map((month, index) => {
                                                 const startIndex = getMonthIndex(scenario.startMonth);
                                                 const endIndex = getMonthIndex(scenario.endMonth);
@@ -1786,8 +1804,10 @@ const Forecasting: React.FC = () => {
                                                 return (
                                                   <div
                                                     key={index}
-                                                    className="flex-1 h-2 rounded transition-all"
+                                                    className="h-2 rounded transition-all px-2"
                                                     style={{
+                                                      width: '120px',
+                                                      minWidth: '120px',
                                                       backgroundColor: isActive ? '#4ADE80' : isInactive ? '#D1D5DB' : 'transparent'
                                                     }}
                                                     title={showBar ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : ''}
@@ -1853,13 +1873,13 @@ const Forecasting: React.FC = () => {
                                                       setShowEditScenarioModal(true);
                                                       setScenarioMenuOpen(null);
                                                     }}
-                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
+                                                    className="px-2.5 py-1.5 text-xs font-medium bg-gray-200 border border-gray-300 text-gray-500 cursor-default rounded"
                                                   >
                                                     Adjust
                                                   </button>
                                                   <button
                                                     onClick={() => toggleScenario(scenario.id)}
-                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
+                                                    className="px-2.5 py-1.5 text-xs font-medium bg-gray-200 border border-gray-300 text-gray-500 cursor-default rounded"
                                                   >
                                                     {scenario.isActive ? 'Deactivate' : 'Activate'}
                                                   </button>
@@ -2048,9 +2068,17 @@ const Forecasting: React.FC = () => {
 
      {/* Edit Scenario Modal */}
      {showEditScenarioModal && editingScenario && selectedGLCode && (
-       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-         <div className="bg-white shadow-2xl rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-           <div className="flex items-center justify-between mb-6">
+       <>
+         <div
+           className="fixed inset-0 bg-black bg-opacity-50 z-40"
+           onClick={() => {
+             setShowEditScenarioModal(false);
+             setEditingScenario(null);
+             setSelectedGLCode(null);
+           }}
+         />
+         <div className="fixed right-0 top-0 bottom-0 z-50 w-[600px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+           <div className="flex items-center justify-between p-6 border-b border-gray-200">
              <h3 className="text-xl font-semibold text-[#101010]">
                Adjust Scenario: {editingScenario.name}
              </h3>
@@ -2060,13 +2088,13 @@ const Forecasting: React.FC = () => {
                  setEditingScenario(null);
                  setSelectedGLCode(null);
                }}
-               className="p-1 hover:bg-gray-100 rounded"
+               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
              >
-               <X className="w-4 h-4 text-gray-400" />
+               <X className="w-5 h-5 text-gray-500" />
              </button>
            </div>
 
-           <div className="space-y-4">
+           <div className="flex-1 overflow-y-auto p-6 space-y-4">
              <div>
                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
                <input
@@ -2096,7 +2124,7 @@ const Forecasting: React.FC = () => {
              </div>
            </div>
 
-           <div className="flex justify-end gap-3 mt-6">
+           <div className="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
              <button
                onClick={() => {
                  setShowEditScenarioModal(false);
@@ -2202,7 +2230,7 @@ const Forecasting: React.FC = () => {
              </button>
            </div>
          </div>
-       </div>
+       </>
      )}
       {/* Scenario Configuration Side Panel */}
       {showScenarioSidePanel && (
@@ -3192,6 +3220,9 @@ const Forecasting: React.FC = () => {
           setEditingSalesScenario(null);
         }}
         initialScenario={editingSalesScenario || undefined}
+        forecastData={forecastData}
+        selectedYear={selectedYear}
+        glCode={selectedGLCode?.code || ''}
         onSave={(scenario) => {
           const isEditing = !!editingSalesScenario;
 

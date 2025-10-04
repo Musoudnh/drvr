@@ -54,6 +54,9 @@ interface SalesScenarioModalProps {
   onClose: () => void;
   onSave: (scenario: SalesScenario) => void;
   initialScenario?: SalesScenario;
+  forecastData?: any[];
+  selectedYear?: number;
+  glCode?: string;
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -62,7 +65,10 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   isOpen,
   onClose,
   onSave,
-  initialScenario
+  initialScenario,
+  forecastData = [],
+  selectedYear = 2025,
+  glCode = ''
 }) => {
   const [scenarioName, setScenarioName] = useState(initialScenario?.name || '');
   const [scenarioDescription, setScenarioDescription] = useState(initialScenario?.description || '');
@@ -1311,9 +1317,18 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     onChange={(e) => setStartMonth(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    {MONTHS.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
+                    {MONTHS.map(m => {
+                      const monthData = forecastData.find((item: any) =>
+                        item.glCode === glCode &&
+                        item.month === `${m} ${selectedYear}`
+                      );
+                      const isActualized = monthData?.actualAmount !== undefined;
+                      return (
+                        <option key={m} value={m} disabled={isActualized}>
+                          {m}{isActualized ? ' (Actualized)' : ''}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div>
@@ -1323,9 +1338,18 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     onChange={(e) => setEndMonth(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    {MONTHS.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
+                    {MONTHS.map(m => {
+                      const monthData = forecastData.find((item: any) =>
+                        item.glCode === glCode &&
+                        item.month === `${m} ${selectedYear}`
+                      );
+                      const isActualized = monthData?.actualAmount !== undefined;
+                      return (
+                        <option key={m} value={m} disabled={isActualized}>
+                          {m}{isActualized ? ' (Actualized)' : ''}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div>
