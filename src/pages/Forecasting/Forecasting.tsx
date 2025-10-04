@@ -1792,11 +1792,11 @@ const Forecasting: React.FC = () => {
                                             </div>
 
                                             {/* Activity Cards for this scenario */}
-                                            <div className="mt-2">
+                                            <div className="mt-1">
                                               <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-3 px-4 text-sm sticky left-0 bg-white w-64"></td>
+                                                    <td className="py-1 px-4 text-sm sticky left-0 bg-white w-64"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -1805,13 +1805,9 @@ const Forecasting: React.FC = () => {
                                                       const hasActivity = isActive && impact !== 0;
 
                                                       return (
-                                                        <td key={index} className="py-3 text-center px-2 min-w-[120px]">
-                                                          <div className="space-y-1 relative">
-                                                            <div></div>
-                                                            <div className={`text-sm font-medium rounded px-1 py-0.5 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`} style={{ marginLeft: '-12px' }}>
-                                                              {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
-                                                            </div>
-                                                            <div></div>
+                                                        <td key={index} className="py-1 text-center px-2 min-w-[120px]">
+                                                          <div className={`text-xs font-semibold rounded px-2 py-1 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                                            {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
                                                           </div>
                                                         </td>
                                                       );
