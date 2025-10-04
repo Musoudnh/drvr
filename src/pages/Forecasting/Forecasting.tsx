@@ -1874,13 +1874,13 @@ const Forecasting: React.FC = () => {
                                                       setShowEditScenarioModal(true);
                                                       setScenarioMenuOpen(null);
                                                     }}
-                                                    className="px-2.5 py-1.5 text-xs font-medium bg-gray-200 border border-gray-300 text-gray-500 cursor-default rounded"
+                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                                                   >
                                                     Adjust
                                                   </button>
                                                   <button
                                                     onClick={() => toggleScenario(scenario.id)}
-                                                    className="px-2.5 py-1.5 text-xs font-medium bg-gray-200 border border-gray-300 text-gray-500 cursor-default rounded"
+                                                    className="px-2.5 py-1.5 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                                                   >
                                                     {scenario.isActive ? 'Deactivate' : 'Activate'}
                                                   </button>
@@ -2930,13 +2930,13 @@ const Forecasting: React.FC = () => {
                                 setScenarioMenuOpen(null);
                                 setShowScenarioAuditSidebar(false);
                               }}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
+                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                             >
                               Adjust
                             </button>
                             <button
                               onClick={() => toggleScenario(scenario.id)}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF]/10 rounded transition-colors"
+                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                             >
                               {scenario.isActive ? 'Deactivate' : 'Activate'}
                             </button>
