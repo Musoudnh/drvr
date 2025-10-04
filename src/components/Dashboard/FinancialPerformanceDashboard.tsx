@@ -265,7 +265,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 name="Actual"
                 fill="#4ade80"
                 radius={[6, 6, 0, 0]}
-                barSize={18}
+                barSize={40}
                 isAnimationActive={true}
               />
 
