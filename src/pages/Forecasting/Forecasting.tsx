@@ -1726,6 +1726,16 @@ const Forecasting: React.FC = () => {
                                       <button
                                         onClick={() => {
                                           setSelectedGLCode(glCode);
+                                          setShowGLScenarioModal(true);
+                                        }}
+                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                        <span className="text-xs">Quick Driver</span>
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          setSelectedGLCode(glCode);
                                           setShowSalesScenarioModal(true);
                                         }}
                                         className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
@@ -1745,9 +1755,16 @@ const Forecasting: React.FC = () => {
                                               <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
                                                   <h6 className="font-medium text-[#101010]">{scenario.name}</h6>
-                                                  <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
-                                                    Customer Driver
-                                                  </span>
+                                                  {scenario.isSalesDriverScenario && (
+                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
+                                                      Customer Driver
+                                                    </span>
+                                                  )}
+                                                  {!scenario.isSalesDriverScenario && (
+                                                    <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#9333EA]/10 text-[#9333EA]">
+                                                      Quick Driver
+                                                    </span>
+                                                  )}
                                                   <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
                                                     scenario.isActive
                                                       ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
@@ -1774,6 +1791,33 @@ const Forecasting: React.FC = () => {
                                               </button>
                                             </div>
 
+                                            {/* Gantt Bar for this scenario */}
+                                            <div className="mt-2 flex items-center" style={{ marginLeft: '384px' }}>
+                                              {months.map((month, index) => {
+                                                const startIndex = getMonthIndex(scenario.startMonth);
+                                                const endIndex = getMonthIndex(scenario.endMonth);
+                                                const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
+                                                const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
+                                                const impact = getScenarioMonthImpact(scenario, month, glCode.code);
+                                                const showBar = isActive || isInactive;
+
+                                                return (
+                                                  <div
+                                                    key={index}
+                                                    className="h-2 rounded transition-all"
+                                                    style={{
+                                                      width: '136px',
+                                                      minWidth: '136px',
+                                                      paddingLeft: '8px',
+                                                      paddingRight: '8px',
+                                                      boxSizing: 'border-box',
+                                                      backgroundColor: isActive ? '#4ADE80' : isInactive ? '#D1D5DB' : 'transparent'
+                                                    }}
+                                                    title={showBar ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : ''}
+                                                  />
+                                                );
+                                              })}
+                                            </div>
 
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
