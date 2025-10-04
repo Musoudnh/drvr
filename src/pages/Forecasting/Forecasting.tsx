@@ -189,11 +189,17 @@ const Forecasting: React.FC = () => {
   const [endMonthDropdownOpen, setEndMonthDropdownOpen] = useState(false);
   const [endYearDropdownOpen, setEndYearDropdownOpen] = useState(false);
   const [adjustmentTypeDropdownOpen, setAdjustmentTypeDropdownOpen] = useState(false);
+  const [sidePanelStartMonthDropdownOpen, setSidePanelStartMonthDropdownOpen] = useState(false);
+  const [sidePanelEndMonthDropdownOpen, setSidePanelEndMonthDropdownOpen] = useState(false);
+  const [sidePanelAdjustmentTypeDropdownOpen, setSidePanelAdjustmentTypeDropdownOpen] = useState(false);
   const startMonthDropdownRef = useRef<HTMLDivElement>(null);
   const startYearDropdownRef = useRef<HTMLDivElement>(null);
   const endMonthDropdownRef = useRef<HTMLDivElement>(null);
   const endYearDropdownRef = useRef<HTMLDivElement>(null);
   const adjustmentTypeDropdownRef = useRef<HTMLDivElement>(null);
+  const sidePanelStartMonthDropdownRef = useRef<HTMLDivElement>(null);
+  const sidePanelEndMonthDropdownRef = useRef<HTMLDivElement>(null);
+  const sidePanelAdjustmentTypeDropdownRef = useRef<HTMLDivElement>(null);
 
   // Helper functions - moved before useState to avoid initialization errors
   const getBaseAmount = (glCode: string): number => {
@@ -623,6 +629,15 @@ const Forecasting: React.FC = () => {
       }
       if (adjustmentTypeDropdownRef.current && !adjustmentTypeDropdownRef.current.contains(event.target as Node)) {
         setAdjustmentTypeDropdownOpen(false);
+      }
+      if (sidePanelStartMonthDropdownRef.current && !sidePanelStartMonthDropdownRef.current.contains(event.target as Node)) {
+        setSidePanelStartMonthDropdownOpen(false);
+      }
+      if (sidePanelEndMonthDropdownRef.current && !sidePanelEndMonthDropdownRef.current.contains(event.target as Node)) {
+        setSidePanelEndMonthDropdownOpen(false);
+      }
+      if (sidePanelAdjustmentTypeDropdownRef.current && !sidePanelAdjustmentTypeDropdownRef.current.contains(event.target as Node)) {
+        setSidePanelAdjustmentTypeDropdownOpen(false);
       }
       const formatDropdown = document.querySelector('.format-dropdown-container');
       if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
@@ -2476,45 +2491,95 @@ const Forecasting: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs text-gray-600 mb-1">Start Month</label>
-                    <select
-                      value={sidePanelForm.startMonth}
-                      onChange={(e) => setSidePanelForm({...sidePanelForm, startMonth: e.target.value})}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                    >
-                      {months.map(month => {
-                        const monthData = forecastData.find(item =>
-                          item.glCode === editingScenario?.glCode &&
-                          item.month === `${month} ${selectedYear}`
-                        );
-                        const isActualized = monthData?.actualAmount !== undefined;
-                        return (
-                          <option key={month} value={month} disabled={isActualized}>
-                            {month}{isActualized ? ' (Actualized)' : ''}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    <div className="relative" ref={sidePanelStartMonthDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setSidePanelStartMonthDropdownOpen(!sidePanelStartMonthDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      >
+                        <span>{sidePanelForm.startMonth}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {sidePanelStartMonthDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                          <div className="flex flex-col gap-1">
+                            {months.map(month => {
+                              const monthData = forecastData.find(item =>
+                                item.glCode === editingScenario?.glCode &&
+                                item.month === `${month} ${selectedYear}`
+                              );
+                              const isActualized = monthData?.actualAmount !== undefined;
+                              return (
+                                <button
+                                  key={month}
+                                  type="button"
+                                  disabled={isActualized}
+                                  onClick={() => {
+                                    setSidePanelForm({...sidePanelForm, startMonth: month});
+                                    setSidePanelStartMonthDropdownOpen(false);
+                                  }}
+                                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                    sidePanelForm.startMonth === month
+                                      ? 'bg-[#7B68EE] text-white'
+                                      : isActualized
+                                      ? 'text-gray-400 cursor-not-allowed'
+                                      : 'text-gray-600 hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {month}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs text-gray-600 mb-1">End Month</label>
-                    <select
-                      value={sidePanelForm.endMonth}
-                      onChange={(e) => setSidePanelForm({...sidePanelForm, endMonth: e.target.value})}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                    >
-                      {months.map(month => {
-                        const monthData = forecastData.find(item =>
-                          item.glCode === editingScenario?.glCode &&
-                          item.month === `${month} ${selectedYear}`
-                        );
-                        const isActualized = monthData?.actualAmount !== undefined;
-                        return (
-                          <option key={month} value={month} disabled={isActualized}>
-                            {month}{isActualized ? ' (Actualized)' : ''}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    <div className="relative" ref={sidePanelEndMonthDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setSidePanelEndMonthDropdownOpen(!sidePanelEndMonthDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      >
+                        <span>{sidePanelForm.endMonth}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {sidePanelEndMonthDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                          <div className="flex flex-col gap-1">
+                            {months.map(month => {
+                              const monthData = forecastData.find(item =>
+                                item.glCode === editingScenario?.glCode &&
+                                item.month === `${month} ${selectedYear}`
+                              );
+                              const isActualized = monthData?.actualAmount !== undefined;
+                              return (
+                                <button
+                                  key={month}
+                                  type="button"
+                                  disabled={isActualized}
+                                  onClick={() => {
+                                    setSidePanelForm({...sidePanelForm, endMonth: month});
+                                    setSidePanelEndMonthDropdownOpen(false);
+                                  }}
+                                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                    sidePanelForm.endMonth === month
+                                      ? 'bg-[#7B68EE] text-white'
+                                      : isActualized
+                                      ? 'text-gray-400 cursor-not-allowed'
+                                      : 'text-gray-600 hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {month}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2528,14 +2593,50 @@ const Forecasting: React.FC = () => {
                 
                 <div>
                   <label className="block text-xs text-gray-600 mb-2">Adjustment Type</label>
-                  <select
-                    value={sidePanelForm.adjustmentType}
-                    onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentType: e.target.value as 'percentage' | 'fixed'})}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                  >
-                    <option value="percentage">Percentage Change (%)</option>
-                    <option value="fixed">Fixed Amount ($)</option>
-                  </select>
+                  <div className="relative" ref={sidePanelAdjustmentTypeDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setSidePanelAdjustmentTypeDropdownOpen(!sidePanelAdjustmentTypeDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{sidePanelForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {sidePanelAdjustmentTypeDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
+                        <div className="flex flex-col gap-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSidePanelForm({...sidePanelForm, adjustmentType: 'percentage'});
+                              setSidePanelAdjustmentTypeDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                              sidePanelForm.adjustmentType === 'percentage'
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            Percentage Change (%)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSidePanelForm({...sidePanelForm, adjustmentType: 'fixed'});
+                              setSidePanelAdjustmentTypeDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                              sidePanelForm.adjustmentType === 'fixed'
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            Fixed Amount ($)
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
                 <div>
