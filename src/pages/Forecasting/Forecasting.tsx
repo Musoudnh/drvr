@@ -1791,30 +1791,36 @@ const Forecasting: React.FC = () => {
                                               </button>
                                             </div>
 
-                                            {/* Gantt Bar for this scenario */}
-                                            <div className="mt-2 flex items-center" style={{ marginLeft: '384px' }}>
+                                            {/* Activity Cards for this scenario */}
+                                            <div className="mt-2 flex items-center gap-2" style={{ marginLeft: '384px' }}>
                                               {months.map((month, index) => {
                                                 const startIndex = getMonthIndex(scenario.startMonth);
                                                 const endIndex = getMonthIndex(scenario.endMonth);
                                                 const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
                                                 const isInactive = index >= startIndex && index <= endIndex && !scenario.isActive;
                                                 const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                const showBar = isActive || isInactive;
+                                                const hasActivity = isActive && impact !== 0;
 
                                                 return (
                                                   <div
                                                     key={index}
-                                                    className="h-2 rounded transition-all"
+                                                    className="rounded transition-all flex items-center justify-center"
                                                     style={{
-                                                      width: '136px',
-                                                      minWidth: '136px',
-                                                      paddingLeft: '8px',
-                                                      paddingRight: '8px',
+                                                      width: '120px',
+                                                      height: '48px',
+                                                      minWidth: '120px',
+                                                      backgroundColor: hasActivity ? '#4ADE80' : '#F3F4F6',
                                                       boxSizing: 'border-box',
-                                                      backgroundColor: isActive ? '#4ADE80' : isInactive ? '#D1D5DB' : 'transparent'
+                                                      padding: '8px'
                                                     }}
-                                                    title={showBar ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : ''}
-                                                  />
+                                                    title={hasActivity ? `${month}: ${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : `${month}: No activity`}
+                                                  >
+                                                    {hasActivity && (
+                                                      <span className="text-sm font-semibold text-white">
+                                                        {impact >= 0 ? '+' : ''}${formatNumber(Math.abs(impact))}
+                                                      </span>
+                                                    )}
+                                                  </div>
                                                 );
                                               })}
                                             </div>
