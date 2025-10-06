@@ -1664,11 +1664,11 @@ const Forecasting: React.FC = () => {
           }>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-white z-10">
+                <thead className="sticky top-0 bg-white z-30">
                   <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
+                    <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white z-30">Account</th>
                     {dateViewMode === 'months' && (
-                      <th className="text-left py-3 px-2 font-bold text-gray-800 w-20"></th>
+                      <th className="text-left py-3 px-2 font-bold text-gray-800 w-20 sticky left-64 bg-white z-30"></th>
                     )}
                     {datePeriods.map((period, index) => {
                       const labelData = getDateLabel(period, index);
@@ -1755,7 +1755,7 @@ const Forecasting: React.FC = () => {
                               className={`border-b border-gray-100 hover:bg-gray-50 group transition-all duration-300 ${hasOpenScenario ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}
                               onContextMenu={(e) => handleContextMenu(e, glCode)}
                             >
-                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
+                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50 z-20">
                                 <div className="flex items-center justify-between">
                                   <div>
                                     <div className="font-semibold text-[#101010]">
@@ -1785,7 +1785,7 @@ const Forecasting: React.FC = () => {
                                 </div>
                               </td>
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
+                                <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300 sticky left-64 bg-white group-hover:bg-gray-50 z-20">
                                   <div className="space-y-1">
                                     <div className="h-[20px] flex items-center">
                                       {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
