@@ -122,6 +122,8 @@ const Forecasting: React.FC = () => {
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
   const [contextMenu, setContextMenu] = useState<{x: number, y: number, rowData: any} | null>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
+  const [driverDropdownOpen, setDriverDropdownOpen] = useState<string | null>(null);
+  const driverDropdownRef = useRef<HTMLDivElement>(null);
 
   // Debug: Log component version
   React.useEffect(() => {
@@ -134,13 +136,17 @@ const Forecasting: React.FC = () => {
       if (contextMenuRef.current && !contextMenuRef.current.contains(event.target as Node)) {
         setContextMenu(null);
       }
+      if (driverDropdownRef.current && !driverDropdownRef.current.contains(event.target as Node)) {
+        setDriverDropdownOpen(null);
+      }
     };
 
     const handleScroll = () => {
       setContextMenu(null);
+      setDriverDropdownOpen(null);
     };
 
-    if (contextMenu) {
+    if (contextMenu || driverDropdownOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('scroll', handleScroll, true);
     }
@@ -149,7 +155,7 @@ const Forecasting: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('scroll', handleScroll, true);
     };
-  }, [contextMenu]);
+  }, [contextMenu, driverDropdownOpen]);
 
   const handleContextMenu = (event: React.MouseEvent, rowData: any) => {
     event.preventDefault();
@@ -1785,16 +1791,46 @@ const Forecasting: React.FC = () => {
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-1">
-                                    <button
-                                      onClick={() => {
-                                        setSelectedGLCode(glCode);
-                                        setShowSalesScenarioModal(true);
-                                      }}
-                                      className="p-1 hover:bg-[#3AB7BF]/10 rounded transition-colors text-[#3AB7BF]"
-                                      title="Add scenario"
-                                    >
-                                      <Plus className="w-3 h-3" />
-                                    </button>
+                                    <div className="relative">
+                                      <button
+                                        onClick={() => {
+                                          setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
+                                        }}
+                                        className="p-1 hover:bg-[#3AB7BF]/10 rounded transition-colors text-[#3AB7BF]"
+                                        title="Add driver"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                      </button>
+                                      {driverDropdownOpen === glCode.code && (
+                                        <div
+                                          ref={driverDropdownRef}
+                                          className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[160px]"
+                                        >
+                                          <button
+                                            onClick={() => {
+                                              setSelectedGLCode(glCode);
+                                              setShowGLScenarioModal(true);
+                                              setDriverDropdownOpen(null);
+                                            }}
+                                            className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700"
+                                          >
+                                            <Plus className="w-3.5 h-3.5" />
+                                            Quick Driver
+                                          </button>
+                                          <button
+                                            onClick={() => {
+                                              setSelectedGLCode(glCode);
+                                              setShowSalesScenarioModal(true);
+                                              setDriverDropdownOpen(null);
+                                            }}
+                                            className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700 border-t border-gray-100"
+                                          >
+                                            <Plus className="w-3.5 h-3.5" />
+                                            Customer Driver
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
                                     <button
                                       onClick={() => {
                                         setExpandedGLCodes(prev =>
@@ -2018,32 +2054,8 @@ const Forecasting: React.FC = () => {
                                   <div className="p-4 mb-2">
                                     <h5 className="text-xs text-[#101010] mb-2">Drivers for {glCode.name}</h5>
 
-                                    {/* Add Scenario Buttons */}
-                                    <div className="flex gap-2 mb-2">
-                                      <button
-                                        onClick={() => {
-                                          setSelectedGLCode(glCode);
-                                          setShowGLScenarioModal(true);
-                                        }}
-                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
-                                      >
-                                        <Plus className="w-3 h-3" />
-                                        <span className="text-xs">Quick Driver</span>
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          setSelectedGLCode(glCode);
-                                          setShowSalesScenarioModal(true);
-                                        }}
-                                        className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-100 rounded border border-gray-200 transition-colors"
-                                      >
-                                        <Plus className="w-3 h-3" />
-                                        <span className="text-xs">Customer Driver</span>
-                                      </button>
-                                    </div>
-
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
-                                      <p className="text-sm text-gray-600 italic">No scenarios applied yet.</p>
+                                      <p className="text-sm text-gray-600 italic">No drivers applied yet. Click the + button to add a driver.</p>
                                     ) : (
                                       <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
