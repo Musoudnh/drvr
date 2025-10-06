@@ -1717,7 +1717,7 @@ const Forecasting: React.FC = () => {
                           key={index}
                           className={`py-3 font-bold ${
                             isSelectedYearQuarter
-                              ? 'bg-purple-100 text-purple-900'
+                              ? 'text-white'
                               : isOuterYear
                                 ? 'text-gray-500'
                                 : 'text-gray-800'
@@ -1732,6 +1732,9 @@ const Forecasting: React.FC = () => {
                               ? 'text-center px-2 min-w-[100px]'
                               : 'text-center px-2 min-w-[100px]'
                           }`}
+                          style={{
+                            backgroundColor: isSelectedYearQuarter ? '#eff1f4' : 'transparent'
+                          }}
                         >
                           {dateViewMode === 'years' ? (
                             <div className="flex flex-col">
@@ -1751,9 +1754,9 @@ const Forecasting: React.FC = () => {
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
                               <span className={`text-sm font-normal ${
-                                isSelectedYearQuarter ? 'text-purple-900' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
+                                isSelectedYearQuarter ? 'text-white' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
                               }`}>{labelData.label}</span>
-                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-purple-700' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
+                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-white' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
