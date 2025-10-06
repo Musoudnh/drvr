@@ -2018,6 +2018,9 @@ const Forecasting: React.FC = () => {
 
                                       return (
                                         <>
+                                          <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                            ${formatNumber(totalActuals)}
+                                          </div>
                                           <div className="text-center">
                                             <span
                                               onClick={() => {
@@ -2028,9 +2031,6 @@ const Forecasting: React.FC = () => {
                                             >
                                               ${formatNumber(actualsAndRemaining)}
                                             </span>
-                                          </div>
-                                          <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
-                                            ${formatNumber(totalActuals)}
                                           </div>
                                           <div className={`text-sm font-medium text-center ${varianceColor}`}>
                                             {showActualsAsAmount
