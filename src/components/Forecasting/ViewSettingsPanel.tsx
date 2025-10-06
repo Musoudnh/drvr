@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Eye, EyeOff, Hash, DollarSign, Percent } from 'lucide-react';
+import { X, Eye, EyeOff, Hash, DollarSign, Percent, Save } from 'lucide-react';
 
 interface ViewSettingsPanelProps {
   isOpen: boolean;
@@ -12,6 +12,7 @@ interface ViewSettingsPanelProps {
   onShowActualsAsAmountChange: (value: boolean) => void;
   numberFormat: 'actual' | 'thousands' | 'millions';
   onNumberFormatChange: (value: 'actual' | 'thousands' | 'millions') => void;
+  onSave?: () => void;
 }
 
 const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
@@ -25,6 +26,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
   onShowActualsAsAmountChange,
   numberFormat,
   onNumberFormatChange,
+  onSave,
 }) => {
   if (!isOpen) return null;
 
@@ -203,7 +205,19 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
             </div>
           </div>
 
-          <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <div className="p-4 border-t border-gray-200 bg-gray-50 space-y-3">
+            {onSave && (
+              <button
+                onClick={() => {
+                  onSave();
+                  onClose();
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#9333EA] text-white rounded-lg hover:bg-[#7c2ac9] transition-colors font-medium"
+              >
+                <Save className="w-4 h-4" />
+                Save Settings
+              </button>
+            )}
             <p className="text-xs text-gray-600 text-center">
               These settings apply to the current view only
             </p>

@@ -1404,7 +1404,7 @@ const Forecasting: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <div className="flex justify-between items-center">
         {/* Left Navigation Buttons */}
         <div className="flex items-center gap-3">
@@ -2956,6 +2956,7 @@ const Forecasting: React.FC = () => {
           setNumberFormat(value);
           updateViewSetting('numberFormat', value);
         }}
+        onSave={() => {}}
       />
 
 

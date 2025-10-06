@@ -456,8 +456,12 @@ const BalanceSheet: React.FC = () => {
               <tr className="bg-gray-50">
                 <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">ASSETS</td>
               </tr>
-              <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Assets</td>
+              <tr>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-2">
+                  <div className="bg-gray-100 rounded-lg px-4 py-2 border border-gray-200">
+                    <span className="font-semibold text-[#101010]">Current Assets</span>
+                  </div>
+                </td>
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -484,8 +488,12 @@ const BalanceSheet: React.FC = () => {
               </tr>
 
               {/* Non-Current Assets */}
-              <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Assets</td>
+              <tr>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-2">
+                  <div className="bg-gray-100 rounded-lg px-4 py-2 border border-gray-200">
+                    <span className="font-semibold text-[#101010]">Non-Current Assets</span>
+                  </div>
+                </td>
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -525,8 +533,12 @@ const BalanceSheet: React.FC = () => {
               <tr className="bg-gray-50">
                 <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-bold text-[#101010]">LIABILITIES</td>
               </tr>
-              <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Current Liabilities</td>
+              <tr>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-2">
+                  <div className="bg-gray-100 rounded-lg px-4 py-2 border border-gray-200">
+                    <span className="font-semibold text-[#101010]">Current Liabilities</span>
+                  </div>
+                </td>
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
@@ -553,8 +565,12 @@ const BalanceSheet: React.FC = () => {
               </tr>
 
               {/* Non-Current Liabilities */}
-              <tr className="bg-gray-50">
-                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-4 font-semibold text-[#101010]">Non-Current Liabilities</td>
+              <tr>
+                <td colSpan={displayColumns.length + (showAccountCodes ? 4 : 3)} className="py-2 px-2">
+                  <div className="bg-gray-100 rounded-lg px-4 py-2 border border-gray-200">
+                    <span className="font-semibold text-[#101010]">Non-Current Liabilities</span>
+                  </div>
+                </td>
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
