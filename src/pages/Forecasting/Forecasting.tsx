@@ -1640,7 +1640,28 @@ const Forecasting: React.FC = () => {
             </div>
           </div>
 
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              onClick={() => {
+                const allGLCodes = glCodes.map(gl => gl.code);
+                if (expandedGLCodes.length === allGLCodes.length) {
+                  setExpandedGLCodes([]);
+                } else {
+                  setExpandedGLCodes(allGLCodes);
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              title={expandedGLCodes.length === glCodes.length ? "Collapse all" : "Expand all"}
+            >
+              {expandedGLCodes.length === glCodes.length ? (
+                <EyeOff className="w-4 h-4 text-gray-600" />
+              ) : (
+                <Eye className="w-4 h-4 text-gray-600" />
+              )}
+              <span className="text-sm font-medium text-gray-700">
+                {expandedGLCodes.length === glCodes.length ? "Collapse All" : "Expand All"}
+              </span>
+            </button>
             <button
               onClick={() => setShowViewSettingsPanel(true)}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
