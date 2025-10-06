@@ -1794,18 +1794,23 @@ const Forecasting: React.FC = () => {
                                   <div className="flex items-center gap-1 relative z-50">
                                     <div className="relative">
                                       <button
-                                        onClick={() => {
+                                        onClick={(e) => {
                                           setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
                                         }}
                                         className="p-1 hover:bg-[#9333ea]/10 rounded transition-colors text-[#9333ea]"
                                         title="Add driver"
+                                        data-glcode={glCode.code}
                                       >
                                         <Plus className="w-3 h-3" />
                                       </button>
                                       {driverDropdownOpen === glCode.code && (
                                         <div
                                           ref={driverDropdownRef}
-                                          className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[100] min-w-[160px]"
+                                          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg z-[100] min-w-[160px]"
+                                          style={{
+                                            top: `${(document.querySelector(`[data-glcode="${glCode.code}"]`) as HTMLElement)?.getBoundingClientRect().bottom + 4}px`,
+                                            left: `${(document.querySelector(`[data-glcode="${glCode.code}"]`) as HTMLElement)?.getBoundingClientRect().left}px`
+                                          }}
                                         >
                                           <button
                                             onClick={() => {
