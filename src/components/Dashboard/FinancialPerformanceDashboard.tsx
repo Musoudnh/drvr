@@ -267,124 +267,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">Monthly Revenue Performance with AI Predictions</h3>
-              <p className="text-sm text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
-            </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-600 rounded-lg border border-green-200">
-              <TrendingUp className="w-4 h-4" />
-              <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
-            </div>
-          </div>
-
-          <div className="w-full mb-6" style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart
-                data={predictiveData}
-                margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="month"
-                  tick={{ fontSize: 12, fill: '#9ca3af' }}
-                  axisLine={{ stroke: '#e5e7eb' }}
-                  tickLine={{ stroke: '#e5e7eb' }}
-                />
-                <YAxis
-                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
-                  width={80}
-                  tick={{ fontSize: 12, fill: '#9ca3af' }}
-                  axisLine={{ stroke: '#e5e7eb' }}
-                  tickLine={{ stroke: '#e5e7eb' }}
-                />
-                <Tooltip
-                  formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
-                  contentStyle={{ borderRadius: '10px' }}
-                />
-
-                <defs>
-                  <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.15} />
-                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
-                  </linearGradient>
-                </defs>
-
-                <Area
-                  type="monotone"
-                  dataKey="upper"
-                  stroke="none"
-                  fill="url(#confidenceBand)"
-                  fillOpacity={1}
-                  isAnimationActive={true}
-                />
-
-                <Area
-                  type="monotone"
-                  dataKey="lower"
-                  stroke="none"
-                  fill="#ffffff"
-                  fillOpacity={1}
-                  isAnimationActive={true}
-                />
-
-                <Line
-                  type="monotone"
-                  dataKey="historical"
-                  name="Actuals"
-                  stroke="#3B82F6"
-                  strokeWidth={3}
-                  dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
-                  activeDot={{ r: 7 }}
-                  connectNulls={false}
-                  isAnimationActive={true}
-                />
-
-                <Line
-                  type="monotone"
-                  dataKey="prediction"
-                  name="AI Prediction"
-                  stroke="#8B5CF6"
-                  strokeWidth={3}
-                  strokeDasharray="5 5"
-                  dot={{ r: 5, fill: '#8B5CF6', strokeWidth: 2, stroke: '#fff' }}
-                  activeDot={{ r: 7 }}
-                  isAnimationActive={true}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-xs text-gray-700 font-medium">Historical</span>
-              </div>
-              <div className="text-2xl font-bold text-gray-900">{formatCurrency(515000)}</div>
-              <div className="text-xs text-gray-600 mt-1">Last Recorded Month</div>
-            </div>
-
-            <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                <span className="text-xs text-gray-700 font-medium">AI Prediction (Next 6M)</span>
-              </div>
-              <div className="text-2xl font-bold text-gray-900">{formatCurrency(593000)}</div>
-              <div className="text-xs text-gray-600 mt-1">Predicted by Dec</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-                <span className="text-xs text-gray-700 font-medium">Confidence Band</span>
-              </div>
-              <div className="text-2xl font-bold text-gray-900">±{variancePercent}%</div>
-              <div className="text-xs text-gray-600 mt-1">Prediction accuracy</div>
-            </div>
-          </div>
-        </div>
 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <div className="grid grid-cols-12 gap-2 text-xs">
@@ -425,6 +307,125 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Monthly Revenue Performance with AI Predictions</h3>
+            <p className="text-sm text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-600 rounded-lg border border-green-200">
+            <TrendingUp className="w-4 h-4" />
+            <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
+          </div>
+        </div>
+
+        <div className="w-full mb-6" style={{ height: '300px' }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart
+              data={predictiveData}
+              margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 12, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={{ stroke: '#e5e7eb' }}
+              />
+              <YAxis
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+                width={80}
+                tick={{ fontSize: 12, fill: '#9ca3af' }}
+                axisLine={{ stroke: '#e5e7eb' }}
+                tickLine={{ stroke: '#e5e7eb' }}
+              />
+              <Tooltip
+                formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
+                contentStyle={{ borderRadius: '10px' }}
+              />
+
+              <defs>
+                <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
+                </linearGradient>
+              </defs>
+
+              <Area
+                type="monotone"
+                dataKey="upper"
+                stroke="none"
+                fill="url(#confidenceBand)"
+                fillOpacity={1}
+                isAnimationActive={true}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="lower"
+                stroke="none"
+                fill="#ffffff"
+                fillOpacity={1}
+                isAnimationActive={true}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="historical"
+                name="Actuals"
+                stroke="#3B82F6"
+                strokeWidth={3}
+                dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 7 }}
+                connectNulls={false}
+                isAnimationActive={true}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="prediction"
+                name="AI Prediction"
+                stroke="#8B5CF6"
+                strokeWidth={3}
+                strokeDasharray="5 5"
+                dot={{ r: 5, fill: '#8B5CF6', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 7 }}
+                isAnimationActive={true}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span className="text-xs text-gray-700 font-medium">Historical</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(515000)}</div>
+            <div className="text-xs text-gray-600 mt-1">Last Recorded Month</div>
+          </div>
+
+          <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+              <span className="text-xs text-gray-700 font-medium">AI Prediction (Next 6M)</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(593000)}</div>
+            <div className="text-xs text-gray-600 mt-1">Predicted by Dec</div>
+          </div>
+
+          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+              <span className="text-xs text-gray-700 font-medium">Confidence Band</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">±{variancePercent}%</div>
+            <div className="text-xs text-gray-600 mt-1">Prediction accuracy</div>
           </div>
         </div>
       </div>
