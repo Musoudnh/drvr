@@ -1739,7 +1739,9 @@ const Forecasting: React.FC = () => {
                               <span className={`text-sm ${
                                 isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
+                              <span className={`text-xs font-normal ${
+                                isOuterYear ? 'text-gray-400' : 'text-[#7B68EE]'
+                              }`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
