@@ -1677,9 +1677,11 @@ const Forecasting: React.FC = () => {
                         </tr>
                         
                         {/* GL Code Rows */}
-                        {expandedCategories.includes(category) && categoryGLCodes.map((glCode, glIndex) => (
+                        {expandedCategories.includes(category) && categoryGLCodes.map((glCode, glIndex) => {
+                          const hasOpenScenario = appliedScenarios.some(s => s.glCode === glCode.code && scenarioMenuOpen === s.id);
+                          return (
                           <React.Fragment key={glCode.code}>
-                            <tr className="border-b border-gray-100 hover:bg-gray-50 group">
+                            <tr className={`border-b border-gray-100 hover:bg-gray-50 group transition-all duration-300 ${hasOpenScenario ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}>
                               <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
@@ -1925,7 +1927,7 @@ const Forecasting: React.FC = () => {
                                     ) : (
                                       <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className="p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200">
+                                          <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200 transition-all duration-300 ${scenarioMenuOpen === scenario.id ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}>
                                             <div className="flex items-start justify-between gap-3">
                                               <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
@@ -2077,7 +2079,8 @@ const Forecasting: React.FC = () => {
                               </tr>
                             )}
                           </React.Fragment>
-                        ))}
+                        );
+                        })}
                       </React.Fragment>
                     );
                   })}
