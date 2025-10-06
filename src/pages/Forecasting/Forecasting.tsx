@@ -8,9 +8,12 @@ import { SaveForecastModal } from '../../components/Forecasting/SaveForecastModa
 import { VersionComparisonModal } from '../../components/Forecasting/VersionComparisonModal';
 import ViewSettingsPanel from '../../components/Forecasting/ViewSettingsPanel';
 import SalesScenarioModal from '../../components/Forecasting/SalesScenarioModal';
+import { CommentsAndChangeRequests, useCellComments } from '../../components/Forecasting/CommentsAndChangeRequests';
 import { forecastService } from '../../services/forecastService';
 import { SalesDriverService } from '../../services/salesDriverService';
+import { commentService } from '../../services/commentService';
 import type { ForecastLineItem } from '../../types/forecast';
+import type { UserRole } from '../../types/comment';
 import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
 import type { SalesScenario } from '../../types/salesDriver';
@@ -63,6 +66,9 @@ interface AppliedScenario {
 const Forecasting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const userId = '00000000-0000-0000-0000-000000000001';
+  const [userRole, setUserRole] = useState<UserRole>('viewer');
+  const { openComments, openChangeRequest, renderCommentUI } = useCellComments(userId);
   const [selectedYear, setSelectedYear] = useState(2025);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
   const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
@@ -73,6 +79,7 @@ const Forecasting: React.FC = () => {
   const [showSalesScenarioModal, setShowSalesScenarioModal] = useState(false);
   const [editingSalesScenario, setEditingSalesScenario] = useState<SalesScenario | null>(null);
   const [salesScenarios, setSalesScenarios] = useState<SalesScenario[]>([]);
+  const [commentsVisible, setCommentsVisible] = useState(true);
   const [newGLScenario, setNewGLScenario] = useState({
     name: '',
     description: '',
@@ -128,9 +135,20 @@ const Forecasting: React.FC = () => {
   const [driverDropdownPosition, setDriverDropdownPosition] = useState<{top: number, left: number} | null>(null);
   const driverDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Debug: Log component version
+  useEffect(() => {
+    const loadUserRole = async () => {
+      try {
+        const role = await commentService.getUserRole(userId);
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error loading user role:', error);
+      }
+    };
+    loadUserRole();
+  }, [userId]);
+
   React.useEffect(() => {
-    console.log('🚀 Forecasting Component Loaded - Sales Driver Edit Fix v2.0');
+    console.log('🚀 Forecasting Component Loaded - Sales Driver Edit Fix v2.0 with Comments');
   }, []);
 
   // Context menu effect
@@ -1445,6 +1463,13 @@ const Forecasting: React.FC = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setCommentsVisible(!commentsVisible)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <MessageSquare className="w-4 h-4 mr-2" />
+            {commentsVisible ? 'Hide' : 'Show'} Comments
+          </button>
+          <button
             onClick={() => setShowSaveForecastModal(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
@@ -1512,6 +1537,13 @@ const Forecasting: React.FC = () => {
             Tip: Hold Ctrl/Cmd to select multiple cells, Shift for range selection, or double-click to edit
           </span>
         </div>
+      )}
+
+      {/* Comments and Change Requests Section */}
+      {commentsVisible && (
+        <Card>
+          <CommentsAndChangeRequests userId={userId} />
+        </Card>
       )}
 
       {/* Controls */}
@@ -3775,6 +3807,29 @@ const Forecasting: React.FC = () => {
           }}
         >
           <button
+            onClick={() => {
+              const cellRef = `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
+              openComments(cellRef);
+              setContextMenu(null);
+            }}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <MessageSquare className="w-4 h-4 text-blue-600" />
+            Add Comment
+          </button>
+          <button
+            onClick={() => {
+              const cellRef = `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
+              openChangeRequest(cellRef, contextMenu.rowData.forecastedAmount);
+              setContextMenu(null);
+            }}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <AlertCircle className="w-4 h-4 text-orange-600" />
+            Request Change
+          </button>
+          <div className="border-t border-gray-200 my-2"></div>
+          <button
             onClick={() => handleDrillDown(contextMenu.rowData)}
             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
           >
@@ -3819,6 +3874,9 @@ const Forecasting: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Render Comment and Change Request Modals */}
+      {renderCommentUI()}
 
     </div>
   );
