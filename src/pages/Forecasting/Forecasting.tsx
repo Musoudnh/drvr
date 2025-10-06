@@ -1784,8 +1784,8 @@ const Forecasting: React.FC = () => {
                           </td>
                         </tr>
                         
-                        {/* GL Code Rows */}
-                        {(dateViewMode !== 'months' || expandedCategories.includes(category)) && categoryGLCodes.map((glCode, glIndex) => {
+                        {/* GL Code Rows - Always show in quarterly/yearly, only show when expanded in monthly */}
+                        {(dateViewMode === 'quarters' || dateViewMode === 'years' || expandedCategories.includes(category)) && categoryGLCodes.map((glCode, glIndex) => {
                           const hasOpenScenario = appliedScenarios.some(s => s.glCode === glCode.code && scenarioMenuOpen === s.id);
                           return (
                           <React.Fragment key={glCode.code}>
