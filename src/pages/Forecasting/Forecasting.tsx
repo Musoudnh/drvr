@@ -2971,9 +2971,6 @@ const Forecasting: React.FC = () => {
                     <span className="text-gray-500">Affected Period: Jul - Sep 2025</span>
                     <span className="text-gray-400">2 hours ago</span>
                   </div>
-                  <button className="mt-3 px-3 py-1.5 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
-                    Review Forecast
-                  </button>
                 </div>
                 )}
 
@@ -2991,9 +2988,6 @@ const Forecasting: React.FC = () => {
                     <span className="text-gray-500">GL 6200 - Marketing</span>
                     <span className="text-gray-400">5 hours ago</span>
                   </div>
-                  <button className="mt-3 px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-medium hover:bg-amber-700 transition-colors">
-                    View Details
-                  </button>
                 </div>
                 )}
 
