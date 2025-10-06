@@ -1728,9 +1728,9 @@ const Forecasting: React.FC = () => {
                     return (
                       <React.Fragment key={category}>
                         {/* Category Header */}
-                        <tr className="bg-gray-100 border-b border-gray-200">
-                          <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-3 px-4">
-                            <div className="bg-gray-100 rounded-lg -mx-4 -my-3 px-4 py-3">
+                        <tr>
+                          <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-2 px-4">
+                            <div className="bg-gray-100 rounded-lg px-4 py-3 border border-gray-200">
                               <button
                                 onClick={() => toggleCategory(category)}
                                 className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
