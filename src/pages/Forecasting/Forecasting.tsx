@@ -1779,7 +1779,7 @@ const Forecasting: React.FC = () => {
                         </tr>
                         
                         {/* GL Code Rows */}
-                        {expandedCategories.includes(category) && categoryGLCodes.map((glCode, glIndex) => {
+                        {(dateViewMode !== 'months' || expandedCategories.includes(category)) && categoryGLCodes.map((glCode, glIndex) => {
                           const hasOpenScenario = appliedScenarios.some(s => s.glCode === glCode.code && scenarioMenuOpen === s.id);
                           return (
                           <React.Fragment key={glCode.code}>
@@ -1795,95 +1795,97 @@ const Forecasting: React.FC = () => {
                                       {glCode.name}
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-1 relative z-50">
-                                    <div className="relative">
-                                      <button
-                                        onClick={(e) => {
-                                          const rect = e.currentTarget.getBoundingClientRect();
-                                          setDriverDropdownPosition({
-                                            top: rect.bottom + 4,
-                                            left: rect.left
-                                          });
-                                          setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
-                                        }}
-                                        className="p-1 hover:bg-[#9333ea]/10 rounded transition-colors text-[#9333ea]"
-                                        title="Add driver"
-                                      >
-                                        <Plus className="w-3 h-3" />
-                                      </button>
-                                      {driverDropdownOpen === glCode.code && driverDropdownPosition && createPortal(
-                                        <div
-                                          ref={driverDropdownRef}
-                                          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px]"
-                                          style={{
-                                            top: `${driverDropdownPosition.top}px`,
-                                            left: `${driverDropdownPosition.left}px`,
-                                            zIndex: 9999
+                                  {dateViewMode === 'months' && (
+                                    <div className="flex items-center gap-1 relative z-50">
+                                      <div className="relative">
+                                        <button
+                                          onClick={(e) => {
+                                            const rect = e.currentTarget.getBoundingClientRect();
+                                            setDriverDropdownPosition({
+                                              top: rect.bottom + 4,
+                                              left: rect.left
+                                            });
+                                            setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
                                           }}
+                                          className="p-1 hover:bg-[#9333ea]/10 rounded transition-colors text-[#9333ea]"
+                                          title="Add driver"
                                         >
-                                          <button
-                                            onClick={() => {
-                                              setSelectedGLCode(glCode);
-                                              setShowGLScenarioModal(true);
-                                              setDriverDropdownOpen(null);
+                                          <Plus className="w-3 h-3" />
+                                        </button>
+                                        {driverDropdownOpen === glCode.code && driverDropdownPosition && createPortal(
+                                          <div
+                                            ref={driverDropdownRef}
+                                            className="fixed bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px]"
+                                            style={{
+                                              top: `${driverDropdownPosition.top}px`,
+                                              left: `${driverDropdownPosition.left}px`,
+                                              zIndex: 9999
                                             }}
-                                            className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700"
                                           >
-                                            <Plus className="w-3.5 h-3.5" />
-                                            Quick Driver
-                                          </button>
-                                          <button
-                                            onClick={() => {
-                                              setSelectedGLCode(glCode);
-                                              setShowSalesScenarioModal(true);
-                                              setDriverDropdownOpen(null);
-                                            }}
-                                            className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700 border-t border-gray-100"
-                                          >
-                                            <Plus className="w-3.5 h-3.5" />
-                                            Customer Driver
-                                          </button>
-                                        </div>,
-                                        document.body
-                                      )}
-                                    </div>
-                                    <button
-                                      onClick={() => {
-                                        setExpandedGLCodes(prev =>
-                                          prev.includes(glCode.code)
-                                            ? prev.filter(code => code !== glCode.code)
-                                            : [...prev, glCode.code]
-                                        );
-                                      }}
-                                      className="p-1 hover:bg-gray-100 rounded transition-all duration-300"
-                                      title="Toggle details"
-                                    >
-                                      {expandedGLCodes.includes(glCode.code) ? (
-                                        <ChevronDown className="w-3 h-3" />
-                                      ) : (
-                                        <ChevronRight className="w-3 h-3" />
-                                      )}
-                                    </button>
-                                    {expandedGLCodes.includes(glCode.code) && appliedScenarios.filter(s => s.glCode === glCode.code).length > 0 && (
+                                            <button
+                                              onClick={() => {
+                                                setSelectedGLCode(glCode);
+                                                setShowGLScenarioModal(true);
+                                                setDriverDropdownOpen(null);
+                                              }}
+                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700"
+                                            >
+                                              <Plus className="w-3.5 h-3.5" />
+                                              Quick Driver
+                                            </button>
+                                            <button
+                                              onClick={() => {
+                                                setSelectedGLCode(glCode);
+                                                setShowSalesScenarioModal(true);
+                                                setDriverDropdownOpen(null);
+                                              }}
+                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700 border-t border-gray-100"
+                                            >
+                                              <Plus className="w-3.5 h-3.5" />
+                                              Customer Driver
+                                            </button>
+                                          </div>,
+                                          document.body
+                                        )}
+                                      </div>
                                       <button
                                         onClick={() => {
-                                          setHiddenDrivers(prev =>
+                                          setExpandedGLCodes(prev =>
                                             prev.includes(glCode.code)
                                               ? prev.filter(code => code !== glCode.code)
                                               : [...prev, glCode.code]
                                           );
                                         }}
-                                        className="p-1 hover:bg-[#9333ea]/10 rounded transition-all duration-300 text-[#9333ea]"
-                                        title={hiddenDrivers.includes(glCode.code) ? "Show drivers" : "Hide drivers"}
+                                        className="p-1 hover:bg-gray-100 rounded transition-all duration-300"
+                                        title="Toggle details"
                                       >
-                                        {hiddenDrivers.includes(glCode.code) ? (
-                                          <Eye className="w-3 h-3" />
+                                        {expandedGLCodes.includes(glCode.code) ? (
+                                          <ChevronDown className="w-3 h-3" />
                                         ) : (
-                                          <EyeOff className="w-3 h-3" />
+                                          <ChevronRight className="w-3 h-3" />
                                         )}
                                       </button>
-                                    )}
-                                  </div>
+                                      {expandedGLCodes.includes(glCode.code) && appliedScenarios.filter(s => s.glCode === glCode.code).length > 0 && (
+                                        <button
+                                          onClick={() => {
+                                            setHiddenDrivers(prev =>
+                                              prev.includes(glCode.code)
+                                                ? prev.filter(code => code !== glCode.code)
+                                                : [...prev, glCode.code]
+                                            );
+                                          }}
+                                          className="p-1 hover:bg-[#9333ea]/10 rounded transition-all duration-300 text-[#9333ea]"
+                                          title={hiddenDrivers.includes(glCode.code) ? "Show drivers" : "Hide drivers"}
+                                        >
+                                          {hiddenDrivers.includes(glCode.code) ? (
+                                            <Eye className="w-3 h-3" />
+                                          ) : (
+                                            <EyeOff className="w-3 h-3" />
+                                          )}
+                                        </button>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               </td>
                               {dateViewMode === 'months' && (
