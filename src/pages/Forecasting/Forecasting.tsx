@@ -1709,6 +1709,9 @@ const Forecasting: React.FC = () => {
                       const isSelectedYearQuarter = dateViewMode === 'quarters' &&
                                                     period.year === selectedYear;
 
+                      const isFirstSelectedQuarter = isSelectedYearQuarter && period.period === 'Q1';
+                      const isLastSelectedQuarter = isSelectedYearQuarter && period.period === 'Q4';
+
                       return (
                         <th
                           key={index}
@@ -1716,8 +1719,12 @@ const Forecasting: React.FC = () => {
                             isSelectedYearQuarter
                               ? 'bg-purple-100 text-purple-900'
                               : isOuterYear
-                                ? 'text-gray-500 bg-gray-50'
+                                ? 'text-gray-500'
                                 : 'text-gray-800'
+                          } ${
+                            isFirstSelectedQuarter ? 'rounded-tl-lg' : ''
+                          } ${
+                            isLastSelectedQuarter ? 'rounded-tr-lg' : ''
                           } ${
                             dateViewMode === 'months'
                               ? 'text-center px-2 min-w-[120px]'
