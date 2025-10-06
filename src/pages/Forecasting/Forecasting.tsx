@@ -2053,10 +2053,10 @@ const Forecasting: React.FC = () => {
                                 <td colSpan={dateViewMode === 'months' ? datePeriods.length + 3 : datePeriods.length + 1} className="py-0 px-0">
                                   <div className="p-4 mb-2">
                                     {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
-                                      <p className="text-sm text-gray-600 italic">No drivers applied yet. Click the + button to add a driver.</p>
+                                      <p className="text-xs text-gray-500">No drivers applied yet. Click the + button to add a driver.</p>
                                     ) : (
                                       <>
-                                        <h5 className="text-sm text-gray-600 italic mb-2">Drivers for {glCode.name}</h5>
+                                        <h5 className="text-xs text-gray-500 mb-2">Drivers for {glCode.name}</h5>
                                         <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
                                           <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200 transition-all duration-300 ${scenarioMenuOpen === scenario.id ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}>
