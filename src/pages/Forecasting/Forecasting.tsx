@@ -1929,73 +1929,81 @@ const Forecasting: React.FC = () => {
                                         : 'text-center px-2'
                                     }`}
                                   >
-                                    <div className="relative" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
+                                    <div className="relative" style={{ verticalAlign: dateViewMode === 'months' && expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
                                       <div className="overflow-hidden">
-                                        <div className={`flex items-center justify-center ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
-                                          {dateViewMode === 'months' && (() => {
-                                            const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
-                                            if (monthData?.actualAmount !== undefined) {
-                                              return (
-                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                  ${formatNumber(monthData.actualAmount)}
-                                                </div>
-                                              );
-                                            } else {
-                                              return (
-                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                  -
-                                                </div>
-                                              );
-                                            }
-                                          })()}
-                                        </div>
-                                        <div className={`${expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : 'hidden'}`}>
-                                          <div className={`rounded px-1 ${
-                                            isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
-                                          } ${
-                                            isSelected
-                                              ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
-                                              : !isActualized && dateViewMode === 'months'
-                                                ? 'cursor-pointer hover:bg-[#EEF2FF]'
-                                                : ''
-                                          } text-sm`}>
-                                            {isEditing ? (
-                                              <input
-                                                type="text"
-                                                inputMode="numeric"
-                                                value={editValue}
-                                                onChange={(e) => {
-                                                  const value = e.target.value;
-                                                  if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                                    setEditValue(value);
-                                                  }
-                                                }}
-                                                onBlur={handleCellSave}
-                                                onKeyDown={(e) => {
-                                                  if (e.key === 'Enter') handleCellSave();
-                                                  if (e.key === 'Escape') handleCellCancel();
-                                                }}
-                                                className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
-                                                autoFocus
-                                                onFocus={(e) => e.target.select()}
-                                              />
-                                            ) : (
-                                              <span
-                                                onClick={(e) => {
-                                                  if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
-                                                    if (e.detail === 2) {
-                                                      handleCellEdit(glCode.code, periodKey, aggregatedAmount);
-                                                    } else {
-                                                      handleCellSelection(glCode.code, periodKey, isActualized, e);
-                                                    }
-                                                  }
-                                                }}
-                                                className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
-                                              >
-                                                ${formatNumber(aggregatedAmount)}
-                                              </span>
-                                            )}
+                                        {dateViewMode === 'months' && (
+                                          <div className={`flex items-center justify-center ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
+                                            {(() => {
+                                              const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
+                                              if (monthData?.actualAmount !== undefined) {
+                                                return (
+                                                  <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                    ${formatNumber(monthData.actualAmount)}
+                                                  </div>
+                                                );
+                                              } else {
+                                                return (
+                                                  <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                    -
+                                                  </div>
+                                                );
+                                              }
+                                            })()}
                                           </div>
+                                        )}
+                                        <div className={`${dateViewMode === 'months' && expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : dateViewMode !== 'months' ? '' : 'hidden'}`}>
+                                          {dateViewMode !== 'months' ? (
+                                            <div className="text-sm text-[#212b36] font-medium">
+                                              ${formatNumber(aggregatedAmount)}
+                                            </div>
+                                          ) : (
+                                            <div className={`rounded px-1 ${
+                                              isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
+                                            } ${
+                                              isSelected
+                                                ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
+                                                : !isActualized
+                                                  ? 'cursor-pointer hover:bg-[#EEF2FF]'
+                                                  : ''
+                                            } text-sm`}>
+                                              {isEditing ? (
+                                                <input
+                                                  type="text"
+                                                  inputMode="numeric"
+                                                  value={editValue}
+                                                  onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                                      setEditValue(value);
+                                                    }
+                                                  }}
+                                                  onBlur={handleCellSave}
+                                                  onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') handleCellSave();
+                                                    if (e.key === 'Escape') handleCellCancel();
+                                                  }}
+                                                  className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
+                                                  autoFocus
+                                                  onFocus={(e) => e.target.select()}
+                                                />
+                                              ) : (
+                                                <span
+                                                  onClick={(e) => {
+                                                    if (!isActualized && aggregatedAmount) {
+                                                      if (e.detail === 2) {
+                                                        handleCellEdit(glCode.code, periodKey, aggregatedAmount);
+                                                      } else {
+                                                        handleCellSelection(glCode.code, periodKey, isActualized, e);
+                                                      }
+                                                    }
+                                                  }}
+                                                  className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
+                                                >
+                                                  ${formatNumber(aggregatedAmount)}
+                                                </span>
+                                              )}
+                                            </div>
+                                          )}
                                           {dateViewMode === 'months' && (() => {
                                             const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                             if (monthData?.actualAmount !== undefined) {
