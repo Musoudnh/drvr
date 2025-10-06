@@ -1791,7 +1791,7 @@ const Forecasting: React.FC = () => {
                                       {glCode.name}
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center gap-1 relative z-50">
                                     <div className="relative">
                                       <button
                                         onClick={() => {
@@ -1805,7 +1805,7 @@ const Forecasting: React.FC = () => {
                                       {driverDropdownOpen === glCode.code && (
                                         <div
                                           ref={driverDropdownRef}
-                                          className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[160px]"
+                                          className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-[100] min-w-[160px]"
                                         >
                                           <button
                                             onClick={() => {
