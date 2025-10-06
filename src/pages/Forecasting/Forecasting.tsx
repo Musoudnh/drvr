@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles, Calculator } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles, Calculator, MessageSquare, Copy, Trash2 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
@@ -120,11 +120,79 @@ const Forecasting: React.FC = () => {
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{x: number, y: number, rowData: any} | null>(null);
+  const contextMenuRef = useRef<HTMLDivElement>(null);
 
   // Debug: Log component version
   React.useEffect(() => {
     console.log('🚀 Forecasting Component Loaded - Sales Driver Edit Fix v2.0');
   }, []);
+
+  // Context menu effect
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (contextMenuRef.current && !contextMenuRef.current.contains(event.target as Node)) {
+        setContextMenu(null);
+      }
+    };
+
+    const handleScroll = () => {
+      setContextMenu(null);
+    };
+
+    if (contextMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('scroll', handleScroll, true);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [contextMenu]);
+
+  const handleContextMenu = (event: React.MouseEvent, rowData: any) => {
+    event.preventDefault();
+    setContextMenu({
+      x: event.clientX,
+      y: event.clientY,
+      rowData,
+    });
+  };
+
+  const handleDrillDown = (rowData: any) => {
+    console.log('Drill down:', rowData);
+    setContextMenu(null);
+  };
+
+  const handleAddNote = (rowData: any) => {
+    console.log('Add note:', rowData);
+    setContextMenu(null);
+  };
+
+  const handleViewDetails = (rowData: any) => {
+    console.log('View details:', rowData);
+    setSelectedGLCode(rowData);
+    setExpandedGLCodes(prev => [...prev, rowData.code]);
+    setContextMenu(null);
+  };
+
+  const handleEditRow = (rowData: any) => {
+    console.log('Edit row:', rowData);
+    setSelectedGLCode(rowData);
+    setShowScenarioSidePanel(true);
+    setContextMenu(null);
+  };
+
+  const handleDuplicateRow = (rowData: any) => {
+    console.log('Duplicate row:', rowData);
+    setContextMenu(null);
+  };
+
+  const handleDeleteRow = (rowData: any) => {
+    console.log('Delete row:', rowData);
+    setContextMenu(null);
+  };
 
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
@@ -1681,7 +1749,10 @@ const Forecasting: React.FC = () => {
                           const hasOpenScenario = appliedScenarios.some(s => s.glCode === glCode.code && scenarioMenuOpen === s.id);
                           return (
                           <React.Fragment key={glCode.code}>
-                            <tr className={`border-b border-gray-100 hover:bg-gray-50 group transition-all duration-300 ${hasOpenScenario ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}>
+                            <tr
+                              className={`border-b border-gray-100 hover:bg-gray-50 group transition-all duration-300 ${hasOpenScenario ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}
+                              onContextMenu={(e) => handleContextMenu(e, glCode)}
+                            >
                               <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
@@ -3564,6 +3635,62 @@ const Forecasting: React.FC = () => {
           setEditingSalesScenario(null);
         }}
       />
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <div
+          ref={contextMenuRef}
+          className="fixed bg-white rounded-lg shadow-xl border border-gray-200 py-2 min-w-[200px] z-50"
+          style={{
+            top: `${contextMenu.y}px`,
+            left: `${contextMenu.x}px`,
+          }}
+        >
+          <button
+            onClick={() => handleDrillDown(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <TrendingUp className="w-4 h-4 text-[#3AB7BF]" />
+            Drill Down
+          </button>
+          <button
+            onClick={() => handleAddNote(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <MessageSquare className="w-4 h-4 text-[#F59E0B]" />
+            Add Note
+          </button>
+          <button
+            onClick={() => handleViewDetails(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <Eye className="w-4 h-4 text-[#3AB7BF]" />
+            View Details
+          </button>
+          <button
+            onClick={() => handleEditRow(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <Edit3 className="w-4 h-4 text-[#3AB7BF]" />
+            Edit
+          </button>
+          <button
+            onClick={() => handleDuplicateRow(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+          >
+            <Copy className="w-4 h-4 text-[#3AB7BF]" />
+            Duplicate
+          </button>
+          <div className="border-t border-gray-200 my-2"></div>
+          <button
+            onClick={() => handleDeleteRow(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete
+          </button>
+        </div>
+      )}
 
     </div>
   );
