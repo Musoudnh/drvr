@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, DollarSign, Users, AlertCircle, BarChart3, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { TrendingUp, DollarSign, Users, AlertCircle, BarChart3, PieChart, ArrowUpRight, ArrowDownRight, ArrowUp, ArrowDown } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import FinancialPerformanceDashboard from '../../components/Dashboard/FinancialPerformanceDashboard';
 
@@ -61,6 +61,129 @@ const CompanyDashboard: React.FC = () => {
                 </div>
               </Card>
             ))}
+          </div>
+
+          {/* Performance Comparison Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card title="Actual vs Budget (YTD)">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Revenue</p>
+                    <p className="text-sm text-gray-600">Actual: $3,670K</p>
+                    <p className="text-sm text-gray-600">Budget: $3,400K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +7.9%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Gross Profit</p>
+                    <p className="text-sm text-gray-600">Actual: $2,080K</p>
+                    <p className="text-sm text-gray-600">Budget: $1,950K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +6.7%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Operating Expenses</p>
+                    <p className="text-sm text-gray-600">Actual: $1,246K</p>
+                    <p className="text-sm text-gray-600">Budget: $1,300K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowDown className="w-4 h-4 mr-1" />
+                      -4.2%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Net Income</p>
+                    <p className="text-sm text-gray-600">Actual: $834K</p>
+                    <p className="text-sm text-gray-600">Budget: $650K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +28.3%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card title="Actual vs Prior Year (YTD)">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Revenue</p>
+                    <p className="text-sm text-gray-600">2025: $3,670K</p>
+                    <p className="text-sm text-gray-600">2024: $3,180K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +15.4%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Gross Profit</p>
+                    <p className="text-sm text-gray-600">2025: $2,080K</p>
+                    <p className="text-sm text-gray-600">2024: $1,850K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +12.4%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Operating Expenses</p>
+                    <p className="text-sm text-gray-600">2025: $1,246K</p>
+                    <p className="text-sm text-gray-600">2024: $1,200K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#F87171] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +3.8%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-[#101010]">Net Income</p>
+                    <p className="text-sm text-gray-600">2025: $834K</p>
+                    <p className="text-sm text-gray-600">2024: $650K</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
+                      <ArrowUp className="w-4 h-4 mr-1" />
+                      +28.3%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Recent Activity */}
