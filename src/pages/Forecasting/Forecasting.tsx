@@ -1649,13 +1649,11 @@ const Forecasting: React.FC = () => {
           <div className="ml-auto flex items-center gap-2">
             <button
               onClick={() => {
-                const glCodesWithDrivers = glCodes
-                  .filter(gl => appliedScenarios.some(scenario => scenario.glCode === gl.code))
-                  .map(gl => gl.code);
-                if (expandedGLCodes.length === glCodesWithDrivers.length) {
+                const allGLCodes = glCodes.map(gl => gl.code);
+                if (expandedGLCodes.length === allGLCodes.length) {
                   setExpandedGLCodes([]);
                 } else {
-                  setExpandedGLCodes(glCodesWithDrivers);
+                  setExpandedGLCodes(allGLCodes);
                 }
               }}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -1781,7 +1779,7 @@ const Forecasting: React.FC = () => {
                           return (
                           <React.Fragment key={glCode.code}>
                             <tr
-                              className={`border-b border-gray-100 hover:bg-gray-50 group transition-all duration-300 ${hasOpenScenario ? 'ring-2 ring-purple-400 ring-opacity-60 animate-pulse' : ''}`}
+                              className="border-b border-gray-100 hover:bg-gray-50 group"
                               onContextMenu={(e) => handleContextMenu(e, glCode)}
                             >
                               <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
