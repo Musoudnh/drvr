@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Activity,
-  MessageSquare,
-  Edit3,
-  CheckCircle,
-  AtSign,
-  AlertCircle,
-  Filter,
-  X,
-} from 'lucide-react';
+import { Activity, MessageSquare, CreditCard as Edit3, CheckCircle, AtSign, AlertCircle, Filter, X } from 'lucide-react';
 import { commentService } from '../../services/commentService';
 import type { ActivityLog, ActivityType } from '../../types/comment';
 
