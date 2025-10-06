@@ -2013,9 +2013,9 @@ const Forecasting: React.FC = () => {
 
                             {/* Expanded GL Code Scenarios */}
                             {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
-                              <tr>
-                                <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-0">
-                                  <div className="bg-gray-50 p-3 mb-2 rounded">
+                              <tr className="bg-gray-50">
+                                <td colSpan={dateViewMode === 'months' ? datePeriods.length + 3 : datePeriods.length + 1} className="py-0 px-0">
+                                  <div className="p-4 mb-2">
                                     <h5 className="text-xs text-[#101010] mb-2">Drivers for {glCode.name}</h5>
 
                                     {/* Add Scenario Buttons */}
