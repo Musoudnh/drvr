@@ -1796,7 +1796,7 @@ const Forecasting: React.FC = () => {
                                         onClick={() => {
                                           setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
                                         }}
-                                        className="p-1 hover:bg-[#3AB7BF]/10 rounded transition-colors text-[#3AB7BF]"
+                                        className="p-1 hover:bg-[#9333ea]/10 rounded transition-colors text-[#9333ea]"
                                         title="Add driver"
                                       >
                                         <Plus className="w-3 h-3" />
