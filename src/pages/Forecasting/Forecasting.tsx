@@ -1739,9 +1739,7 @@ const Forecasting: React.FC = () => {
                               <span className={`text-sm ${
                                 isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>{labelData.label}</span>
-                              <span className={`text-xs font-normal ${
-                                isOuterYear ? 'text-gray-400' : 'text-[#7B68EE]'
-                              }`}>{getQuarterLabel(period.period)}</span>
+                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
@@ -1934,7 +1932,7 @@ const Forecasting: React.FC = () => {
                                     <div className="relative" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
                                       <div className="overflow-hidden">
                                         <div className={`flex items-center justify-center ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
-                                          {dateViewMode === 'months' ? (() => {
+                                          {dateViewMode === 'months' && (() => {
                                             const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                             if (monthData?.actualAmount !== undefined) {
                                               return (
@@ -1949,14 +1947,9 @@ const Forecasting: React.FC = () => {
                                                 </div>
                                               );
                                             }
-                                          })() : (
-                                            <div className="text-sm text-[#212b36] font-semibold">
-                                              ${formatNumber(aggregatedAmount || 0)}
-                                            </div>
-                                          )}
+                                          })()}
                                         </div>
-                                        {dateViewMode === 'months' && (
-                                          <div className={`${expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : 'hidden'}`}>
+                                        <div className={`${expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : 'hidden'}`}>
                                           <div className={`rounded px-1 ${
                                             isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
                                           } ${
@@ -2003,7 +1996,7 @@ const Forecasting: React.FC = () => {
                                               </span>
                                             )}
                                           </div>
-                                          {dateViewMode === 'months' ? (() => {
+                                          {dateViewMode === 'months' && (() => {
                                             const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                             if (monthData?.actualAmount !== undefined) {
                                               const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
@@ -2024,14 +2017,8 @@ const Forecasting: React.FC = () => {
                                                 </div>
                                               );
                                             }
-                                        )}
-                                          })() : (
-                                            <div className="text-sm text-[#212b36] font-semibold">
-                                              ${formatNumber(aggregatedAmount || 0)}
-                                            </div>
-                                          )}
+                                          })()}
                                         </div>
-                                        )}
                                       </div>
                                     </div>
                                   </td>
