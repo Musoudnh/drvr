@@ -1706,11 +1706,22 @@ const Forecasting: React.FC = () => {
                       const labelData = getDateLabel(period, index);
                       const isOuterYear = dateViewMode !== 'months' && labelData.year !== selectedYear;
 
+                      const currentDate = new Date();
+                      const currentMonth = currentDate.getMonth();
+                      const currentQuarter = Math.floor(currentMonth / 3) + 1;
+                      const isCurrentQuarter = dateViewMode === 'quarters' &&
+                                              period.period === `Q${currentQuarter}` &&
+                                              period.year === selectedYear;
+
                       return (
                         <th
                           key={index}
                           className={`py-3 font-bold ${
-                            isOuterYear ? 'text-gray-500 bg-gray-50' : 'text-gray-800'
+                            isCurrentQuarter
+                              ? 'bg-purple-100 text-purple-900'
+                              : isOuterYear
+                                ? 'text-gray-500 bg-gray-50'
+                                : 'text-gray-800'
                           } ${
                             dateViewMode === 'months'
                               ? 'text-center px-2 min-w-[120px]'
@@ -1737,9 +1748,9 @@ const Forecasting: React.FC = () => {
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
                               <span className={`text-sm ${
-                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
+                                isCurrentQuarter ? 'text-purple-900 font-bold' : isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
+                              <span className={`text-xs font-normal ${isCurrentQuarter ? 'text-purple-700' : 'text-gray-400'}`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
