@@ -2003,7 +2003,7 @@ const Forecasting: React.FC = () => {
                                               </span>
                                             )}
                                           </div>
-                                          {dateViewMode === 'months' && (() => {
+                                          {dateViewMode === 'months' ? (() => {
                                             const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                             if (monthData?.actualAmount !== undefined) {
                                               const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
@@ -2024,7 +2024,12 @@ const Forecasting: React.FC = () => {
                                                 </div>
                                               );
                                             }
-                                          })()}
+                                        )}
+                                          })() : (
+                                            <div className="text-sm text-[#212b36] font-semibold">
+                                              ${formatNumber(aggregatedAmount || 0)}
+                                            </div>
+                                          )}
                                         </div>
                                         )}
                                       </div>
