@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles, Calculator, MessageSquare, Copy, Trash2 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
@@ -124,6 +125,7 @@ const Forecasting: React.FC = () => {
   const [contextMenu, setContextMenu] = useState<{x: number, y: number, rowData: any} | null>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
   const [driverDropdownOpen, setDriverDropdownOpen] = useState<string | null>(null);
+  const [driverDropdownPosition, setDriverDropdownPosition] = useState<{top: number, left: number} | null>(null);
   const driverDropdownRef = useRef<HTMLDivElement>(null);
 
   // Debug: Log component version
@@ -1795,21 +1797,26 @@ const Forecasting: React.FC = () => {
                                     <div className="relative">
                                       <button
                                         onClick={(e) => {
+                                          const rect = e.currentTarget.getBoundingClientRect();
+                                          setDriverDropdownPosition({
+                                            top: rect.bottom + 4,
+                                            left: rect.left
+                                          });
                                           setDriverDropdownOpen(driverDropdownOpen === glCode.code ? null : glCode.code);
                                         }}
                                         className="p-1 hover:bg-[#9333ea]/10 rounded transition-colors text-[#9333ea]"
                                         title="Add driver"
-                                        data-glcode={glCode.code}
                                       >
                                         <Plus className="w-3 h-3" />
                                       </button>
-                                      {driverDropdownOpen === glCode.code && (
+                                      {driverDropdownOpen === glCode.code && driverDropdownPosition && createPortal(
                                         <div
                                           ref={driverDropdownRef}
-                                          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg z-[100] min-w-[160px]"
+                                          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg min-w-[160px]"
                                           style={{
-                                            top: `${(document.querySelector(`[data-glcode="${glCode.code}"]`) as HTMLElement)?.getBoundingClientRect().bottom + 4}px`,
-                                            left: `${(document.querySelector(`[data-glcode="${glCode.code}"]`) as HTMLElement)?.getBoundingClientRect().left}px`
+                                            top: `${driverDropdownPosition.top}px`,
+                                            left: `${driverDropdownPosition.left}px`,
+                                            zIndex: 9999
                                           }}
                                         >
                                           <button
@@ -1834,7 +1841,8 @@ const Forecasting: React.FC = () => {
                                             <Plus className="w-3.5 h-3.5" />
                                             Customer Driver
                                           </button>
-                                        </div>
+                                        </div>,
+                                        document.body
                                       )}
                                     </div>
                                     <button
