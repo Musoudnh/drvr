@@ -88,6 +88,7 @@ const Forecasting: React.FC = () => {
   const [showScenarioPanel, setShowScenarioPanel] = useState(true);
   const [selectedGLCode, setSelectedGLCode] = useState<GLCode | null>(null);
   const [expandedGLCodes, setExpandedGLCodes] = useState<string[]>([]);
+  const [hiddenDrivers, setHiddenDrivers] = useState<string[]>([]);
   const [appliedScenarios, setAppliedScenarios] = useState<AppliedScenario[]>([]);
   const [expandedScenarios, setExpandedScenarios] = useState<string[]>([]);
   const [editingCell, setEditingCell] = useState<{glCode: string, month: string, type?: 'ytd' | 'fy'} | null>(null);
@@ -1848,6 +1849,25 @@ const Forecasting: React.FC = () => {
                                         <ChevronRight className="w-3 h-3" />
                                       )}
                                     </button>
+                                    {expandedGLCodes.includes(glCode.code) && appliedScenarios.filter(s => s.glCode === glCode.code).length > 0 && (
+                                      <button
+                                        onClick={() => {
+                                          setHiddenDrivers(prev =>
+                                            prev.includes(glCode.code)
+                                              ? prev.filter(code => code !== glCode.code)
+                                              : [...prev, glCode.code]
+                                          );
+                                        }}
+                                        className="p-1 hover:bg-[#9333ea]/10 rounded transition-all duration-300 text-[#9333ea]"
+                                        title={hiddenDrivers.includes(glCode.code) ? "Show drivers" : "Hide drivers"}
+                                      >
+                                        {hiddenDrivers.includes(glCode.code) ? (
+                                          <Eye className="w-3 h-3" />
+                                        ) : (
+                                          <EyeOff className="w-3 h-3" />
+                                        )}
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
                               </td>
@@ -2021,23 +2041,27 @@ const Forecasting: React.FC = () => {
                                           <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                             ${formatNumber(totalActuals)}
                                           </div>
-                                          <div className="text-center">
-                                            <span
-                                              onClick={() => {
-                                                setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
-                                                setEditValue(totalForecast.toString());
-                                              }}
-                                              className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block font-medium text-[#101010]"
-                                            >
-                                              ${formatNumber(actualsAndRemaining)}
-                                            </span>
-                                          </div>
-                                          <div className={`text-sm font-medium text-center ${varianceColor}`}>
-                                            {showActualsAsAmount
-                                              ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
-                                              : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
-                                            }
-                                          </div>
+                                          {expandedGLCodes.includes(glCode.code) && (
+                                            <>
+                                              <div className="text-center">
+                                                <span
+                                                  onClick={() => {
+                                                    setEditingCell({ glCode: glCode.code, month: 'FY', type: 'fy' });
+                                                    setEditValue(totalForecast.toString());
+                                                  }}
+                                                  className="cursor-pointer hover:bg-[#EEF2FF] rounded px-2 py-1 inline-block font-medium text-[#101010]"
+                                                >
+                                                  ${formatNumber(actualsAndRemaining)}
+                                                </span>
+                                              </div>
+                                              <div className={`text-sm font-medium text-center ${varianceColor}`}>
+                                                {showActualsAsAmount
+                                                  ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
+                                                  : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
+                                                }
+                                              </div>
+                                            </>
+                                          )}
                                         </>
                                       );
                                     })()}
@@ -2048,7 +2072,7 @@ const Forecasting: React.FC = () => {
 
 
                             {/* Expanded GL Code Scenarios */}
-                            {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length > 0 && (
+                            {expandedGLCodes.includes(glCode.code) && !hiddenDrivers.includes(glCode.code) && dateViewMode === 'months' && appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length > 0 && (
                               <tr>
                                 <td colSpan={dateViewMode === 'months' ? datePeriods.length + 3 : datePeriods.length + 1} className="py-0 px-0">
                                   <div className="border-t border-gray-200 bg-gray-50/50">
