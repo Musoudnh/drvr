@@ -993,7 +993,7 @@ const Forecasting: React.FC = () => {
                   <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
                 {adjustmentTypeDropdownOpen && (
-                  <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
                     <div className="flex flex-col gap-1">
                       <button
                         type="button"
@@ -1132,7 +1132,7 @@ const Forecasting: React.FC = () => {
                             <ChevronDown className="w-4 h-4 ml-1" />
                           </button>
                           {startMonthDropdownOpen && (
-                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                            <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
                               <div className="flex flex-col gap-1">
                                 {months.map(month => {
                                   const monthData = forecastData.find(item =>
@@ -1175,7 +1175,7 @@ const Forecasting: React.FC = () => {
                             <ChevronDown className="w-4 h-4 ml-1" />
                           </button>
                           {startYearDropdownOpen && (
-                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                            <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
                               <div className="flex flex-col gap-1">
                                 {[2024, 2025, 2026, 2027].map((year) => (
                                   <button
@@ -1213,7 +1213,7 @@ const Forecasting: React.FC = () => {
                             <ChevronDown className="w-4 h-4 ml-1" />
                           </button>
                           {endMonthDropdownOpen && (
-                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                            <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
                               <div className="flex flex-col gap-1">
                                 {months.map(month => {
                                   const monthData = forecastData.find(item =>
@@ -1256,7 +1256,7 @@ const Forecasting: React.FC = () => {
                             <ChevronDown className="w-4 h-4 ml-1" />
                           </button>
                           {endYearDropdownOpen && (
-                            <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                            <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
                               <div className="flex flex-col gap-1">
                                 {[2024, 2025, 2026, 2027].map((year) => (
                                   <button
@@ -1564,7 +1564,7 @@ const Forecasting: React.FC = () => {
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               {yearDropdownOpen && (
-                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
+                <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px]">
                   <div className="flex flex-col gap-1">
                     {[2024, 2025, 2026, 2027].map((year) => (
                       <button
@@ -1599,7 +1599,7 @@ const Forecasting: React.FC = () => {
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
               {deptDropdownOpen && (
-                <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
+                <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
                   <div className="flex flex-col gap-1">
                     {[
                       { value: 'All', label: 'All Categories' },
@@ -2659,7 +2659,7 @@ const Forecasting: React.FC = () => {
                         <ChevronDown className="w-4 h-4 ml-1" />
                       </button>
                       {sidePanelStartMonthDropdownOpen && (
-                        <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
                           <div className="flex flex-col gap-1">
                             {months.map(month => {
                               const monthData = forecastData.find(item =>
@@ -2705,7 +2705,7 @@ const Forecasting: React.FC = () => {
                         <ChevronDown className="w-4 h-4 ml-1" />
                       </button>
                       {sidePanelEndMonthDropdownOpen && (
-                        <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[120px] max-h-64 overflow-y-auto">
                           <div className="flex flex-col gap-1">
                             {months.map(month => {
                               const monthData = forecastData.find(item =>
@@ -2761,7 +2761,7 @@ const Forecasting: React.FC = () => {
                       <ChevronDown className="w-4 h-4 ml-1" />
                     </button>
                     {sidePanelAdjustmentTypeDropdownOpen && (
-                      <div className="absolute top-full mt-2 left-0 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
+                      <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
                         <div className="flex flex-col gap-1">
                           <button
                             type="button"
