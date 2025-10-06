@@ -1730,17 +1730,19 @@ const Forecasting: React.FC = () => {
                         {/* Category Header */}
                         <tr className="bg-gray-100 border-b border-gray-200">
                           <td colSpan={dateViewMode === 'months' ? datePeriods.length + 2 : datePeriods.length + 1} className="py-3 px-4">
-                            <button
-                              onClick={() => toggleCategory(category)}
-                              className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
-                            >
-                              {expandedCategories.includes(category) ? (
-                                <ChevronDown className="w-4 h-4 mr-2" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 mr-2" />
-                              )}
-                              {category}
-                            </button>
+                            <div className="bg-gray-100 rounded-lg -mx-4 -my-3 px-4 py-3">
+                              <button
+                                onClick={() => toggleCategory(category)}
+                                className="flex items-center font-bold text-[#101010] hover:text-[#3AB7BF] transition-colors"
+                              >
+                                {expandedCategories.includes(category) ? (
+                                  <ChevronDown className="w-4 h-4 mr-2" />
+                                ) : (
+                                  <ChevronRight className="w-4 h-4 mr-2" />
+                                )}
+                                {category}
+                              </button>
+                            </div>
                           </td>
                         </tr>
                         
