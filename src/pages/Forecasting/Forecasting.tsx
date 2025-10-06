@@ -2059,7 +2059,7 @@ const Forecasting: React.FC = () => {
                                         <h5 className="text-xs text-gray-500 mb-2">Drivers for {glCode.name}</h5>
                                         <div className="space-y-1.5">
                                         {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] border border-gray-200 transition-all duration-300 ${scenarioMenuOpen === scenario.id ? 'spinning-border' : ''}`}>
+                                          <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] transition-all duration-300 ${scenarioMenuOpen === scenario.id ? 'border-2 border-[#9333ea]' : 'border border-gray-200'}`}>
                                             <div className="flex items-start justify-between gap-3">
                                               <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
