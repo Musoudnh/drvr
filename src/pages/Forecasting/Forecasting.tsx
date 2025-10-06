@@ -1766,6 +1766,16 @@ const Forecasting: React.FC = () => {
                                   <div className="flex items-center gap-1">
                                     <button
                                       onClick={() => {
+                                        setSelectedGLCode(glCode);
+                                        setShowSalesScenarioModal(true);
+                                      }}
+                                      className="p-1 hover:bg-[#3AB7BF]/10 rounded transition-colors text-[#3AB7BF]"
+                                      title="Add scenario"
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                      onClick={() => {
                                         setExpandedGLCodes(prev =>
                                           prev.includes(glCode.code)
                                             ? prev.filter(code => code !== glCode.code)
@@ -1773,7 +1783,7 @@ const Forecasting: React.FC = () => {
                                         );
                                       }}
                                       className="p-1 hover:bg-gray-100 rounded transition-colors"
-                                      title="Scenario options"
+                                      title="Toggle details"
                                     >
                                       {expandedGLCodes.includes(glCode.code) ? (
                                         <ChevronDown className="w-3 h-3" />
@@ -1787,11 +1797,17 @@ const Forecasting: React.FC = () => {
                               {dateViewMode === 'months' && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
                                   <div className="space-y-1">
-                                    <div className="h-[20px] flex items-center">
-                                      {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
-                                    </div>
-                                    <div className="h-[18px] flex items-center">Act:</div>
-                                    <div className="h-[18px] flex items-center">Change:</div>
+                                    {expandedGLCodes.includes(glCode.code) ? (
+                                      <>
+                                        <div className="h-[20px] flex items-center">
+                                          {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
+                                        </div>
+                                        <div className="h-[18px] flex items-center">Act:</div>
+                                        <div className="h-[18px] flex items-center">Change:</div>
+                                      </>
+                                    ) : (
+                                      <div className="h-[20px] flex items-center">Act:</div>
+                                    )}
                                   </div>
                                 </td>
                               )}
@@ -1816,52 +1832,54 @@ const Forecasting: React.FC = () => {
                                     }`}
                                   >
                                     <div className="space-y-1 relative">
-                                      <div className={`rounded px-1 ${
-                                        isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
-                                      } ${
-                                        isSelected
-                                          ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
-                                          : !isActualized && dateViewMode === 'months'
-                                            ? 'cursor-pointer hover:bg-[#EEF2FF]'
-                                            : ''
-                                      } text-sm`}>
-                                        {isEditing ? (
-                                          <input
-                                            type="text"
-                                            inputMode="numeric"
-                                            value={editValue}
-                                            onChange={(e) => {
-                                              const value = e.target.value;
-                                              if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                                setEditValue(value);
-                                              }
-                                            }}
-                                            onBlur={handleCellSave}
-                                            onKeyDown={(e) => {
-                                              if (e.key === 'Enter') handleCellSave();
-                                              if (e.key === 'Escape') handleCellCancel();
-                                            }}
-                                            className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
-                                            autoFocus
-                                            onFocus={(e) => e.target.select()}
-                                          />
-                                        ) : (
-                                          <span
-                                            onClick={(e) => {
-                                              if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
-                                                if (e.detail === 2) {
-                                                  handleCellEdit(glCode.code, periodKey, aggregatedAmount);
-                                                } else {
-                                                  handleCellSelection(glCode.code, periodKey, isActualized, e);
+                                      {expandedGLCodes.includes(glCode.code) && (
+                                        <div className={`rounded px-1 ${
+                                          isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
+                                        } ${
+                                          isSelected
+                                            ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
+                                            : !isActualized && dateViewMode === 'months'
+                                              ? 'cursor-pointer hover:bg-[#EEF2FF]'
+                                              : ''
+                                        } text-sm`}>
+                                          {isEditing ? (
+                                            <input
+                                              type="text"
+                                              inputMode="numeric"
+                                              value={editValue}
+                                              onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                                  setEditValue(value);
                                                 }
-                                              }
-                                            }}
-                                            className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
-                                          >
-                                            ${formatNumber(aggregatedAmount)}
-                                          </span>
-                                        )}
-                                      </div>
+                                              }}
+                                              onBlur={handleCellSave}
+                                              onKeyDown={(e) => {
+                                                if (e.key === 'Enter') handleCellSave();
+                                                if (e.key === 'Escape') handleCellCancel();
+                                              }}
+                                              className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
+                                              autoFocus
+                                              onFocus={(e) => e.target.select()}
+                                            />
+                                          ) : (
+                                            <span
+                                              onClick={(e) => {
+                                                if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
+                                                  if (e.detail === 2) {
+                                                    handleCellEdit(glCode.code, periodKey, aggregatedAmount);
+                                                  } else {
+                                                    handleCellSelection(glCode.code, periodKey, isActualized, e);
+                                                  }
+                                                }
+                                              }}
+                                              className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
+                                            >
+                                              ${formatNumber(aggregatedAmount)}
+                                            </span>
+                                          )}
+                                        </div>
+                                      )}
                                       {dateViewMode === 'months' && (() => {
                                         const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                         if (monthData?.actualAmount !== undefined) {
@@ -1873,23 +1891,33 @@ const Forecasting: React.FC = () => {
                                               <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                                 ${formatNumber(monthData.actualAmount)}
                                               </div>
-                                              <div className={`text-sm font-medium ${varianceColor}`}>
-                                                {showActualsAsAmount
-                                                  ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
-                                                  : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
-                                                }
-                                              </div>
+                                              {expandedGLCodes.includes(glCode.code) && (
+                                                <div className={`text-sm font-medium ${varianceColor}`}>
+                                                  {showActualsAsAmount
+                                                    ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
+                                                    : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
+                                                  }
+                                                </div>
+                                              )}
                                             </>
                                           );
                                         } else {
                                           return (
                                             <>
-                                              <div className="text-sm text-gray-400 font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                -
-                                              </div>
-                                              <div className="text-sm font-medium text-gray-400">
-                                                -
-                                              </div>
+                                              {expandedGLCodes.includes(glCode.code) && (
+                                                <div className="text-sm text-gray-400 font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  -
+                                                </div>
+                                              )}
+                                              {!expandedGLCodes.includes(glCode.code) ? (
+                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  -
+                                                </div>
+                                              ) : (
+                                                <div className="text-sm font-medium text-gray-400">
+                                                  -
+                                                </div>
+                                              )}
                                             </>
                                           );
                                         }
