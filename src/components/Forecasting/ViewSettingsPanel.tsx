@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, Eye, EyeOff, Hash, DollarSign, Percent, Save } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Eye, EyeOff, Hash, DollarSign, Percent } from 'lucide-react';
 
 interface ViewSettingsPanelProps {
   isOpen: boolean;
@@ -28,6 +28,35 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
   onNumberFormatChange,
   onSave,
 }) => {
+  const [hasChanges, setHasChanges] = useState(false);
+  const [initialSettings, setInitialSettings] = useState({
+    hideEmptyAccounts,
+    showAccountCodes,
+    showActualsAsAmount,
+    numberFormat,
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      setInitialSettings({
+        hideEmptyAccounts,
+        showAccountCodes,
+        showActualsAsAmount,
+        numberFormat,
+      });
+      setHasChanges(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const changed =
+      hideEmptyAccounts !== initialSettings.hideEmptyAccounts ||
+      showAccountCodes !== initialSettings.showAccountCodes ||
+      showActualsAsAmount !== initialSettings.showActualsAsAmount ||
+      numberFormat !== initialSettings.numberFormat;
+    setHasChanges(changed);
+  }, [hideEmptyAccounts, showAccountCodes, showActualsAsAmount, numberFormat, initialSettings]);
+
   if (!isOpen) return null;
 
   return (
@@ -78,7 +107,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onHideEmptyAccountsChange(!hideEmptyAccounts)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      hideEmptyAccounts ? 'bg-[#9333EA]' : 'bg-gray-300'
+                      hideEmptyAccounts ? 'bg-[#7B68EE]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -102,7 +131,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onShowAccountCodesChange(!showAccountCodes)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      showAccountCodes ? 'bg-[#9333EA]' : 'bg-gray-300'
+                      showAccountCodes ? 'bg-[#7B68EE]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -132,7 +161,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <button
                     onClick={() => onShowActualsAsAmountChange(!showActualsAsAmount)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      showActualsAsAmount ? 'bg-[#9333EA]' : 'bg-gray-300'
+                      showActualsAsAmount ? 'bg-[#7B68EE]' : 'bg-gray-300'
                     }`}
                   >
                     <span
@@ -155,7 +184,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('actual')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'actual'
-                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
+                      ? 'bg-purple-50 border-2 border-[#7B68EE] text-[#7B68EE]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -164,7 +193,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1,000,000</div>
                   </div>
                   {numberFormat === 'actual' && (
-                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
+                    <div className="w-2 h-2 rounded-full bg-[#7B68EE]" />
                   )}
                 </button>
 
@@ -172,7 +201,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('thousands')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'thousands'
-                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
+                      ? 'bg-purple-50 border-2 border-[#7B68EE] text-[#7B68EE]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -181,7 +210,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1,000.0K</div>
                   </div>
                   {numberFormat === 'thousands' && (
-                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
+                    <div className="w-2 h-2 rounded-full bg-[#7B68EE]" />
                   )}
                 </button>
 
@@ -189,7 +218,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onClick={() => onNumberFormatChange('millions')}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${
                     numberFormat === 'millions'
-                      ? 'bg-purple-50 border-2 border-[#9333EA] text-[#9333EA]'
+                      ? 'bg-purple-50 border-2 border-[#7B68EE] text-[#7B68EE]'
                       : 'bg-gray-50 border-2 border-transparent text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -198,7 +227,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                     <div className="text-xs opacity-75">1.0M</div>
                   </div>
                   {numberFormat === 'millions' && (
-                    <div className="w-2 h-2 rounded-full bg-[#9333EA]" />
+                    <div className="w-2 h-2 rounded-full bg-[#7B68EE]" />
                   )}
                 </button>
               </div>
@@ -212,9 +241,13 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   onSave();
                   onClose();
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#9333EA] text-white rounded-lg hover:bg-[#7c2ac9] transition-colors font-medium"
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors font-medium ${
+                  hasChanges
+                    ? 'bg-[#101010] text-white hover:bg-gray-800'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+                disabled={!hasChanges}
               >
-                <Save className="w-4 h-4" />
                 Save Settings
               </button>
             )}
