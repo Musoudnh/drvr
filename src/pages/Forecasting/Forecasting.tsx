@@ -1758,7 +1758,7 @@ const Forecasting: React.FC = () => {
                               <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
-                                    <div className="font-semibold text-[#101010]">
+                                    <div className="text-[#101010]">
                                       {showAccountCodes && <span className="font-mono text-xs text-gray-500 mr-2">{glCode.code}</span>}
                                       {glCode.name}
                                     </div>
@@ -1782,7 +1782,7 @@ const Forecasting: React.FC = () => {
                                             : [...prev, glCode.code]
                                         );
                                       }}
-                                      className="p-1 hover:bg-gray-100 rounded transition-colors"
+                                      className="p-1 hover:bg-gray-100 rounded transition-all duration-300"
                                       title="Toggle details"
                                     >
                                       {expandedGLCodes.includes(glCode.code) ? (
@@ -1795,19 +1795,17 @@ const Forecasting: React.FC = () => {
                                 </div>
                               </td>
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-2 text-xs text-gray-600 font-medium align-top border-r border-gray-300">
-                                  <div className="space-y-1">
-                                    {expandedGLCodes.includes(glCode.code) ? (
-                                      <>
-                                        <div className="h-[20px] flex items-center">
-                                          {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
-                                        </div>
-                                        <div className="h-[18px] flex items-center">Act:</div>
-                                        <div className="h-[18px] flex items-center">Change:</div>
-                                      </>
-                                    ) : (
-                                      <div className="h-[20px] flex items-center">Act:</div>
-                                    )}
+                                <td className="py-3 px-2 text-xs text-gray-600 font-medium border-r border-gray-300" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
+                                  <div className="overflow-hidden transition-all duration-300 ease-in-out">
+                                    <div className={`flex items-center transition-all duration-300 ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
+                                      Act:
+                                    </div>
+                                    <div className={`transition-all duration-300 ease-in-out origin-top ${expandedGLCodes.includes(glCode.code) ? 'opacity-100 scale-y-100 mt-1' : 'opacity-0 scale-y-0 h-0'}`}>
+                                      <div className="h-[20px] flex items-center">
+                                        {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
+                                      </div>
+                                      <div className="h-[18px] flex items-center mt-1">Change:</div>
+                                    </div>
                                   </div>
                                 </td>
                               )}
@@ -1831,97 +1829,97 @@ const Forecasting: React.FC = () => {
                                         : 'text-center px-2'
                                     }`}
                                   >
-                                    <div className="space-y-1 relative">
-                                      {expandedGLCodes.includes(glCode.code) && (
-                                        <div className={`rounded px-1 ${
-                                          isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
-                                        } ${
-                                          isSelected
-                                            ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
-                                            : !isActualized && dateViewMode === 'months'
-                                              ? 'cursor-pointer hover:bg-[#EEF2FF]'
-                                              : ''
-                                        } text-sm`}>
-                                          {isEditing ? (
-                                            <input
-                                              type="text"
-                                              inputMode="numeric"
-                                              value={editValue}
-                                              onChange={(e) => {
-                                                const value = e.target.value;
-                                                if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
-                                                  setEditValue(value);
-                                                }
-                                              }}
-                                              onBlur={handleCellSave}
-                                              onKeyDown={(e) => {
-                                                if (e.key === 'Enter') handleCellSave();
-                                                if (e.key === 'Escape') handleCellCancel();
-                                              }}
-                                              className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
-                                              autoFocus
-                                              onFocus={(e) => e.target.select()}
-                                            />
-                                          ) : (
-                                            <span
-                                              onClick={(e) => {
-                                                if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
-                                                  if (e.detail === 2) {
-                                                    handleCellEdit(glCode.code, periodKey, aggregatedAmount);
-                                                  } else {
-                                                    handleCellSelection(glCode.code, periodKey, isActualized, e);
-                                                  }
-                                                }
-                                              }}
-                                              className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
-                                            >
-                                              ${formatNumber(aggregatedAmount)}
-                                            </span>
-                                          )}
+                                    <div className="relative" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
+                                      <div className="overflow-hidden transition-all duration-300 ease-in-out">
+                                        <div className={`flex items-center justify-center transition-all duration-300 ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
+                                          {dateViewMode === 'months' && (() => {
+                                            const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
+                                            if (monthData?.actualAmount !== undefined) {
+                                              return (
+                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  ${formatNumber(monthData.actualAmount)}
+                                                </div>
+                                              );
+                                            } else {
+                                              return (
+                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  -
+                                                </div>
+                                              );
+                                            }
+                                          })()}
                                         </div>
-                                      )}
-                                      {dateViewMode === 'months' && (() => {
-                                        const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
-                                        if (monthData?.actualAmount !== undefined) {
-                                          const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
-                                          const varianceDollar = monthData.actualAmount - aggregatedAmount;
-                                          const varianceColor = getVarianceColor(variance, glCode.code);
-                                          return (
-                                            <>
-                                              <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                ${formatNumber(monthData.actualAmount)}
-                                              </div>
-                                              {expandedGLCodes.includes(glCode.code) && (
+                                        <div className={`transition-all duration-300 ease-in-out origin-top ${expandedGLCodes.includes(glCode.code) ? 'opacity-100 scale-y-100 mt-1 space-y-1' : 'opacity-0 scale-y-0 h-0'}`}>
+                                          <div className={`rounded px-1 ${
+                                            isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
+                                          } ${
+                                            isSelected
+                                              ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
+                                              : !isActualized && dateViewMode === 'months'
+                                                ? 'cursor-pointer hover:bg-[#EEF2FF]'
+                                                : ''
+                                          } text-sm`}>
+                                            {isEditing ? (
+                                              <input
+                                                type="text"
+                                                inputMode="numeric"
+                                                value={editValue}
+                                                onChange={(e) => {
+                                                  const value = e.target.value;
+                                                  if (value === '' || value === '-' || /^-?\d+$/.test(value)) {
+                                                    setEditValue(value);
+                                                  }
+                                                }}
+                                                onBlur={handleCellSave}
+                                                onKeyDown={(e) => {
+                                                  if (e.key === 'Enter') handleCellSave();
+                                                  if (e.key === 'Escape') handleCellCancel();
+                                                }}
+                                                className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
+                                                autoFocus
+                                                onFocus={(e) => e.target.select()}
+                                              />
+                                            ) : (
+                                              <span
+                                                onClick={(e) => {
+                                                  if (!isActualized && dateViewMode === 'months' && aggregatedAmount) {
+                                                    if (e.detail === 2) {
+                                                      handleCellEdit(glCode.code, periodKey, aggregatedAmount);
+                                                    } else {
+                                                      handleCellSelection(glCode.code, periodKey, isActualized, e);
+                                                    }
+                                                  }
+                                                }}
+                                                className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
+                                              >
+                                                ${formatNumber(aggregatedAmount)}
+                                              </span>
+                                            )}
+                                          </div>
+                                          {dateViewMode === 'months' && (() => {
+                                            const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
+                                            if (monthData?.actualAmount !== undefined) {
+                                              const variance = ((monthData.actualAmount - aggregatedAmount) / aggregatedAmount) * 100;
+                                              const varianceDollar = monthData.actualAmount - aggregatedAmount;
+                                              const varianceColor = getVarianceColor(variance, glCode.code);
+                                              return (
                                                 <div className={`text-sm font-medium ${varianceColor}`}>
                                                   {showActualsAsAmount
                                                     ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                                     : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
                                                   }
                                                 </div>
-                                              )}
-                                            </>
-                                          );
-                                        } else {
-                                          return (
-                                            <>
-                                              {expandedGLCodes.includes(glCode.code) && (
-                                                <div className="text-sm text-gray-400 font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                  -
-                                                </div>
-                                              )}
-                                              {!expandedGLCodes.includes(glCode.code) ? (
-                                                <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
-                                                  -
-                                                </div>
-                                              ) : (
+                                              );
+                                            } else {
+                                              return (
                                                 <div className="text-sm font-medium text-gray-400">
                                                   -
                                                 </div>
-                                              )}
-                                            </>
-                                          );
-                                        }
-                                      })()}
+                                              );
+                                            }
+                                          })()}
+                                        </div>
+                                      </div>
                                     </div>
                                   </td>
                                 );
