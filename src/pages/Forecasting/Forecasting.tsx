@@ -1649,11 +1649,13 @@ const Forecasting: React.FC = () => {
           <div className="ml-auto flex items-center gap-2">
             <button
               onClick={() => {
-                const allGLCodes = glCodes.map(gl => gl.code);
-                if (expandedGLCodes.length === allGLCodes.length) {
+                const glCodesWithDrivers = glCodes
+                  .filter(gl => appliedScenarios.some(scenario => scenario.glCode === gl.code))
+                  .map(gl => gl.code);
+                if (expandedGLCodes.length === glCodesWithDrivers.length) {
                   setExpandedGLCodes([]);
                 } else {
-                  setExpandedGLCodes(allGLCodes);
+                  setExpandedGLCodes(glCodesWithDrivers);
                 }
               }}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -1853,11 +1855,11 @@ const Forecasting: React.FC = () => {
                               </td>
                               {dateViewMode === 'months' && (
                                 <td className="py-3 px-2 text-xs text-gray-600 font-medium border-r border-gray-300" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
-                                  <div className="overflow-hidden transition-all duration-300 ease-in-out">
-                                    <div className={`flex items-center transition-all duration-300 ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
+                                  <div className="overflow-hidden">
+                                    <div className={`flex items-center ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
                                       Act:
                                     </div>
-                                    <div className={`transition-all duration-300 ease-in-out origin-top ${expandedGLCodes.includes(glCode.code) ? 'opacity-100 scale-y-100 mt-1' : 'opacity-0 scale-y-0 h-0'}`}>
+                                    <div className={`${expandedGLCodes.includes(glCode.code) ? 'mt-1' : 'hidden'}`}>
                                       <div className="h-[20px] flex items-center">
                                         {selectedYear < new Date().getFullYear() ? 'Prior Year:' : 'Budget:'}
                                       </div>
@@ -1887,8 +1889,8 @@ const Forecasting: React.FC = () => {
                                     }`}
                                   >
                                     <div className="relative" style={{ verticalAlign: expandedGLCodes.includes(glCode.code) ? 'top' : 'middle' }}>
-                                      <div className="overflow-hidden transition-all duration-300 ease-in-out">
-                                        <div className={`flex items-center justify-center transition-all duration-300 ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
+                                      <div className="overflow-hidden">
+                                        <div className={`flex items-center justify-center ${!expandedGLCodes.includes(glCode.code) ? 'h-[20px]' : ''}`}>
                                           {dateViewMode === 'months' && (() => {
                                             const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                             if (monthData?.actualAmount !== undefined) {
@@ -1906,7 +1908,7 @@ const Forecasting: React.FC = () => {
                                             }
                                           })()}
                                         </div>
-                                        <div className={`transition-all duration-300 ease-in-out origin-top ${expandedGLCodes.includes(glCode.code) ? 'opacity-100 scale-y-100 mt-1 space-y-1' : 'opacity-0 scale-y-0 h-0'}`}>
+                                        <div className={`${expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : 'hidden'}`}>
                                           <div className={`rounded px-1 ${
                                             isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
                                           } ${
@@ -2048,18 +2050,15 @@ const Forecasting: React.FC = () => {
 
 
                             {/* Expanded GL Code Scenarios */}
-                            {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && (
-                              <tr className="bg-gray-50">
+                            {expandedGLCodes.includes(glCode.code) && dateViewMode === 'months' && appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length > 0 && (
+                              <tr>
                                 <td colSpan={dateViewMode === 'months' ? datePeriods.length + 3 : datePeriods.length + 1} className="py-0 px-0">
-                                  <div className="p-4 mb-2">
-                                    {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).length === 0 ? (
-                                      <p className="text-xs text-gray-500">No drivers applied yet. Click the + button to add a driver.</p>
-                                    ) : (
-                                      <>
-                                        <h5 className="text-xs text-gray-500 mb-2">Drivers for {glCode.name}</h5>
-                                        <div className="space-y-1.5">
-                                        {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
-                                          <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] transition-all duration-300 ${scenarioMenuOpen === scenario.id ? 'border-2 border-[#9333ea]' : 'border border-gray-200'}`}>
+                                  <div className="border-t border-gray-200 bg-gray-50/50">
+                                    <div className="p-4">
+                                      <h5 className="text-xs text-gray-500 mb-2">Drivers for {glCode.name}</h5>
+                                      <div className="space-y-1.5">
+                                      {appliedScenarios.filter(scenario => scenario.glCode === glCode.code).map(scenario => (
+                                        <div key={scenario.id} className={`p-2.5 bg-white rounded border-l-4 border-l-[#9333ea] ${scenarioMenuOpen === scenario.id ? 'border-2 border-[#9333ea]' : 'border border-gray-200'}`}>
                                             <div className="flex items-start justify-between gap-3">
                                               <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2">
@@ -2203,10 +2202,9 @@ const Forecasting: React.FC = () => {
                                               </div>
                                             )}
                                           </div>
-                                        ))}
-                                        </div>
-                                      </>
-                                    )}
+                                      ))}
+                                      </div>
+                                    </div>
                                   </div>
                                 </td>
                               </tr>
