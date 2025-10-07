@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings, ChevronDown } from 'lucide-react';
 import { useForecastingData } from '../../context/ForecastingContext';
 import { useSettings } from '../../context/SettingsContext';
+import { getViewSettings } from '../../utils/viewSettings';
 import {
   ComposedChart,
   Line,
@@ -37,6 +38,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const { getMonthlyTotals, getMonthlyExpenseTotals, forecastData } = useForecastingData();
   const { fontSize } = useSettings();
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
+  const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -122,11 +124,26 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const maxValue = Math.max(...monthlyData.map(d => Math.max(d.Budget, d.Actual, d.PY)));
   const scale = 100 / maxValue;
 
+  useEffect(() => {
+    const checkFormatChange = () => {
+      const currentFormat = getViewSettings().numberFormat;
+      if (currentFormat !== numberFormat) {
+        setNumberFormat(currentFormat);
+      }
+    };
+
+    const interval = setInterval(checkFormatChange, 500);
+    return () => clearInterval(interval);
+  }, [numberFormat]);
+
   const formatCurrency = (value: number): string => {
-    if (value >= 1000000) {
+    if (numberFormat === 'thousands') {
+      return `$${(value / 1000).toFixed(0)}K`;
+    } else if (numberFormat === 'millions') {
       return `$${(value / 1000000).toFixed(1)}M`;
+    } else {
+      return `$${value.toLocaleString()}`;
     }
-    return `$${(value / 1000).toFixed(0)}K`;
   };
 
   const totalBudget = monthlyData.reduce((sum, d) => sum + d.Budget, 0);
