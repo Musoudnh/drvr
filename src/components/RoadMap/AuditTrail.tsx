@@ -54,7 +54,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
       case 'rejected':
         return <XCircle className="w-5 h-5 text-[#F87171]" />;
       case 'submitted':
-        return <Send className="w-5 h-5 text-[#7B68EE]" />;
+        return <Send className="w-5 h-5 text-[#3AB7BF]" />;
       default:
         return <Clock className="w-5 h-5 text-gray-400" />;
     }
@@ -81,7 +81,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="inline-block w-8 h-8 border-4 border-[#7B68EE] border-t-transparent rounded-full animate-spin"></div>
+        <div className="inline-block w-8 h-8 border-4 border-[#3AB7BF] border-t-transparent rounded-full animate-spin"></div>
         <p className="text-gray-600 mt-4">Loading audit trail...</p>
       </div>
     );
@@ -99,7 +99,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'all'
-                ? 'bg-[#7B68EE] text-white'
+                ? 'bg-[#3AB7BF] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -109,7 +109,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
             onClick={() => setFilter('submitted')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'submitted'
-                ? 'bg-[#7B68EE] text-white'
+                ? 'bg-[#3AB7BF] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -119,7 +119,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
             onClick={() => setFilter('approved')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'approved'
-                ? 'bg-[#7B68EE] text-white'
+                ? 'bg-[#3AB7BF] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -129,7 +129,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
             onClick={() => setFilter('rejected')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'rejected'
-                ? 'bg-[#7B68EE] text-white'
+                ? 'bg-[#3AB7BF] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

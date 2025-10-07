@@ -133,7 +133,7 @@ export function VersionHistoryModal({
                   key={version.id}
                   className={`border rounded-lg p-5 transition-all ${
                     selectedForComparison.includes(version.id)
-                      ? 'border-[#4F46E5] bg-[#EEF2FF]/80 backdrop-blur-sm'
+                      ? 'border-[#3AB7BF] bg-[#EEF2FF]/80 backdrop-blur-sm'
                       : 'border-gray-200/50 bg-white/80 backdrop-blur-sm hover:shadow-md'
                   }`}
                 >
@@ -177,7 +177,7 @@ export function VersionHistoryModal({
                         onClick={() => toggleComparisonSelection(version.id)}
                         className={`p-2 rounded-lg transition-colors ${
                           selectedForComparison.includes(version.id)
-                            ? 'bg-[#4F46E5] text-white'
+                            ? 'bg-[#3AB7BF] text-white'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
                         title="Select for comparison"

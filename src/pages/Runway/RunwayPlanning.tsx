@@ -565,7 +565,7 @@ const RunwayPlanning: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center">
-              <Target className="w-6 h-6 text-[#4F46E5] mr-3" />
+              <Target className="w-6 h-6 text-[#3AB7BF] mr-3" />
               <h1 className="text-xl font-semibold text-gray-900">Runway Planning</h1>
             </div>
             
@@ -620,7 +620,7 @@ const RunwayPlanning: React.FC = () => {
                     type="checkbox"
                     checked={compareScenarios.includes(scenario.id)}
                     onChange={() => toggleScenarioCompare(scenario.id)}
-                    className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2"
+                    className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#4F46E5] mr-2"
                   />
                   <span className="text-xs text-gray-700">{scenario.name}</span>
                 </label>
@@ -685,7 +685,7 @@ const RunwayPlanning: React.FC = () => {
                   onDrop={(e) => handleDrop(e, driver.id)}
                   className={`flex-shrink-0 w-72 p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg ${
                     driver.enabled 
-                      ? 'border-[#4F46E5] bg-[#4F46E5]/5 shadow-md' 
+                      ? 'border-[#3AB7BF] bg-[#3AB7BF]/5 shadow-md' 
                       : 'border-gray-200 bg-gray-50'
                   }`}
                   onClick={() => {
@@ -715,7 +715,7 @@ const RunwayPlanning: React.FC = () => {
                       }}
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
                         driver.enabled 
-                          ? 'border-[#4F46E5] bg-[#4F46E5]' 
+                          ? 'border-[#3AB7BF] bg-[#3AB7BF]' 
                           : 'border-gray-300 bg-white hover:border-gray-400'
                       }`}
                     >
@@ -1025,7 +1025,7 @@ const RunwayPlanning: React.FC = () => {
                   <h3 className="font-semibold text-gray-900">Team Expansion Timeline</h3>
                   <button
                     onClick={() => setShowHiringGantt(!showHiringGantt)}
-                    className="text-xs text-[#4F46E5] hover:underline"
+                    className="text-xs text-[#3AB7BF] hover:underline"
                   >
                     {showHiringGantt ? 'Hide' : 'Show'} Gantt View
                   </button>
@@ -1199,7 +1199,7 @@ const RunwayPlanning: React.FC = () => {
                     onClick={() => setActiveTab(tab)}
                     className={`px-3 py-1 text-xs font-medium rounded ${
                       activeTab === tab
-                        ? 'bg-[#4F46E5] text-white'
+                        ? 'bg-[#3AB7BF] text-white'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -1300,7 +1300,7 @@ const RunwayPlanning: React.FC = () => {
                           type="radio"
                           checked={selectedDriver.scope === 'global'}
                           onChange={() => setSelectedDriver({...selectedDriver, scope: 'global'})}
-                          className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
+                          className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-2"
                         />
                         <span className="text-xs text-gray-700">Global</span>
                       </label>
@@ -1309,7 +1309,7 @@ const RunwayPlanning: React.FC = () => {
                           type="radio"
                           checked={selectedDriver.scope === 'scenario'}
                           onChange={() => setSelectedDriver({...selectedDriver, scope: 'scenario'})}
-                          className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
+                          className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-2"
                         />
                         <span className="text-xs text-gray-700">Scenario-specific</span>
                       </label>
@@ -1360,7 +1360,7 @@ const RunwayPlanning: React.FC = () => {
                       <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex items-center">
-                            <div className="w-6 h-6 bg-[#4F46E5] rounded-full flex items-center justify-center mr-2">
+                            <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
                               <span className="text-xs text-white font-medium">
                                 {comment.author.split(' ').map(n => n[0]).join('')}
                               </span>
@@ -1414,7 +1414,7 @@ const RunwayPlanning: React.FC = () => {
                     <div key={entry.id} className="p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center">
-                          <div className="w-6 h-6 bg-[#4F46E5] rounded-full flex items-center justify-center mr-2">
+                          <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-2">
                             <span className="text-xs text-white font-medium">
                               {entry.user.split(' ').map(n => n[0]).join('')}
                             </span>
@@ -1516,14 +1516,14 @@ const RunwayPlanning: React.FC = () => {
                 <label className="block text-xs font-medium text-gray-700 mb-2">Include Scenarios</label>
                 <div className="space-y-2">
                   <label className="flex items-center">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
                     <span className="text-xs text-gray-700">{currentScenario?.name} (Primary)</span>
                   </label>
                   {compareScenarios.map(scenarioId => {
                     const scenario = scenarios.find(s => s.id === scenarioId);
                     return (
                       <label key={scenarioId} className="flex items-center">
-                        <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
+                        <input type="checkbox" defaultChecked className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
                         <span className="text-xs text-gray-700">{scenario?.name}</span>
                       </label>
                     );
@@ -1545,7 +1545,7 @@ const RunwayPlanning: React.FC = () => {
                     'Risk Assessment'
                   ].map(section => (
                     <label key={section} className="flex items-center">
-                      <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
+                      <input type="checkbox" defaultChecked className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
                       <span className="text-xs text-gray-700">{section}</span>
                     </label>
                   ))}

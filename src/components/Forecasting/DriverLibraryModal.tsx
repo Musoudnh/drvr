@@ -256,16 +256,16 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                 setShowCreateForm(false);
                 setSelectedTemplate(null);
               }}
-              className="mb-4 text-purple-600 hover:text-purple-700 text-xs font-medium"
+              className="mb-4 text-[#3AB7BF] hover:text-[#2A9AA5] text-xs font-medium"
             >
               ← Back to Library
             </button>
 
             {selectedTemplate && (
               <div className="space-y-6">
-                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                <div className="bg-teal-50 p-4 rounded-lg border border-teal-200">
                   <div className="flex items-start gap-3">
-                    <div className="text-purple-600 mt-1">
+                    <div className="text-[#3AB7BF] mt-1">
                       {DRIVER_ICONS[selectedTemplate.type as DriverType]}
                     </div>
                     <div>
@@ -275,7 +275,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                       <p className="text-xs text-gray-600 mt-1">
                         {selectedTemplate.description}
                       </p>
-                      <div className="mt-2 p-2 bg-white rounded border border-purple-200">
+                      <div className="mt-2 p-2 bg-white rounded border border-teal-200">
                         <p className="text-xs text-gray-500 font-mono">
                           {selectedTemplate.formula}
                         </p>
@@ -292,7 +292,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                     type="text"
                     value={instanceName}
                     onChange={(e) => setInstanceName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                     placeholder="Enter a name for this driver instance"
                   />
                 </div>
@@ -306,7 +306,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                       type="date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -317,7 +317,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                     />
                   </div>
                 </div>

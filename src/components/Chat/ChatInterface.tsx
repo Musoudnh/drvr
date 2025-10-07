@@ -417,7 +417,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
               onClick={() => setActiveTab('native')}
               className={`flex items-center py-4 px-1 border-b-2 font-medium text-xs transition-colors ${
                 activeTab === 'native'
-                  ? 'border-[#4F46E5] text-[#4F46E5]'
+                  ? 'border-[#3AB7BF] text-[#3AB7BF]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -543,7 +543,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                       name="viewType"
                       value="embedded"
                       defaultChecked
-                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Embedded</p>
@@ -556,7 +556,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ isOpen, onClose }) => {
                       type="radio"
                       name="viewType"
                       value="link"
-                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Link</p>

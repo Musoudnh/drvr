@@ -30,7 +30,7 @@ const AdminLayout: React.FC = () => {
                 to={item.path}
                 className={`flex items-center py-4 px-1 border-b-2 font-medium text-xs transition-colors ${
                   isActive(item.path)
-                    ? 'border-[#4F46E5] text-[#4F46E5]'
+                    ? 'border-[#3AB7BF] text-[#3AB7BF]'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >

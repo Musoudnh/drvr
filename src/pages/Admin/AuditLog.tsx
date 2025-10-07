@@ -120,7 +120,7 @@ const AuditLog: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => setShowUserFilter(!showUserFilter)}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              className="px-2 py-1 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
@@ -168,7 +168,7 @@ const AuditLog: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => setShowDatePicker(!showDatePicker)}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              className="px-2 py-1 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
               <Calendar className="w-4 h-4 mr-2" />
               Date Range
@@ -241,7 +241,7 @@ const AuditLog: React.FC = () => {
             )}
           </div>
           
-          <button className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
+          <button className="px-2 py-1 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
             <Download className="w-4 h-4 mr-2" />
             Export
           </button>

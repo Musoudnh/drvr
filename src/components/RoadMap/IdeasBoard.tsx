@@ -102,7 +102,7 @@ const IdeasBoard: React.FC<IdeasBoardProps> = ({ ideas, onRefresh }) => {
         </div>
         <button
           onClick={() => setShowNewIdeaModal(true)}
-          className="px-4 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6B58DE] transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9AA5] transition-colors flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
           New Idea
@@ -152,7 +152,7 @@ const IdeasBoard: React.FC<IdeasBoardProps> = ({ ideas, onRefresh }) => {
                     onClick={() => handleUpvote(idea.id)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
                       hasUpvoted
-                        ? 'bg-[#7B68EE] text-white'
+                        ? 'bg-[#3AB7BF] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >

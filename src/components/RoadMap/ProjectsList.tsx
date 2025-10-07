@@ -124,7 +124,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
                         {project.status}
                       </div>
                       {project.scenario !== 'Base Case' && (
-                        <span className="text-xs font-medium text-[#7B68EE] px-2 py-1 bg-[#7B68EE]/10 rounded">{project.scenario}</span>
+                        <span className="text-xs font-medium text-[#3AB7BF] px-2 py-1 bg-[#3AB7BF]/10 rounded">{project.scenario}</span>
                       )}
                     </div>
                     <p className="text-xs text-gray-600 line-clamp-1">{project.description}</p>
