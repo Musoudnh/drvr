@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings, ChevronDown } from 'lucide-react';
 import { useForecastingData } from '../../context/ForecastingContext';
+import { useSettings } from '../../context/SettingsContext';
 import {
   ComposedChart,
   Line,
@@ -34,6 +35,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const monthDropdownRef = useRef<HTMLDivElement>(null);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const { getMonthlyTotals, forecastData } = useForecastingData();
+  const { fontSize } = useSettings();
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -259,7 +261,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-600 mb-1">Actual</div>
-                <div className="text-2xl font-bold text-gray-900">{formatCurrency(mtdMetrics.actual)}</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(mtdMetrics.actual)}</div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
@@ -327,7 +329,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-600 mb-1">Actual</div>
-                <div className="text-2xl font-bold text-gray-900">{formatCurrency(quarterlyMetrics.actual)}</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(quarterlyMetrics.actual)}</div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
@@ -362,7 +364,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-600 mb-1">Actual</div>
-                <div className="text-2xl font-bold text-gray-900">{formatCurrency(totalActual)}</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(totalActual)}</div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
