@@ -3287,21 +3287,21 @@ const Forecasting: React.FC = () => {
       {showAlertsSidebar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-[#101010]">Forecast Alerts</h3>
-                  <p className="text-sm text-gray-600 mt-1">Monitor budget variances and anomalies</p>
-                </div>
-                <button
-                  onClick={() => setShowAlertsSidebar(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+              <div>
+                <h3 className="text-lg font-semibold">Forecast Alerts</h3>
+                <p className="text-sm text-white/80">Monitor budget variances and anomalies</p>
               </div>
+              <button
+                onClick={() => setShowAlertsSidebar(false)}
+                className="p-1 hover:bg-white/20 rounded transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              {/* Alert Filter Tabs */}
+            {/* Alert Filter Tabs */}
+            <div className="p-6 border-b border-gray-200 bg-white">
               <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
                 <button
                   onClick={() => setAlertFilter('all')}
@@ -3456,21 +3456,21 @@ const Forecasting: React.FC = () => {
       {showScenarioAuditSidebar && (
         <div className="fixed inset-0 bg-black/30 z-50 flex justify-end">
           <div className="w-[500px] bg-white/95 backdrop-blur-md h-full shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-[#101010]">Applied Drivers</h3>
-                  <p className="text-sm text-gray-600 mt-1">Audit history of all scenario changes</p>
-                </div>
-                <button
-                  onClick={() => setShowScenarioAuditSidebar(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+              <div>
+                <h3 className="text-lg font-semibold">Applied Drivers</h3>
+                <p className="text-sm text-white/80">Audit history of all scenario changes</p>
               </div>
+              <button
+                onClick={() => setShowScenarioAuditSidebar(false)}
+                className="p-1 hover:bg-white/20 rounded transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-              {/* Search by P&L Account */}
+            {/* Search by P&L Account */}
+            <div className="p-6 border-b border-gray-200 bg-white">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
@@ -3671,19 +3671,17 @@ const Forecasting: React.FC = () => {
       {showVersionHistorySidebar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-[#101010]">Version History</h3>
-                  <p className="text-sm text-gray-600 mt-1">View and manage forecast versions for {selectedYear}</p>
-                </div>
-                <button
-                  onClick={() => setShowVersionHistorySidebar(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-500" />
-                </button>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+              <div>
+                <h3 className="text-lg font-semibold">Version History</h3>
+                <p className="text-sm text-white/80">View and manage forecast versions for {selectedYear}</p>
               </div>
+              <button
+                onClick={() => setShowVersionHistorySidebar(false)}
+                className="p-1 hover:bg-white/20 rounded transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-6">

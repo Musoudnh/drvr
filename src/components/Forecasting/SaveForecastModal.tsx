@@ -36,13 +36,16 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-900">Save Forecast</h2>
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white rounded-t-lg">
+          <div>
+            <h2 className="text-lg font-semibold">Save Forecast</h2>
+            <p className="text-sm text-white/80">Save current forecast version</p>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1 hover:bg-white/20 rounded transition-colors"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
