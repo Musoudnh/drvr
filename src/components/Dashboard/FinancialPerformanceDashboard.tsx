@@ -27,8 +27,58 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [barColor, setBarColor] = useState('#4ade80');
   const [budgetLineColor, setBudgetLineColor] = useState('#7B68EE');
   const [pyLineColor, setPyLineColor] = useState('#3B82F6');
+  const [selectedMonth, setSelectedMonth] = useState('Jul');
+  const [selectedQuarter, setSelectedQuarter] = useState('Q3');
   const { getMonthlyTotals, forecastData } = useForecastingData();
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
+
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+  const getQuarterMonths = (quarter: string): string[] => {
+    switch (quarter) {
+      case 'Q1': return ['Jan', 'Feb', 'Mar'];
+      case 'Q2': return ['Apr', 'May', 'Jun'];
+      case 'Q3': return ['Jul', 'Aug', 'Sep'];
+      case 'Q4': return ['Oct', 'Nov', 'Dec'];
+      default: return [];
+    }
+  };
+
+  const calculateMTDMetrics = () => {
+    const monthIndex = months.indexOf(selectedMonth);
+    if (monthIndex === -1 || monthlyData.length === 0) return { actual: 0, budget: 0, py: 0 };
+
+    const monthData = monthlyData[monthIndex];
+    return {
+      actual: monthData.Actual,
+      budget: monthData.Budget,
+      py: monthData.PY
+    };
+  };
+
+  const calculateQuarterlyMetrics = () => {
+    const quarterMonths = getQuarterMonths(selectedQuarter);
+    const quarterData = monthlyData.filter(d => quarterMonths.includes(d.month));
+
+    return {
+      actual: quarterData.reduce((sum, d) => sum + d.Actual, 0),
+      budget: quarterData.reduce((sum, d) => sum + d.Budget, 0),
+      py: quarterData.reduce((sum, d) => sum + d.PY, 0)
+    };
+  };
+
+  const mtdMetrics = calculateMTDMetrics();
+  const mtdVsBudget = mtdMetrics.actual - mtdMetrics.budget;
+  const mtdVsBudgetPct = mtdMetrics.budget > 0 ? ((mtdVsBudget / mtdMetrics.budget) * 100).toFixed(1) : '0.0';
+  const mtdVsPY = mtdMetrics.actual - mtdMetrics.py;
+  const mtdVsPYPct = mtdMetrics.py > 0 ? ((mtdVsPY / mtdMetrics.py) * 100).toFixed(1) : '0.0';
+
+  const quarterlyMetrics = calculateQuarterlyMetrics();
+  const qtrVsBudget = quarterlyMetrics.actual - quarterlyMetrics.budget;
+  const qtrVsBudgetPct = quarterlyMetrics.budget > 0 ? ((qtrVsBudget / quarterlyMetrics.budget) * 100).toFixed(1) : '0.0';
+  const qtrVsPY = quarterlyMetrics.actual - quarterlyMetrics.py;
+  const qtrVsPYPct = quarterlyMetrics.py > 0 ? ((qtrVsPY / quarterlyMetrics.py) * 100).toFixed(1) : '0.0';
 
   useEffect(() => {
     if (forecastData.length === 0) {
@@ -153,54 +203,92 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
         <div className="grid grid-cols-3 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h4 className="text-sm font-semibold text-gray-900 mb-4">Month-to-Date (MTD) Performance</h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-semibold text-gray-900">Month-to-Date (MTD) Performance</h4>
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {months.map(month => (
+                  <option key={month} value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
 
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-600 mb-1">Actual</div>
-                <div className="text-2xl font-bold text-gray-900">{formatCurrency(525000)}</div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(mtdMetrics.actual)}</div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-600 mb-1">vs Budget</div>
                 <div className="flex items-baseline gap-2">
-                  <div className="text-lg font-semibold text-green-600">{formatCurrency(15000)}</div>
-                  <div className="text-sm font-medium text-green-600">+2.9%</div>
+                  <div className={`text-lg font-semibold ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsBudget))}
+                  </div>
+                  <div className={`text-sm font-medium ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsBudget >= 0 ? '+' : ''}{mtdVsBudgetPct}%
+                  </div>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-600 mb-1">vs Prior Year</div>
                 <div className="flex items-baseline gap-2">
-                  <div className="text-lg font-semibold text-green-600">{formatCurrency(35000)}</div>
-                  <div className="text-sm font-medium text-green-600">+7.1%</div>
+                  <div className={`text-lg font-semibold ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsPY))}
+                  </div>
+                  <div className={`text-sm font-medium ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsPY >= 0 ? '+' : ''}{mtdVsPYPct}%
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h4 className="text-sm font-semibold text-gray-900 mb-4">Quarterly Performance</h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-semibold text-gray-900">Quarterly Performance</h4>
+              <select
+                value={selectedQuarter}
+                onChange={(e) => setSelectedQuarter(e.target.value)}
+                className="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {quarters.map(quarter => (
+                  <option key={quarter} value={quarter}>{quarter}</option>
+                ))}
+              </select>
+            </div>
 
             <div className="space-y-3">
               <div>
                 <div className="text-xs text-gray-600 mb-1">Actual</div>
-                <div className="text-2xl font-bold text-gray-900">{formatCurrency(1545000)}</div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(quarterlyMetrics.actual)}</div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-600 mb-1">vs Budget</div>
                 <div className="flex items-baseline gap-2">
-                  <div className="text-lg font-semibold text-green-600">{formatCurrency(45000)}</div>
-                  <div className="text-sm font-medium text-green-600">+3.0%</div>
+                  <div className={`text-lg font-semibold ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsBudget))}
+                  </div>
+                  <div className={`text-sm font-medium ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsBudget >= 0 ? '+' : ''}{qtrVsBudgetPct}%
+                  </div>
                 </div>
               </div>
 
               <div className="pt-3 border-t border-gray-100">
                 <div className="text-xs text-gray-600 mb-1">vs Prior Year</div>
                 <div className="flex items-baseline gap-2">
-                  <div className="text-lg font-semibold text-green-600">{formatCurrency(95000)}</div>
-                  <div className="text-sm font-medium text-green-600">+6.5%</div>
+                  <div className={`text-lg font-semibold ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsPY))}
+                  </div>
+                  <div className={`text-sm font-medium ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsPY >= 0 ? '+' : ''}{qtrVsPYPct}%
+                  </div>
                 </div>
               </div>
             </div>
