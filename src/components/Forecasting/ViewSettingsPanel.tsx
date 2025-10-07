@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Eye, EyeOff, Hash, DollarSign, Percent, Type } from 'lucide-react';
+import { useSettings } from '../../context/SettingsContext';
 
 interface ViewSettingsPanelProps {
   isOpen: boolean;
@@ -12,8 +13,6 @@ interface ViewSettingsPanelProps {
   onShowActualsAsAmountChange: (value: boolean) => void;
   numberFormat: 'actual' | 'thousands' | 'millions';
   onNumberFormatChange: (value: 'actual' | 'thousands' | 'millions') => void;
-  fontSize: 12 | 13 | 14;
-  onFontSizeChange: (value: 12 | 13 | 14) => void;
   onSave?: () => void;
 }
 
@@ -28,17 +27,15 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
   onShowActualsAsAmountChange,
   numberFormat,
   onNumberFormatChange,
-  fontSize,
-  onFontSizeChange,
   onSave,
 }) => {
+  const { fontSize, setFontSize } = useSettings();
   const [hasChanges, setHasChanges] = useState(false);
   const [initialSettings, setInitialSettings] = useState({
     hideEmptyAccounts,
     showAccountCodes,
     showActualsAsAmount,
     numberFormat,
-    fontSize,
   });
 
   useEffect(() => {
@@ -48,7 +45,6 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
         showAccountCodes,
         showActualsAsAmount,
         numberFormat,
-        fontSize,
       });
       setHasChanges(false);
     }
@@ -59,10 +55,9 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
       hideEmptyAccounts !== initialSettings.hideEmptyAccounts ||
       showAccountCodes !== initialSettings.showAccountCodes ||
       showActualsAsAmount !== initialSettings.showActualsAsAmount ||
-      numberFormat !== initialSettings.numberFormat ||
-      fontSize !== initialSettings.fontSize;
+      numberFormat !== initialSettings.numberFormat;
     setHasChanges(changed);
-  }, [hideEmptyAccounts, showAccountCodes, showActualsAsAmount, numberFormat, fontSize, initialSettings]);
+  }, [hideEmptyAccounts, showAccountCodes, showActualsAsAmount, numberFormat, initialSettings]);
 
   if (!isOpen) return null;
 
@@ -190,7 +185,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                 {[12, 13, 14].map((size) => (
                   <button
                     key={size}
-                    onClick={() => onFontSizeChange(size as 12 | 13 | 14)}
+                    onClick={() => setFontSize(size as 12 | 13 | 14)}
                     className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg transition-all ${
                       fontSize === size
                         ? 'bg-purple-50 border-2 border-[#7B68EE] text-[#7B68EE]'

@@ -3,7 +3,6 @@ export interface ViewSettings {
   showAccountCodes: boolean;
   showActualsAsAmount: boolean;
   numberFormat: 'actual' | 'thousands' | 'millions';
-  fontSize: 12 | 13 | 14;
 }
 
 const VIEW_SETTINGS_KEY = 'forecast_view_settings';
@@ -13,7 +12,6 @@ const defaultSettings: ViewSettings = {
   showAccountCodes: true,
   showActualsAsAmount: false,
   numberFormat: 'actual',
-  fontSize: 12,
 };
 
 export const getViewSettings = (): ViewSettings => {
