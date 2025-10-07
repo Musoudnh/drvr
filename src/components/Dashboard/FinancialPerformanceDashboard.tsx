@@ -32,7 +32,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [selectedQuarter, setSelectedQuarter] = useState('Q3');
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
   const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
-  const [periodView, setPeriodView] = useState<'monthly' | 'quarterly'>('monthly');
   const monthDropdownRef = useRef<HTMLDivElement>(null);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const { getMonthlyTotals, forecastData } = useForecastingData();
@@ -220,124 +219,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-
-        <div className="mb-6">
-          <div className="flex justify-end mb-4">
-            <div className="inline-flex rounded-lg border border-gray-300 p-1 bg-gray-50">
-              <button
-                onClick={() => setPeriodView('monthly')}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  periodView === 'monthly'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Month
-              </button>
-              <button
-                onClick={() => setPeriodView('quarterly')}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  periodView === 'quarterly'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                Quarter
-              </button>
-            </div>
-          </div>
-
-          {periodView === 'monthly' && (
-            <div className="grid grid-cols-6 gap-3">
-              {monthlyData.map((data) => {
-                const vsBudget = data.Actual - data.Budget;
-                const vsBudgetPct = data.Budget > 0 ? ((vsBudget / data.Budget) * 100).toFixed(1) : '0.0';
-                const vsPY = data.Actual - data.PY;
-                const vsPYPct = data.PY > 0 ? ((vsPY / data.PY) * 100).toFixed(1) : '0.0';
-
-                return (
-                  <div key={data.month} className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-                    <h5 className="text-xs font-semibold text-gray-900 mb-3">{data.month}</h5>
-                    <div className="space-y-2">
-                      <div>
-                        <div className="text-[10px] text-gray-600 mb-0.5">Budget:</div>
-                        <div className="text-sm font-medium text-gray-900">{formatCurrency(data.Budget)}</div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-gray-600 mb-0.5">Actual:</div>
-                        <div className="text-sm font-bold text-gray-900">{formatCurrency(data.Actual)}</div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-gray-600 mb-0.5">PY:</div>
-                        <div className="text-sm font-medium text-blue-600">{formatCurrency(data.PY)}</div>
-                      </div>
-                      <div className="pt-2 border-t border-gray-200">
-                        <div className="text-[10px] text-gray-600 mb-0.5">vs Budget</div>
-                        <div className={`text-xs font-semibold ${vsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {vsBudget >= 0 ? '+' : ''}{vsBudgetPct}%
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-gray-600 mb-0.5">vs PY</div>
-                        <div className={`text-xs font-semibold ${vsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {vsPY >= 0 ? '+' : ''}{vsPYPct}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {periodView === 'quarterly' && (
-            <div className="grid grid-cols-4 gap-4">
-              {quarters.map((quarter) => {
-                const quarterMonths = getQuarterMonths(quarter);
-                const quarterData = monthlyData.filter(d => quarterMonths.includes(d.month));
-                const qtrActual = quarterData.reduce((sum, d) => sum + d.Actual, 0);
-                const qtrBudget = quarterData.reduce((sum, d) => sum + d.Budget, 0);
-                const qtrPY = quarterData.reduce((sum, d) => sum + d.PY, 0);
-                const qtrVsBudget = qtrActual - qtrBudget;
-                const qtrVsBudgetPct = qtrBudget > 0 ? ((qtrVsBudget / qtrBudget) * 100).toFixed(1) : '0.0';
-                const qtrVsPY = qtrActual - qtrPY;
-                const qtrVsPYPct = qtrPY > 0 ? ((qtrVsPY / qtrPY) * 100).toFixed(1) : '0.0';
-
-                return (
-                  <div key={quarter} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <h5 className="text-sm font-semibold text-gray-900 mb-4">{quarter}</h5>
-                    <div className="space-y-3">
-                      <div>
-                        <div className="text-xs text-gray-600 mb-1">Budget:</div>
-                        <div className="text-base font-medium text-gray-900">{formatCurrency(qtrBudget)}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-600 mb-1">Actual:</div>
-                        <div className="text-base font-bold text-gray-900">{formatCurrency(qtrActual)}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-600 mb-1">PY:</div>
-                        <div className="text-base font-medium text-blue-600">{formatCurrency(qtrPY)}</div>
-                      </div>
-                      <div className="pt-3 border-t border-gray-200">
-                        <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                        <div className={`text-sm font-semibold ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {qtrVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsBudget))} ({qtrVsBudget >= 0 ? '+' : ''}{qtrVsBudgetPct}%)
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-600 mb-1">vs PY</div>
-                        <div className={`text-sm font-semibold ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {qtrVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsPY))} ({qtrVsPY >= 0 ? '+' : ''}{qtrVsPYPct}%)
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
 
         <div className="grid grid-cols-3 gap-6 mb-6">
