@@ -1818,20 +1818,6 @@ const Forecasting: React.FC = () => {
             <div className="h-8 w-px bg-gray-400"></div>
           )}
 
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-medium text-gray-700">Search GL:</label>
-            <div className="relative w-[200px]">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search codes..."
-                className="w-full pl-10 pr-4 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 placeholder:text-gray-400 placeholder:font-normal"
-              />
-            </div>
-          </div>
-
           <div className="ml-auto flex items-center gap-2">
             {dateViewMode === 'months' && (
               <button
