@@ -917,7 +917,7 @@ const TasksProjects: React.FC = () => {
                               }}
                               className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left capitalize ${
                                 newTask.priority === priority
-                                  ? 'bg-[#3AB7BF] text-white'
+                                  ? 'bg-gray-100 text-gray-900'
                                   : 'text-gray-600 hover:bg-gray-100'
                               }`}
                             >
@@ -943,17 +943,33 @@ const TasksProjects: React.FC = () => {
                     <ChevronDown className="w-4 h-4 ml-1" />
                   </button>
                   {dueDateDropdownOpen && (
-                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
-                      <input
-                        type="date"
-                        value={newTask.dueDate}
-                        onChange={(e) => {
-                          setNewTask({...newTask, dueDate: e.target.value});
-                          setDueDateDropdownOpen(false);
-                        }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
-                        min={new Date().toISOString().split('T')[0]}
-                      />
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                      <div className="flex flex-col gap-1">
+                        {[
+                          { label: 'Today', value: new Date().toISOString().split('T')[0] },
+                          { label: 'Tomorrow', value: new Date(Date.now() + 86400000).toISOString().split('T')[0] },
+                          { label: 'In 3 days', value: new Date(Date.now() + 259200000).toISOString().split('T')[0] },
+                          { label: 'In 1 week', value: new Date(Date.now() + 604800000).toISOString().split('T')[0] },
+                          { label: 'In 2 weeks', value: new Date(Date.now() + 1209600000).toISOString().split('T')[0] },
+                          { label: 'In 1 month', value: new Date(Date.now() + 2592000000).toISOString().split('T')[0] }
+                        ].map((option) => (
+                          <button
+                            key={option.label}
+                            type="button"
+                            onClick={() => {
+                              setNewTask({...newTask, dueDate: option.value});
+                              setDueDateDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                              newTask.dueDate === option.value
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1087,16 +1103,33 @@ const TasksProjects: React.FC = () => {
                         <ChevronDown className="w-4 h-4 ml-1" />
                       </button>
                       {editDueDateDropdownOpen && (
-                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
-                          <input
-                            type="date"
-                            value={editTaskForm.dueDate.toISOString().split('T')[0]}
-                            onChange={(e) => {
-                              setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)});
-                              setEditDueDateDropdownOpen(false);
-                            }}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
-                          />
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                          <div className="flex flex-col gap-1">
+                            {[
+                              { label: 'Today', value: new Date() },
+                              { label: 'Tomorrow', value: new Date(Date.now() + 86400000) },
+                              { label: 'In 3 days', value: new Date(Date.now() + 259200000) },
+                              { label: 'In 1 week', value: new Date(Date.now() + 604800000) },
+                              { label: 'In 2 weeks', value: new Date(Date.now() + 1209600000) },
+                              { label: 'In 1 month', value: new Date(Date.now() + 2592000000) }
+                            ].map((option) => (
+                              <button
+                                key={option.label}
+                                type="button"
+                                onClick={() => {
+                                  setEditTaskForm({...editTaskForm, dueDate: option.value});
+                                  setEditDueDateDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                  editTaskForm.dueDate.toISOString().split('T')[0] === option.value.toISOString().split('T')[0]
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {option.label}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1128,7 +1161,7 @@ const TasksProjects: React.FC = () => {
                                 }}
                                 className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left capitalize ${
                                   editTaskForm.priority === priority
-                                    ? 'bg-[#3AB7BF] text-white'
+                                    ? 'bg-gray-100 text-gray-900'
                                     : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                               >
