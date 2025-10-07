@@ -990,6 +990,80 @@ const FinancialPerformanceDashboard: React.FC = () => {
             })}
           </div>
         </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">Top 3 Overages</h4>
+              <div className="space-y-2">
+                {expenseMonthlyData
+                  .map((data, index) => ({
+                    ...data,
+                    variance: data.Actual - data.Budget,
+                    variancePercent: ((data.Actual - data.Budget) / data.Budget * 100).toFixed(1)
+                  }))
+                  .filter(d => d.variance > 0)
+                  .sort((a, b) => b.variance - a.variance)
+                  .slice(0, 3)
+                  .map((data, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-bold text-red-600">{index + 1}</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">{data.month}</div>
+                          <div className="text-xs text-gray-500">Actual: {formatCurrency(data.Actual)}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-red-600">+{formatCurrency(data.variance)}</div>
+                        <div className="text-xs text-red-600">+{data.variancePercent}%</div>
+                      </div>
+                    </div>
+                  ))}
+                {expenseMonthlyData.filter(d => (d.Actual - d.Budget) > 0).length === 0 && (
+                  <div className="text-center py-4 text-gray-500 text-sm">No overages found</div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">Top 3 Favorable Variances</h4>
+              <div className="space-y-2">
+                {expenseMonthlyData
+                  .map((data, index) => ({
+                    ...data,
+                    variance: data.Actual - data.Budget,
+                    variancePercent: ((data.Actual - data.Budget) / data.Budget * 100).toFixed(1)
+                  }))
+                  .filter(d => d.variance < 0)
+                  .sort((a, b) => a.variance - b.variance)
+                  .slice(0, 3)
+                  .map((data, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-bold text-green-600">{index + 1}</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">{data.month}</div>
+                          <div className="text-xs text-gray-500">Actual: {formatCurrency(data.Actual)}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-green-600">{formatCurrency(data.variance)}</div>
+                        <div className="text-xs text-green-600">{data.variancePercent}%</div>
+                      </div>
+                    </div>
+                  ))}
+                {expenseMonthlyData.filter(d => (d.Actual - d.Budget) < 0).length === 0 && (
+                  <div className="text-center py-4 text-gray-500 text-sm">No favorable variances found</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
