@@ -387,30 +387,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 contentStyle={{ borderRadius: '10px' }}
               />
 
-              <defs>
-                <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.05} />
-                </linearGradient>
-              </defs>
-
-              <Area
-                type="monotone"
-                dataKey="upper"
-                stroke="none"
-                fill="url(#confidenceBand)"
-                fillOpacity={1}
-                isAnimationActive={true}
-              />
-
-              <Area
-                type="monotone"
-                dataKey="lower"
-                stroke="none"
-                fill="#ffffff"
-                fillOpacity={1}
-                isAnimationActive={true}
-              />
 
               <Line
                 type="monotone"
@@ -426,8 +402,20 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
               <Line
                 type="monotone"
+                dataKey="upper"
+                name="High Confidence"
+                stroke="#10B981"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                dot={{ r: 4, fill: '#10B981', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6 }}
+                isAnimationActive={true}
+              />
+
+              <Line
+                type="monotone"
                 dataKey="prediction"
-                name="AI Prediction"
+                name="Base Prediction"
                 stroke="#8B5CF6"
                 strokeWidth={3}
                 strokeDasharray="5 5"
@@ -435,11 +423,23 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 activeDot={{ r: 7 }}
                 isAnimationActive={true}
               />
+
+              <Line
+                type="monotone"
+                dataKey="lower"
+                name="Low Confidence"
+                stroke="#F59E0B"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                dot={{ r: 4, fill: '#F59E0B', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 6 }}
+                isAnimationActive={true}
+              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-3 h-3 rounded-full bg-blue-500"></div>
@@ -449,22 +449,31 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <div className="text-xs text-gray-600 mt-1">Last Recorded Month</div>
           </div>
 
+          <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span className="text-xs text-gray-700 font-medium">High Confidence</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(638000)}</div>
+            <div className="text-xs text-gray-600 mt-1">Best Case by Dec</div>
+          </div>
+
           <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-              <span className="text-xs text-gray-700 font-medium">AI Prediction (Next 6M)</span>
+              <span className="text-xs text-gray-700 font-medium">Base Prediction</span>
             </div>
             <div className="text-2xl font-bold text-gray-900">{formatCurrency(593000)}</div>
-            <div className="text-xs text-gray-600 mt-1">Predicted by Dec</div>
+            <div className="text-xs text-gray-600 mt-1">Expected by Dec</div>
           </div>
 
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-gray-400"></div>
-              <span className="text-xs text-gray-700 font-medium">Confidence Band</span>
+              <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+              <span className="text-xs text-gray-700 font-medium">Low Confidence</span>
             </div>
-            <div className="text-2xl font-bold text-gray-900">±{variancePercent}%</div>
-            <div className="text-xs text-gray-600 mt-1">Prediction accuracy</div>
+            <div className="text-2xl font-bold text-gray-900">{formatCurrency(548000)}</div>
+            <div className="text-xs text-gray-600 mt-1">Worst Case by Dec</div>
           </div>
         </div>
       </div>
