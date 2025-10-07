@@ -9,9 +9,10 @@ import AIChat from '../AI/AIChat';
 interface LayoutProps {
   title: string;
   children: React.ReactNode;
+  onOpenViewSettings?: () => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ title, children }) => {
+const Layout: React.FC<LayoutProps> = ({ title, children, onOpenViewSettings }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
 
@@ -21,7 +22,11 @@ const Layout: React.FC<LayoutProps> = ({ title, children }) => {
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopNav title={title} onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
+        <TopNav
+          title={title}
+          onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+          onOpenViewSettings={onOpenViewSettings}
+        />
         
         <main id="main-content" className="flex-1 overflow-auto px-6 py-6">
           {children}

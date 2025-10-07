@@ -61,7 +61,15 @@ interface AppliedScenario {
   isActive: boolean;
 }
 
-const Forecasting: React.FC = () => {
+interface ForecastingProps {
+  showViewSettingsPanel?: boolean;
+  setShowViewSettingsPanel?: (show: boolean) => void;
+}
+
+const Forecasting: React.FC<ForecastingProps> = ({
+  showViewSettingsPanel: externalShowViewSettingsPanel,
+  setShowViewSettingsPanel: externalSetShowViewSettingsPanel
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setForecastData: setContextForecastData } = useForecastingData();
@@ -123,7 +131,10 @@ const Forecasting: React.FC = () => {
   const [showActualsAsAmount, setShowActualsAsAmount] = useState(() => getViewSettings().showActualsAsAmount);
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
-  const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
+
+  const [internalShowViewSettingsPanel, setInternalShowViewSettingsPanel] = useState(false);
+  const showViewSettingsPanel = externalShowViewSettingsPanel ?? internalShowViewSettingsPanel;
+  const setShowViewSettingsPanel = externalSetShowViewSettingsPanel ?? setInternalShowViewSettingsPanel;
   const [contextMenu, setContextMenu] = useState<{x: number, y: number, rowData: any} | null>(null);
   const contextMenuRef = useRef<HTMLDivElement>(null);
   const [driverDropdownOpen, setDriverDropdownOpen] = useState<string | null>(null);

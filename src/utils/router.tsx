@@ -19,7 +19,7 @@ import Integrations from '../pages/Integrations/Integrations';
 import Security from '../pages/Admin/Security';
 import AuditLog from '../pages/Admin/AuditLog';
 import AdminSettings from '../pages/Admin/AdminSettings';
-import Forecasting from '../pages/Forecasting/Forecasting';
+import ForecastingPage from '../pages/Forecasting/Forecasting';
 import MonthsViewDemo from '../pages/Forecasting/MonthsViewDemo';
 import Benchmarks from '../pages/Benchmarks/Benchmarks';
 import TaxDocuments from '../pages/Tax/TaxDocuments';
@@ -47,16 +47,37 @@ import Approvals from '../pages/RoadMap/Approvals';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
+// Forecasting Wrapper Component
+const ForecastingWrapper: React.FC = () => {
+  const [showViewSettingsPanel, setShowViewSettingsPanel] = React.useState(false);
+
+  return (
+    <ProtectedRoute
+      title="Forecasting"
+      onOpenViewSettings={() => setShowViewSettingsPanel(true)}
+    >
+      <ForecastingPage
+        showViewSettingsPanel={showViewSettingsPanel}
+        setShowViewSettingsPanel={setShowViewSettingsPanel}
+      />
+    </ProtectedRoute>
+  );
+};
+
 // Protected Route Component
-const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
+const ProtectedRoute: React.FC<{
+  children: React.ReactNode;
+  title: string;
+  onOpenViewSettings?: () => void;
+}> = ({ children, title, onOpenViewSettings }) => {
   const { user } = useAuth();
-  
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
   return (
-    <Layout title={title}>
+    <Layout title={title} onOpenViewSettings={onOpenViewSettings}>
       {children}
     </Layout>
   );
@@ -212,11 +233,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/forecasting",
-    element: (
-      <ProtectedRoute title="Forecasting">
-        <Forecasting />
-      </ProtectedRoute>
-    )
+    element: <ForecastingWrapper />
   },
   {
     path: "/forecasting/months-view",
