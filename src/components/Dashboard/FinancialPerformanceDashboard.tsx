@@ -29,6 +29,16 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [barColor, setBarColor] = useState('#4ade80');
   const [budgetLineColor, setBudgetLineColor] = useState('#7B68EE');
   const [pyLineColor, setPyLineColor] = useState('#3B82F6');
+
+  const colorOptions = [
+    { name: 'Green', value: '#4ade80' },
+    { name: 'Purple', value: '#7B68EE' },
+    { name: 'Red', value: '#F87171' },
+    { name: 'Blue', value: '#3B82F6' },
+    { name: 'Orange', value: '#FB923C' },
+    { name: 'Grey', value: '#9CA3AF' },
+    { name: 'Black', value: '#1F2937' }
+  ];
   const [selectedMonth, setSelectedMonth] = useState('Jul');
   const [selectedQuarter, setSelectedQuarter] = useState('Q3');
   const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
@@ -290,38 +300,62 @@ const FinancialPerformanceDashboard: React.FC = () => {
               </button>
 
               {showColorSettings && (
-                <div className="absolute right-0 top-full mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
-                  <h4 className="text-xs font-semibold text-gray-900 mb-2">Colors</h4>
-                  <div className="space-y-2">
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
+                  <h4 className="text-xs font-semibold text-gray-900 mb-3">Chart Colors</h4>
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Actual Bar</label>
-                      <input
-                        type="color"
-                        value={barColor}
-                        onChange={(e) => setBarColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Actual Bar</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`bar-${color.value}`}
+                            onClick={() => setBarColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              barColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Budget Line</label>
-                      <input
-                        type="color"
-                        value={budgetLineColor}
-                        onChange={(e) => setBudgetLineColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Budget Line</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`budget-${color.value}`}
+                            onClick={() => setBudgetLineColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              budgetLineColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Prior Year</label>
-                      <input
-                        type="color"
-                        value={pyLineColor}
-                        onChange={(e) => setPyLineColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Prior Year</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`py-${color.value}`}
+                            onClick={() => setPyLineColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              pyLineColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -664,38 +698,62 @@ const FinancialPerformanceDashboard: React.FC = () => {
               </button>
 
               {showExpenseColorSettings && (
-                <div className="absolute right-0 top-full mt-2 w-40 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
-                  <h4 className="text-xs font-semibold text-gray-900 mb-2">Colors</h4>
-                  <div className="space-y-2">
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
+                  <h4 className="text-xs font-semibold text-gray-900 mb-3">Chart Colors</h4>
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Actual Bar</label>
-                      <input
-                        type="color"
-                        value={expenseBarColor}
-                        onChange={(e) => setExpenseBarColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Actual Bar</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`expense-bar-${color.value}`}
+                            onClick={() => setExpenseBarColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              expenseBarColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Budget Line</label>
-                      <input
-                        type="color"
-                        value={expenseBudgetLineColor}
-                        onChange={(e) => setExpenseBudgetLineColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Budget Line</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`expense-budget-${color.value}`}
+                            onClick={() => setExpenseBudgetLineColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              expenseBudgetLineColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-600 mb-1">Prior Year</label>
-                      <input
-                        type="color"
-                        value={expensePyLineColor}
-                        onChange={(e) => setExpensePyLineColor(e.target.value)}
-                        className="w-full h-8 rounded-xl cursor-pointer border-0"
-                        style={{ background: 'none' }}
-                      />
+                      <label className="block text-xs text-gray-600 mb-2">Prior Year</label>
+                      <div className="flex gap-2">
+                        {colorOptions.map((color) => (
+                          <button
+                            key={`expense-py-${color.value}`}
+                            onClick={() => setExpensePyLineColor(color.value)}
+                            className={`w-6 h-6 rounded-full transition-all ${
+                              expensePyLineColor === color.value
+                                ? 'ring-2 ring-offset-2 ring-gray-900'
+                                : 'hover:scale-110'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
