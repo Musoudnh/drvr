@@ -3,7 +3,6 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send, ChevronDown, Check } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
-import GanttView from '../../components/Tasks/GanttView';
 import ListView from '../../components/Tasks/ListView';
 
 interface Task {
@@ -728,17 +727,6 @@ const TasksProjects: React.FC = () => {
                       <List className="w-4 h-4 mr-1 inline" />
                       List
                     </button>
-                    <button
-                      onClick={() => setViewMode('gantt')}
-                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                        viewMode === 'gantt'
-                          ? 'bg-white text-[#4F46E5] shadow-sm'
-                          : 'text-gray-600 hover:text-gray-800'
-                      }`}
-                    >
-                      <Calendar className="w-4 h-4 mr-1 inline" />
-                      Gantt
-                    </button>
                   </div>
 
                   <button
@@ -762,16 +750,6 @@ const TasksProjects: React.FC = () => {
                   }}
                   onTaskUpdate={handleTaskUpdateWrapper}
                   onTaskDelete={handleTaskDeleteWrapper}
-                />
-              )}
-              {viewMode === 'gantt' && (
-                <GanttView
-                  tasks={filteredTasks}
-                  onTaskClick={(task) => {
-                    setSelectedTask(task);
-                    setShowTaskDetail(true);
-                  }}
-                  onTaskUpdate={handleTaskUpdate}
                 />
               )}
             </div>
