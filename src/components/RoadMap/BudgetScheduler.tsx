@@ -125,7 +125,7 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                           type="number"
                           value={alloc.budget}
                           onChange={(e) => handleBudgetChange(index, parseFloat(e.target.value) || 0)}
-                          className="w-full h-full text-center text-xs border border-gray-200 rounded focus:ring-2 focus:ring-[#7B68EE] focus:outline-none"
+                          className="w-full h-full text-center text-xs border border-gray-200 rounded focus:ring-2 focus:ring-[#7B68EE] focus:border-[#7B68EE] focus:outline-none"
                         />
                       </div>
                     ))}
