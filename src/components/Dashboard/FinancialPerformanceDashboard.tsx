@@ -275,14 +275,17 @@ const FinancialPerformanceDashboard: React.FC = () => {
                   const { x, y, width, height, payload } = props;
                   const fillColor = payload.hasActual ? barColor : '#9ca3af';
                   return (
-                    <rect
-                      x={x}
-                      y={y}
-                      width={width}
-                      height={height}
+                    <path
+                      d={`
+                        M ${x} ${y + height}
+                        L ${x} ${y + 6}
+                        Q ${x} ${y}, ${x + 6} ${y}
+                        L ${x + width - 6} ${y}
+                        Q ${x + width} ${y}, ${x + width} ${y + 6}
+                        L ${x + width} ${y + height}
+                        Z
+                      `}
                       fill={fillColor}
-                      rx={6}
-                      ry={6}
                     />
                   );
                 }}
