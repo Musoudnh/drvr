@@ -258,41 +258,36 @@ const FinancialPerformanceDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Actual</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(mtdMetrics.actual)}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {mtdVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsBudget))}
-                    </div>
-                    <div className={`text-sm font-medium ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {mtdVsBudget >= 0 ? '+' : ''}{mtdVsBudgetPct}%
-                    </div>
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(mtdMetrics.actual)}</div>
+              </div>
+
+              <div className="h-12 border-l border-gray-300"></div>
+
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsBudget))}
+                  </div>
+                  <div className={`text-sm font-medium ${mtdVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsBudget >= 0 ? '+' : ''}{mtdVsBudgetPct}%
                   </div>
                 </div>
               </div>
 
-              <div className="border-t border-gray-300"></div>
+              <div className="h-12 border-l border-gray-300"></div>
 
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Prior Year</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(mtdMetrics.py)}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {mtdVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsPY))}
-                    </div>
-                    <div className={`text-sm font-medium ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {mtdVsPY >= 0 ? '+' : ''}{mtdVsPYPct}%
-                    </div>
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs PY</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(mtdVsPY))}
+                  </div>
+                  <div className={`text-sm font-medium ${mtdVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {mtdVsPY >= 0 ? '+' : ''}{mtdVsPYPct}%
                   </div>
                 </div>
               </div>
@@ -335,41 +330,36 @@ const FinancialPerformanceDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Actual</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(quarterlyMetrics.actual)}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {qtrVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsBudget))}
-                    </div>
-                    <div className={`text-sm font-medium ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {qtrVsBudget >= 0 ? '+' : ''}{qtrVsBudgetPct}%
-                    </div>
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(quarterlyMetrics.actual)}</div>
+              </div>
+
+              <div className="h-12 border-l border-gray-300"></div>
+
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsBudget >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsBudget))}
+                  </div>
+                  <div className={`text-sm font-medium ${qtrVsBudget >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsBudget >= 0 ? '+' : ''}{qtrVsBudgetPct}%
                   </div>
                 </div>
               </div>
 
-              <div className="border-t border-gray-300"></div>
+              <div className="h-12 border-l border-gray-300"></div>
 
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Prior Year</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(quarterlyMetrics.py)}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {qtrVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsPY))}
-                    </div>
-                    <div className={`text-sm font-medium ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {qtrVsPY >= 0 ? '+' : ''}{qtrVsPYPct}%
-                    </div>
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs PY</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsPY >= 0 ? '+' : ''}{formatCurrency(Math.abs(qtrVsPY))}
+                  </div>
+                  <div className={`text-sm font-medium ${qtrVsPY >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {qtrVsPY >= 0 ? '+' : ''}{qtrVsPYPct}%
                   </div>
                 </div>
               </div>
@@ -379,41 +369,36 @@ const FinancialPerformanceDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h4 className="text-sm font-semibold text-gray-900 mb-4">Full Year</h4>
 
-            <div className="space-y-4">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Actual</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(totalActual)}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {variance >= 0 ? '+' : ''}{formatCurrency(variance)}
-                    </div>
-                    <div className={`text-sm font-medium ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {variance >= 0 ? '+' : ''}{variancePercent}%
-                    </div>
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(totalActual)}</div>
+              </div>
+
+              <div className="h-12 border-l border-gray-300"></div>
+
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {variance >= 0 ? '+' : ''}{formatCurrency(variance)}
+                  </div>
+                  <div className={`text-sm font-medium ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {variance >= 0 ? '+' : ''}{variancePercent}%
                   </div>
                 </div>
               </div>
 
-              <div className="border-t border-gray-300"></div>
+              <div className="h-12 border-l border-gray-300"></div>
 
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">Prior Year</div>
-                  <div className="font-bold text-gray-900" style={{ fontSize: `${fontSize}px` }}>{formatCurrency(monthlyData.reduce((sum, d) => sum + d.PY, 0))}</div>
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs text-gray-600 mb-1">vs Budget</div>
-                  <div className="flex items-baseline gap-2">
-                    <div className={`text-lg font-semibold ${(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? '+' : ''}{formatCurrency(Math.abs(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)))}
-                    </div>
-                    <div className={`text-sm font-medium ${(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? '+' : ''}{yoyGrowth}%
-                    </div>
+              <div className="flex-1">
+                <div className="text-xs text-gray-600 mb-1">vs PY</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? '+' : ''}{formatCurrency(Math.abs(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)))}
+                  </div>
+                  <div className={`text-sm font-medium ${(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) >= 0 ? '+' : ''}{yoyGrowth}%
                   </div>
                 </div>
               </div>
