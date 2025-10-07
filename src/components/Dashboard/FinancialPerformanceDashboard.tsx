@@ -222,7 +222,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
         <div className="grid grid-cols-3 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-sm font-semibold text-gray-900">Month-to-Date (MTD) Performance</h4>
+              <h4 className="text-sm font-semibold text-gray-900">Month-to-Date</h4>
               <div className="relative" ref={monthDropdownRef}>
                 <button
                   onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
@@ -290,7 +290,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-sm font-semibold text-gray-900">Quarterly Performance</h4>
+              <h4 className="text-sm font-semibold text-gray-900">Quarterly</h4>
               <div className="relative" ref={quarterDropdownRef}>
                 <button
                   onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
@@ -357,7 +357,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h4 className="text-sm font-semibold text-gray-900 mb-4">Fiscal Year (FY) Performance</h4>
+            <h4 className="text-sm font-semibold text-gray-900 mb-4">Full Year</h4>
 
             <div className="space-y-3">
               <div>
