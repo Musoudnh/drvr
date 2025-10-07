@@ -38,8 +38,6 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
     }))
   );
 
-  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; monthIndex: number } | null>(null);
-
 
   const handleBudgetChange = (monthIndex: number, value: number) => {
     setAllocations(prev => prev.map((alloc, idx) =>
@@ -55,28 +53,6 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
 
   const totalAllocatedBudget = allocations.reduce((sum, a) => sum + a.budget, 0);
   const totalActual = allocations.reduce((sum, a) => sum + a.actual, 0);
-
-  const handleContextMenu = (e: React.MouseEvent, monthIndex: number) => {
-    e.preventDefault();
-    setContextMenu({ x: e.clientX, y: e.clientY, monthIndex });
-  };
-
-  const handleEditFromContextMenu = () => {
-    if (contextMenu) {
-      const inputElement = document.getElementById(`budget-input-${contextMenu.monthIndex}`) as HTMLInputElement;
-      if (inputElement) {
-        inputElement.focus();
-        inputElement.select();
-      }
-      setContextMenu(null);
-    }
-  };
-
-  React.useEffect(() => {
-    const handleClickOutside = () => setContextMenu(null);
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -109,19 +85,15 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
                   </div>
                 </div>
 
+                {/* Budget Row - EXACTLY like HiringRunway */}
                 <div className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm">
                   <div className="w-48 text-sm font-medium text-[#101010] p-2">
                     Budget
                   </div>
                   <div className="flex-1 gap-1" style={{ display: 'grid', gridTemplateColumns: `repeat(${months.length}, minmax(0, 1fr))` }}>
                     {allocations.map((alloc, index) => (
-                      <div
-                        key={`budget-${index}`}
-                        className="h-8 flex items-center justify-center"
-                        onContextMenu={(e) => handleContextMenu(e, index)}
-                      >
+                      <div key={`budget-${index}`} className="h-8 flex items-center justify-center">
                         <input
-                          id={`budget-input-${index}`}
                           type="number"
                           value={alloc.budget}
                           onChange={(e) => handleBudgetChange(index, parseFloat(e.target.value) || 0)}
@@ -173,20 +145,6 @@ const BudgetScheduler: React.FC<BudgetSchedulerProps> = ({
           </div>
         </div>
       </div>
-
-      {contextMenu && (
-        <div
-          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50"
-          style={{ top: contextMenu.y, left: contextMenu.x }}
-        >
-          <button
-            onClick={handleEditFromContextMenu}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            Edit Budget
-          </button>
-        </div>
-      )}
     </div>
   );
 };
