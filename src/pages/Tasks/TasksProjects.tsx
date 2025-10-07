@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { Plus, Search, Filter, Grid3x3 as Grid3X3, List, Maximize2, Calendar, User, MessageSquare, X, ChevronRight, Clock, AlertTriangle, CheckCircle, MoreHorizontal, CreditCard as Edit3, Trash2, Eye, Link as LinkIcon, Settings, Zap, GripVertical, MoreVertical, Activity, Send, ChevronDown, Check } from 'lucide-react';
 import Card from '../../components/UI/Card';
