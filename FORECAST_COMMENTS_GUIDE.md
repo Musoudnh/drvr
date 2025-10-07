@@ -8,7 +8,7 @@ A comprehensive commenting and change management system has been added to the Fo
 
 ### 1. Inline Cell Comments
 
-Click on any forecast cell to add comments directly to specific values.
+Click on any forecast cell to add comments directly to specific values. This works on both forecast values AND actual values.
 
 **Features:**
 - Threaded discussions with replies
@@ -16,16 +16,32 @@ Click on any forecast cell to add comments directly to specific values.
 - Mark discussions as resolved
 - Delete your own comments
 - Real-time updates
+- Separate comment threads for actuals vs forecasts
 
 **How to Use:**
-1. Right-click on any forecast cell
+
+**For Forecast Values:**
+1. Right-click on any forecast cell (the main forecasted amount)
 2. Select "Add Comment" from the context menu
 3. Type your comment (use @username to mention others)
 4. Click "Comment" to post
 
+**For Actual Values:**
+1. Right-click on any actual value (shown in gray boxes above forecast values)
+2. Select "Comment on Actual" from the context menu
+3. Add your commentary on the actual performance
+4. Click "Comment" to post
+
+**Visual Indicators:**
+- Actual values show with a **gray background** and are labeled with "Act:" in the row header
+- Hover over actual values to see the tooltip "Right-click to comment on actual"
+- Actual values have a blue highlight on hover to indicate they're interactive
+
 ### 2. Change Requests
 
 Propose changes to forecast values that require approval from designated approvers.
+
+**Note:** Change requests are only available for **forecast values**, not actuals. Actuals are historical data and cannot be changed through the forecast system.
 
 **Features:**
 - Submit value change proposals with justification
@@ -34,7 +50,7 @@ Propose changes to forecast values that require approval from designated approve
 - Automatic notifications to approvers
 
 **How to Use:**
-1. Right-click on the cell you want to change
+1. Right-click on a forecast cell (not an actual value)
 2. Select "Request Change"
 3. Enter proposed value and justification
 4. Submit for approval

@@ -1983,7 +1983,24 @@ const Forecasting: React.FC = () => {
                                               const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                               if (monthData?.actualAmount !== undefined) {
                                                 return (
-                                                  <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  <div
+                                                    className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5 cursor-pointer hover:bg-blue-50 hover:ring-2 hover:ring-blue-300"
+                                                    onContextMenu={(e) => {
+                                                      e.preventDefault();
+                                                      setContextMenu({
+                                                        x: e.clientX,
+                                                        y: e.clientY,
+                                                        rowData: {
+                                                          glCode: glCode.code,
+                                                          month: periodKey,
+                                                          forecastedAmount: aggregatedAmount,
+                                                          actualAmount: monthData.actualAmount,
+                                                          isActual: true
+                                                        }
+                                                      });
+                                                    }}
+                                                    title="Right-click to comment on actual"
+                                                  >
                                                     ${formatNumber(monthData.actualAmount)}
                                                   </div>
                                                 );
@@ -3808,26 +3825,31 @@ const Forecasting: React.FC = () => {
         >
           <button
             onClick={() => {
-              const cellRef = `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
+              const isActual = contextMenu.rowData.isActual;
+              const cellRef = isActual
+                ? `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}-actual`
+                : `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
               openComments(cellRef);
               setContextMenu(null);
             }}
             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
           >
             <MessageSquare className="w-4 h-4 text-blue-600" />
-            Add Comment
+            {contextMenu.rowData.isActual ? 'Comment on Actual' : 'Add Comment'}
           </button>
-          <button
-            onClick={() => {
-              const cellRef = `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
-              openChangeRequest(cellRef, contextMenu.rowData.forecastedAmount);
-              setContextMenu(null);
-            }}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
-          >
-            <AlertCircle className="w-4 h-4 text-orange-600" />
-            Request Change
-          </button>
+          {!contextMenu.rowData.isActual && (
+            <button
+              onClick={() => {
+                const cellRef = `${contextMenu.rowData.glCode}-${contextMenu.rowData.month}`;
+                openChangeRequest(cellRef, contextMenu.rowData.forecastedAmount);
+                setContextMenu(null);
+              }}
+              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+            >
+              <AlertCircle className="w-4 h-4 text-orange-600" />
+              Request Change
+            </button>
+          )}
           <div className="border-t border-gray-200 my-2"></div>
           <button
             onClick={() => handleDrillDown(contextMenu.rowData)}
