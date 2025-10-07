@@ -1975,7 +1975,7 @@ const Forecasting: React.FC = () => {
                                               isOuterYear ? 'font-normal text-gray-500' : 'font-semibold'
                                             } ${
                                               isSelected
-                                                ? 'bg-[#3AB7BF]/20 border-2 border-[#3AB7BF]'
+                                                ? 'bg-[#7B68EE]/20 border-2 border-[#7B68EE]'
                                                 : !isActualized
                                                   ? 'cursor-pointer hover:bg-[#EEF2FF]'
                                                   : ''
