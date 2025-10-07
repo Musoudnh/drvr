@@ -4191,46 +4191,34 @@ const Forecasting: React.FC = () => {
                         <span>•</span>
                         <span>{comment.timestamp.toLocaleDateString()}</span>
                       </div>
-                      <button
-                        onClick={() => {
-                          if (confirm('Are you sure you want to delete this comment?')) {
-                            console.log('Delete comment:', comment.id);
-                          }
-                        }}
-                        className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors group"
-                        title="Delete comment"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                        <span className="group-hover:text-red-600">Delete</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            console.log('Edit comment:', comment.id);
+                          }}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-[#7B68EE] hover:bg-purple-50 rounded transition-colors group"
+                          title="Edit comment"
+                        >
+                          <MessageSquare className="w-3 h-3" />
+                          <span className="group-hover:text-[#7B68EE]">Edit</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm('Are you sure you want to delete this comment?')) {
+                              console.log('Delete comment:', comment.id);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors group"
+                          title="Delete comment"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                          <span className="group-hover:text-red-600">Delete</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
               )}
-            </div>
-
-            {/* Footer with Edit/Delete Buttons */}
-            <div className="border-t border-gray-200 p-4 bg-gray-50 flex gap-3">
-              <button
-                onClick={() => {
-                  console.log('Edit comment');
-                }}
-                className="flex-1 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center gap-2"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Edit
-              </button>
-              <button
-                onClick={() => {
-                  if (confirm('Are you sure you want to delete all selected comments?')) {
-                    console.log('Delete comments');
-                  }
-                }}
-                className="flex-1 px-4 py-2 bg-white border border-red-300 text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 hover:border-red-400 transition-colors font-medium flex items-center justify-center gap-2 group"
-              >
-                <Trash2 className="w-4 h-4 group-hover:text-red-600" />
-                <span className="group-hover:text-red-600">Delete</span>
-              </button>
             </div>
           </div>
         </>
