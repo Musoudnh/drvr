@@ -1627,13 +1627,6 @@ const Forecasting: React.FC = () => {
           >
             Cash Flow
           </button>
-          <button
-            onClick={() => setShowViewSettingsPanel(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-            title="View Settings"
-          >
-            <Filter className="w-4 h-4" />
-          </button>
           <div className="h-6 w-px bg-gray-300 mx-1" />
           <button
             onClick={() => setShowScenarioAuditSidebar(true)}

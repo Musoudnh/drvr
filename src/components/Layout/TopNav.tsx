@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, Bell, Search, LogOut, User, ChevronDown, Settings } from 'lucide-react';
+import { Menu, Bell, Search, LogOut, User, ChevronDown, Settings, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
@@ -94,6 +94,14 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
         </div>
         
         <div className="flex items-center space-x-3">
+          {/* View Settings Filter */}
+          <button
+            className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+            title="View Settings"
+          >
+            <Filter className="w-4 h-4" />
+          </button>
+
           {/* Notifications */}
           <div className="relative" ref={notificationRef}>
             <button
