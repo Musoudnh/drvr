@@ -374,6 +374,11 @@ const Forecasting: React.FC = () => {
     setContextMenu(null);
   };
 
+  const handleEditDeleteComment = (rowData: any) => {
+    setShowCommentsSidebar(true);
+    setContextMenu(null);
+  };
+
   const [sidePanelForm, setSidePanelForm] = useState({
     selectedGLCode: '',
     scenarioName: '',
@@ -3973,11 +3978,11 @@ const Forecasting: React.FC = () => {
           </button>
           <div className="border-t border-gray-200 my-2"></div>
           <button
-            onClick={() => handleDeleteRow(contextMenu.rowData)}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+            onClick={() => handleEditDeleteComment(contextMenu.rowData)}
+            className="w-full px-4 py-2 text-left text-sm hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors group"
           >
-            <Trash2 className="w-4 h-4 text-gray-500" />
-            Delete
+            <Trash2 className="w-4 h-4 text-gray-500 group-hover:text-red-600 transition-colors" />
+            <span className="text-gray-700 group-hover:text-red-600 transition-colors">Edit/Delete Comment</span>
           </button>
         </div>
       )}
@@ -4186,6 +4191,18 @@ const Forecasting: React.FC = () => {
                         <span>•</span>
                         <span>{comment.timestamp.toLocaleDateString()}</span>
                       </div>
+                      <button
+                        onClick={() => {
+                          if (confirm('Are you sure you want to delete this comment?')) {
+                            console.log('Delete comment:', comment.id);
+                          }
+                        }}
+                        className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors group"
+                        title="Delete comment"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        <span className="group-hover:text-red-600">Delete</span>
+                      </button>
                     </div>
                   </div>
                 ))
