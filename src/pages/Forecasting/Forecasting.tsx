@@ -1717,14 +1717,14 @@ const Forecasting: React.FC = () => {
                           key={index}
                           className={`py-3 font-bold ${
                             isSelectedYearQuarter
-                              ? 'bg-purple-100 text-purple-900'
+                              ? 'bg-[#7B68EE] text-white'
                               : isOuterYear
                                 ? 'text-gray-500'
                                 : 'text-gray-800'
                           } ${
-                            isFirstSelectedQuarter ? 'rounded-tl-lg' : ''
+                            isFirstSelectedQuarter ? 'rounded-tl-lg border-l-2 border-l-gray-300' : ''
                           } ${
-                            isLastSelectedQuarter ? 'rounded-tr-lg' : ''
+                            isLastSelectedQuarter ? 'rounded-tr-lg border-r-2 border-r-gray-300' : ''
                           } ${
                             dateViewMode === 'months'
                               ? 'text-center px-2 min-w-[120px]'
@@ -1751,9 +1751,9 @@ const Forecasting: React.FC = () => {
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
                               <span className={`text-sm font-normal ${
-                                isSelectedYearQuarter ? 'text-purple-900' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
+                                isSelectedYearQuarter ? 'text-white' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
                               }`}>{labelData.label}</span>
-                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-purple-700' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
+                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-white' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
@@ -1931,12 +1931,19 @@ const Forecasting: React.FC = () => {
                                 const isActualized = dateViewMode === 'months' ? isMonthActualized(periodKey) : false;
                                 const isEditing = dateViewMode === 'months' && editingCell?.glCode === glCode.code && editingCell?.month === periodKey;
                                 const isSelected = dateViewMode === 'months' && isCellSelected(glCode.code, periodKey);
+                                const isSelectedYearQuarter = dateViewMode === 'quarters' && period.year === selectedYear;
+                                const isFirstSelectedQuarter = isSelectedYearQuarter && period.period === 'Q1';
+                                const isLastSelectedQuarter = isSelectedYearQuarter && period.period === 'Q4';
 
                                 return (
                                   <td
                                     key={periodIndex}
                                     className={`py-3 ${
-                                      isOuterYear ? 'bg-gray-50/50' : ''
+                                      isSelectedYearQuarter ? 'bg-[#7B68EE]' : isOuterYear ? 'bg-gray-50/50' : ''
+                                    } ${
+                                      isFirstSelectedQuarter ? 'border-l-2 border-l-gray-300' : ''
+                                    } ${
+                                      isLastSelectedQuarter ? 'border-r-2 border-r-gray-300' : ''
                                     } ${
                                       dateViewMode === 'months'
                                         ? 'text-center px-2'
@@ -1967,7 +1974,9 @@ const Forecasting: React.FC = () => {
                                         )}
                                         <div className={`${dateViewMode === 'months' && expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : dateViewMode !== 'months' ? '' : 'hidden'}`}>
                                           {dateViewMode !== 'months' ? (
-                                            <div className="text-sm text-[#212b36] font-medium">
+                                            <div className={`text-sm font-medium ${
+                                              isSelectedYearQuarter ? 'text-white' : 'text-[#212b36]'
+                                            }`}>
                                               ${formatNumber(aggregatedAmount)}
                                             </div>
                                           ) : (
