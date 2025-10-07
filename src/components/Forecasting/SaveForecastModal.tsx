@@ -86,14 +86,6 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
 
           <div className="flex justify-end gap-3 pt-4">
             <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              disabled={saving}
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
               className="px-4 py-2 bg-[#212B36] text-white rounded-lg hover:bg-[#1a2028] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={saving || !name.trim()}
