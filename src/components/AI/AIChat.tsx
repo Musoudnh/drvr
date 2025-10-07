@@ -204,19 +204,19 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
         </h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Revenue</p>
+            <p className="text-xs text-gray-600">Revenue</p>
             <p className="font-bold text-[#4ADE80]">{insights.summary.revenue}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Expenses</p>
+            <p className="text-xs text-gray-600">Expenses</p>
             <p className="font-bold text-[#F87171]">{insights.summary.expenses}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Net Income</p>
+            <p className="text-xs text-gray-600">Net Income</p>
             <p className="font-bold text-[#3AB7BF]">{insights.summary.netIncome}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Profit Margin</p>
+            <p className="text-xs text-gray-600">Profit Margin</p>
             <p className="font-bold text-[#F59E0B]">{insights.summary.margin}</p>
           </div>
         </div>
@@ -235,7 +235,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
                 risk.level === 'high' ? 'bg-[#F87171]' :
                 risk.level === 'medium' ? 'bg-[#F59E0B]' : 'bg-[#4ADE80]'
               }`} />
-              <p className="text-sm text-gray-700">{risk.description}</p>
+              <p className="text-xs text-gray-700">{risk.description}</p>
             </div>
           ))}
         </div>
@@ -250,7 +250,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
         <div className="grid grid-cols-2 gap-4">
           {insights.ratios.map((ratio, index) => (
             <div key={index} className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">{ratio.name}</span>
+              <span className="text-xs text-gray-600">{ratio.name}</span>
               <div className="flex items-center">
                 <span className="font-medium text-[#101010] mr-2">{ratio.value}</span>
                 <div className={`w-2 h-2 rounded-full ${
@@ -273,7 +273,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
           {insights.recommendations.map((rec, index) => (
             <li key={index} className="flex items-start">
               <CheckCircle className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-gray-700">{rec}</p>
+              <p className="text-xs text-gray-700">{rec}</p>
             </li>
           ))}
         </ul>
@@ -305,7 +305,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
             </div>
             <div>
               <h3 className="font-semibold text-[#101010]">AI Financial Analyst</h3>
-              <p className="text-sm text-gray-600">Your Fractional CFO on-demand</p>
+              <p className="text-xs text-gray-600">Your Fractional CFO on-demand</p>
             </div>
           </div>
           <button
@@ -360,7 +360,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
                     <div className="bg-white border border-gray-200 rounded-lg p-3">
                       <h5 className="font-medium text-[#101010] mb-2">Analyzed Documents:</h5>
                       {message.attachments.map((file, index) => (
-                        <div key={index} className="flex items-center text-sm text-gray-600">
+                        <div key={index} className="flex items-center text-xs text-gray-600">
                           <FileText className="w-4 h-4 mr-2" />
                           {file.name} ({(file.size / 1024).toFixed(1)} KB)
                         </div>
@@ -396,7 +396,7 @@ const AIChat: React.FC<AIChatProps> = ({ isOpen, onClose }) => {
           <div className="px-4 py-2 border-t border-gray-200 bg-gray-50">
             <div className="flex flex-wrap gap-2">
               {uploadedFiles.map((file, index) => (
-                <div key={index} className="flex items-center bg-white rounded-lg px-3 py-2 text-sm">
+                <div key={index} className="flex items-center bg-white rounded-lg px-3 py-2 text-xs">
                   <FileText className="w-4 h-4 text-gray-400 mr-2" />
                   <span className="text-gray-700">{file.name}</span>
                   <button

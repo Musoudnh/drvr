@@ -161,7 +161,7 @@ export function VersionComparisonModal({
 
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center gap-4">
-            <label className="text-sm font-medium text-gray-700">Filter by Month:</label>
+            <label className="text-xs font-medium text-gray-700">Filter by Month:</label>
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
@@ -187,28 +187,28 @@ export function VersionComparisonModal({
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-700">
                       GL Code
                     </th>
-                    <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-700">
                       Account Name
                     </th>
-                    <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-700">
                       Type
                     </th>
-                    <th className="py-3 px-4 text-right text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-700">
                       Version 1
                     </th>
-                    <th className="py-3 px-4 text-right text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-700">
                       Version 2
                     </th>
-                    <th className="py-3 px-4 text-right text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-700">
                       Difference
                     </th>
-                    <th className="py-3 px-4 text-right text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-700">
                       % Change
                     </th>
-                    <th className="py-3 px-4 text-center text-sm font-semibold text-gray-700">
+                    <th className="py-3 px-4 text-center text-xs font-semibold text-gray-700">
                       Impact
                     </th>
                   </tr>
@@ -220,11 +220,11 @@ export function VersionComparisonModal({
 
                     return (
                       <tr key={item.glCode} className="hover:bg-gray-50">
-                        <td className="py-3 px-4 text-sm font-medium text-gray-900">
+                        <td className="py-3 px-4 text-xs font-medium text-gray-900">
                           {item.glCode}
                         </td>
-                        <td className="py-3 px-4 text-sm text-gray-700">{item.glName}</td>
-                        <td className="py-3 px-4 text-sm">
+                        <td className="py-3 px-4 text-xs text-gray-700">{item.glName}</td>
+                        <td className="py-3 px-4 text-xs">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               item.glType === 'revenue'
@@ -235,20 +235,20 @@ export function VersionComparisonModal({
                             {item.glType}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-sm text-right text-gray-900">
+                        <td className="py-3 px-4 text-xs text-right text-gray-900">
                           ${item.version1Total.toLocaleString()}
                         </td>
-                        <td className="py-3 px-4 text-sm text-right text-gray-900 font-medium">
+                        <td className="py-3 px-4 text-xs text-right text-gray-900 font-medium">
                           ${item.version2Total.toLocaleString()}
                         </td>
                         <td
-                          className={`py-3 px-4 text-sm text-right font-medium ${impactColor}`}
+                          className={`py-3 px-4 text-xs text-right font-medium ${impactColor}`}
                         >
                           {item.difference >= 0 ? '+' : ''}$
                           {item.difference.toLocaleString()}
                         </td>
                         <td
-                          className={`py-3 px-4 text-sm text-right font-medium ${impactColor}`}
+                          className={`py-3 px-4 text-xs text-right font-medium ${impactColor}`}
                         >
                           {item.percentChange >= 0 ? '+' : ''}
                           {item.percentChange.toFixed(1)}%
@@ -262,23 +262,23 @@ export function VersionComparisonModal({
                 </tbody>
                 <tfoot className="bg-gray-50 border-t-2 border-gray-300">
                   <tr>
-                    <td colSpan={3} className="py-3 px-4 text-sm font-bold text-gray-900">
+                    <td colSpan={3} className="py-3 px-4 text-xs font-bold text-gray-900">
                       TOTAL
                     </td>
-                    <td className="py-3 px-4 text-sm text-right font-bold text-gray-900">
+                    <td className="py-3 px-4 text-xs text-right font-bold text-gray-900">
                       $
                       {comparisonData
                         .reduce((sum, item) => sum + item.version1Total, 0)
                         .toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-sm text-right font-bold text-gray-900">
+                    <td className="py-3 px-4 text-xs text-right font-bold text-gray-900">
                       $
                       {comparisonData
                         .reduce((sum, item) => sum + item.version2Total, 0)
                         .toLocaleString()}
                     </td>
                     <td
-                      className={`py-3 px-4 text-sm text-right font-bold ${
+                      className={`py-3 px-4 text-xs text-right font-bold ${
                         comparisonData.reduce((sum, item) => sum + item.difference, 0) >= 0
                           ? 'text-[#4ADE80]'
                           : 'text-[#F87171]'

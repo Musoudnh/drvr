@@ -344,7 +344,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
           <div className="relative" ref={filterRef}>
             <button
               onClick={() => setShowPriorityFilter(!showPriorityFilter)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
               <span>Priority Filter</span>
               {selectedPriorities.length < 3 && (
@@ -371,7 +371,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
                       >
                         <div className="flex items-center gap-2">
                           <div className={`w-3 h-3 rounded ${getPriorityColor(priority)}`} />
-                          <span className="text-sm font-medium text-gray-700 capitalize">
+                          <span className="text-xs font-medium text-gray-700 capitalize">
                             {priority}
                           </span>
                         </div>
@@ -384,7 +384,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
                   <div className="border-t border-gray-200 p-2">
                     <button
                       onClick={() => setSelectedPriorities(['high', 'medium', 'low'])}
-                      className="w-full px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 rounded transition-colors"
+                      className="w-full px-3 py-1.5 text-xs text-gray-600 hover:bg-gray-50 rounded transition-colors"
                     >
                       Select All
                     </button>
@@ -398,7 +398,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
         <div className="flex bg-gray-100 rounded-lg p-0.5">
           <button
             onClick={() => setTimeScale('days')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               timeScale === 'days'
                 ? 'bg-white text-[#3AB7BF] shadow-sm'
                 : 'text-gray-600 hover:text-gray-800'
@@ -408,7 +408,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
           </button>
           <button
             onClick={() => setTimeScale('weeks')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               timeScale === 'weeks'
                 ? 'bg-white text-[#3AB7BF] shadow-sm'
                 : 'text-gray-600 hover:text-gray-800'
@@ -418,7 +418,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
           </button>
           <button
             onClick={() => setTimeScale('months')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               timeScale === 'months'
                 ? 'bg-white text-[#3AB7BF] shadow-sm'
                 : 'text-gray-600 hover:text-gray-800'
@@ -487,7 +487,7 @@ const GanttView: React.FC<GanttViewProps> = ({ tasks, onTaskClick, onTaskUpdate 
                     <div className="w-64 flex-shrink-0 p-4 border-r border-gray-200">
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-[#101010] truncate">
+                          <h4 className="text-xs font-medium text-[#101010] truncate">
                             {task.title}
                           </h4>
                           <div className="flex items-center gap-2">

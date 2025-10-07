@@ -92,12 +92,12 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-[#101010]">Audit Trail</h3>
-          <p className="text-sm text-gray-600">Track all project approvals and rejections</p>
+          <p className="text-xs text-gray-600">Track all project approvals and rejections</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'all'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -107,7 +107,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
           </button>
           <button
             onClick={() => setFilter('submitted')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'submitted'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -117,7 +117,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
           </button>
           <button
             onClick={() => setFilter('approved')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'approved'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -127,7 +127,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
           </button>
           <button
             onClick={() => setFilter('rejected')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               filter === 'rejected'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -159,7 +159,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
                       <h4 className="font-semibold text-[#101010] mb-1">
                         {entry.project_header}
                       </h4>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-xs text-gray-600">
                         <User className="w-3 h-3" />
                         <span>User ID: {entry.user_id.slice(0, 8)}...</span>
                         <Calendar className="w-3 h-3 ml-2" />
@@ -173,7 +173,7 @@ const AuditTrail: React.FC<AuditTrailProps> = ({ projects }) => {
 
                   {entry.notes && (
                     <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-700">{entry.notes}</p>
+                      <p className="text-xs text-gray-700">{entry.notes}</p>
                     </div>
                   )}
                 </div>

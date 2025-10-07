@@ -139,7 +139,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-[#101010] mb-2">
+            <label className="block text-xs font-medium text-[#101010] mb-2">
               Role Name *
             </label>
             <input
@@ -153,7 +153,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#101010] mb-2">
+            <label className="block text-xs font-medium text-[#101010] mb-2">
               Job Description
             </label>
             <textarea
@@ -167,7 +167,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-[#101010] mb-2">
+              <label className="block text-xs font-medium text-[#101010] mb-2">
                 Location (State) *
               </label>
               <select
@@ -198,7 +198,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#101010] mb-2">
+              <label className="block text-xs font-medium text-[#101010] mb-2">
                 Start Date *
               </label>
               <input
@@ -212,7 +212,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#101010] mb-2">
+            <label className="block text-xs font-medium text-[#101010] mb-2">
               Worker Classification *
             </label>
             <div className="flex gap-4">
@@ -225,7 +225,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                   onChange={(e) => setFormData({ ...formData, worker_classification: e.target.value as 'w2' | '1099' })}
                   className="mr-2"
                 />
-                <span className="text-sm">W-2 Employee</span>
+                <span className="text-xs">W-2 Employee</span>
               </label>
               <label className="flex items-center">
                 <input
@@ -236,7 +236,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                   onChange={(e) => setFormData({ ...formData, worker_classification: e.target.value as 'w2' | '1099' })}
                   className="mr-2"
                 />
-                <span className="text-sm">1099 Contractor</span>
+                <span className="text-xs">1099 Contractor</span>
               </label>
             </div>
             {formData.worker_classification === 'w2' && (
@@ -247,7 +247,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#101010] mb-2">
+            <label className="block text-xs font-medium text-[#101010] mb-2">
               Employment Type *
             </label>
             <div className="flex gap-4">
@@ -260,7 +260,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                   onChange={(e) => setFormData({ ...formData, employment_type: e.target.value as 'hourly' | 'salary' })}
                   className="mr-2"
                 />
-                <span className="text-sm">Salary</span>
+                <span className="text-xs">Salary</span>
               </label>
               <label className="flex items-center">
                 <input
@@ -271,14 +271,14 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                   onChange={(e) => setFormData({ ...formData, employment_type: e.target.value as 'hourly' | 'salary' })}
                   className="mr-2"
                 />
-                <span className="text-sm">Hourly</span>
+                <span className="text-xs">Hourly</span>
               </label>
             </div>
           </div>
 
           {formData.employment_type === 'salary' ? (
             <div>
-              <label className="block text-sm font-medium text-[#101010] mb-2">
+              <label className="block text-xs font-medium text-[#101010] mb-2">
                 Annual Salary *
               </label>
               <div className="relative">
@@ -298,7 +298,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           ) : (
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-[#101010] mb-2">
+                <label className="block text-xs font-medium text-[#101010] mb-2">
                   Hourly Rate *
                 </label>
                 <div className="relative">
@@ -316,7 +316,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#101010] mb-2">
+                <label className="block text-xs font-medium text-[#101010] mb-2">
                   Hours per Week *
                 </label>
                 <input

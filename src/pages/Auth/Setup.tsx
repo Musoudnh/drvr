@@ -39,7 +39,7 @@ const Setup: React.FC = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -57,7 +57,7 @@ const Setup: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -75,7 +75,7 @@ const Setup: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Confirm Password
               </label>
               <div className="relative">
@@ -99,7 +99,7 @@ const Setup: React.FC = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   First Name
                 </label>
                 <div className="relative">
@@ -116,7 +116,7 @@ const Setup: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   Last Name
                 </label>
                 <input
@@ -132,7 +132,7 @@ const Setup: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Company Name
               </label>
               <div className="relative">
@@ -150,7 +150,7 @@ const Setup: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Industry
               </label>
               <select
@@ -202,7 +202,7 @@ const Setup: React.FC = () => {
                       <h4 className="font-semibold text-[#101010]">{plan.name}</h4>
                       <span className="text-lg font-bold text-[#3AB7BF]">{plan.price}</span>
                     </div>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="text-xs text-gray-600 space-y-1">
                       {plan.features.map((feature, index) => (
                         <li key={index}>• {feature}</li>
                       ))}
@@ -265,7 +265,7 @@ const Setup: React.FC = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-xs text-gray-600">
               Already have an account?{' '}
               <Link to="/login" className="text-[#3AB7BF] hover:underline font-medium">
                 Sign in

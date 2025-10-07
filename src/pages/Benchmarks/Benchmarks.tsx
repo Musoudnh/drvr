@@ -380,7 +380,7 @@ const Benchmarks: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Industry</label>
                 <select
                   value={setupData.industry}
                   onChange={(e) => setSetupData({...setupData, industry: e.target.value})}
@@ -406,7 +406,7 @@ const Benchmarks: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Business Model</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Business Model</label>
                 <select
                   value={setupData.businessModel}
                   onChange={(e) => setSetupData({...setupData, businessModel: e.target.value})}
@@ -431,7 +431,7 @@ const Benchmarks: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Annual Revenue (USD)</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Annual Revenue (USD)</label>
                 <input
                   type="number"
                   value={setupData.annualRevenue}
@@ -442,7 +442,7 @@ const Benchmarks: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Revenue Range</label>
                 <select
                   value={setupData.revenueRange}
                   onChange={(e) => setSetupData({...setupData, revenueRange: e.target.value})}
@@ -460,7 +460,7 @@ const Benchmarks: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Employee Count</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Employee Count</label>
                 <input
                   type="number"
                   value={setupData.employeeCount}
@@ -471,7 +471,7 @@ const Benchmarks: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Region</label>
                 <select
                   value={setupData.region}
                   onChange={(e) => setSetupData({...setupData, region: e.target.value})}
@@ -489,7 +489,7 @@ const Benchmarks: React.FC = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Stage of Business</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Stage of Business</label>
               <select
                 value={setupData.businessStage}
                 onChange={(e) => setSetupData({...setupData, businessStage: e.target.value})}
@@ -551,7 +551,7 @@ const Benchmarks: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-[#101010] mb-3">Your Company Profile</h3>
-                <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-6 text-xs">
                   <div className="flex items-center">
                     <Building2 className="w-4 h-4 text-gray-400 mr-2" />
                     <span className="text-gray-600">Industry:</span>
@@ -578,7 +578,7 @@ const Benchmarks: React.FC = () => {
                 <Settings className="w-4 h-4 mr-2" />
                 <button
                   onClick={() => setShowProfileModal(true)}
-                  className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-2 border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF] hover:text-white focus:ring-[#3AB7BF] px-3 py-1.5 text-sm"
+                  className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-2 border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF] hover:text-white focus:ring-[#3AB7BF] px-3 py-1.5 text-xs"
                 >
                   <Settings className="w-4 h-4 mr-2" />
                   Update Profile
@@ -591,7 +591,7 @@ const Benchmarks: React.FC = () => {
               <div className="border-t border-gray-200 pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Industry</label>
                     <select
                       value={selectedIndustry}
                       onChange={(e) => setSelectedIndustry(e.target.value)}
@@ -604,7 +604,7 @@ const Benchmarks: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Range</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Revenue Range</label>
                     <select
                       value={selectedRevenueRange}
                       onChange={(e) => setSelectedRevenueRange(e.target.value)}
@@ -617,7 +617,7 @@ const Benchmarks: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Region</label>
                     <select
                       value={selectedRegion}
                       onChange={(e) => setSelectedRegion(e.target.value)}
@@ -630,7 +630,7 @@ const Benchmarks: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Time Period</label>
                     <select
                       value={selectedTimePeriod}
                       onChange={(e) => setSelectedTimePeriod(e.target.value)}
@@ -672,7 +672,7 @@ const Benchmarks: React.FC = () => {
                 <div>
                   <h3 className="text-xl font-bold text-[#101010] mb-2">Key Performance Insight</h3>
                   <p className="text-lg text-gray-700">{headlineInsight.text}</p>
-                  <p className="text-sm text-gray-500 mt-2">Based on {selectedIndustry.toUpperCase()} industry data for {selectedRevenueRange} companies</p>
+                  <p className="text-xs text-gray-500 mt-2">Based on {selectedIndustry.toUpperCase()} industry data for {selectedRevenueRange} companies</p>
                 </div>
               </div>
               <Button variant="outline" size="sm">
@@ -722,21 +722,21 @@ const Benchmarks: React.FC = () => {
                     <span className="text-2xl font-bold text-[#101010]">
                       {formatValue(metric.companyValue, metric.unit)}
                     </span>
-                    <span className="text-sm text-gray-500 ml-2">Your Company</span>
+                    <span className="text-xs text-gray-500 ml-2">Your Company</span>
                   </div>
                 </div>
 
                 {/* Benchmark Comparison */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Industry Average</span>
+                    <span className="text-xs text-gray-600">Industry Average</span>
                     <span className="font-medium text-gray-700">
                       {formatValue(metric.industryAverage, metric.unit)}
                     </span>
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Top Quartile</span>
+                    <span className="text-xs text-gray-600">Top Quartile</span>
                     <span className="font-medium text-[#4ADE80]">
                       {formatValue(metric.topQuartile, metric.unit)}
                     </span>
@@ -745,7 +745,7 @@ const Benchmarks: React.FC = () => {
                   {/* Performance Gap */}
                   <div className="pt-2 border-t border-gray-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">vs Industry Avg</span>
+                      <span className="text-xs font-medium text-gray-700">vs Industry Avg</span>
                       <span 
                         className="font-bold"
                         style={{ color: performanceColor }}
@@ -837,7 +837,7 @@ const Benchmarks: React.FC = () => {
                       </div>
                     </div>
                     
-                    <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
+                    <p className="text-xs text-gray-700 mb-3">{insight.description}</p>
                     
                     {insight.actionable && (
                       <Button variant="outline" size="sm" className="w-full">
@@ -879,15 +879,15 @@ const Benchmarks: React.FC = () => {
                   <h4 className="font-semibold text-[#101010] mb-2">ARPU (Annual)</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Your Company</span>
+                      <span className="text-xs text-gray-600">Your Company</span>
                       <span className="font-bold text-[#4ADE80]">$4,250</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Industry Avg</span>
+                      <span className="text-xs text-gray-600">Industry Avg</span>
                       <span className="text-gray-700">$3,890</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Top Quartile</span>
+                      <span className="text-xs text-gray-600">Top Quartile</span>
                       <span className="text-[#4ADE80]">$5,120</span>
                     </div>
                   </div>
@@ -897,15 +897,15 @@ const Benchmarks: React.FC = () => {
                   <h4 className="font-semibold text-[#101010] mb-2">Churn Rate</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Your Company</span>
+                      <span className="text-xs text-gray-600">Your Company</span>
                       <span className="font-bold text-[#F87171]">5.2%</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Industry Avg</span>
+                      <span className="text-xs text-gray-600">Industry Avg</span>
                       <span className="text-gray-700">4.8%</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Top Quartile</span>
+                      <span className="text-xs text-gray-600">Top Quartile</span>
                       <span className="text-[#4ADE80]">2.1%</span>
                     </div>
                   </div>
@@ -915,15 +915,15 @@ const Benchmarks: React.FC = () => {
                   <h4 className="font-semibold text-[#101010] mb-2">Sales Efficiency</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Your Company</span>
+                      <span className="text-xs text-gray-600">Your Company</span>
                       <span className="font-bold text-[#3AB7BF]">$285K</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Industry Avg</span>
+                      <span className="text-xs text-gray-600">Industry Avg</span>
                       <span className="text-gray-700">$245K</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Top Quartile</span>
+                      <span className="text-xs text-gray-600">Top Quartile</span>
                       <span className="text-[#4ADE80]">$380K</span>
                     </div>
                   </div>
@@ -950,7 +950,7 @@ const Benchmarks: React.FC = () => {
                     <text x="350" y="170" textAnchor="middle" className="text-xs fill-gray-600">Avg</text>
                   </svg>
                 </div>
-                <p className="text-sm text-gray-600 text-center">Your revenue growth rate positions you in the 75th percentile</p>
+                <p className="text-xs text-gray-600 text-center">Your revenue growth rate positions you in the 75th percentile</p>
               </div>
             </div>
           )}
@@ -987,8 +987,8 @@ const Benchmarks: React.FC = () => {
                     ].map((expense, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm font-medium text-gray-700">{expense.category}</span>
-                          <span className="text-sm font-bold text-[#101010]">{expense.company}%</span>
+                          <span className="text-xs font-medium text-gray-700">{expense.category}</span>
+                          <span className="text-xs font-bold text-[#101010]">{expense.company}%</span>
                         </div>
                         <div className="relative">
                           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -1018,19 +1018,19 @@ const Benchmarks: React.FC = () => {
                   <div className="space-y-3">
                     <div className="p-3 bg-[#F59E0B]/10 rounded-lg border border-[#F59E0B]/20">
                       <h5 className="font-medium text-[#101010] mb-1">Payroll Optimization</h5>
-                      <p className="text-sm text-gray-600">3.3% above industry average. Consider automation or process improvements.</p>
+                      <p className="text-xs text-gray-600">3.3% above industry average. Consider automation or process improvements.</p>
                       <p className="text-xs text-[#F59E0B] mt-1">Potential savings: $180K annually</p>
                     </div>
                     
                     <div className="p-3 bg-[#4ADE80]/10 rounded-lg border border-[#4ADE80]/20">
                       <h5 className="font-medium text-[#101010] mb-1">Technology Investment</h5>
-                      <p className="text-sm text-gray-600">Below industry average. Room for strategic tech investments.</p>
+                      <p className="text-xs text-gray-600">Below industry average. Room for strategic tech investments.</p>
                       <p className="text-xs text-[#4ADE80] mt-1">Investment opportunity: $85K annually</p>
                     </div>
                     
                     <div className="p-3 bg-[#3AB7BF]/10 rounded-lg border border-[#3AB7BF]/20">
                       <h5 className="font-medium text-[#101010] mb-1">Marketing Underinvestment</h5>
-                      <p className="text-sm text-gray-600">2.5% below average. Potential growth opportunity.</p>
+                      <p className="text-xs text-gray-600">2.5% below average. Potential growth opportunity.</p>
                       <p className="text-xs text-[#3AB7BF] mt-1">Growth potential: $2.3M revenue</p>
                     </div>
                   </div>
@@ -1092,14 +1092,14 @@ const Benchmarks: React.FC = () => {
                   <div className="flex items-start">
                     <CheckCircle className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-[#101010]">Strong Revenue Efficiency</p>
+                      <p className="text-xs font-medium text-[#101010]">Strong Revenue Efficiency</p>
                       <p className="text-xs text-gray-600">Revenue per employee exceeds industry average by 12%</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <AlertTriangle className="w-4 h-4 text-[#F59E0B] mr-2 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-[#101010]">Scaling Opportunity</p>
+                      <p className="text-xs font-medium text-[#101010]">Scaling Opportunity</p>
                       <p className="text-xs text-gray-600">Customer-to-employee ratio suggests room for growth</p>
                     </div>
                   </div>
@@ -1115,22 +1115,22 @@ const Benchmarks: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
             <Download className="w-6 h-6 mb-2" />
-            <span className="text-sm">Export Report</span>
+            <span className="text-xs">Export Report</span>
           </Button>
           
           <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
             <Target className="w-6 h-6 mb-2" />
-            <span className="text-sm">Set Targets</span>
+            <span className="text-xs">Set Targets</span>
           </Button>
           
           <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
             <LineChart className="w-6 h-6 mb-2" />
-            <span className="text-sm">Forecast Impact</span>
+            <span className="text-xs">Forecast Impact</span>
           </Button>
           
           <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
             <Bell className="w-6 h-6 mb-2" />
-            <span className="text-sm">Setup Alerts</span>
+            <span className="text-xs">Setup Alerts</span>
           </Button>
         </div>
       </Card>

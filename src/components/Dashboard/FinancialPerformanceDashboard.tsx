@@ -105,20 +105,20 @@ const FinancialPerformanceDashboard: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">Monthly Budget vs. Actual Performance</h3>
-            <p className="text-sm text-gray-500 mt-1">Budget, Actual, and Prior Year Comparison</p>
+            <p className="text-xs text-gray-500 mt-1">Budget, Actual, and Prior Year Comparison</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded" style={{ backgroundColor: barColor }}></div>
-              <span className="text-sm text-gray-600">Actual (Bar)</span>
+              <span className="text-xs text-gray-600">Actual (Bar)</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-1 rounded" style={{ backgroundColor: budgetLineColor }}></div>
-              <span className="text-sm text-gray-600">Budget (Line)</span>
+              <span className="text-xs text-gray-600">Budget (Line)</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-1 rounded" style={{ backgroundColor: pyLineColor }}></div>
-              <span className="text-sm text-gray-600">Prior Year (Line)</span>
+              <span className="text-xs text-gray-600">Prior Year (Line)</span>
             </div>
             <div className="relative ml-2">
               <button
@@ -172,7 +172,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
 
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-gray-600 text-sm mb-1">
+            <div className="flex items-center gap-2 text-gray-600 text-xs mb-1">
               <DollarSign className="w-4 h-4" />
               <span>Total Budget</span>
             </div>
@@ -181,7 +181,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
 
           <div className="bg-green-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-green-600 text-sm mb-1">
+            <div className="flex items-center gap-2 text-green-600 text-xs mb-1">
               <TrendingUp className="w-4 h-4" />
               <span>Total Actual</span>
             </div>
@@ -190,7 +190,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
 
           <div className="bg-blue-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-blue-600 text-sm mb-1">
+            <div className="flex items-center gap-2 text-blue-600 text-xs mb-1">
               <Calendar className="w-4 h-4" />
               <span>Variance</span>
             </div>
@@ -199,7 +199,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
 
           <div className="bg-purple-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-purple-600 text-sm mb-1">
+            <div className="flex items-center gap-2 text-purple-600 text-xs mb-1">
               <TrendingUp className="w-4 h-4" />
               <span>YoY Growth</span>
             </div>
@@ -315,11 +315,11 @@ const FinancialPerformanceDashboard: React.FC = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">Monthly Revenue Performance with AI Predictions</h3>
-            <p className="text-sm text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
+            <p className="text-xs text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-600 rounded-lg border border-green-200">
             <TrendingUp className="w-4 h-4" />
-            <span className="text-sm font-semibold">+{yoyGrowth}% YoY Growth</span>
+            <span className="text-xs font-semibold">+{yoyGrowth}% YoY Growth</span>
           </div>
         </div>
 

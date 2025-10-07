@@ -69,12 +69,12 @@ const CompareProjects: React.FC<CompareProjectsProps> = ({ projects }) => {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold text-[#101010]">Compare Projects</h3>
-        <p className="text-sm text-gray-600">Select two projects to compare their details side by side</p>
+        <p className="text-xs text-gray-600">Select two projects to compare their details side by side</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="relative">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Project 1</label>
+          <label className="block text-xs font-medium text-gray-700 mb-2">Project 1</label>
           <button
             onClick={() => setShowDropdown1(!showDropdown1)}
             className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-left flex items-center justify-between hover:border-gray-400 transition-colors"
@@ -88,7 +88,7 @@ const CompareProjects: React.FC<CompareProjectsProps> = ({ projects }) => {
           {showDropdown1 && (
             <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
               {availableProjects1.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-gray-500">No projects available</div>
+                <div className="px-4 py-3 text-xs text-gray-500">No projects available</div>
               ) : (
                 availableProjects1.map((project) => (
                   <button
@@ -118,7 +118,7 @@ const CompareProjects: React.FC<CompareProjectsProps> = ({ projects }) => {
         </div>
 
         <div className="relative">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Project 2</label>
+          <label className="block text-xs font-medium text-gray-700 mb-2">Project 2</label>
           <button
             onClick={() => setShowDropdown2(!showDropdown2)}
             className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-left flex items-center justify-between hover:border-gray-400 transition-colors"
@@ -132,7 +132,7 @@ const CompareProjects: React.FC<CompareProjectsProps> = ({ projects }) => {
           {showDropdown2 && (
             <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
               {availableProjects2.length === 0 ? (
-                <div className="px-4 py-3 text-sm text-gray-500">No projects available</div>
+                <div className="px-4 py-3 text-xs text-gray-500">No projects available</div>
               ) : (
                 availableProjects2.map((project) => (
                   <button
@@ -304,8 +304,8 @@ const CompareProjects: React.FC<CompareProjectsProps> = ({ projects }) => {
             <div className="py-4">
               <div className="grid grid-cols-3 gap-4">
                 <div className="font-medium text-gray-700">Description</div>
-                <div className="text-sm text-gray-700">{selectedProject1?.description}</div>
-                <div className="text-sm text-gray-700">{selectedProject2?.description}</div>
+                <div className="text-xs text-gray-700">{selectedProject1?.description}</div>
+                <div className="text-xs text-gray-700">{selectedProject2?.description}</div>
               </div>
             </div>
           </div>

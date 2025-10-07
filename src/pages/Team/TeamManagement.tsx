@@ -191,7 +191,7 @@ const TeamManagement: React.FC = () => {
           {activeTab === 'team' ? (
             <button 
               onClick={() => setShowAddMemberModal(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
+              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
               style={{ backgroundColor: '#4F46E5' }}
             >
               <UserPlus className="w-4 h-4 mr-2" />
@@ -200,7 +200,7 @@ const TeamManagement: React.FC = () => {
           ) : (
             <button 
               onClick={() => setShowAddFirmModal(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
+              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
               style={{ backgroundColor: '#4F46E5' }}
             >
               <Building2 className="w-4 h-4 mr-2" />
@@ -214,7 +214,7 @@ const TeamManagement: React.FC = () => {
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-6">
         <button
           onClick={() => setActiveTab('team')}
-          className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+          className={`flex-1 px-4 py-2 text-xs font-medium rounded-md transition-colors ${
             activeTab === 'team'
               ? 'bg-white text-[#4F46E5] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
@@ -225,7 +225,7 @@ const TeamManagement: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('firms')}
-          className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+          className={`flex-1 px-4 py-2 text-xs font-medium rounded-md transition-colors ${
             activeTab === 'firms'
               ? 'bg-white text-[#4F46E5] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
@@ -241,7 +241,7 @@ const TeamManagement: React.FC = () => {
         <>
           {/* Team Members Header */}
           <Card>
-            <div className="grid grid-cols-12 gap-4 py-3 px-4 bg-gray-50 rounded-lg font-semibold text-gray-700 text-sm mb-4">
+            <div className="grid grid-cols-12 gap-4 py-3 px-4 bg-gray-50 rounded-lg font-semibold text-gray-700 text-xs mb-4">
               <div className="col-span-3">Name</div>
               <div className="col-span-2">Role</div>
               <div className="col-span-2">Client Access</div>
@@ -261,20 +261,20 @@ const TeamManagement: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#101010]">{member.name}</h3>
-                      <p className="text-sm text-gray-600">{member.email}</p>
+                      <p className="text-xs text-gray-600">{member.email}</p>
                     </div>
                   </div>
                   
                   <div className="col-span-2">
-                    <p className="text-sm text-gray-900">{member.role}</p>
+                    <p className="text-xs text-gray-900">{member.role}</p>
                   </div>
                   
                   <div className="col-span-2">
-                    <p className="text-sm text-gray-900">{getLevelLabel(member.level)}</p>
+                    <p className="text-xs text-gray-900">{getLevelLabel(member.level)}</p>
                   </div>
                   
                   <div className="col-span-2">
-                    <p className="text-sm text-gray-600">Jan 15, 2025</p>
+                    <p className="text-xs text-gray-600">Jan 15, 2025</p>
                   </div>
                   
                   <div className="col-span-2">
@@ -307,7 +307,7 @@ const TeamManagement: React.FC = () => {
         <>
           {/* Accounting Firms Grid */}
           <Card>
-            <div className="grid grid-cols-12 gap-4 py-3 px-4 bg-gray-50 rounded-lg font-semibold text-gray-700 text-sm mb-4">
+            <div className="grid grid-cols-12 gap-4 py-3 px-4 bg-gray-50 rounded-lg font-semibold text-gray-700 text-xs mb-4">
               <div className="col-span-3">Name</div>
               <div className="col-span-2">Contact</div>
               <div className="col-span-2">Client Access</div>
@@ -325,21 +325,21 @@ const TeamManagement: React.FC = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-[#101010]">{firm.name}</h3>
-                        <p className="text-sm text-gray-600">{firm.email}</p>
+                        <p className="text-xs text-gray-600">{firm.email}</p>
                       </div>
                     </div>
                     
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-900">{firm.contact}</p>
-                      <p className="text-sm text-gray-600">{firm.phone}</p>
+                      <p className="text-xs text-gray-900">{firm.contact}</p>
+                      <p className="text-xs text-gray-600">{firm.phone}</p>
                     </div>
                     
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-900">{getLevelLabel(firm.level)}</p>
+                      <p className="text-xs text-gray-900">{getLevelLabel(firm.level)}</p>
                     </div>
                     
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-600">Jan 15, 2025</p>
+                      <p className="text-xs text-gray-600">Jan 15, 2025</p>
                     </div>
                     
                     <div className="col-span-2">
@@ -385,7 +385,7 @@ const TeamManagement: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Name</label>
                   <input
                     type="text"
                     value={addMemberForm.name}
@@ -396,7 +396,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={addMemberForm.email}
@@ -408,7 +408,7 @@ const TeamManagement: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Role</label>
                 <input
                   type="text"
                   value={addMemberForm.role}
@@ -420,7 +420,7 @@ const TeamManagement: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Department</label>
                   <select
                     value={addMemberForm.department}
                     onChange={(e) => setAddMemberForm({...addMemberForm, department: e.target.value})}
@@ -436,7 +436,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Access Level</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Access Level</label>
                   <select
                     value={addMemberForm.level}
                     onChange={(e) => setAddMemberForm({...addMemberForm, level: e.target.value})}
@@ -499,7 +499,7 @@ const TeamManagement: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Firm Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Firm Name</label>
                   <input
                     type="text"
                     value={addFirmForm.name}
@@ -510,7 +510,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Contact Person</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Contact Person</label>
                   <input
                     type="text"
                     value={addFirmForm.contact}
@@ -523,7 +523,7 @@ const TeamManagement: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={addFirmForm.email}
@@ -534,7 +534,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     value={addFirmForm.phone}
@@ -546,7 +546,7 @@ const TeamManagement: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Access Level</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Access Level</label>
                 <select
                   value={addFirmForm.level}
                   onChange={(e) => setAddFirmForm({...addFirmForm, level: e.target.value})}
@@ -608,7 +608,7 @@ const TeamManagement: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Name</label>
                   <input
                     type="text"
                     value={editForm.name}
@@ -618,7 +618,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={editForm.email}
@@ -629,7 +629,7 @@ const TeamManagement: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Role</label>
                 <input
                   type="text"
                   value={editForm.role}
@@ -640,7 +640,7 @@ const TeamManagement: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Department</label>
                   <select
                     value={editForm.department}
                     onChange={(e) => setEditForm({...editForm, department: e.target.value})}
@@ -656,7 +656,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Access Level</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Access Level</label>
                   <select
                     value={editForm.level}
                     onChange={(e) => setEditForm({...editForm, level: e.target.value})}
@@ -730,7 +730,7 @@ const TeamManagement: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Firm Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Firm Name</label>
                   <input
                     type="text"
                     value={firmEditForm.name}
@@ -740,7 +740,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Contact Person</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Contact Person</label>
                   <input
                     type="text"
                     value={firmEditForm.contact}
@@ -752,7 +752,7 @@ const TeamManagement: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
                     value={firmEditForm.email}
@@ -762,7 +762,7 @@ const TeamManagement: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     value={firmEditForm.phone}
@@ -773,7 +773,7 @@ const TeamManagement: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Access Level</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Access Level</label>
                 <select
                   value={firmEditForm.level}
                   onChange={(e) => setFirmEditForm({...firmEditForm, level: e.target.value})}

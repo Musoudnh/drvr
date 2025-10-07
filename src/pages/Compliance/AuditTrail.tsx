@@ -174,9 +174,9 @@ const AuditTrail: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Audit Entries</p>
+              <p className="text-xs font-medium text-gray-600">Audit Entries</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{auditEntries.length.toLocaleString()}</p>
-              <p className="text-sm text-gray-600 mt-1">Last 30 days</p>
+              <p className="text-xs text-gray-600 mt-1">Last 30 days</p>
             </div>
             <Database className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -185,9 +185,9 @@ const AuditTrail: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">High Risk Events</p>
+              <p className="text-xs font-medium text-gray-600">High Risk Events</p>
               <p className="text-2xl font-bold text-[#F87171] mt-1">{auditEntries.filter(e => e.riskLevel === 'high').length}</p>
-              <p className="text-sm text-gray-600 mt-1">Need review</p>
+              <p className="text-xs text-gray-600 mt-1">Need review</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-[#F87171]" />
           </div>
@@ -196,9 +196,9 @@ const AuditTrail: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Compliance Score</p>
+              <p className="text-xs font-medium text-gray-600">Compliance Score</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">94%</p>
-              <p className="text-sm text-gray-600 mt-1">Overall rating</p>
+              <p className="text-xs text-gray-600 mt-1">Overall rating</p>
             </div>
             <Shield className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -207,9 +207,9 @@ const AuditTrail: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Active Users</p>
+              <p className="text-xs font-medium text-gray-600">Active Users</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">24</p>
-              <p className="text-sm text-gray-600 mt-1">This session</p>
+              <p className="text-xs text-gray-600 mt-1">This session</p>
             </div>
             <User className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -220,7 +220,7 @@ const AuditTrail: React.FC = () => {
       <Card>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Search</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -234,7 +234,7 @@ const AuditTrail: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Risk Level</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Risk Level</label>
             <select
               value={selectedRiskLevel}
               onChange={(e) => setSelectedRiskLevel(e.target.value)}
@@ -248,7 +248,7 @@ const AuditTrail: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Action Type</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Action Type</label>
             <select
               value={selectedAction}
               onChange={(e) => setSelectedAction(e.target.value)}
@@ -263,7 +263,7 @@ const AuditTrail: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Date Range</label>
             <input
               type="date"
               value={dateRange.start}
@@ -292,7 +292,7 @@ const AuditTrail: React.FC = () => {
             <tbody>
               {filteredEntries.map(entry => (
                 <tr key={entry.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">
+                  <td className="py-3 px-4 text-xs text-gray-600">
                     {entry.timestamp.toLocaleString()}
                   </td>
                   <td className="py-3 px-4">
@@ -301,17 +301,17 @@ const AuditTrail: React.FC = () => {
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-[#101010] text-sm">{entry.userName}</p>
+                        <p className="font-medium text-[#101010] text-xs">{entry.userName}</p>
                         <p className="text-xs text-gray-500">{entry.ipAddress}</p>
                       </div>
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    <span className="font-medium text-[#101010] text-sm">{entry.action}</span>
+                    <span className="font-medium text-[#101010] text-xs">{entry.action}</span>
                   </td>
                   <td className="py-3 px-4">
                     <div>
-                      <p className="font-medium text-[#101010] text-sm">{entry.resource}</p>
+                      <p className="font-medium text-[#101010] text-xs">{entry.resource}</p>
                       <p className="text-xs text-gray-500">{entry.resourceId}</p>
                     </div>
                   </td>
@@ -353,7 +353,7 @@ const AuditTrail: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-[#101010]">{report.name}</h3>
-                    <p className="text-sm text-gray-600">{report.type.toUpperCase()} Compliance Framework</p>
+                    <p className="text-xs text-gray-600">{report.type.toUpperCase()} Compliance Framework</p>
                   </div>
                 </div>
                 
@@ -368,7 +368,7 @@ const AuditTrail: React.FC = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-4 gap-4 text-sm">
+              <div className="grid grid-cols-4 gap-4 text-xs">
                 <div>
                   <p className="text-gray-600">Last Assessment</p>
                   <p className="font-medium text-[#101010]">{report.lastAssessment.toLocaleDateString()}</p>
@@ -398,20 +398,20 @@ const AuditTrail: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Retention Policies</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Audit Logs</span>
-                <span className="text-sm text-[#3AB7BF]">7 years</span>
+                <span className="text-xs font-medium text-gray-700">Audit Logs</span>
+                <span className="text-xs text-[#3AB7BF]">7 years</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Financial Data</span>
-                <span className="text-sm text-[#3AB7BF]">10 years</span>
+                <span className="text-xs font-medium text-gray-700">Financial Data</span>
+                <span className="text-xs text-[#3AB7BF]">10 years</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">User Activity</span>
-                <span className="text-sm text-[#3AB7BF]">3 years</span>
+                <span className="text-xs font-medium text-gray-700">User Activity</span>
+                <span className="text-xs text-[#3AB7BF]">3 years</span>
               </div>
               <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">System Logs</span>
-                <span className="text-sm text-[#3AB7BF]">1 year</span>
+                <span className="text-xs font-medium text-gray-700">System Logs</span>
+                <span className="text-xs text-[#3AB7BF]">1 year</span>
               </div>
             </div>
           </div>
@@ -422,28 +422,28 @@ const AuditTrail: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Lock className="w-4 h-4 text-[#4ADE80] mr-2" />
-                  <span className="text-sm text-gray-700">Encryption at Rest</span>
+                  <span className="text-xs text-gray-700">Encryption at Rest</span>
                 </div>
                 <CheckCircle className="w-4 h-4 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Lock className="w-4 h-4 text-[#4ADE80] mr-2" />
-                  <span className="text-sm text-gray-700">Encryption in Transit</span>
+                  <span className="text-xs text-gray-700">Encryption in Transit</span>
                 </div>
                 <CheckCircle className="w-4 h-4 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Shield className="w-4 h-4 text-[#4ADE80] mr-2" />
-                  <span className="text-sm text-gray-700">Access Controls</span>
+                  <span className="text-xs text-gray-700">Access Controls</span>
                 </div>
                 <CheckCircle className="w-4 h-4 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Eye className="w-4 h-4 text-[#4ADE80] mr-2" />
-                  <span className="text-sm text-gray-700">Activity Monitoring</span>
+                  <span className="text-xs text-gray-700">Activity Monitoring</span>
                 </div>
                 <CheckCircle className="w-4 h-4 text-[#4ADE80]" />
               </div>
@@ -462,10 +462,10 @@ const AuditTrail: React.FC = () => {
                   <Activity className="w-4 h-4 text-[#3AB7BF] mr-2" />
                   <span className="font-medium text-[#101010]">{entry.action}</span>
                 </div>
-                <span className="text-sm text-gray-500">{entry.timestamp.toLocaleString()}</span>
+                <span className="text-xs text-gray-500">{entry.timestamp.toLocaleString()}</span>
               </div>
               
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-2 gap-4 text-xs">
                 <div>
                   <p className="text-gray-600 mb-1">Before:</p>
                   <div className="p-2 bg-[#F87171]/10 rounded border border-[#F87171]/20">

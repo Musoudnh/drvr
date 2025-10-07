@@ -454,7 +454,7 @@ const Sandbox: React.FC = () => {
                         : 'bg-gray-100'
                     }`}>
                       {message.type === 'user' ? (
-                        <span className="text-white text-sm font-medium">U</span>
+                        <span className="text-white text-xs font-medium">U</span>
                       ) : (
                         <Brain className="w-4 h-4 text-gray-600" />
                       )}
@@ -464,7 +464,7 @@ const Sandbox: React.FC = () => {
                         ? 'bg-[#4F46E5] text-white'
                         : 'bg-gray-100 text-gray-900'
                     }`}>
-                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-xs leading-relaxed">{message.content}</p>
                       <p className={`text-xs mt-2 ${
                         message.type === 'user' ? 'text-[#4F46E5]/70' : 'text-gray-500'
                       }`}>
@@ -478,7 +478,7 @@ const Sandbox: React.FC = () => {
                     <div className="mt-2 ml-11">
                       <button
                         onClick={() => setActiveResult(message.result!)}
-                        className="px-3 py-2 text-sm font-medium text-[#4F46E5] bg-[#4F46E5]/10 border border-[#4F46E5]/20 rounded-lg hover:bg-[#4F46E5]/20 transition-colors flex items-center"
+                        className="px-3 py-2 text-xs font-medium text-[#4F46E5] bg-[#4F46E5]/10 border border-[#4F46E5]/20 rounded-lg hover:bg-[#4F46E5]/20 transition-colors flex items-center"
                       >
                         <BarChart3 className="w-4 h-4 mr-2" />
                         View Detailed Results
@@ -503,7 +503,7 @@ const Sandbox: React.FC = () => {
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                       </div>
-                      <span className="text-sm text-gray-600">Analyzing...</span>
+                      <span className="text-xs text-gray-600">Analyzing...</span>
                     </div>
                   </div>
                 </div>
@@ -540,7 +540,7 @@ const Sandbox: React.FC = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Ask a financial question or describe a scenario..."
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent resize-none text-sm"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent resize-none text-xs"
                   rows={1}
                   style={{ minHeight: '44px', maxHeight: '120px' }}
                   disabled={isProcessing}
@@ -603,7 +603,7 @@ const Sandbox: React.FC = () => {
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">Query Analysis</h4>
-                      <p className="text-sm text-gray-600 mb-3">"{activeResult.query}"</p>
+                      <p className="text-xs text-gray-600 mb-3">"{activeResult.query}"</p>
                       <p className="text-gray-800 leading-relaxed">{activeResult.results.summary}</p>
                     </div>
                     <div className="text-xs text-gray-500">
@@ -637,7 +637,7 @@ const Sandbox: React.FC = () => {
                             </span>
                           </div>
                           <div className="ml-9">
-                            <p className="text-sm text-gray-700 mb-2">{step.explanation}</p>
+                            <p className="text-xs text-gray-700 mb-2">{step.explanation}</p>
                             <div className="bg-white rounded-lg p-3 border border-gray-200">
                               <code className="text-xs text-[#4F46E5] font-mono">
                                 {step.formula}
@@ -661,10 +661,10 @@ const Sandbox: React.FC = () => {
                       <table className="w-full">
                         <thead>
                           <tr className="border-b border-gray-200">
-                            <th className="text-left py-3 px-4 font-semibold text-gray-700 text-sm">Scenario</th>
-                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">Value</th>
-                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">Variance</th>
-                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-sm">% Change</th>
+                            <th className="text-left py-3 px-4 font-semibold text-gray-700 text-xs">Scenario</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-xs">Value</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-xs">Variance</th>
+                            <th className="text-right py-3 px-4 font-semibold text-gray-700 text-xs">% Change</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -717,7 +717,7 @@ const Sandbox: React.FC = () => {
                               {impact.significance} impact
                             </span>
                           </div>
-                          <div className="space-y-2 text-sm">
+                          <div className="space-y-2 text-xs">
                             <div className="flex justify-between">
                               <span className="text-gray-600">Current:</span>
                               <span className="font-medium text-gray-900">
@@ -770,7 +770,7 @@ const Sandbox: React.FC = () => {
                       {activeResult.results.recommendations.map((rec, index) => (
                         <div key={index} className="flex items-start p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                           <CheckCircle className="w-4 h-4 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm text-gray-800">{rec}</p>
+                          <p className="text-xs text-gray-800">{rec}</p>
                         </div>
                       ))}
                     </div>
@@ -788,11 +788,11 @@ const Sandbox: React.FC = () => {
                       {activeResult.dataLineage.map((source, index) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
                           <div>
-                            <span className="text-sm font-medium text-gray-900">{source.field}</span>
+                            <span className="text-xs font-medium text-gray-900">{source.field}</span>
                             <p className="text-xs text-gray-600">{source.source}</p>
                           </div>
                           <div className="text-right">
-                            <span className="text-sm font-medium text-gray-900">
+                            <span className="text-xs font-medium text-gray-900">
                               {formatCurrency(source.value)}
                             </span>
                             <p className="text-xs text-gray-500">
@@ -816,7 +816,7 @@ const Sandbox: React.FC = () => {
                   <p className="text-gray-600 mb-6">
                     Ask financial questions in natural language and get AI-powered calculations and insights.
                   </p>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-xs text-gray-600">
                     <p className="flex items-center justify-center">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                       Connected to live financial data

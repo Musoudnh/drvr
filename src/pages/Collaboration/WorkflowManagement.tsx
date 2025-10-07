@@ -215,9 +215,9 @@ const WorkflowManagement: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Active Workflows</p>
+              <p className="text-xs font-medium text-gray-600">Active Workflows</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{workflows.filter(w => w.status === 'active').length}</p>
-              <p className="text-sm text-gray-600 mt-1">In progress</p>
+              <p className="text-xs text-gray-600 mt-1">In progress</p>
             </div>
             <Clock className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -226,11 +226,11 @@ const WorkflowManagement: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Pending Approvals</p>
+              <p className="text-xs font-medium text-gray-600">Pending Approvals</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">
                 {workflows.reduce((count, w) => count + w.steps.filter(s => s.status === 'pending' && s.approvalRequired).length, 0)}
               </p>
-              <p className="text-sm text-gray-600 mt-1">Need attention</p>
+              <p className="text-xs text-gray-600 mt-1">Need attention</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -239,9 +239,9 @@ const WorkflowManagement: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Completed</p>
+              <p className="text-xs font-medium text-gray-600">Completed</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">{workflows.filter(w => w.status === 'completed').length}</p>
-              <p className="text-sm text-gray-600 mt-1">This month</p>
+              <p className="text-xs text-gray-600 mt-1">This month</p>
             </div>
             <CheckCircle className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -250,9 +250,9 @@ const WorkflowManagement: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Team Members</p>
+              <p className="text-xs font-medium text-gray-600">Team Members</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">12</p>
-              <p className="text-sm text-gray-600 mt-1">Participating</p>
+              <p className="text-xs text-gray-600 mt-1">Participating</p>
             </div>
             <Users className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -267,10 +267,10 @@ const WorkflowManagement: React.FC = () => {
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <h3 className="font-semibold text-[#101010]">{workflow.name}</h3>
-                  <p className="text-sm text-gray-600">{workflow.description}</p>
+                  <p className="text-xs text-gray-600">{workflow.description}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">v{workflow.version}</span>
+                  <span className="text-xs text-gray-500">v{workflow.version}</span>
                   <button
                     onClick={() => {
                       setSelectedWorkflow(workflow);
@@ -311,7 +311,7 @@ const WorkflowManagement: React.FC = () => {
                 })}
               </div>
               
-              <div className="flex items-center justify-between text-sm text-gray-500">
+              <div className="flex items-center justify-between text-xs text-gray-500">
                 <span>Created by {workflow.createdBy}</span>
                 <span>{workflow.steps.filter(s => s.status === 'completed').length} of {workflow.steps.length} steps completed</span>
               </div>
@@ -350,7 +350,7 @@ const WorkflowManagement: React.FC = () => {
                         />
                         <div>
                           <h4 className="font-semibold text-[#101010]">{step.name}</h4>
-                          <p className="text-sm text-gray-600">Assigned to: {step.assignee}</p>
+                          <p className="text-xs text-gray-600">Assigned to: {step.assignee}</p>
                         </div>
                       </div>
                       
@@ -383,10 +383,10 @@ const WorkflowManagement: React.FC = () => {
                         {step.comments.map(comment => (
                           <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
+                              <span className="font-medium text-[#101010] text-xs">{comment.author}</span>
                               <span className="text-xs text-gray-500">{comment.createdAt.toLocaleDateString()}</span>
                             </div>
-                            <p className="text-sm text-gray-700">{comment.content}</p>
+                            <p className="text-xs text-gray-700">{comment.content}</p>
                           </div>
                         ))}
                       </div>
@@ -399,7 +399,7 @@ const WorkflowManagement: React.FC = () => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Add a comment..."
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent text-xs"
                       />
                       <button
                         onClick={() => {
@@ -449,7 +449,7 @@ const WorkflowManagement: React.FC = () => {
                 <template.icon className="w-5 h-5 text-[#8B5CF6] mr-3" />
                 <h3 className="font-semibold text-[#101010]">{template.name}</h3>
               </div>
-              <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+              <p className="text-xs text-gray-600 mb-3">{template.description}</p>
               <div className="space-y-1">
                 {template.steps.map((step, stepIndex) => (
                   <div key={stepIndex} className="text-xs text-gray-500 flex items-center">

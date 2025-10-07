@@ -30,13 +30,13 @@ const Integrations: React.FC = () => {
             <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div className="flex items-center">
                 <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                  <span className="text-white font-medium text-sm">
+                  <span className="text-white font-medium text-xs">
                     {integration.name === 'QuickBooks' ? 'QB' : integration.name.substring(0, 2)}
                   </span>
                 </div>
                 <div>
                   <p className="font-medium text-[#101010]">{integration.name}</p>
-                  <p className="text-sm text-gray-600">{integration.description}</p>
+                  <p className="text-xs text-gray-600">{integration.description}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ const Integrations: React.FC = () => {
             <div key={index} className="p-4 border border-gray-200 rounded-lg hover:border-[#3AB7BF] hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-3">
                 <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center">
-                  <span className="text-white font-medium text-sm">
+                  <span className="text-white font-medium text-xs">
                     {integration.name === 'QuickBooks' ? 'QB' : 
                      integration.name === 'Outlook Calendar' ? 'OC' :
                      integration.name === 'Monday.com' ? 'MD' :
@@ -69,7 +69,7 @@ const Integrations: React.FC = () => {
                 </Button>
               </div>
               <h3 className="font-medium text-[#101010] mb-1">{integration.name}</h3>
-              <p className="text-sm text-gray-600">{integration.description}</p>
+              <p className="text-xs text-gray-600">{integration.description}</p>
             </div>
           ))}
         </div>

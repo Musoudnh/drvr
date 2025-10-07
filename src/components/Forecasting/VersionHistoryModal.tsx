@@ -102,7 +102,7 @@ export function VersionHistoryModal({
 
         {selectedForComparison.length === 2 && (
           <div className="px-6 py-3 bg-[#EEF2FF] border-b border-[#C7D2FE] flex items-center justify-between">
-            <span className="text-sm text-[#4338CA] font-medium">
+            <span className="text-xs text-[#4338CA] font-medium">
               2 versions selected for comparison
             </span>
             <Button onClick={handleCompare} variant="primary" size="sm">
@@ -122,7 +122,7 @@ export function VersionHistoryModal({
             <div className="text-center py-12">
               <History className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-600 text-lg">No saved versions yet</p>
-              <p className="text-gray-400 text-sm mt-2">
+              <p className="text-gray-400 text-xs mt-2">
                 Save your first forecast to start tracking version history
               </p>
             </div>
@@ -155,10 +155,10 @@ export function VersionHistoryModal({
                       </div>
 
                       {version.description && (
-                        <p className="text-gray-600 text-sm mb-3">{version.description}</p>
+                        <p className="text-gray-600 text-xs mb-3">{version.description}</p>
                       )}
 
-                      <div className="flex items-center gap-6 text-sm text-gray-500">
+                      <div className="flex items-center gap-6 text-xs text-gray-500">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>{format(new Date(version.created_at), 'MMM dd, yyyy HH:mm')}</span>

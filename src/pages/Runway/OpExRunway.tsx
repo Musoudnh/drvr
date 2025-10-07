@@ -120,9 +120,9 @@ const OpExRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Current OpEx</p>
+              <p className="text-xs font-medium text-gray-600">Current OpEx</p>
               <p className="text-2xl font-bold text-[#F87171] mt-1">${startingOpEx.toLocaleString()}</p>
-              <p className="text-sm text-gray-600 mt-1">Monthly operational</p>
+              <p className="text-xs text-gray-600 mt-1">Monthly operational</p>
             </div>
             <TrendingDown className="w-8 h-8 text-[#F87171]" />
           </div>
@@ -131,9 +131,9 @@ const OpExRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Growth Rate</p>
+              <p className="text-xs font-medium text-gray-600">Growth Rate</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">{opexGrowthRate}%</p>
-              <p className="text-sm text-gray-600 mt-1">Monthly increase</p>
+              <p className="text-xs text-gray-600 mt-1">Monthly increase</p>
             </div>
             <BarChart3 className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -142,9 +142,9 @@ const OpExRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">12M Projection</p>
+              <p className="text-xs font-medium text-gray-600">12M Projection</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">${(totalProjectedOpEx / 1000000).toFixed(1)}M</p>
-              <p className="text-sm text-[#F87171] mt-1">+{averageGrowthRate.toFixed(1)}% avg growth</p>
+              <p className="text-xs text-[#F87171] mt-1">+{averageGrowthRate.toFixed(1)}% avg growth</p>
             </div>
             <Target className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -153,9 +153,9 @@ const OpExRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Active Drivers</p>
+              <p className="text-xs font-medium text-gray-600">Active Drivers</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{opexDrivers.filter(d => d.active).length}</p>
-              <p className="text-sm text-gray-600 mt-1">Cost initiatives</p>
+              <p className="text-xs text-gray-600 mt-1">Cost initiatives</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -165,7 +165,7 @@ const OpExRunway: React.FC = () => {
       {/* OpEx Expenses Management */}
       <Card title="OpEx Expense Categories">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage your operational expense categories and timeline</p>
+          <p className="text-xs text-gray-600">Manage your operational expense categories and timeline</p>
           <Button 
             variant="primary" 
             size="sm"
@@ -189,7 +189,7 @@ const OpExRunway: React.FC = () => {
                   />
                   <div>
                     <h3 className="font-semibold text-[#101010] text-lg">{expense.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{expense.category} • ${expense.amount.toLocaleString()}/month</p>
+                    <p className="text-xs text-gray-600 mt-1">{expense.category} • ${expense.amount.toLocaleString()}/month</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -207,10 +207,10 @@ const OpExRunway: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div className="text-sm text-gray-600">
+                <div className="text-xs text-gray-600">
                   <span className="font-medium">Timeline:</span> {expense.startMonth} - {expense.endMonth}
                 </div>
-                <div className="text-sm font-semibold" style={{ color: getCategoryColor(expense.category) }}>
+                <div className="text-xs font-semibold" style={{ color: getCategoryColor(expense.category) }}>
                   ${(expense.amount * 12).toLocaleString()}/year
                 </div>
               </div>
@@ -249,12 +249,12 @@ const OpExRunway: React.FC = () => {
                           <span className="font-semibold text-[#101010]">{expense.name}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{expense.category}</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">Recurring</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">{expense.startMonth.split(' ')[0]}</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">12 months</td>
-                      <td className="py-3 px-4 text-right text-sm font-bold" style={{ color: getCategoryColor(expense.category) }}>${expense.amount.toLocaleString()}</td>
-                      <td className="py-3 px-4 text-center text-sm font-semibold text-gray-700">${(expense.amount * 12).toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-xs font-medium text-gray-700">{expense.category}</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">Recurring</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">{expense.startMonth.split(' ')[0]}</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">12 months</td>
+                      <td className="py-3 px-4 text-right text-xs font-bold" style={{ color: getCategoryColor(expense.category) }}>${expense.amount.toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-xs font-semibold text-gray-700">${(expense.amount * 12).toLocaleString()}</td>
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-2">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium`}
@@ -271,13 +271,13 @@ const OpExRunway: React.FC = () => {
                             <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 min-w-[120px]">
                               <button
                                 onClick={() => setOpexExpenses(prev => prev.map(e => e.id === expense.id ? {...e, active: !e.active} : e))}
-                                className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                                className="w-full px-3 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center"
                               >
                                 {expense.active ? 'Deactivate' : 'Activate'}
                               </button>
                               <button
                                 onClick={() => handleDeleteExpense(expense.id)}
-                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                                className="w-full px-3 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center"
                               >
                                 Delete
                               </button>
@@ -299,7 +299,7 @@ const OpExRunway: React.FC = () => {
               <div className="min-w-[1200px]">
                 {/* Timeline Header */}
                 <div className="flex mb-2">
-                  <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">OpEx Category</div>
+                  <div className="w-48 text-xs font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">OpEx Category</div>
                   <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
                     {months.map((month, index) => (
                       <div key={index} className="text-xs font-bold text-gray-700 text-center">
@@ -312,7 +312,7 @@ const OpExRunway: React.FC = () => {
                 {/* Timeline Rows */}
                 {opexExpenses.map(expense => (
                   <div key={expense.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate">
+                    <div className="w-48 text-xs font-medium text-[#101010] p-2 truncate">
                       <div className="flex items-center">
                         <div 
                           className={`w-3 h-3 rounded-full mr-3 ${
@@ -353,7 +353,7 @@ const OpExRunway: React.FC = () => {
       {/* OpEx Drivers */}
       <Card title="Operational Expense Drivers">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage cost optimization and expense planning initiatives</p>
+          <p className="text-xs text-gray-600">Manage cost optimization and expense planning initiatives</p>
           <div className="flex gap-2">
             <Button 
               variant="outline" 
@@ -383,7 +383,7 @@ const OpExRunway: React.FC = () => {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-bold text-[#101010] text-lg">{driver.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">Category: {driver.type}</p>
+                  <p className="text-xs text-gray-600 mt-1">Category: {driver.type}</p>
                 </div>
                 <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
                   driver.active ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-300 text-gray-600'
@@ -393,13 +393,13 @@ const OpExRunway: React.FC = () => {
               </div>
               
               <div className="space-y-2">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-600">Impact:</span>
                   <span className={`font-medium ${driver.impact.includes('-') ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                     {driver.impact}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-600">Start Date:</span>
                   <span className="font-semibold text-[#101010]">{driver.startMonth}</span>
                 </div>
@@ -413,8 +413,8 @@ const OpExRunway: React.FC = () => {
       <Card title="12-Month OpEx Projection">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">Monthly OpEx Growth</span>
-            <span className="text-sm text-[#F87171] font-medium">+{averageGrowthRate.toFixed(1)}% avg growth</span>
+            <span className="text-xs font-medium text-gray-600">Monthly OpEx Growth</span>
+            <span className="text-xs text-[#F87171] font-medium">+{averageGrowthRate.toFixed(1)}% avg growth</span>
           </div>
           <div className="relative h-64">
             {/* Chart Container */}
@@ -492,11 +492,11 @@ const OpExRunway: React.FC = () => {
           <div className="flex items-center justify-center gap-6 pt-4 border-t border-gray-200">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#3B82F6] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Base OpEx</span>
+              <span className="text-xs text-gray-600">Base OpEx</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#F87171] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Total OpEx (with drivers)</span>
+              <span className="text-xs text-gray-600">Total OpEx (with drivers)</span>
             </div>
           </div>
           
@@ -526,19 +526,19 @@ const OpExRunway: React.FC = () => {
           <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
             <DollarSign className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Potential Savings</h3>
-            <p className="text-sm text-gray-600">Software optimization could save $144K annually</p>
+            <p className="text-xs text-gray-600">Software optimization could save $144K annually</p>
           </div>
           
           <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
             <Building className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Facility Costs</h3>
-            <p className="text-sm text-gray-600">Lease renewal will increase costs by $96K annually</p>
+            <p className="text-xs text-gray-600">Lease renewal will increase costs by $96K annually</p>
           </div>
           
           <div className="text-center p-4 bg-[#8B5CF6]/10 rounded-lg">
             <Users className="w-8 h-8 text-[#8B5CF6] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Efficiency Gains</h3>
-            <p className="text-sm text-gray-600">Automation could reduce operational costs by 8%</p>
+            <p className="text-xs text-gray-600">Automation could reduce operational costs by 8%</p>
           </div>
         </div>
       </Card>
@@ -547,19 +547,19 @@ const OpExRunway: React.FC = () => {
       <div className="grid grid-cols-3 gap-4 text-center mt-8">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#3B82F6]">${(startingOpEx * 12 / 1000000).toFixed(1)}M</p>
-          <p className="text-sm text-gray-500">Base OpEx</p>
+          <p className="text-xs text-gray-500">Base OpEx</p>
           <p className="text-xs text-gray-600">(12M)</p>
           <p className="text-xs text-[#3B82F6]">Organic growth at {opexGrowthRate}% monthly</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#F87171]">${(totalProjectedOpEx / 1000000).toFixed(1)}M</p>
-          <p className="text-sm text-gray-500">Total Scenario</p>
+          <p className="text-xs text-gray-500">Total Scenario</p>
           <p className="text-xs text-gray-600">(12M)</p>
           <p className="text-xs text-[#F87171]">With all active drivers</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#F59E0B]">+${((totalProjectedOpEx - startingOpEx * 12) / 1000000).toFixed(1)}M</p>
-          <p className="text-sm text-gray-500">Driver Impact</p>
+          <p className="text-xs text-gray-500">Driver Impact</p>
           <p className="text-xs text-gray-600">(12M)</p>
           <p className="text-xs text-[#F87171]">Additional costs</p>
         </div>
@@ -581,7 +581,7 @@ const OpExRunway: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Expense Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Expense Name</label>
                 <input
                   type="text"
                   value={newExpense.name}
@@ -593,7 +593,7 @@ const OpExRunway: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Amount ($)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Monthly Amount ($)</label>
                   <input
                     type="number"
                     value={newExpense.amount}
@@ -604,7 +604,7 @@ const OpExRunway: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Category</label>
                   <select
                     value={newExpense.category}
                     onChange={(e) => setNewExpense({...newExpense, category: e.target.value})}
@@ -621,7 +621,7 @@ const OpExRunway: React.FC = () => {
                 
                 {newExpense.category === 'Custom' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Custom Category Name</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Custom Category Name</label>
                     <input
                       type="text"
                       value={newExpense.customCategory}
@@ -635,7 +635,7 @@ const OpExRunway: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
                   <select
                     value={newExpense.startMonth}
                     onChange={(e) => setNewExpense({...newExpense, startMonth: e.target.value})}
@@ -648,7 +648,7 @@ const OpExRunway: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
                   <select
                     value={newExpense.endMonth}
                     onChange={(e) => setNewExpense({...newExpense, endMonth: e.target.value})}

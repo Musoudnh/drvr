@@ -247,7 +247,7 @@ const BalanceSheet: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/forecasting')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/forecasting'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -257,7 +257,7 @@ const BalanceSheet: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/balance')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -267,7 +267,7 @@ const BalanceSheet: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/cashflow')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -280,31 +280,31 @@ const BalanceSheet: React.FC = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Save className="w-4 h-4 mr-2" />
             Save Forecast
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Bell className="w-4 h-4 mr-2" />
             Alerts
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Applied Scenarios
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Version History
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Download className="w-4 h-4 mr-2" />
             Export
@@ -319,7 +319,7 @@ const BalanceSheet: React.FC = () => {
             <div className="relative" ref={quarterDropdownRef}>
               <button
                 onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedQuarter}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -334,7 +334,7 @@ const BalanceSheet: React.FC = () => {
                           setSelectedQuarter(quarter);
                           setQuarterDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedQuarter === quarter
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -353,7 +353,7 @@ const BalanceSheet: React.FC = () => {
             <div className="relative" ref={yearDropdownRef}>
               <button
                 onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedYear}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -368,7 +368,7 @@ const BalanceSheet: React.FC = () => {
                           setSelectedYear(year);
                           setYearDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedYear === year
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -387,7 +387,7 @@ const BalanceSheet: React.FC = () => {
 
           <button
             onClick={() => setDateViewMode('quarters')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               dateViewMode === 'quarters'
                 ? 'bg-[#7B68EE] text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
@@ -397,7 +397,7 @@ const BalanceSheet: React.FC = () => {
           </button>
           <button
             onClick={() => setDateViewMode('years')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               dateViewMode === 'years'
                 ? 'bg-[#7B68EE] text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
@@ -465,15 +465,15 @@ const BalanceSheet: React.FC = () => {
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
-                  <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-xs text-gray-600">{item.code}</td>}
+                  <td className="py-3 px-4 text-xs text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
-                    <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td key={col.key} className="py-3 px-4 text-xs text-right text-gray-600">
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
+                  <td className="py-3 px-4 text-xs text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
+                  <td className="py-3 px-4 text-xs text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
@@ -497,15 +497,15 @@ const BalanceSheet: React.FC = () => {
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Assets')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
-                  <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-xs text-gray-600">{item.code}</td>}
+                  <td className="py-3 px-4 text-xs text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
-                    <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td key={col.key} className="py-3 px-4 text-xs text-right text-gray-600">
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                  <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
+                  <td className="py-3 px-4 text-xs text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
+                  <td className="py-3 px-4 text-xs text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
@@ -542,15 +542,15 @@ const BalanceSheet: React.FC = () => {
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
-                  <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-xs text-gray-600">{item.code}</td>}
+                  <td className="py-3 px-4 text-xs text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
-                    <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td key={col.key} className="py-3 px-4 text-xs text-right text-gray-600">
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                    <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
+                    <td className="py-3 px-4 text-xs text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
+                  <td className="py-3 px-4 text-xs text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
@@ -574,15 +574,15 @@ const BalanceSheet: React.FC = () => {
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Non-Current Liabilities')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
-                  <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-xs text-gray-600">{item.code}</td>}
+                  <td className="py-3 px-4 text-xs text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
-                    <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td key={col.key} className="py-3 px-4 text-xs text-right text-gray-600">
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                    <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
+                    <td className="py-3 px-4 text-xs text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
+                  <td className="py-3 px-4 text-xs text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-100 font-semibold">
@@ -612,15 +612,15 @@ const BalanceSheet: React.FC = () => {
               </tr>
               {filterItems(balanceSheetData.filter(item => item.category === 'Equity')).map((item) => (
                 <tr key={item.code} className="border-b border-gray-100 hover:bg-gray-50">
-                  {showAccountCodes && <td className="py-3 px-4 text-sm text-gray-600">{item.code}</td>}
-                  <td className="py-3 px-4 text-sm text-[#101010]">{item.name}</td>
+                  {showAccountCodes && <td className="py-3 px-4 text-xs text-gray-600">{item.code}</td>}
+                  <td className="py-3 px-4 text-xs text-[#101010]">{item.name}</td>
                   {displayColumns.map(col => (
-                    <td key={col.key} className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td key={col.key} className="py-3 px-4 text-xs text-right text-gray-600">
                       {formatCurrency(item[col.key] || 0)}
                     </td>
                   ))}
-                    <td className="py-3 px-4 text-sm text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
-                  <td className="py-3 px-4 text-sm text-right text-gray-600">{item.percentOfTotal}%</td>
+                    <td className="py-3 px-4 text-xs text-right font-medium text-[#101010]">{formatCurrency(item.total)}</td>
+                  <td className="py-3 px-4 text-xs text-right text-gray-600">{item.percentOfTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-100 font-bold">

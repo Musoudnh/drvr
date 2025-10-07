@@ -574,7 +574,7 @@ const RunwayPlanning: React.FC = () => {
               <select
                 value={selectedScenario}
                 onChange={(e) => setSelectedScenario(e.target.value)}
-                className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm font-medium text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-xs font-medium text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
               >
                 {scenarios.map(scenario => (
                   <option key={scenario.id} value={scenario.id}>
@@ -613,7 +613,7 @@ const RunwayPlanning: React.FC = () => {
 
             {/* Compare Toggle */}
             <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-700">Compare:</span>
+              <span className="text-xs font-medium text-gray-700">Compare:</span>
               {scenarios.filter(s => s.id !== selectedScenario).map(scenario => (
                 <label key={scenario.id} className="flex items-center">
                   <input
@@ -622,7 +622,7 @@ const RunwayPlanning: React.FC = () => {
                     onChange={() => toggleScenarioCompare(scenario.id)}
                     className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2"
                   />
-                  <span className="text-sm text-gray-700">{scenario.name}</span>
+                  <span className="text-xs text-gray-700">{scenario.name}</span>
                 </label>
               ))}
             </div>
@@ -723,7 +723,7 @@ const RunwayPlanning: React.FC = () => {
                     </button>
                   </div>
                   
-                  <h3 className="font-semibold text-gray-900 mb-2 text-sm">{driver.name}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-xs">{driver.name}</h3>
                   
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-600">
@@ -737,7 +737,7 @@ const RunwayPlanning: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-gray-900">
+                    <span className="text-xs font-bold text-gray-900">
                       {driver.type.includes('PERCENT') || driver.type.includes('CHANGE') 
                         ? `${(driver.magnitude * 100).toFixed(1)}%`
                         : driver.type === 'HEADCOUNT_ADD' || driver.type === 'HEADCOUNT_CUT'
@@ -828,11 +828,11 @@ const RunwayPlanning: React.FC = () => {
                 
                 <div className="mt-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Current Cash</p>
+                    <p className="text-xs text-gray-600">Current Cash</p>
                     <p className="text-lg font-bold text-gray-900">{formatCurrency(currentCash)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Runway</p>
+                    <p className="text-xs text-gray-600">Runway</p>
                     <p className="text-lg font-bold text-gray-900">{formatMonths(currentRunway)}</p>
                   </div>
                 </div>
@@ -897,11 +897,11 @@ const RunwayPlanning: React.FC = () => {
                 
                 <div className="mt-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Current MRR</p>
+                    <p className="text-xs text-gray-600">Current MRR</p>
                     <p className="text-lg font-bold text-gray-900">{formatCurrency(currentData?.mrr[0] || 0)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Growth Rate</p>
+                    <p className="text-xs text-gray-600">Growth Rate</p>
                     <p className="text-lg font-bold text-gray-900">+12.5%</p>
                   </div>
                 </div>
@@ -948,7 +948,7 @@ const RunwayPlanning: React.FC = () => {
             {compareScenarios.length > 0 && (
               <Card title="Scenario Comparison" className="mt-6">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-xs">
                     <thead>
                       <tr className="border-b border-gray-200">
                         <th className="text-left py-3 px-4 font-medium text-gray-700">Metric</th>
@@ -1025,7 +1025,7 @@ const RunwayPlanning: React.FC = () => {
                   <h3 className="font-semibold text-gray-900">Team Expansion Timeline</h3>
                   <button
                     onClick={() => setShowHiringGantt(!showHiringGantt)}
-                    className="text-sm text-[#4F46E5] hover:underline"
+                    className="text-xs text-[#4F46E5] hover:underline"
                   >
                     {showHiringGantt ? 'Hide' : 'Show'} Gantt View
                   </button>
@@ -1042,7 +1042,7 @@ const RunwayPlanning: React.FC = () => {
 
               {/* Hiring Table */}
               <div className="overflow-x-auto mb-6">
-                <table className="w-full text-sm">
+                <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="text-left py-2 px-3 font-medium text-gray-700">Role</th>
@@ -1097,7 +1097,7 @@ const RunwayPlanning: React.FC = () => {
                   <div className="space-y-3">
                     {/* Month headers */}
                     <div className="flex items-center">
-                      <div className="w-48 text-sm font-medium text-gray-700">Role</div>
+                      <div className="w-48 text-xs font-medium text-gray-700">Role</div>
                       <div className="flex-1 grid grid-cols-12 gap-1">
                         {forecastData.months.map(month => (
                           <div key={month} className="text-xs text-gray-500 text-center">
@@ -1114,7 +1114,7 @@ const RunwayPlanning: React.FC = () => {
                       
                       return (
                         <div key={hire.id} className="flex items-center group">
-                          <div className="w-48 text-sm text-gray-900 pr-4">
+                          <div className="w-48 text-xs text-gray-900 pr-4">
                             <div className="flex items-center">
                               <div 
                                 className="w-3 h-3 rounded-full mr-2"
@@ -1197,7 +1197,7 @@ const RunwayPlanning: React.FC = () => {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-3 py-1 text-sm font-medium rounded ${
+                    className={`px-3 py-1 text-xs font-medium rounded ${
                       activeTab === tab
                         ? 'bg-[#4F46E5] text-white'
                         : 'text-gray-600 hover:text-gray-900'
@@ -1213,21 +1213,21 @@ const RunwayPlanning: React.FC = () => {
               {activeTab === 'properties' && selectedDriver && (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Driver Name</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Driver Name</label>
                     <input
                       type="text"
                       value={selectedDriver.name}
                       onChange={(e) => setSelectedDriver({...selectedDriver, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Type</label>
                     <select
                       value={selectedDriver.type}
                       onChange={(e) => setSelectedDriver({...selectedDriver, type: e.target.value as any})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                     >
                       <option value="REVENUE_GROWTH">Revenue Growth</option>
                       <option value="PRICE_CHANGE">Price Change</option>
@@ -1243,11 +1243,11 @@ const RunwayPlanning: React.FC = () => {
                   
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
                       <select
                         value={selectedDriver.startMonth}
                         onChange={(e) => setSelectedDriver({...selectedDriver, startMonth: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                       >
                         {forecastData.months.map(month => (
                           <option key={month} value={month}>{month}</option>
@@ -1255,11 +1255,11 @@ const RunwayPlanning: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
                       <select
                         value={selectedDriver.endMonth}
                         onChange={(e) => setSelectedDriver({...selectedDriver, endMonth: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                       >
                         {forecastData.months.map(month => (
                           <option key={month} value={month}>{month}</option>
@@ -1269,22 +1269,22 @@ const RunwayPlanning: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Magnitude</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Magnitude</label>
                     <input
                       type="number"
                       value={selectedDriver.magnitude}
                       onChange={(e) => setSelectedDriver({...selectedDriver, magnitude: Number(e.target.value)})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                       step="0.01"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Shape</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Shape</label>
                     <select
                       value={selectedDriver.shape}
                       onChange={(e) => setSelectedDriver({...selectedDriver, shape: e.target.value as any})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                     >
                       <option value="step">Step Function</option>
                       <option value="linear">Linear Ramp</option>
@@ -1293,7 +1293,7 @@ const RunwayPlanning: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Scope</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Scope</label>
                     <div className="flex items-center space-x-4">
                       <label className="flex items-center">
                         <input
@@ -1302,7 +1302,7 @@ const RunwayPlanning: React.FC = () => {
                           onChange={() => setSelectedDriver({...selectedDriver, scope: 'global'})}
                           className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
                         />
-                        <span className="text-sm text-gray-700">Global</span>
+                        <span className="text-xs text-gray-700">Global</span>
                       </label>
                       <label className="flex items-center">
                         <input
@@ -1311,29 +1311,29 @@ const RunwayPlanning: React.FC = () => {
                           onChange={() => setSelectedDriver({...selectedDriver, scope: 'scenario'})}
                           className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
                         />
-                        <span className="text-sm text-gray-700">Scenario-specific</span>
+                        <span className="text-xs text-gray-700">Scenario-specific</span>
                       </label>
                     </div>
                   </div>
                   
                   {selectedDriver.department && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">Department</label>
                       <input
                         type="text"
                         value={selectedDriver.department}
                         onChange={(e) => setSelectedDriver({...selectedDriver, department: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                       />
                     </div>
                   )}
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Notes</label>
                     <textarea
                       value={selectedDriver.notes}
                       onChange={(e) => setSelectedDriver({...selectedDriver, notes: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
                       rows={3}
                       placeholder="Add notes about this driver..."
                     />
@@ -1341,8 +1341,8 @@ const RunwayPlanning: React.FC = () => {
                   
                   <div className="pt-4 border-t border-gray-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Runway Impact</span>
-                      <span className={`text-sm font-bold ${
+                      <span className="text-xs font-medium text-gray-700">Runway Impact</span>
+                      <span className={`text-xs font-bold ${
                         selectedDriver.impact >= 0 ? 'text-green-600' : 'text-red-600'
                       }`}>
                         {selectedDriver.impact >= 0 ? '+' : ''}{selectedDriver.impact.toFixed(1)}%
@@ -1365,13 +1365,13 @@ const RunwayPlanning: React.FC = () => {
                                 {comment.author.split(' ').map(n => n[0]).join('')}
                               </span>
                             </div>
-                            <span className="text-sm font-medium text-gray-900">{comment.author}</span>
+                            <span className="text-xs font-medium text-gray-900">{comment.author}</span>
                           </div>
                           <span className="text-xs text-gray-500">
                             {comment.timestamp.toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-700">{comment.content}</p>
+                        <p className="text-xs text-gray-700">{comment.content}</p>
                       </div>
                     ))}
                   </div>
@@ -1382,7 +1382,7 @@ const RunwayPlanning: React.FC = () => {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Add a comment... Use @ to mention someone"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent resize-none"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent resize-none"
                       rows={3}
                     />
                     <div className="flex items-center justify-between mt-2">
@@ -1419,13 +1419,13 @@ const RunwayPlanning: React.FC = () => {
                               {entry.user.split(' ').map(n => n[0]).join('')}
                             </span>
                           </div>
-                          <span className="text-sm font-medium text-gray-900">{entry.user}</span>
+                          <span className="text-xs font-medium text-gray-900">{entry.user}</span>
                         </div>
                         <span className="text-xs text-gray-500">
                           {entry.timestamp.toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-700 mb-1">{entry.action}</p>
+                      <p className="text-xs text-gray-700 mb-1">{entry.action}</p>
                       <div className="text-xs text-gray-600">
                         <span className="font-medium">{entry.field}:</span>
                         {entry.beforeValue && (
@@ -1460,7 +1460,7 @@ const RunwayPlanning: React.FC = () => {
             </Button>
           </div>
           
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <div className="flex items-center space-x-2 text-xs text-gray-600">
             <Clock className="w-4 h-4" />
             <span>Last saved: 2 minutes ago</span>
           </div>
@@ -1472,7 +1472,7 @@ const RunwayPlanning: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[400px] max-w-[90vw]">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Confirm Chart Edit</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-xs text-gray-600 mb-4">
               You're about to adjust {editingPoint.metric} for {forecastData.months[editingPoint.month]} 
               to {formatCurrency(editingPoint.value)}. This will create a one-time adjustment driver.
             </p>
@@ -1504,7 +1504,7 @@ const RunwayPlanning: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Export Format</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Export Format</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
                   <option value="pdf">PDF Report</option>
                   <option value="excel">Excel Workbook</option>
@@ -1513,18 +1513,18 @@ const RunwayPlanning: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Include Scenarios</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Include Scenarios</label>
                 <div className="space-y-2">
                   <label className="flex items-center">
                     <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                    <span className="text-sm text-gray-700">{currentScenario?.name} (Primary)</span>
+                    <span className="text-xs text-gray-700">{currentScenario?.name} (Primary)</span>
                   </label>
                   {compareScenarios.map(scenarioId => {
                     const scenario = scenarios.find(s => s.id === scenarioId);
                     return (
                       <label key={scenarioId} className="flex items-center">
                         <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                        <span className="text-sm text-gray-700">{scenario?.name}</span>
+                        <span className="text-xs text-gray-700">{scenario?.name}</span>
                       </label>
                     );
                   })}
@@ -1532,7 +1532,7 @@ const RunwayPlanning: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Report Sections</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Report Sections</label>
                 <div className="space-y-2">
                   {[
                     'Executive Summary',
@@ -1546,7 +1546,7 @@ const RunwayPlanning: React.FC = () => {
                   ].map(section => (
                     <label key={section} className="flex items-center">
                       <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                      <span className="text-sm text-gray-700">{section}</span>
+                      <span className="text-xs text-gray-700">{section}</span>
                     </label>
                   ))}
                 </div>
@@ -1582,7 +1582,7 @@ const RunwayPlanning: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
                 <input
                   type="text"
                   value={newScenarioName}
@@ -1594,7 +1594,7 @@ const RunwayPlanning: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Copy From</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Copy From</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
                   <option value="">Start from scratch</option>
                   {scenarios.map(scenario => (
@@ -1604,7 +1604,7 @@ const RunwayPlanning: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   placeholder="Brief description of this scenario's assumptions"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
@@ -1613,7 +1613,7 @@ const RunwayPlanning: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Horizon</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Horizon</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
                   <option value="12">12 months</option>
                   <option value="24">24 months</option>

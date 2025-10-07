@@ -139,7 +139,7 @@ const Approvals: React.FC = () => {
           <div className="text-center py-12">
             <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
             <p className="text-gray-600">No pending approvals</p>
-            <p className="text-sm text-gray-500 mt-1">All projects have been reviewed</p>
+            <p className="text-xs text-gray-500 mt-1">All projects have been reviewed</p>
           </div>
         </Card>
       ) : (
@@ -161,28 +161,28 @@ const Approvals: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600">{project.description}</p>
+                    <p className="text-xs text-gray-600">{project.description}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Department</p>
-                    <p className="text-sm font-medium text-[#101010]">{project.department}</p>
+                    <p className="text-xs font-medium text-[#101010]">{project.department}</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Budget (Base Case)</p>
-                    <p className="text-sm font-medium text-[#101010]">
+                    <p className="text-xs font-medium text-[#101010]">
                       ${project.budget_base_case?.toLocaleString() || project.budget_total.toLocaleString()}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Fiscal Year</p>
-                    <p className="text-sm font-medium text-[#101010]">{project.fiscal_year}</p>
+                    <p className="text-xs font-medium text-[#101010]">{project.fiscal_year}</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 mb-1">Submitted</p>
-                    <p className="text-sm font-medium text-[#101010]">
+                    <p className="text-xs font-medium text-[#101010]">
                       {project.submitted_at ? formatDate(project.submitted_at) : 'N/A'}
                     </p>
                   </div>
@@ -255,10 +255,10 @@ const Approvals: React.FC = () => {
               </h3>
             </div>
             <div className="p-6">
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-xs text-gray-600 mb-4">
                 Project: <span className="font-medium text-[#101010]">{selectedProject.project.header}</span>
               </p>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 {actionType === 'approve' ? 'Notes (Optional)' : 'Notes (Required)'}
               </label>
               <textarea

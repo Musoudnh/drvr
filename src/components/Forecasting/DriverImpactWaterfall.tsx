@@ -92,16 +92,16 @@ const DriverImpactWaterfall: React.FC<DriverImpactWaterfallProps> = ({ impacts, 
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="font-bold text-gray-900">Driver Impact Waterfall</h3>
-          <p className="text-sm text-gray-600 mt-1">Impact breakdown for {displayMonth}</p>
+          <p className="text-xs text-gray-600 mt-1">Impact breakdown for {displayMonth}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center">
             <TrendingUp className="w-4 h-4 text-green-600 mr-1" />
-            <span className="text-sm text-gray-600">Positive Impact</span>
+            <span className="text-xs text-gray-600">Positive Impact</span>
           </div>
           <div className="flex items-center">
             <TrendingDown className="w-4 h-4 text-red-600 mr-1" />
-            <span className="text-sm text-gray-600">Negative Impact</span>
+            <span className="text-xs text-gray-600">Negative Impact</span>
           </div>
         </div>
       </div>
@@ -166,24 +166,24 @@ const DriverImpactWaterfall: React.FC<DriverImpactWaterfallProps> = ({ impacts, 
       <div className="mt-6 pt-6 border-t border-gray-200">
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">Base Revenue</p>
+            <p className="text-xs text-gray-600 mb-1">Base Revenue</p>
             <p className="text-lg font-bold text-gray-900">${monthData.baseRevenue.toLocaleString()}</p>
           </div>
           <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">Total Impact</p>
+            <p className="text-xs text-gray-600 mb-1">Total Impact</p>
             <p className={`text-lg font-bold ${monthData.totalImpact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {monthData.totalImpact >= 0 ? '+' : ''}${monthData.totalImpact.toLocaleString()}
             </p>
           </div>
           <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">Final Revenue</p>
+            <p className="text-xs text-gray-600 mb-1">Final Revenue</p>
             <p className="text-lg font-bold text-gray-900">${monthData.finalRevenue.toLocaleString()}</p>
           </div>
         </div>
       </div>
 
       <div className="mt-4 space-y-2">
-        <h4 className="text-sm font-medium text-gray-700">Driver Breakdown</h4>
+        <h4 className="text-xs font-medium text-gray-700">Driver Breakdown</h4>
         {sortedDrivers.map((driver, index) => (
           <div key={index} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
             <div className="flex items-center">
@@ -191,9 +191,9 @@ const DriverImpactWaterfall: React.FC<DriverImpactWaterfallProps> = ({ impacts, 
                 className="w-3 h-3 rounded mr-3"
                 style={{ backgroundColor: getDriverColor(driver.driverType) }}
               />
-              <span className="text-sm font-medium text-gray-900">{driver.driverName}</span>
+              <span className="text-xs font-medium text-gray-900">{driver.driverName}</span>
             </div>
-            <span className={`text-sm font-bold ${driver.impact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <span className={`text-xs font-bold ${driver.impact >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {driver.impact >= 0 ? '+' : ''}${driver.impact.toLocaleString()}
             </span>
           </div>

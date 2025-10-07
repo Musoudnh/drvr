@@ -55,14 +55,14 @@ const SignIn: React.FC = () => {
           {error && (
             <div className="mb-6 p-4 bg-[#F87171]/10 border border-[#F87171]/20 rounded-lg flex items-center">
               <AlertCircle className="w-5 h-5 text-[#F87171] mr-3 flex-shrink-0" />
-              <p className="text-sm text-[#F87171]">{error}</p>
+              <p className="text-xs text-[#F87171]">{error}</p>
             </div>
           )}
 
           {/* Sign In Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-xs font-semibold text-gray-700 mb-3">
                 Email Address
               </label>
               <div className="relative">
@@ -79,7 +79,7 @@ const SignIn: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-xs font-semibold text-gray-700 mb-3">
                 Password
               </label>
               <div className="relative">
@@ -108,11 +108,11 @@ const SignIn: React.FC = () => {
                   type="checkbox" 
                   className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#3AB7BF] focus:ring-2" 
                 />
-                <span className="ml-3 text-sm text-gray-600">Remember me</span>
+                <span className="ml-3 text-xs text-gray-600">Remember me</span>
               </label>
               <Link 
                 to="/forgot-password" 
-                className="text-sm text-[#3AB7BF] hover:text-[#2A9BA3] font-medium transition-colors"
+                className="text-xs text-[#3AB7BF] hover:text-[#2A9BA3] font-medium transition-colors"
               >
                 Forgot password?
               </Link>
@@ -139,7 +139,7 @@ const SignIn: React.FC = () => {
           {/* Divider */}
           <div className="my-8 flex items-center">
             <div className="flex-1 border-t border-gray-200"></div>
-            <span className="px-4 text-sm text-gray-500 bg-white rounded-full">or</span>
+            <span className="px-4 text-xs text-gray-500 bg-white rounded-full">or</span>
             <div className="flex-1 border-t border-gray-200"></div>
           </div>
 
@@ -159,7 +159,7 @@ const SignIn: React.FC = () => {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-xs text-gray-600">
               Don't have an account?{' '}
               <Link 
                 to="/setup" 

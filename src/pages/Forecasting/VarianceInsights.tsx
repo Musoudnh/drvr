@@ -345,7 +345,7 @@ const VarianceInsights: React.FC = () => {
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Period</label>
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
@@ -360,7 +360,7 @@ const VarianceInsights: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Category</label>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -375,7 +375,7 @@ const VarianceInsights: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">View Mode</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">View Mode</label>
             <select
               value={viewMode}
               onChange={(e) => setViewMode(e.target.value as any)}
@@ -388,7 +388,7 @@ const VarianceInsights: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+            <label className="block text-xs font-medium text-gray-700 mb-2">Search</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -408,7 +408,7 @@ const VarianceInsights: React.FC = () => {
         <Card title="AI-Powered Insights">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-600">Automated analysis of variance patterns and recommendations</p>
+              <p className="text-xs text-gray-600">Automated analysis of variance patterns and recommendations</p>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={refreshInsights}>
                   <RefreshCw className={`w-4 h-4 mr-2 ${isGeneratingInsights ? 'animate-spin' : ''}`} />
@@ -439,7 +439,7 @@ const VarianceInsights: React.FC = () => {
                           <Icon className="w-4 h-4" style={{ color }} />
                         </div>
                         <div>
-                          <h4 className="font-bold text-[#101010] text-sm">{insight.title}</h4>
+                          <h4 className="font-bold text-[#101010] text-xs">{insight.title}</h4>
                           <span 
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
@@ -454,7 +454,7 @@ const VarianceInsights: React.FC = () => {
                       <span className="text-xs text-gray-500">{insight.confidence}% confidence</span>
                     </div>
                     
-                    <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
+                    <p className="text-xs text-gray-700 mb-3">{insight.description}</p>
                     
                     <div className="space-y-2">
                       <h5 className="font-medium text-[#101010] text-xs">Action Items:</h5>
@@ -488,7 +488,7 @@ const VarianceInsights: React.FC = () => {
               <p className="text-lg font-bold text-[#4ADE80]">
                 {filteredVariances.filter(v => v.variancePercent > 0).length}
               </p>
-              <p className="text-sm text-gray-600">Positive Variances</p>
+              <p className="text-xs text-gray-600">Positive Variances</p>
             </div>
             
             <div className="p-4 bg-[#F87171]/10 rounded-lg text-center">
@@ -496,7 +496,7 @@ const VarianceInsights: React.FC = () => {
               <p className="text-lg font-bold text-[#F87171]">
                 {filteredVariances.filter(v => v.variancePercent < 0).length}
               </p>
-              <p className="text-sm text-gray-600">Negative Variances</p>
+              <p className="text-xs text-gray-600">Negative Variances</p>
             </div>
             
             <div className="p-4 bg-[#F59E0B]/10 rounded-lg text-center">
@@ -504,7 +504,7 @@ const VarianceInsights: React.FC = () => {
               <p className="text-lg font-bold text-[#F59E0B]">
                 {filteredVariances.filter(v => v.significance === 'high').length}
               </p>
-              <p className="text-sm text-gray-600">High Significance</p>
+              <p className="text-xs text-gray-600">High Significance</p>
             </div>
             
             <div className="p-4 bg-[#3AB7BF]/10 rounded-lg text-center">
@@ -512,7 +512,7 @@ const VarianceInsights: React.FC = () => {
               <p className="text-lg font-bold text-[#3AB7BF]">
                 {(filteredVariances.reduce((sum, v) => sum + Math.abs(v.variancePercent), 0) / filteredVariances.length).toFixed(1)}%
               </p>
-              <p className="text-sm text-gray-600">Avg Variance</p>
+              <p className="text-xs text-gray-600">Avg Variance</p>
             </div>
           </div>
 
@@ -606,7 +606,7 @@ const VarianceInsights: React.FC = () => {
                               className="w-4 h-4 mr-1"
                               style={{ color: getTrendColor(variance.trend) }}
                             />
-                            <span className="text-sm capitalize">{variance.trend}</span>
+                            <span className="text-xs capitalize">{variance.trend}</span>
                           </div>
                         </td>
                       );
@@ -674,7 +674,7 @@ const VarianceInsights: React.FC = () => {
                                       <Info className="w-4 h-4 mr-2 text-[#3AB7BF]" />
                                       Explanation
                                     </h5>
-                                    <p className="text-sm text-gray-700 leading-relaxed">{variance.explanation}</p>
+                                    <p className="text-xs text-gray-700 leading-relaxed">{variance.explanation}</p>
                                   </div>
 
                                   <div className="p-6 bg-white rounded-lg border border-gray-200">
@@ -684,7 +684,7 @@ const VarianceInsights: React.FC = () => {
                                     </h5>
                                     <ul className="space-y-2">
                                       {variance.recommendations.map((rec, index) => (
-                                        <li key={index} className="flex items-start text-sm text-gray-700">
+                                        <li key={index} className="flex items-start text-xs text-gray-700">
                                           <CheckCircle className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5 flex-shrink-0" />
                                           {rec}
                                         </li>
@@ -700,7 +700,7 @@ const VarianceInsights: React.FC = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                       {variance.drillDownData.map(item => (
                                         <div key={item.id} className="p-4 bg-gray-50 rounded-lg">
-                                          <p className="font-medium text-[#101010] text-sm mb-2">{item.name}</p>
+                                          <p className="font-medium text-[#101010] text-xs mb-2">{item.name}</p>
                                           <div className="flex justify-between">
                                             <span className="text-xs text-gray-600">Variance:</span>
                                             <span
@@ -766,11 +766,11 @@ const VarianceInsights: React.FC = () => {
             <div className="flex justify-center gap-6">
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2" />
-                <span className="text-sm text-gray-600">Actual</span>
+                <span className="text-xs text-gray-600">Actual</span>
               </div>
               <div className="flex items-center">
                 <div className="w-4 h-0.5 bg-[#8B5CF6] mr-2" style={{ borderTop: '3px dashed #8B5CF6' }} />
-                <span className="text-sm text-gray-600">Forecast</span>
+                <span className="text-xs text-gray-600">Forecast</span>
               </div>
             </div>
           </div>
@@ -791,7 +791,7 @@ const VarianceInsights: React.FC = () => {
                 <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-[#101010]">{kpi.label}</p>
-                    <p className="text-sm text-gray-600">{kpi.description}</p>
+                    <p className="text-xs text-gray-600">{kpi.description}</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center justify-end mb-1">
@@ -826,19 +826,19 @@ const VarianceInsights: React.FC = () => {
               {/* Summary */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="p-4 bg-[#3AB7BF]/10 rounded-lg text-center">
-                  <p className="text-sm text-gray-600 mb-1">Actual</p>
+                  <p className="text-xs text-gray-600 mb-1">Actual</p>
                   <p className="text-xl font-bold text-[#3AB7BF]">
                     {formatVarianceValue(selectedVariance.actual, selectedVariance.metric.includes('Margin'))}
                   </p>
                 </div>
                 <div className="p-4 bg-gray-100 rounded-lg text-center">
-                  <p className="text-sm text-gray-600 mb-1">Forecast</p>
+                  <p className="text-xs text-gray-600 mb-1">Forecast</p>
                   <p className="text-xl font-bold text-gray-600">
                     {formatVarianceValue(selectedVariance.forecast, selectedVariance.metric.includes('Margin'))}
                   </p>
                 </div>
                 <div className="p-4 bg-[#F59E0B]/10 rounded-lg text-center">
-                  <p className="text-sm text-gray-600 mb-1">Variance</p>
+                  <p className="text-xs text-gray-600 mb-1">Variance</p>
                   <p 
                     className="text-xl font-bold"
                     style={{ 
@@ -892,7 +892,7 @@ const VarianceInsights: React.FC = () => {
                                   {item.variance > 0 ? '+' : ''}{formatVarianceValue(item.variance)}
                                 </span>
                               </td>
-                              <td className="py-3 px-4 text-right text-sm text-gray-600">
+                              <td className="py-3 px-4 text-right text-xs text-gray-600">
                                 {Math.abs(impactPercent).toFixed(1)}%
                               </td>
                             </tr>
@@ -908,14 +908,14 @@ const VarianceInsights: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="p-6 bg-[#3AB7BF]/10 rounded-xl">
                   <h5 className="font-bold text-[#101010] mb-3">Analysis</h5>
-                  <p className="text-sm text-gray-700 leading-relaxed">{selectedVariance.explanation}</p>
+                  <p className="text-xs text-gray-700 leading-relaxed">{selectedVariance.explanation}</p>
                 </div>
                 
                 <div className="p-6 bg-[#4ADE80]/10 rounded-xl">
                   <h5 className="font-bold text-[#101010] mb-3">Recommendations</h5>
                   <ul className="space-y-2">
                     {selectedVariance.recommendations.map((rec, index) => (
-                      <li key={index} className="flex items-start text-sm text-gray-700">
+                      <li key={index} className="flex items-start text-xs text-gray-700">
                         <CheckCircle className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5 flex-shrink-0" />
                         {rec}
                       </li>

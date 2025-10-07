@@ -116,7 +116,7 @@ const RevenueRunway: React.FC = () => {
           </div>
           <div className="mb-4">
             <p className="text-2xl font-bold text-white">${startingRevenue.toLocaleString()}</p>
-            <p className="text-sm text-gray-400">Current MRR</p>
+            <p className="text-xs text-gray-400">Current MRR</p>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">Monthly recurring</span>
@@ -133,7 +133,7 @@ const RevenueRunway: React.FC = () => {
           </div>
           <div className="mb-4">
             <p className="text-2xl font-bold text-white">{revenueGrowthRate}%</p>
-            <p className="text-sm text-gray-400">Growth Rate</p>
+            <p className="text-xs text-gray-400">Growth Rate</p>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">Monthly growth</span>
@@ -150,7 +150,7 @@ const RevenueRunway: React.FC = () => {
           </div>
           <div className="mb-4">
             <p className="text-2xl font-bold text-white">${(totalProjectedRevenue / 1000000).toFixed(1)}M</p>
-            <p className="text-sm text-gray-400">12M Projection</p>
+            <p className="text-xs text-gray-400">12M Projection</p>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs text-[#10b981]">+{averageGrowthRate.toFixed(1)}% avg growth</span>
@@ -167,7 +167,7 @@ const RevenueRunway: React.FC = () => {
           </div>
           <div className="mb-4">
             <p className="text-2xl font-bold text-white">{revenueStreams.filter(s => s.active).length}</p>
-            <p className="text-sm text-gray-400">Active Streams</p>
+            <p className="text-xs text-gray-400">Active Streams</p>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">Revenue sources</span>
@@ -184,7 +184,7 @@ const RevenueRunway: React.FC = () => {
       {/* Revenue Streams Management */}
       <Card title="Revenue Streams">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage your revenue streams and income timeline</p>
+          <p className="text-xs text-gray-600">Manage your revenue streams and income timeline</p>
           <Button 
             variant="primary" 
             size="sm"
@@ -208,7 +208,7 @@ const RevenueRunway: React.FC = () => {
                   />
                   <div>
                     <h3 className="font-semibold text-[#101010] text-lg">{stream.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{stream.category} • ${stream.amount.toLocaleString()}/month</p>
+                    <p className="text-xs text-gray-600 mt-1">{stream.category} • ${stream.amount.toLocaleString()}/month</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -226,10 +226,10 @@ const RevenueRunway: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div className="text-sm text-gray-600">
+                <div className="text-xs text-gray-600">
                   <span className="font-medium">Timeline:</span> {stream.startMonth} - {stream.endMonth}
                 </div>
-                <div className="text-sm font-semibold" style={{ color: getCategoryColor(stream.category) }}>
+                <div className="text-xs font-semibold" style={{ color: getCategoryColor(stream.category) }}>
                   ${(stream.amount * 12).toLocaleString()}/year
                 </div>
               </div>
@@ -267,12 +267,12 @@ const RevenueRunway: React.FC = () => {
                       <span className="font-semibold text-[#101010]">{stream.name}</span>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{stream.category}</td>
-                  <td className="py-3 px-4 text-center text-sm text-gray-600">Recurring</td>
-                  <td className="py-3 px-4 text-center text-sm text-gray-600">{stream.startMonth.split(' ')[0]}</td>
-                  <td className="py-3 px-4 text-center text-sm text-gray-600">12 months</td>
-                  <td className="py-3 px-4 text-right text-sm font-bold" style={{ color: getCategoryColor(stream.category) }}>${stream.amount.toLocaleString()}</td>
-                  <td className="py-3 px-4 text-center text-sm font-semibold text-gray-700">${(stream.amount * 12).toLocaleString()}</td>
+                  <td className="py-3 px-4 text-center text-xs font-medium text-gray-700">{stream.category}</td>
+                  <td className="py-3 px-4 text-center text-xs text-gray-600">Recurring</td>
+                  <td className="py-3 px-4 text-center text-xs text-gray-600">{stream.startMonth.split(' ')[0]}</td>
+                  <td className="py-3 px-4 text-center text-xs text-gray-600">12 months</td>
+                  <td className="py-3 px-4 text-right text-xs font-bold" style={{ color: getCategoryColor(stream.category) }}>${stream.amount.toLocaleString()}</td>
+                  <td className="py-3 px-4 text-center text-xs font-semibold text-gray-700">${(stream.amount * 12).toLocaleString()}</td>
                   <td className="py-3 px-4 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -287,13 +287,13 @@ const RevenueRunway: React.FC = () => {
                         <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 min-w-[120px]">
                           <button
                             onClick={() => setRevenueStreams(prev => prev.map(s => s.id === stream.id ? {...s, active: !s.active} : s))}
-                            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                            className="w-full px-3 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center"
                           >
                             {stream.active ? 'Deactivate' : 'Activate'}
                           </button>
                           <button
                             onClick={() => handleDeleteStream(stream.id)}
-                            className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                            className="w-full px-3 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center"
                           >
                             Delete
                           </button>
@@ -315,7 +315,7 @@ const RevenueRunway: React.FC = () => {
               <div className="min-w-[1200px]">
                 {/* Timeline Header */}
                 <div className="flex mb-4">
-                  <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Revenue Stream</div>
+                  <div className="w-48 text-xs font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Revenue Stream</div>
                   <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
                     {months.map((month, index) => (
                       <div key={index} className="text-xs font-bold text-gray-700 text-center">
@@ -328,7 +328,7 @@ const RevenueRunway: React.FC = () => {
                 {/* Timeline Rows */}
                 {revenueStreams.map(stream => (
                   <div key={stream.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate">
+                    <div className="w-48 text-xs font-medium text-[#101010] p-2 truncate">
                       <div className="flex items-center">
                         <div 
                           className={`w-3 h-3 rounded-full mr-3 ${
@@ -370,8 +370,8 @@ const RevenueRunway: React.FC = () => {
       <Card title="12-Month Revenue Projection">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">Monthly Revenue Growth</span>
-            <span className="text-sm text-[#4ADE80] font-medium">+{averageGrowthRate.toFixed(1)}% avg growth</span>
+            <span className="text-xs font-medium text-gray-600">Monthly Revenue Growth</span>
+            <span className="text-xs text-[#4ADE80] font-medium">+{averageGrowthRate.toFixed(1)}% avg growth</span>
           </div>
           <div className="relative h-64">
             {/* Chart Container */}
@@ -449,11 +449,11 @@ const RevenueRunway: React.FC = () => {
           <div className="flex items-center justify-center gap-6 pt-4 border-t border-gray-200">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#3B82F6] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Base Revenue</span>
+              <span className="text-xs text-gray-600">Base Revenue</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#4ADE80] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Total Revenue (with drivers)</span>
+              <span className="text-xs text-gray-600">Total Revenue (with drivers)</span>
             </div>
           </div>
           
@@ -494,7 +494,7 @@ const RevenueRunway: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue Stream Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Revenue Stream Name</label>
                 <input
                   type="text"
                   value={newStream.name}
@@ -506,7 +506,7 @@ const RevenueRunway: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Amount ($)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Monthly Amount ($)</label>
                   <input
                     type="number"
                     value={newStream.amount}
@@ -517,7 +517,7 @@ const RevenueRunway: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Category</label>
                   <select
                     value={newStream.category}
                     onChange={(e) => setNewStream({...newStream, category: e.target.value})}
@@ -533,7 +533,7 @@ const RevenueRunway: React.FC = () => {
                 
                 {newStream.category === 'Custom' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Custom Category Name</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Custom Category Name</label>
                     <input
                       type="text"
                       value={newStream.customCategory}
@@ -547,7 +547,7 @@ const RevenueRunway: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
                   <select
                     value={newStream.startMonth}
                     onChange={(e) => setNewStream({...newStream, startMonth: e.target.value})}
@@ -560,7 +560,7 @@ const RevenueRunway: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
                   <select
                     value={newStream.endMonth}
                     onChange={(e) => setNewStream({...newStream, endMonth: e.target.value})}

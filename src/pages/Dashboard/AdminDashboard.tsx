@@ -31,9 +31,9 @@ const AdminDashboard: React.FC = () => {
           <Card key={index} className="hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">{metric.label}</p>
+                <p className="text-xs font-medium text-gray-600">{metric.label}</p>
                 <p className="text-2xl font-bold text-[#101010] mt-1">{metric.value}</p>
-                <p className="text-sm mt-2 text-[#4ADE80]">
+                <p className="text-xs mt-2 text-[#4ADE80]">
                   +{metric.change}
                 </p>
               </div>
@@ -53,7 +53,7 @@ const AdminDashboard: React.FC = () => {
               <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div>
                   <p className="font-medium text-[#101010]">{company.name}</p>
-                  <p className="text-sm text-gray-500">{company.plan} • {company.joined}</p>
+                  <p className="text-xs text-gray-500">{company.plan} • {company.joined}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                   company.status === 'active' 
@@ -70,19 +70,19 @@ const AdminDashboard: React.FC = () => {
         <Card title="System Overview">
           <div className="space-y-4">
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm font-medium text-gray-700">Server Status</span>
+              <span className="text-xs font-medium text-gray-700">Server Status</span>
               <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Online</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm font-medium text-gray-700">Database</span>
+              <span className="text-xs font-medium text-gray-700">Database</span>
               <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Healthy</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm font-medium text-gray-700">API Response</span>
+              <span className="text-xs font-medium text-gray-700">API Response</span>
               <span className="px-2 py-1 bg-[#4ADE80]/20 text-[#4ADE80] rounded-full text-xs">Fast</span>
             </div>
             <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm font-medium text-gray-700">Storage</span>
+              <span className="text-xs font-medium text-gray-700">Storage</span>
               <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">78% Used</span>
             </div>
           </div>
@@ -95,17 +95,17 @@ const AdminDashboard: React.FC = () => {
           <button className="p-4 bg-[#3AB7BF]/10 hover:bg-[#3AB7BF]/20 rounded-lg transition-colors text-left">
             <UserPlus className="w-6 h-6 text-[#3AB7BF] mb-2" />
             <p className="font-medium text-[#101010]">Add New Company</p>
-            <p className="text-sm text-gray-600">Onboard a new client</p>
+            <p className="text-xs text-gray-600">Onboard a new client</p>
           </button>
           <button className="p-4 bg-[#4ADE80]/10 hover:bg-[#4ADE80]/20 rounded-lg transition-colors text-left">
             <BarChart3 className="w-6 h-6 text-[#4ADE80] mb-2" />
             <p className="font-medium text-[#101010]">System Report</p>
-            <p className="text-sm text-gray-600">Generate platform analytics</p>
+            <p className="text-xs text-gray-600">Generate platform analytics</p>
           </button>
           <button className="p-4 bg-[#F87171]/10 hover:bg-[#F87171]/20 rounded-lg transition-colors text-left">
             <AlertCircle className="w-6 h-6 text-[#F87171] mb-2" />
             <p className="font-medium text-[#101010]">Review Alerts</p>
-            <p className="text-sm text-gray-600">Check system notifications</p>
+            <p className="text-xs text-gray-600">Check system notifications</p>
           </button>
         </div>
       </Card>

@@ -88,7 +88,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
             <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
             <div>
               <h4 className="font-medium text-red-900 mb-1">Validation Errors</h4>
-              <ul className="text-sm text-red-700 space-y-1">
+              <ul className="text-xs text-red-700 space-y-1">
                 {errors.map((error, index) => (
                   <li key={index}>• {error}</li>
                 ))}
@@ -100,7 +100,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-xs font-medium text-gray-700 mb-3">
             Employee Classification
           </label>
           <div className="grid grid-cols-2 gap-3">
@@ -117,7 +117,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
               }`}
             >
               <DollarSign className="w-5 h-5 mb-2" />
-              <div className="font-medium text-sm">Salaried Employee</div>
+              <div className="font-medium text-xs">Salaried Employee</div>
               <div className="text-xs mt-1 opacity-80">Annual salary amount</div>
             </button>
 
@@ -134,7 +134,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
               }`}
             >
               <Clock className="w-5 h-5 mb-2" />
-              <div className="font-medium text-sm">Hourly Employee</div>
+              <div className="font-medium text-xs">Hourly Employee</div>
               <div className="text-xs mt-1 opacity-80">Hourly rate & hours</div>
             </button>
           </div>
@@ -142,7 +142,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
 
         {employeeData.employeeType === 'salary' ? (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Annual Salary
             </label>
             <div className="relative">
@@ -163,7 +163,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
         ) : (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Hourly Rate
               </label>
               <div className="relative">
@@ -183,7 +183,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Weekly Hours
               </label>
               <input
@@ -201,7 +201,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-xs font-medium text-gray-700 mb-2">
             Pay Period
           </label>
           <select
@@ -249,7 +249,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center gap-2 text-sm font-medium text-[#9333EA] hover:text-[#7C3AED] transition-colors mb-3"
+              className="flex items-center gap-2 text-xs font-medium text-[#9333EA] hover:text-[#7C3AED] transition-colors mb-3"
             >
               {showAdvanced ? 'Hide' : 'Show'} Advanced Tax Settings
             </button>
@@ -258,7 +258,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
               <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       State
                     </label>
                     <select
@@ -275,7 +275,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       Filing Status
                     </label>
                     <select
@@ -292,7 +292,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       Allowances
                     </label>
                     <input
@@ -306,7 +306,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       Additional Withholding
                     </label>
                     <div className="relative">
@@ -371,7 +371,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                 </div>
 
                 <div className="space-y-2 pl-6">
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-xs">
                     <span className="text-gray-600">Federal Income Tax</span>
                     <span className="font-medium text-red-600">
                       -${result.taxes.federalTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -379,7 +379,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                   </div>
 
                   {result.taxes.stateTax > 0 && (
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">State Income Tax</span>
                       <span className="font-medium text-red-600">
                         -${result.taxes.stateTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -387,14 +387,14 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-xs">
                     <span className="text-gray-600">Social Security (6.2%)</span>
                     <span className="font-medium text-red-600">
                       -${result.taxes.socialSecurityTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-xs">
                     <span className="text-gray-600">Medicare (1.45%)</span>
                     <span className="font-medium text-red-600">
                       -${result.taxes.medicareTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -402,7 +402,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                   </div>
 
                   {result.otherDeductions > 0 && (
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs">
                       <span className="text-gray-600">Additional Withholding</span>
                       <span className="font-medium text-red-600">
                         -${result.otherDeductions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -410,7 +410,7 @@ export default function PayrollCalculator({ onCalculate, initialData }: PayrollC
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-200">
+                  <div className="flex items-center justify-between text-xs pt-2 border-t border-gray-200">
                     <span className="font-medium text-gray-700">Total Deductions</span>
                     <span className="font-bold text-red-600">
                       -${result.taxes.totalTaxes.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

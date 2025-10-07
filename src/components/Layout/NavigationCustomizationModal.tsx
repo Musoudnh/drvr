@@ -149,7 +149,7 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
                     >
                       <div className="flex items-center gap-2">
                         <IconComponent className="w-4 h-4 text-gray-600" />
-                        <span className="text-sm text-gray-700">{item.label}</span>
+                        <span className="text-xs text-gray-700">{item.label}</span>
                         {item.alwaysVisible && (
                           <span className="text-xs text-gray-400">(Always visible)</span>
                         )}
@@ -174,7 +174,7 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
         <div className="flex items-center justify-between pt-4 border-t border-gray-200">
           <button
             onClick={() => setShowResetConfirm(true)}
-            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+            className="px-4 py-2 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
             disabled={saving}
           >
             Reset to Default
@@ -182,7 +182,7 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
           <div className="flex gap-2">
             <button
               onClick={handleCancel}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+              className="px-4 py-2 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
               disabled={saving}
             >
               Cancel
@@ -218,13 +218,13 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-[400px] max-w-[90vw]">
             <h4 className="text-lg font-semibold text-[#101010] mb-2">Reset to Default?</h4>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-xs text-gray-600 mb-4">
               This will restore all navigation items to their default visibility. This action cannot be undone.
             </p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                className="px-4 py-2 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
                 disabled={saving}
               >
                 Cancel
@@ -232,7 +232,7 @@ const NavigationCustomizationModal: React.FC<NavigationCustomizationModalProps> 
               <button
                 onClick={handleReset}
                 disabled={saving}
-                className="px-4 py-2 bg-[#F87171] text-white rounded-lg hover:bg-[#EF4444] transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-[#F87171] text-white rounded-lg hover:bg-[#EF4444] transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? 'Resetting...' : 'Reset'}
               </button>

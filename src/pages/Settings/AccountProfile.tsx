@@ -115,7 +115,7 @@ const AccountProfile: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-medium text-[#101010]">Email Notifications</p>
-                  <p className="text-sm text-gray-600">Financial alerts and system updates</p>
+                  <p className="text-xs text-gray-600">Financial alerts and system updates</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -131,7 +131,7 @@ const AccountProfile: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-medium text-[#101010]">Push Notifications</p>
-                  <p className="text-sm text-gray-600">Mobile and desktop alerts</p>
+                  <p className="text-xs text-gray-600">Mobile and desktop alerts</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -161,7 +161,7 @@ const AccountProfile: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-medium text-[#101010]">Two-Factor Authentication</p>
-                  <p className="text-sm text-gray-600">Enhanced account security</p>
+                  <p className="text-xs text-gray-600">Enhanced account security</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -183,7 +183,7 @@ const AccountProfile: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-medium text-[#101010]">Privacy Controls</p>
-                  <p className="text-sm text-gray-600">Data sharing and visibility</p>
+                  <p className="text-xs text-gray-600">Data sharing and visibility</p>
                 </div>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -224,7 +224,7 @@ const AccountProfile: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     First Name
                   </label>
                   <input
@@ -236,7 +236,7 @@ const AccountProfile: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Last Name
                   </label>
                   <input
@@ -250,7 +250,7 @@ const AccountProfile: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   Email Address
                 </label>
                 <div className="relative">
@@ -267,7 +267,7 @@ const AccountProfile: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Phone Number
                   </label>
                   <div className="relative">
@@ -282,7 +282,7 @@ const AccountProfile: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Location
                   </label>
                   <div className="relative">
@@ -300,7 +300,7 @@ const AccountProfile: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Job Title
                   </label>
                   <input
@@ -312,7 +312,7 @@ const AccountProfile: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Department
                   </label>
                   <select
@@ -332,7 +332,7 @@ const AccountProfile: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   Bio
                 </label>
                 <textarea
@@ -457,7 +457,7 @@ const AccountProfile: React.FC = () => {
               <div className="flex items-center justify-between p-4 bg-[#4ADE80]/10 rounded-lg">
                 <div>
                   <p className="font-medium text-[#101010]">MFA Status</p>
-                  <p className="text-sm text-gray-600">Two-factor authentication is enabled</p>
+                  <p className="text-xs text-gray-600">Two-factor authentication is enabled</p>
                 </div>
                 <CheckCircle className="w-6 h-6 text-[#4ADE80]" />
               </div>
@@ -530,7 +530,7 @@ const AccountProfile: React.FC = () => {
                           <span className="ml-2 px-2 py-1 bg-[#F87171]/20 text-[#F87171] rounded-full text-xs">Required</span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-600">{setting.description}</p>
+                      <p className="text-xs text-gray-600">{setting.description}</p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
@@ -550,7 +550,7 @@ const AccountProfile: React.FC = () => {
                 <h4 className="font-medium text-[#101010] mb-2">Security Score</h4>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-[#4ADE80]">92/100</span>
-                  <span className="text-sm text-gray-600">Excellent security posture</span>
+                  <span className="text-xs text-gray-600">Excellent security posture</span>
                 </div>
               </div>
             </div>
@@ -670,7 +670,7 @@ const AccountProfile: React.FC = () => {
               <div className="flex items-center justify-between p-4 bg-[#4ADE80]/10 rounded-lg">
                 <div>
                   <p className="font-medium text-[#101010]">MFA Status</p>
-                  <p className="text-sm text-gray-600">Two-factor authentication is enabled</p>
+                  <p className="text-xs text-gray-600">Two-factor authentication is enabled</p>
                 </div>
                 <CheckCircle className="w-6 h-6 text-[#4ADE80]" />
               </div>
@@ -743,7 +743,7 @@ const AccountProfile: React.FC = () => {
                           <span className="ml-2 px-2 py-1 bg-[#F87171]/20 text-[#F87171] rounded-full text-xs">Required</span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-600">{setting.description}</p>
+                      <p className="text-xs text-gray-600">{setting.description}</p>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
@@ -763,7 +763,7 @@ const AccountProfile: React.FC = () => {
                 <h4 className="font-medium text-[#101010] mb-2">Security Score</h4>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-[#4ADE80]">92/100</span>
-                  <span className="text-sm text-gray-600">Excellent security posture</span>
+                  <span className="text-xs text-gray-600">Excellent security posture</span>
                 </div>
               </div>
             </div>

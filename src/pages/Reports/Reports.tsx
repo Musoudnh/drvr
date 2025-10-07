@@ -391,11 +391,11 @@ const Reports: React.FC = () => {
               <Card key={index}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 mb-2">{card.label}</p>
+                    <p className="text-xs font-medium text-gray-600 mb-2">{card.label}</p>
                     <p className="text-2xl font-bold text-[#101010]">{card.value}</p>
                     <div className="flex items-center mt-2">
                       <TrendIcon className="w-4 h-4 mr-1" style={{ color: trendColor }} />
-                      <span className="text-sm font-medium" style={{ color: trendColor }}>
+                      <span className="text-xs font-medium" style={{ color: trendColor }}>
                         {card.change}
                       </span>
                     </div>
@@ -447,11 +447,11 @@ const Reports: React.FC = () => {
           <div className="flex justify-center gap-6 mt-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Actual</span>
+              <span className="text-xs text-gray-600">Actual</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-0.5 bg-[#8B5CF6] mr-2" style={{ borderTop: '3px dashed #8B5CF6' }}></div>
-              <span className="text-sm text-gray-600">Forecast</span>
+              <span className="text-xs text-gray-600">Forecast</span>
             </div>
           </div>
         </Card>
@@ -517,7 +517,7 @@ const Reports: React.FC = () => {
           {/* Sidebar Header */}
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-[#101010] mb-2">Reports</h2>
-            <p className="text-sm text-gray-600">View, export, and analyze your financial performance</p>
+            <p className="text-xs text-gray-600">View, export, and analyze your financial performance</p>
           </div>
 
           {/* Report Categories */}
@@ -555,7 +555,7 @@ const Reports: React.FC = () => {
                           <div className="flex items-start">
                             <report.icon className="w-4 h-4 mr-3 mt-0.5 text-gray-400" />
                             <div className="flex-1">
-                              <h4 className="font-medium text-[#101010] text-sm">{report.name}</h4>
+                              <h4 className="font-medium text-[#101010] text-xs">{report.name}</h4>
                               <p className="text-xs text-gray-600 mt-1">{report.description}</p>
                               {report.lastGenerated && (
                                 <p className="text-xs text-gray-500 mt-1">Updated: {report.lastGenerated}</p>
@@ -715,7 +715,7 @@ const Reports: React.FC = () => {
                           <InsightIcon className="w-4 h-4" style={{ color: insightColor }} />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-semibold text-[#101010] text-sm">{insight.title}</h4>
+                          <h4 className="font-semibold text-[#101010] text-xs">{insight.title}</h4>
                           <span 
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
@@ -727,7 +727,7 @@ const Reports: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700 leading-relaxed">{insight.description}</p>
+                      <p className="text-xs text-gray-700 leading-relaxed">{insight.description}</p>
                       
                       {insight.metrics.length > 0 && (
                         <div className="mt-3">
@@ -746,7 +746,7 @@ const Reports: React.FC = () => {
                 
                 {/* Quick Actions */}
                 <div className="pt-4 border-t border-gray-200">
-                  <h4 className="font-semibold text-[#101010] mb-3 text-sm">Quick Actions</h4>
+                  <h4 className="font-semibold text-[#101010] mb-3 text-xs">Quick Actions</h4>
                   <div className="space-y-2">
                     <Button variant="outline" size="sm" className="w-full justify-start">
                       <Zap className="w-3 h-3 mr-2" />
@@ -785,7 +785,7 @@ const Reports: React.FC = () => {
             <div className="space-y-6">
               {/* Export Format */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Export Format</label>
+                <label className="block text-xs font-medium text-gray-700 mb-3">Export Format</label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
                     { value: 'pdf', label: 'PDF', icon: FileText },
@@ -810,10 +810,10 @@ const Reports: React.FC = () => {
 
               {/* Export Settings */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Export Settings</label>
+                <label className="block text-xs font-medium text-gray-700 mb-3">Export Settings</label>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Show Account Numbers</span>
+                    <span className="text-xs text-gray-700">Show Account Numbers</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -826,7 +826,7 @@ const Reports: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Show Decimals</span>
+                    <span className="text-xs text-gray-700">Show Decimals</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -839,7 +839,7 @@ const Reports: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Collapse Subaccounts</span>
+                    <span className="text-xs text-gray-700">Collapse Subaccounts</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -852,7 +852,7 @@ const Reports: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Include AI Insights</span>
+                    <span className="text-xs text-gray-700">Include AI Insights</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -899,7 +899,7 @@ const Reports: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Frequency</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Frequency</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent">
                   <option value="weekly">Weekly</option>
                   <option value="monthly">Monthly</option>
@@ -909,7 +909,7 @@ const Reports: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Recipients</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Recipients</label>
                 <input
                   type="email"
                   placeholder="Enter email addresses"
@@ -918,7 +918,7 @@ const Reports: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Start Date</label>
                 <input
                   type="date"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"

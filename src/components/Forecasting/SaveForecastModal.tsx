@@ -39,7 +39,7 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white rounded-t-lg">
           <div>
             <h2 className="text-lg font-semibold">Save Forecast</h2>
-            <p className="text-sm text-white/80">Save current forecast version</p>
+            <p className="text-xs text-white/80">Save current forecast version</p>
           </div>
           <button
             onClick={onClose}
@@ -51,7 +51,7 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label htmlFor="forecast-name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="forecast-name" className="block text-xs font-medium text-gray-700 mb-2">
               Version Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -69,7 +69,7 @@ export function SaveForecastModal({ isOpen, onClose, onSave }: SaveForecastModal
           <div>
             <label
               htmlFor="forecast-description"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-xs font-medium text-gray-700 mb-2"
             >
               Description (Optional)
             </label>

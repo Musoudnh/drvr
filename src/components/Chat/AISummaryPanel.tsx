@@ -128,16 +128,16 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
         {isGenerating ? (
           <div className="text-center py-8">
             <Sparkles className="w-8 h-8 text-[#F59E0B] mx-auto mb-3 animate-pulse" />
-            <p className="text-sm text-gray-600">Analyzing conversation...</p>
+            <p className="text-xs text-gray-600">Analyzing conversation...</p>
           </div>
         ) : summary ? (
           <div className="space-y-6">
             {/* Key Points */}
             <div>
-              <h4 className="font-semibold text-[#101010] mb-3 text-sm">Key Points</h4>
+              <h4 className="font-semibold text-[#101010] mb-3 text-xs">Key Points</h4>
               <ul className="space-y-2">
                 {summary.keyPoints.map((point, index) => (
-                  <li key={index} className="flex items-start text-sm">
+                  <li key={index} className="flex items-start text-xs">
                     <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mt-2 mr-2 flex-shrink-0" />
                     <span className="text-gray-700">{point}</span>
                   </li>
@@ -148,10 +148,10 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
             {/* Decisions */}
             {summary.decisions.length > 0 && (
               <div>
-                <h4 className="font-semibold text-[#101010] mb-3 text-sm">Decisions Made</h4>
+                <h4 className="font-semibold text-[#101010] mb-3 text-xs">Decisions Made</h4>
                 <ul className="space-y-2">
                   {summary.decisions.map((decision, index) => (
-                    <li key={index} className="flex items-start text-sm">
+                    <li key={index} className="flex items-start text-xs">
                       <CheckCircle className="w-3 h-3 text-[#4ADE80] mt-0.5 mr-2 flex-shrink-0" />
                       <span className="text-gray-700">{decision}</span>
                     </li>
@@ -163,12 +163,12 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
             {/* Action Items */}
             {summary.actionItems.length > 0 && (
               <div>
-                <h4 className="font-semibold text-[#101010] mb-3 text-sm">Action Items</h4>
+                <h4 className="font-semibold text-[#101010] mb-3 text-xs">Action Items</h4>
                 <div className="space-y-3">
                   {summary.actionItems.map((item, index) => (
                     <div key={index} className="p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-start justify-between mb-2">
-                        <p className="text-sm font-medium text-[#101010] flex-1">{item.task}</p>
+                        <p className="text-xs font-medium text-[#101010] flex-1">{item.task}</p>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center ${getPriorityColor(item.priority)}`}>
                           {getPriorityIcon(item.priority)}
                           <span className="ml-1">{item.priority}</span>
@@ -192,7 +192,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
 
             {/* Topics */}
             <div>
-              <h4 className="font-semibold text-[#101010] mb-3 text-sm">Topics Discussed</h4>
+              <h4 className="font-semibold text-[#101010] mb-3 text-xs">Topics Discussed</h4>
               <div className="flex flex-wrap gap-2">
                 {summary.topics.map((topic, index) => (
                   <span
@@ -222,7 +222,7 @@ const AISummaryPanel: React.FC<AISummaryPanelProps> = ({
         ) : (
           <div className="text-center py-8">
             <Sparkles className="w-8 h-8 text-gray-300 mx-auto mb-3" />
-            <p className="text-sm text-gray-500 mb-3">No summary generated yet</p>
+            <p className="text-xs text-gray-500 mb-3">No summary generated yet</p>
             <Button variant="outline" size="sm" onClick={generateSummary}>
               Generate Summary
             </Button>

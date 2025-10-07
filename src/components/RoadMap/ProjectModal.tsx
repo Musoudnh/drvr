@@ -324,7 +324,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Project Title *
             </label>
             <input
@@ -337,7 +337,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Description
             </label>
             <textarea
@@ -350,7 +350,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Completion Date
               </label>
               <input
@@ -362,14 +362,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Department
               </label>
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setDepartmentDropdownOpen(!departmentDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.department || 'Select Department'}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -393,7 +393,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                             setFormData({ ...formData, department: option.value });
                             setDepartmentDropdownOpen(false);
                           }}
-                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.department === option.value
                               ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
@@ -411,14 +411,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Status
               </label>
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.status}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -440,7 +440,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                             setFormData({ ...formData, status: option.value as ProjectStatus });
                             setStatusDropdownOpen(false);
                           }}
-                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.status === option.value
                               ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
@@ -456,14 +456,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Scenario
               </label>
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setScenarioDropdownOpen(!scenarioDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.scenario}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -483,7 +483,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                             setFormData({ ...formData, scenario: option.value as ProjectScenario });
                             setScenarioDropdownOpen(false);
                           }}
-                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.scenario === option.value
                               ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
@@ -500,7 +500,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Fiscal Year
             </label>
             <select
@@ -515,7 +515,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-xs font-medium text-gray-700 mb-3">
               Scenario-Based Budgets
             </label>
             <div className="grid grid-cols-3 gap-4">
@@ -524,7 +524,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                   Base Case
                 </label>
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <span className="text-xs text-gray-600 mr-2">$</span>
                   <input
                     type="number"
                     value={formData.budget_base_case}
@@ -540,7 +540,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                   Best Case
                 </label>
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <span className="text-xs text-gray-600 mr-2">$</span>
                   <input
                     type="number"
                     value={formData.budget_best_case}
@@ -556,7 +556,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                   Downside Case
                 </label>
                 <div className="flex items-center">
-                  <span className="text-sm text-gray-600 mr-2">$</span>
+                  <span className="text-xs text-gray-600 mr-2">$</span>
                   <input
                     type="number"
                     value={formData.budget_downside_case}
@@ -573,7 +573,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Budget by GL Account (Optional)
             </label>
 
@@ -582,17 +582,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                 {budgetLines.map((line) => (
                   <div key={line.id} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
                     <div className="flex-1">
-                      <div className="font-medium text-sm text-[#101010]">
+                      <div className="font-medium text-xs text-[#101010]">
                         {line.gl_code} - {line.gl_name}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600">$</span>
+                      <span className="text-xs text-gray-600">$</span>
                       <input
                         type="number"
                         value={line.amount}
                         onChange={(e) => handleUpdateBudgetAmount(line.id, parseFloat(e.target.value) || 0)}
-                        className="w-32 px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                        className="w-32 px-3 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         placeholder="0.00"
                       />
                       <button
@@ -634,7 +634,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                         value={glSearchTerm}
                         onChange={(e) => setGlSearchTerm(e.target.value)}
                         placeholder="Search GL accounts..."
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         autoFocus
                       />
                     </div>
@@ -648,7 +648,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                         className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center justify-between"
                       >
                         <div>
-                          <div className="font-medium text-sm text-[#101010]">
+                          <div className="font-medium text-xs text-[#101010]">
                             {gl.code} - {gl.name}
                           </div>
                           <div className="text-xs text-gray-600">{gl.category}</div>
@@ -663,7 +663,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-medium text-gray-700 mb-2">
               Assigned Users
             </label>
 
@@ -672,7 +672,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                 {formData.assigned_users.map((userId) => (
                   <span
                     key={userId}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
                   >
                     {getTeamMemberDisplay(userId)}
                     <button
@@ -707,7 +707,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                         value={userSearchTerm}
                         onChange={(e) => setUserSearchTerm(e.target.value)}
                         placeholder="Search team members..."
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                         autoFocus
                       />
                     </div>
@@ -721,7 +721,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                         className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center justify-between"
                       >
                         <div>
-                          <div className="font-medium text-sm text-[#101010]">
+                          <div className="font-medium text-xs text-[#101010]">
                             {member.full_name || member.email}
                           </div>
                           {member.full_name && (
@@ -739,7 +739,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
 
           {project && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Milestones
               </label>
               <div className="space-y-2 mb-3">
@@ -749,7 +749,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
                     <div className="flex-1">
-                      <div className="font-medium text-sm">{milestone.name}</div>
+                      <div className="font-medium text-xs">{milestone.name}</div>
                       <div className="text-xs text-gray-600">
                         {milestone.target_date && `Due: ${new Date(milestone.target_date).toLocaleDateString()}`}
                         {milestone.owner && ` • Owner: ${milestone.owner}`}
@@ -771,13 +771,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                   value={newMilestone.name}
                   onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
                   placeholder="Milestone name"
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-sm"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 />
                 <input
                   type="date"
                   value={newMilestone.target_date}
                   onChange={(e) => setNewMilestone({ ...newMilestone, target_date: e.target.value })}
-                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-sm"
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 />
                 <div className="flex gap-2">
                   <input
@@ -785,7 +785,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                     value={newMilestone.owner}
                     onChange={(e) => setNewMilestone({ ...newMilestone, owner: e.target.value })}
                     placeholder="Owner"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-sm"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                   />
                   <button
                     type="button"

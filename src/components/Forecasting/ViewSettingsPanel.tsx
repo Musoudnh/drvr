@@ -81,7 +81,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
 
           <div className="flex-1 overflow-y-auto p-4 space-y-6">
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
                 Display Options
               </h3>
 
@@ -94,7 +94,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                       <Eye className="w-5 h-5 text-gray-600" />
                     )}
                     <div>
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-xs font-medium text-gray-900">
                         {hideEmptyAccounts ? 'Empty Accounts Hidden' : 'Show All Accounts'}
                       </div>
                       <div className="text-xs text-gray-500">
@@ -122,7 +122,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   <div className="flex items-center gap-3">
                     <Hash className="w-5 h-5 text-gray-600" />
                     <div>
-                      <div className="text-sm font-medium text-gray-900">Account Codes</div>
+                      <div className="text-xs font-medium text-gray-900">Account Codes</div>
                       <div className="text-xs text-gray-500">
                         {showAccountCodes ? 'Showing GL codes' : 'Codes hidden'}
                       </div>
@@ -150,7 +150,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                       <Percent className="w-5 h-5 text-gray-600" />
                     )}
                     <div>
-                      <div className="text-sm font-medium text-gray-900">Actuals Display</div>
+                      <div className="text-xs font-medium text-gray-900">Actuals Display</div>
                       <div className="text-xs text-gray-500">
                         {showActualsAsAmount
                           ? 'Showing as dollar amounts'
@@ -175,7 +175,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
             </div>
 
             <div className="space-y-4 pt-4 border-t border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+              <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
                 Number Format
               </h3>
 
@@ -189,7 +189,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   }`}
                 >
                   <div className="text-left">
-                    <div className="text-sm font-medium">Full Amount</div>
+                    <div className="text-xs font-medium">Full Amount</div>
                     <div className="text-xs opacity-75">1,000,000</div>
                   </div>
                   {numberFormat === 'actual' && (
@@ -206,7 +206,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   }`}
                 >
                   <div className="text-left">
-                    <div className="text-sm font-medium">Thousands</div>
+                    <div className="text-xs font-medium">Thousands</div>
                     <div className="text-xs opacity-75">1,000.0K</div>
                   </div>
                   {numberFormat === 'thousands' && (
@@ -223,7 +223,7 @@ const ViewSettingsPanel: React.FC<ViewSettingsPanelProps> = ({
                   }`}
                 >
                   <div className="text-left">
-                    <div className="text-sm font-medium">Millions</div>
+                    <div className="text-xs font-medium">Millions</div>
                     <div className="text-xs opacity-75">1.0M</div>
                   </div>
                   {numberFormat === 'millions' && (

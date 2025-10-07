@@ -11,9 +11,9 @@ const Security: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Security Score</p>
+              <p className="text-xs font-medium text-gray-600">Security Score</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">92/100</p>
-              <p className="text-sm text-[#4ADE80] mt-1">Excellent</p>
+              <p className="text-xs text-[#4ADE80] mt-1">Excellent</p>
             </div>
             <Shield className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -22,9 +22,9 @@ const Security: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Active Sessions</p>
+              <p className="text-xs font-medium text-gray-600">Active Sessions</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">24</p>
-              <p className="text-sm text-gray-600 mt-1">Across all users</p>
+              <p className="text-xs text-gray-600 mt-1">Across all users</p>
             </div>
             <Key className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -33,9 +33,9 @@ const Security: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Failed Logins</p>
+              <p className="text-xs font-medium text-gray-600">Failed Logins</p>
               <p className="text-2xl font-bold text-[#F87171] mt-1">3</p>
-              <p className="text-sm text-gray-600 mt-1">Last 24 hours</p>
+              <p className="text-xs text-gray-600 mt-1">Last 24 hours</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-[#F87171]" />
           </div>
@@ -50,7 +50,7 @@ const Security: React.FC = () => {
               <CheckCircle className="w-5 h-5 text-[#4ADE80] mr-3" />
               <div>
                 <p className="font-medium text-[#101010]">Two-Factor Authentication</p>
-                <p className="text-sm text-gray-600">Enhanced security for all admin accounts</p>
+                <p className="text-xs text-gray-600">Enhanced security for all admin accounts</p>
               </div>
             </div>
             <Button variant="outline" size="sm">Configure</Button>
@@ -61,7 +61,7 @@ const Security: React.FC = () => {
               <CheckCircle className="w-5 h-5 text-[#4ADE80] mr-3" />
               <div>
                 <p className="font-medium text-[#101010]">SSL Certificate</p>
-                <p className="text-sm text-gray-600">Valid until March 2026</p>
+                <p className="text-xs text-gray-600">Valid until March 2026</p>
               </div>
             </div>
             <Button variant="outline" size="sm">Renew</Button>
@@ -72,7 +72,7 @@ const Security: React.FC = () => {
               <AlertTriangle className="w-5 h-5 text-yellow-500 mr-3" />
               <div>
                 <p className="font-medium text-[#101010]">Password Policy</p>
-                <p className="text-sm text-gray-600">Requires review and updates</p>
+                <p className="text-xs text-gray-600">Requires review and updates</p>
               </div>
             </div>
             <Button variant="outline" size="sm">Review</Button>
@@ -87,19 +87,19 @@ const Security: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Compliance Status</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Data Retention Policy</span>
+                <span className="text-xs text-gray-700">Data Retention Policy</span>
                 <CheckCircle className="w-5 h-5 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Access Controls</span>
+                <span className="text-xs text-gray-700">Access Controls</span>
                 <CheckCircle className="w-5 h-5 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Audit Trail</span>
+                <span className="text-xs text-gray-700">Audit Trail</span>
                 <CheckCircle className="w-5 h-5 text-[#4ADE80]" />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">Financial Controls</span>
+                <span className="text-xs text-gray-700">Financial Controls</span>
                 <AlertTriangle className="w-5 h-5 text-yellow-500" />
               </div>
             </div>
@@ -107,15 +107,15 @@ const Security: React.FC = () => {
           <div>
             <h3 className="font-semibold text-[#101010] mb-4">Recent Activities</h3>
             <div className="space-y-3">
-              <div className="text-sm">
+              <div className="text-xs">
                 <p className="font-medium text-gray-700">Quarterly Review Completed</p>
                 <p className="text-gray-500">2 days ago</p>
               </div>
-              <div className="text-sm">
+              <div className="text-xs">
                 <p className="font-medium text-gray-700">Access Permissions Updated</p>
                 <p className="text-gray-500">1 week ago</p>
               </div>
-              <div className="text-sm">
+              <div className="text-xs">
                 <p className="font-medium text-gray-700">Security Audit Passed</p>
                 <p className="text-gray-500">2 weeks ago</p>
               </div>

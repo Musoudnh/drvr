@@ -16,9 +16,9 @@ const TaxDocuments: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">2024 Tax Status</p>
+              <p className="text-xs font-medium text-gray-600">2024 Tax Status</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">Filed</p>
-              <p className="text-sm text-[#4ADE80] mt-1">On time</p>
+              <p className="text-xs text-[#4ADE80] mt-1">On time</p>
             </div>
             <CheckCircle className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -27,9 +27,9 @@ const TaxDocuments: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">2025 Estimated</p>
+              <p className="text-xs font-medium text-gray-600">2025 Estimated</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">$89,450</p>
-              <p className="text-sm text-gray-600 mt-1">Tax liability</p>
+              <p className="text-xs text-gray-600 mt-1">Tax liability</p>
             </div>
             <Calendar className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -38,9 +38,9 @@ const TaxDocuments: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Quarterly Due</p>
+              <p className="text-xs font-medium text-gray-600">Quarterly Due</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">Mar 15</p>
-              <p className="text-sm text-gray-600 mt-1">Next payment</p>
+              <p className="text-xs text-gray-600 mt-1">Next payment</p>
             </div>
             <Clock className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -49,9 +49,9 @@ const TaxDocuments: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Deductions</p>
+              <p className="text-xs font-medium text-gray-600">Deductions</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">$24,680</p>
-              <p className="text-sm text-gray-600 mt-1">YTD savings</p>
+              <p className="text-xs text-gray-600 mt-1">YTD savings</p>
             </div>
             <FileText className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -73,7 +73,7 @@ const TaxDocuments: React.FC = () => {
                 <FileText className="w-5 h-5 text-gray-400 mr-3" />
                 <div>
                   <p className="font-medium text-[#101010]">{doc.name}</p>
-                  <p className="text-sm text-gray-600">{doc.date}</p>
+                  <p className="text-xs text-gray-600">{doc.date}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -102,15 +102,15 @@ const TaxDocuments: React.FC = () => {
           <div className="space-y-4">
             <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
               <h4 className="font-medium text-[#101010] mb-2">Equipment Depreciation</h4>
-              <p className="text-sm text-gray-600">Potential $12,500 deduction available</p>
+              <p className="text-xs text-gray-600">Potential $12,500 deduction available</p>
             </div>
             <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
               <h4 className="font-medium text-[#101010] mb-2">R&D Tax Credits</h4>
-              <p className="text-sm text-gray-600">Eligible for $8,900 in credits</p>
+              <p className="text-xs text-gray-600">Eligible for $8,900 in credits</p>
             </div>
             <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
               <h4 className="font-medium text-[#101010] mb-2">Retirement Contributions</h4>
-              <p className="text-sm text-gray-600">Maximize $15,000 annual contribution</p>
+              <p className="text-xs text-gray-600">Maximize $15,000 annual contribution</p>
             </div>
           </div>
         </Card>
@@ -131,7 +131,7 @@ const TaxDocuments: React.FC = () => {
                   }`} />
                   <div>
                     <p className="font-medium text-[#101010]">{deadline.task}</p>
-                    <p className="text-sm text-gray-600">{deadline.date}</p>
+                    <p className="text-xs text-gray-600">{deadline.date}</p>
                   </div>
                 </div>
                 <Button variant="outline" size="sm">Set Reminder</Button>

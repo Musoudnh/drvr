@@ -179,7 +179,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
     if (field.type === 'array') {
       return (
         <div key={field.name} className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-xs font-medium text-gray-700">
             {field.label}
             {field.required && <span className="text-red-500 ml-1">*</span>}
           </label>
@@ -200,7 +200,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
 
     return (
       <div key={field.name} className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-xs font-medium text-gray-700">
           {field.label}
           {field.required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -256,7 +256,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                 setShowCreateForm(false);
                 setSelectedTemplate(null);
               }}
-              className="mb-4 text-purple-600 hover:text-purple-700 text-sm font-medium"
+              className="mb-4 text-purple-600 hover:text-purple-700 text-xs font-medium"
             >
               ← Back to Library
             </button>
@@ -272,7 +272,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                       <h3 className="text-lg font-semibold text-gray-900">
                         {selectedTemplate.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-xs text-gray-600 mt-1">
                         {selectedTemplate.description}
                       </p>
                       <div className="mt-2 p-2 bg-white rounded border border-purple-200">
@@ -285,7 +285,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-700 mb-2">
                     Instance Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -299,7 +299,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       Start Date <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -310,7 +310,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-2">
                       End Date <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -355,7 +355,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
               <div className="flex gap-4 px-6">
                 <button
                   onClick={() => setActiveTab('library')}
-                  className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`py-3 px-1 border-b-2 font-medium text-xs transition-colors ${
                     activeTab === 'library'
                       ? 'border-purple-600 text-purple-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700'
@@ -365,7 +365,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                 </button>
                 <button
                   onClick={() => setActiveTab('instances')}
-                  className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`py-3 px-1 border-b-2 font-medium text-xs transition-colors ${
                     activeTab === 'instances'
                       ? 'border-purple-600 text-purple-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700'
@@ -393,7 +393,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                           <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
                             {template.name}
                           </h3>
-                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">
                             {template.description}
                           </p>
                           <div className="mt-2 flex items-center gap-2">
@@ -428,7 +428,7 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900">{instance.name}</h3>
-                            <p className="text-sm text-gray-600 mt-1">
+                            <p className="text-xs text-gray-600 mt-1">
                               {instance.template?.name}
                             </p>
                             <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">

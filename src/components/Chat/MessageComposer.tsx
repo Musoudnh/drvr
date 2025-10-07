@@ -115,7 +115,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
           <div className="flex flex-wrap gap-2">
             {attachments.map(attachment => (
               <div key={attachment.id} className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-                <span className="text-sm text-gray-700 mr-2">{attachment.name}</span>
+                <span className="text-xs text-gray-700 mr-2">{attachment.name}</span>
                 <button
                   onClick={() => removeAttachment(attachment.id)}
                   className="text-gray-400 hover:text-gray-600"
@@ -143,7 +143,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
                 </span>
               </div>
               <div>
-                <p className="text-sm font-medium text-[#101010]">{user.name}</p>
+                <p className="text-xs font-medium text-[#101010]">{user.name}</p>
                 <p className="text-xs text-gray-500">{user.role}</p>
               </div>
             </button>

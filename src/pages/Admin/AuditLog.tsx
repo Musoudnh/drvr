@@ -120,7 +120,7 @@ const AuditLog: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => setShowUserFilter(!showUserFilter)}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filter
@@ -157,7 +157,7 @@ const AuditLog: React.FC = () => {
                         onChange={() => handleUserToggle(user)}
                         className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#3AB7BF] mr-3"
                       />
-                      <span className="text-sm text-gray-700">{user}</span>
+                      <span className="text-xs text-gray-700">{user}</span>
                     </label>
                   ))}
                 </div>
@@ -168,7 +168,7 @@ const AuditLog: React.FC = () => {
           <div className="relative">
             <button
               onClick={() => setShowDatePicker(!showDatePicker)}
-              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
               <Calendar className="w-4 h-4 mr-2" />
               Date Range
@@ -198,7 +198,7 @@ const AuditLog: React.FC = () => {
                   
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">Start Date</label>
                       <input
                         type="date"
                         value={dateRange.startDate}
@@ -208,7 +208,7 @@ const AuditLog: React.FC = () => {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">End Date</label>
                       <input
                         type="date"
                         value={dateRange.endDate}
@@ -241,7 +241,7 @@ const AuditLog: React.FC = () => {
             )}
           </div>
           
-          <button className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
+          <button className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center">
             <Download className="w-4 h-4 mr-2" />
             Export
           </button>
@@ -265,7 +265,7 @@ const AuditLog: React.FC = () => {
             <tbody>
               {filteredLogs.map((log) => (
                 <tr key={log.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm text-gray-600">{log.timestamp}</td>
+                  <td className="py-3 px-4 text-xs text-gray-600">{log.timestamp}</td>
                   <td className="py-3 px-4">
                     <div className="flex items-center">
                       <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
@@ -276,7 +276,7 @@ const AuditLog: React.FC = () => {
                   </td>
                   <td className="py-3 px-4 font-medium text-[#101010]">{log.action}</td>
                   <td className="py-3 px-4 text-gray-600">{log.resource}</td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{log.ip}</td>
+                  <td className="py-3 px-4 text-xs text-gray-600">{log.ip}</td>
                   <td className="py-3 px-4">
                     <span className={`px-2 py-1 rounded text-xs font-medium ${
                       log.status === 'success'

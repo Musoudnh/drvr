@@ -23,7 +23,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
         <div className="text-center text-gray-500">
           <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
           <p className="text-lg font-medium">Select a channel</p>
-          <p className="text-sm">Choose a channel to view threads</p>
+          <p className="text-xs">Choose a channel to view threads</p>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
           </button>
         </div>
         {channel.description && (
-          <p className="text-sm text-gray-600">{channel.description}</p>
+          <p className="text-xs text-gray-600">{channel.description}</p>
         )}
         <div className="flex items-center mt-2 text-xs text-gray-500">
           <Users className="w-3 h-3 mr-1" />
@@ -68,10 +68,10 @@ const ThreadList: React.FC<ThreadListProps> = ({
           <div className="p-8 text-center text-gray-500">
             <MessageSquare className="w-8 h-8 mx-auto mb-3 text-gray-300" />
             <p className="font-medium">No threads yet</p>
-            <p className="text-sm">Start a new conversation</p>
+            <p className="text-xs">Start a new conversation</p>
             <button
               onClick={onCreateThread}
-              className="mt-3 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg text-sm hover:bg-[#2A9BA3] transition-colors"
+              className="mt-3 px-4 py-2 bg-[#3AB7BF] text-white rounded-lg text-xs hover:bg-[#2A9BA3] transition-colors"
             >
               Create Thread
             </button>
@@ -89,7 +89,7 @@ const ThreadList: React.FC<ThreadListProps> = ({
                 }`}
               >
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-medium text-[#101010] text-sm line-clamp-2">
+                  <h4 className="font-medium text-[#101010] text-xs line-clamp-2">
                     {thread.title}
                   </h4>
                   {thread.isAISummarized && (

@@ -108,7 +108,7 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
               <div className="text-center">
                 <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">No driver instances found</p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 mt-2">
                   Create a driver instance to see results
                 </p>
               </div>
@@ -116,7 +116,7 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
           ) : (
             <>
               <div className="p-4 border-b border-gray-200">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   Select Driver
                 </label>
                 <select
@@ -133,10 +133,10 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
 
                 {selectedInstance && (
                   <div className="mt-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs text-gray-600">
                       <span className="font-medium">Type:</span> {selectedInstance.template?.name}
                     </p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-xs text-gray-600 mt-1">
                       <span className="font-medium">Period:</span>{' '}
                       {selectedInstance.configuration.period_start} to{' '}
                       {selectedInstance.configuration.period_end}
@@ -159,13 +159,13 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                        <p className="text-sm text-green-600 font-medium">Total Revenue</p>
+                        <p className="text-xs text-green-600 font-medium">Total Revenue</p>
                         <p className="text-2xl font-bold text-green-700 mt-1">
                           {formatCurrency(getTotalRevenue())}
                         </p>
                       </div>
                       <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-sm text-blue-600 font-medium">Periods</p>
+                        <p className="text-xs text-blue-600 font-medium">Periods</p>
                         <p className="text-2xl font-bold text-blue-700 mt-1">
                           {results.length}
                         </p>
@@ -173,7 +173,7 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
                     </div>
 
                     <div className="space-y-2">
-                      <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
                         Monthly Breakdown
                       </h3>
                       <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -183,10 +183,10 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
                             className="p-3 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
                           >
                             <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm font-medium text-gray-900">
+                              <span className="text-xs font-medium text-gray-900">
                                 {format(parseISO(result.period_date), 'MMM yyyy')}
                               </span>
-                              <span className="text-sm font-bold text-gray-900">
+                              <span className="text-xs font-bold text-gray-900">
                                 {formatCurrency(result.revenue)}
                               </span>
                             </div>

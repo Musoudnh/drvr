@@ -1135,21 +1135,21 @@ const Forecasting: React.FC = () => {
             <h4 className="font-medium text-[#101010]">Travel Assumptions</h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Number of Trips</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Number of Trips</label>
                 <input
                   type="number"
                   value={glScenarioForm.numberOfTrips}
                   onChange={(e) => setGLScenarioForm({...glScenarioForm, numberOfTrips: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Avg Trip Cost</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Avg Trip Cost</label>
                 <input
                   type="number"
                   value={glScenarioForm.averageTripCost}
                   onChange={(e) => setGLScenarioForm({...glScenarioForm, averageTripCost: parseInt(e.target.value) || 0})}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 />
               </div>
             </div>
@@ -1160,12 +1160,12 @@ const Forecasting: React.FC = () => {
         return (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Adjustment Type</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Adjustment Type</label>
               <div className="relative" ref={adjustmentTypeDropdownRef}>
                 <button
                   type="button"
                   onClick={() => setAdjustmentTypeDropdownOpen(!adjustmentTypeDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{glScenarioForm.adjustmentType === 'percentage' ? 'Percentage Change' : 'Fixed Amount'}</span>
                   <ChevronDown className="w-4 h-4 ml-1" />
@@ -1179,7 +1179,7 @@ const Forecasting: React.FC = () => {
                           setGLScenarioForm({...glScenarioForm, adjustmentType: 'percentage'});
                           setAdjustmentTypeDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           glScenarioForm.adjustmentType === 'percentage'
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -1193,7 +1193,7 @@ const Forecasting: React.FC = () => {
                           setGLScenarioForm({...glScenarioForm, adjustmentType: 'fixed'});
                           setAdjustmentTypeDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           glScenarioForm.adjustmentType === 'fixed'
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -1209,7 +1209,7 @@ const Forecasting: React.FC = () => {
             
             {/* Date Range Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Date Range</label>
+              <label className="block text-xs font-medium text-gray-700 mb-3">Date Range</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {/* Button 1: Date Range Selector */}
                 <button
@@ -1241,7 +1241,7 @@ const Forecasting: React.FC = () => {
                       : 'border-gray-300 hover:border-[#7B68EE]/40 text-gray-700'
                   }`}
                 >
-                  <div className="font-medium text-sm">Select Month Range</div>
+                  <div className="font-medium text-xs">Select Month Range</div>
                   <div className="text-xs mt-1">
                     {!(glScenarioForm.startMonth === months[new Date().getMonth()] && 
                       glScenarioForm.startYear === new Date().getFullYear() && 
@@ -1276,7 +1276,7 @@ const Forecasting: React.FC = () => {
                       : 'border-gray-300 hover:border-[#7B68EE]/40 text-gray-700'
                   }`}
                 >
-                  <div className="font-medium text-sm">From This Month Forward</div>
+                  <div className="font-medium text-xs">From This Month Forward</div>
                   <div className="text-xs mt-1">
                     {glScenarioForm.startMonth === months[new Date().getMonth()] && 
                      glScenarioForm.startYear === new Date().getFullYear() && 
@@ -1298,13 +1298,13 @@ const Forecasting: React.FC = () => {
                   <h5 className="font-medium text-[#101010] mb-3">Custom Date Range</h5>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="relative" ref={startMonthDropdownRef}>
                           <button
                             type="button"
                             onClick={() => setStartMonthDropdownOpen(!startMonthDropdownOpen)}
-                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                           >
                             <span>{glScenarioForm.startMonth}</span>
                             <ChevronDown className="w-4 h-4 ml-1" />
@@ -1327,7 +1327,7 @@ const Forecasting: React.FC = () => {
                                         setGLScenarioForm({...glScenarioForm, startMonth: month});
                                         setStartMonthDropdownOpen(false);
                                       }}
-                                      className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                      className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                         glScenarioForm.startMonth === month
                                           ? 'bg-[#7B68EE] text-white'
                                           : isActualized
@@ -1347,7 +1347,7 @@ const Forecasting: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setStartYearDropdownOpen(!startYearDropdownOpen)}
-                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                           >
                             <span>{glScenarioForm.startYear}</span>
                             <ChevronDown className="w-4 h-4 ml-1" />
@@ -1363,7 +1363,7 @@ const Forecasting: React.FC = () => {
                                       setGLScenarioForm({...glScenarioForm, startYear: year});
                                       setStartYearDropdownOpen(false);
                                     }}
-                                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                    className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                       glScenarioForm.startYear === year
                                         ? 'bg-[#7B68EE] text-white'
                                         : 'text-gray-600 hover:bg-gray-100'
@@ -1379,13 +1379,13 @@ const Forecasting: React.FC = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
                       <div className="grid grid-cols-2 gap-2">
                         <div className="relative" ref={endMonthDropdownRef}>
                           <button
                             type="button"
                             onClick={() => setEndMonthDropdownOpen(!endMonthDropdownOpen)}
-                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                           >
                             <span>{glScenarioForm.endMonth}</span>
                             <ChevronDown className="w-4 h-4 ml-1" />
@@ -1408,7 +1408,7 @@ const Forecasting: React.FC = () => {
                                         setGLScenarioForm({...glScenarioForm, endMonth: month});
                                         setEndMonthDropdownOpen(false);
                                       }}
-                                      className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                      className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                         glScenarioForm.endMonth === month
                                           ? 'bg-[#7B68EE] text-white'
                                           : isActualized
@@ -1428,7 +1428,7 @@ const Forecasting: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setEndYearDropdownOpen(!endYearDropdownOpen)}
-                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                            className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                           >
                             <span>{glScenarioForm.endYear}</span>
                             <ChevronDown className="w-4 h-4 ml-1" />
@@ -1444,7 +1444,7 @@ const Forecasting: React.FC = () => {
                                       setGLScenarioForm({...glScenarioForm, endYear: year});
                                       setEndYearDropdownOpen(false);
                                     }}
-                                    className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                    className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                       glScenarioForm.endYear === year
                                         ? 'bg-[#7B68EE] text-white'
                                         : 'text-gray-600 hover:bg-gray-100'
@@ -1465,14 +1465,14 @@ const Forecasting: React.FC = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 {glScenarioForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}
               </label>
               <input
                 type="number"
                 value={glScenarioForm.adjustmentValue}
                 onChange={(e) => setGLScenarioForm({...glScenarioForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 step={glScenarioForm.adjustmentType === 'percentage' ? '0.1' : '100'}
               />
             </div>
@@ -1588,7 +1588,7 @@ const Forecasting: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/forecasting')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/forecasting'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1598,7 +1598,7 @@ const Forecasting: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/balance')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1608,7 +1608,7 @@ const Forecasting: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/cashflow')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1622,41 +1622,41 @@ const Forecasting: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowSaveForecastModal(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Save className="w-4 h-4 mr-2" />
             Save Forecast
           </button>
           <button
             onClick={() => setShowCommentsSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <MessageSquare className="w-4 h-4 mr-2" />
             Comments
           </button>
           <button
             onClick={() => setShowScenarioAuditSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Applied Drivers
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Version History
           </button>
           <button
             onClick={() => setShowAlertsSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Bell className="w-4 h-4 mr-2" />
             Alerts
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Download className="w-4 h-4 mr-2" />
             Export
@@ -1668,25 +1668,25 @@ const Forecasting: React.FC = () => {
       {selectedCells.length > 0 && (
         <div className="bg-[#F5F3FF] border border-[#7B68EE] rounded-lg p-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium text-[#101010]">
+            <span className="text-xs font-medium text-[#101010]">
               {selectedCells.length} cell{selectedCells.length > 1 ? 's' : ''} selected
             </span>
             <button
               onClick={() => setShowBulkAdjustPanel(true)}
-              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
+              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-300 transition-colors"
             >
               Adjust Selected
             </button>
             <button
               onClick={() => {}}
-              className="px-3 py-1.5 bg-[#7B68EE] text-white rounded-lg text-sm font-medium hover:bg-[#6B58DE] transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#7B68EE] text-white rounded-lg text-xs font-medium hover:bg-[#6B58DE] transition-colors flex items-center gap-1.5"
             >
               <Sparkles className="w-4 h-4" />
               Forecast with AI
             </button>
             <button
               onClick={clearSelection}
-              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
+              className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-300 transition-colors"
             >
               Clear Selection
             </button>
@@ -1701,11 +1701,11 @@ const Forecasting: React.FC = () => {
       <Card>
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">View:</label>
+            <label className="text-xs font-medium text-gray-700">View:</label>
             <div className="flex bg-gray-100 rounded-lg p-0.5 gap-1">
               <button
                 onClick={() => setDateViewMode('months')}
-                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   dateViewMode === 'months'
                     ? 'bg-white text-[#7B68EE] shadow-sm'
                     : 'text-gray-600 hover:text-gray-800'
@@ -1715,7 +1715,7 @@ const Forecasting: React.FC = () => {
               </button>
               <button
                 onClick={() => setDateViewMode('quarters')}
-                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   dateViewMode === 'quarters'
                     ? 'bg-white text-[#7B68EE] shadow-sm'
                     : 'text-gray-600 hover:text-gray-800'
@@ -1725,7 +1725,7 @@ const Forecasting: React.FC = () => {
               </button>
               <button
                 onClick={() => setDateViewMode('years')}
-                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   dateViewMode === 'years'
                     ? 'bg-white text-[#7B68EE] shadow-sm'
                     : 'text-gray-600 hover:text-gray-800'
@@ -1739,11 +1739,11 @@ const Forecasting: React.FC = () => {
           <div className="h-8 w-px bg-gray-300"></div>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Year:</label>
+            <label className="text-xs font-medium text-gray-700">Year:</label>
             <div className="relative" ref={yearDropdownRef}>
               <button
                 onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedYear}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -1758,7 +1758,7 @@ const Forecasting: React.FC = () => {
                           setSelectedYear(year);
                           setYearDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedYear === year
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -1774,11 +1774,11 @@ const Forecasting: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Department:</label>
+            <label className="text-xs font-medium text-gray-700">Department:</label>
             <div className="relative" ref={deptDropdownRef}>
               <button
                 onClick={() => setDeptDropdownOpen(!deptDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedCategory === 'All' ? 'All Categories' : selectedCategory}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -1799,7 +1799,7 @@ const Forecasting: React.FC = () => {
                           setSelectedCategory(option.value);
                           setDeptDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedCategory === option.value
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -1819,7 +1819,7 @@ const Forecasting: React.FC = () => {
           )}
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Search GL:</label>
+            <label className="text-xs font-medium text-gray-700">Search GL:</label>
             <div className="relative w-[200px]">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -1827,7 +1827,7 @@ const Forecasting: React.FC = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search codes..."
-                className="w-full pl-10 pr-4 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 placeholder:text-gray-400 placeholder:font-normal"
+                className="w-full pl-10 pr-4 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 placeholder:text-gray-400 placeholder:font-normal"
               />
             </div>
           </div>
@@ -1843,7 +1843,7 @@ const Forecasting: React.FC = () => {
                     setExpandedGLCodes(allGLCodes);
                   }
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
                 title={expandedGLCodes.length === glCodes.length ? "Collapse all" : "Expand all"}
               >
                 {expandedGLCodes.length === glCodes.length ? (
@@ -1851,18 +1851,18 @@ const Forecasting: React.FC = () => {
                 ) : (
                   <Eye className="w-4 h-4 text-gray-600" />
                 )}
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-xs font-medium text-gray-700">
                   {expandedGLCodes.length === glCodes.length ? "Collapse All" : "Expand All"}
                 </span>
               </button>
             )}
             <button
               onClick={() => setShowViewSettingsPanel(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
               title="View settings"
             >
               <Settings className="w-4 h-4 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">View Settings</span>
+              <span className="text-xs font-medium text-gray-700">View Settings</span>
             </button>
           </div>
         </div>
@@ -1878,7 +1878,7 @@ const Forecasting: React.FC = () => {
               : `Yearly Forecast (All Years)`
           }>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
@@ -1920,7 +1920,7 @@ const Forecasting: React.FC = () => {
                         >
                           {dateViewMode === 'years' ? (
                             <div className="flex flex-col">
-                              <span className={`text-sm ${
+                              <span className={`text-xs ${
                                 isSelectedYear ? 'text-white font-bold' : isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>FY{labelData.label}</span>
                               <span className={`text-xs font-normal ${
@@ -1937,10 +1937,10 @@ const Forecasting: React.FC = () => {
                             </div>
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
-                              <span className={`text-sm font-normal ${
+                              <span className={`text-xs font-normal ${
                                 isSelectedYearQuarter ? 'text-white' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
                               }`}>{labelData.label}</span>
-                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-white' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
+                              <span className={`text-xs font-normal ${isSelectedYearQuarter ? 'text-white' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
@@ -1994,7 +1994,7 @@ const Forecasting: React.FC = () => {
                               className="border-b border-gray-100 hover:bg-gray-50 group"
                               onContextMenu={(e) => handleContextMenu(e, glCode)}
                             >
-                              <td className="py-3 px-4 text-sm sticky left-0 bg-white group-hover:bg-gray-50">
+                              <td className="py-3 px-4 text-xs sticky left-0 bg-white group-hover:bg-gray-50">
                                 <div className="flex items-center justify-between">
                                   <div>
                                     <div className="text-[#101010]">
@@ -2035,7 +2035,7 @@ const Forecasting: React.FC = () => {
                                                 setShowGLScenarioModal(true);
                                                 setDriverDropdownOpen(null);
                                               }}
-                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700"
+                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-xs text-gray-700"
                                             >
                                               <Plus className="w-3.5 h-3.5" />
                                               Quick Driver
@@ -2046,7 +2046,7 @@ const Forecasting: React.FC = () => {
                                                 setShowSalesScenarioModal(true);
                                                 setDriverDropdownOpen(null);
                                               }}
-                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm text-gray-700 border-t border-gray-100"
+                                              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-xs text-gray-700 border-t border-gray-100"
                                             >
                                               <Plus className="w-3.5 h-3.5" />
                                               Customer Driver
@@ -2146,13 +2146,13 @@ const Forecasting: React.FC = () => {
                                               const monthData = forecastData.find(item => item.glCode === glCode.code && item.month === periodKey);
                                               if (monthData?.actualAmount !== undefined) {
                                                 return (
-                                                  <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  <div className="text-xs text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                                     ${formatNumber(monthData.actualAmount)}
                                                   </div>
                                                 );
                                               } else {
                                                 return (
-                                                  <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                                  <div className="text-xs text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                                     -
                                                   </div>
                                                 );
@@ -2162,7 +2162,7 @@ const Forecasting: React.FC = () => {
                                         )}
                                         <div className={`${dateViewMode === 'months' && expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : dateViewMode !== 'months' ? '' : 'hidden'}`}>
                                           {dateViewMode !== 'months' ? (
-                                            <div className={`text-sm font-medium ${
+                                            <div className={`text-xs font-medium ${
                                               isSelectedYearQuarter || isSelectedYearInYearsView ? 'text-white' : 'text-[#212b36]'
                                             }`}>
                                               ${formatNumber(aggregatedAmount)}
@@ -2176,7 +2176,7 @@ const Forecasting: React.FC = () => {
                                                 : !isActualized
                                                   ? 'cursor-pointer hover:bg-[#EEF2FF]'
                                                   : ''
-                                            } text-sm`}>
+                                            } text-xs`}>
                                               {isEditing ? (
                                                 <input
                                                   type="text"
@@ -2193,7 +2193,7 @@ const Forecasting: React.FC = () => {
                                                     if (e.key === 'Enter') handleCellSave();
                                                     if (e.key === 'Escape') handleCellCancel();
                                                   }}
-                                                  className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-sm"
+                                                  className="w-full px-1 py-0.5 text-center border border-[#A5B4FC] rounded text-xs"
                                                   autoFocus
                                                   onFocus={(e) => e.target.select()}
                                                 />
@@ -2208,7 +2208,7 @@ const Forecasting: React.FC = () => {
                                                       }
                                                     }
                                                   }}
-                                                  className={`text-sm ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
+                                                  className={`text-xs ${isActualized ? 'text-gray-600' : 'text-[#101010] hover:text-[#4F46E5] select-none'}`}
                                                 >
                                                   ${formatNumber(aggregatedAmount)}
                                                 </span>
@@ -2222,7 +2222,7 @@ const Forecasting: React.FC = () => {
                                               const varianceDollar = monthData.actualAmount - aggregatedAmount;
                                               const varianceColor = getVarianceColor(variance, glCode.code);
                                               return (
-                                                <div className={`text-sm font-medium ${varianceColor}`}>
+                                                <div className={`text-xs font-medium ${varianceColor}`}>
                                                   {showActualsAsAmount
                                                     ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                                     : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
@@ -2231,7 +2231,7 @@ const Forecasting: React.FC = () => {
                                               );
                                             } else {
                                               return (
-                                                <div className="text-sm font-medium text-gray-400">
+                                                <div className="text-xs font-medium text-gray-400">
                                                   -
                                                 </div>
                                               );
@@ -2244,7 +2244,7 @@ const Forecasting: React.FC = () => {
                                 );
                               })}
                               {dateViewMode === 'months' && (
-                                <td className="py-3 px-2 text-sm text-center border-l border-gray-300">
+                                <td className="py-3 px-2 text-xs text-center border-l border-gray-300">
                                   <div className="space-y-1">
                                     {editingCell?.glCode === glCode.code && editingCell?.type === 'fy' ? (
                                       <input
@@ -2262,7 +2262,7 @@ const Forecasting: React.FC = () => {
                                           if (e.key === 'Enter') handleCellSave();
                                           if (e.key === 'Escape') handleCellCancel();
                                         }}
-                                        className="w-full px-2 py-1 text-right border border-[#A5B4FC] rounded text-sm"
+                                        className="w-full px-2 py-1 text-right border border-[#A5B4FC] rounded text-xs"
                                         autoFocus
                                         onFocus={(e) => e.target.select()}
                                       />
@@ -2280,7 +2280,7 @@ const Forecasting: React.FC = () => {
 
                                       return (
                                         <>
-                                          <div className="text-sm text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
+                                          <div className="text-xs text-[#212b36] font-medium bg-gray-100 rounded px-1 py-0.5">
                                             ${formatNumber(totalActuals)}
                                           </div>
                                           {expandedGLCodes.includes(glCode.code) && (
@@ -2296,7 +2296,7 @@ const Forecasting: React.FC = () => {
                                                   ${formatNumber(actualsAndRemaining)}
                                                 </span>
                                               </div>
-                                              <div className={`text-sm font-medium text-center ${varianceColor}`}>
+                                              <div className={`text-xs font-medium text-center ${varianceColor}`}>
                                                 {showActualsAsAmount
                                                   ? `${varianceDollar >= 0 ? '+' : ''}$${formatNumber(Math.abs(varianceDollar))}`
                                                   : `${variance >= 0 ? '+' : ''}${variance.toFixed(1)}%`
@@ -2345,7 +2345,7 @@ const Forecasting: React.FC = () => {
                                                     {scenario.isActive ? 'Active' : 'Inactive'}
                                                   </span>
                                                 </div>
-                                                <p className="text-sm text-gray-600 mt-1">{scenario.description}</p>
+                                                <p className="text-xs text-gray-600 mt-1">{scenario.description}</p>
                                                 <p className="text-xs text-gray-500 mt-1">
                                                   {scenario.startMonth} - {scenario.endMonth} •
                                                   {scenario.adjustmentType === 'percentage' ?
@@ -2368,7 +2368,7 @@ const Forecasting: React.FC = () => {
                                               <table className="w-full">
                                                 <tbody>
                                                   <tr>
-                                                    <td className="py-1 px-4 text-sm sticky left-0 bg-white w-64"></td>
+                                                    <td className="py-1 px-4 text-xs sticky left-0 bg-white w-64"></td>
                                                     {months.map((month, index) => {
                                                       const startIndex = getMonthIndex(scenario.startMonth);
                                                       const endIndex = getMonthIndex(scenario.endMonth);
@@ -2513,22 +2513,22 @@ const Forecasting: React.FC = () => {
 
            <div className="flex-1 overflow-y-auto p-6 space-y-4">
              <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+               <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
                <input
                  type="text"
                  value={glScenarioForm.title}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  placeholder="e.g., Q2 Marketing Campaign"
                />
              </div>
              
              <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+               <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                <textarea
                  value={glScenarioForm.description}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  rows={3}
                  placeholder="Describe the scenario and its impact"
                />
@@ -2537,7 +2537,7 @@ const Forecasting: React.FC = () => {
              {renderGLSpecificInputs()}
              
              <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
+               <p className="text-xs text-gray-700">{getImpactPreview()}</p>
              </div>
            </div>
 
@@ -2670,22 +2670,22 @@ const Forecasting: React.FC = () => {
 
            <div className="flex-1 overflow-y-auto p-6 space-y-4">
              <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+               <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
                <input
                  type="text"
                  value={glScenarioForm.title}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, title: e.target.value})}
-                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  placeholder="e.g., Q2 Marketing Campaign"
                />
              </div>
 
              <div>
-               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+               <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                <textarea
                  value={glScenarioForm.description}
                  onChange={(e) => setGLScenarioForm({...glScenarioForm, description: e.target.value})}
-                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                 className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                  rows={3}
                  placeholder="Describe the scenario and its impact"
                />
@@ -2694,7 +2694,7 @@ const Forecasting: React.FC = () => {
              {renderGLSpecificInputs()}
 
              <div className="p-3 bg-[#3AB7BF]/10 rounded-lg">
-               <p className="text-sm text-gray-700">{getImpactPreview()}</p>
+               <p className="text-xs text-gray-700">{getImpactPreview()}</p>
              </div>
            </div>
 
@@ -2821,7 +2821,7 @@ const Forecasting: React.FC = () => {
             <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-[#3AB7BF]/5">
               <div>
                 <h3 className="text-xl font-semibold text-[#101010]">Scenario Configuration</h3>
-                <p className="text-sm text-gray-600 mt-1">Create and configure budget scenarios</p>
+                <p className="text-xs text-gray-600 mt-1">Create and configure budget scenarios</p>
               </div>
               <button
                 onClick={() => setShowScenarioSidePanel(false)}
@@ -2835,7 +2835,7 @@ const Forecasting: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* GL Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-xs font-medium text-gray-700 mb-3">
                   <Target className="w-4 h-4 inline mr-2" />
                   Select GL Account
                 </label>
@@ -2844,7 +2844,7 @@ const Forecasting: React.FC = () => {
                   <select
                     value={sidePanelForm.selectedGLCode}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, selectedGLCode: e.target.value})}
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent appearance-none"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent appearance-none"
                   >
                     <option value="">Choose GL Account...</option>
                     {glCodes.map(glCode => (
@@ -2860,22 +2860,22 @@ const Forecasting: React.FC = () => {
               {/* Scenario Details */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
                   <input
                     type="text"
                     value={sidePanelForm.scenarioName}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, scenarioName: e.target.value})}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     placeholder="e.g., Q2 Marketing Campaign"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                   <textarea
                     value={sidePanelForm.description}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, description: e.target.value})}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     rows={3}
                     placeholder="Describe the scenario and its business context"
                   />
@@ -2884,7 +2884,7 @@ const Forecasting: React.FC = () => {
 
               {/* Date Range */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-xs font-medium text-gray-700 mb-3">
                   <Calendar className="w-4 h-4 inline mr-2" />
                   Date Range
                 </label>
@@ -2895,7 +2895,7 @@ const Forecasting: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSidePanelStartMonthDropdownOpen(!sidePanelStartMonthDropdownOpen)}
-                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                       >
                         <span>{sidePanelForm.startMonth}</span>
                         <ChevronDown className="w-4 h-4 ml-1" />
@@ -2918,7 +2918,7 @@ const Forecasting: React.FC = () => {
                                     setSidePanelForm({...sidePanelForm, startMonth: month});
                                     setSidePanelStartMonthDropdownOpen(false);
                                   }}
-                                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                     sidePanelForm.startMonth === month
                                       ? 'bg-[#7B68EE] text-white'
                                       : isActualized
@@ -2941,7 +2941,7 @@ const Forecasting: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSidePanelEndMonthDropdownOpen(!sidePanelEndMonthDropdownOpen)}
-                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                        className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                       >
                         <span>{sidePanelForm.endMonth}</span>
                         <ChevronDown className="w-4 h-4 ml-1" />
@@ -2964,7 +2964,7 @@ const Forecasting: React.FC = () => {
                                     setSidePanelForm({...sidePanelForm, endMonth: month});
                                     setSidePanelEndMonthDropdownOpen(false);
                                   }}
-                                  className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                  className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                     sidePanelForm.endMonth === month
                                       ? 'bg-[#7B68EE] text-white'
                                       : isActualized
@@ -2986,7 +2986,7 @@ const Forecasting: React.FC = () => {
 
               {/* Adjustment Configuration */}
               <div className="space-y-4">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-xs font-medium text-gray-700">
                   <BarChart3 className="w-4 h-4 inline mr-2" />
                   Budget Adjustment
                 </label>
@@ -2997,7 +2997,7 @@ const Forecasting: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setSidePanelAdjustmentTypeDropdownOpen(!sidePanelAdjustmentTypeDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{sidePanelForm.adjustmentType === 'percentage' ? 'Percentage Change (%)' : 'Fixed Amount ($)'}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -3011,7 +3011,7 @@ const Forecasting: React.FC = () => {
                               setSidePanelForm({...sidePanelForm, adjustmentType: 'percentage'});
                               setSidePanelAdjustmentTypeDropdownOpen(false);
                             }}
-                            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                               sidePanelForm.adjustmentType === 'percentage'
                                 ? 'bg-[#7B68EE] text-white'
                                 : 'text-gray-600 hover:bg-gray-100'
@@ -3025,7 +3025,7 @@ const Forecasting: React.FC = () => {
                               setSidePanelForm({...sidePanelForm, adjustmentType: 'fixed'});
                               setSidePanelAdjustmentTypeDropdownOpen(false);
                             }}
-                            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                               sidePanelForm.adjustmentType === 'fixed'
                                 ? 'bg-[#7B68EE] text-white'
                                 : 'text-gray-600 hover:bg-gray-100'
@@ -3047,7 +3047,7 @@ const Forecasting: React.FC = () => {
                     type="number"
                     value={sidePanelForm.adjustmentValue}
                     onChange={(e) => setSidePanelForm({...sidePanelForm, adjustmentValue: parseFloat(e.target.value) || 0})}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     step={sidePanelForm.adjustmentType === 'percentage' ? '0.1' : '100'}
                     placeholder={sidePanelForm.adjustmentType === 'percentage' ? '15.5' : '50000'}
                   />
@@ -3057,7 +3057,7 @@ const Forecasting: React.FC = () => {
               {/* Key Assumptions */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-xs font-medium text-gray-700">
                     <Lightbulb className="w-4 h-4 inline mr-2" />
                     Key Assumptions
                   </label>
@@ -3090,7 +3090,7 @@ const Forecasting: React.FC = () => {
                           type="text"
                           value={assumption.name}
                           onChange={(e) => handleUpdateAssumption(assumption.id, 'name', e.target.value)}
-                          className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
                           placeholder="Assumption name"
                         />
                         <div className="grid grid-cols-2 gap-2">
@@ -3098,14 +3098,14 @@ const Forecasting: React.FC = () => {
                             type="text"
                             value={assumption.value}
                             onChange={(e) => handleUpdateAssumption(assumption.id, 'value', e.target.value)}
-                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
                             placeholder="Value"
                           />
                           <input
                             type="text"
                             value={assumption.description}
                             onChange={(e) => handleUpdateAssumption(assumption.id, 'description', e.target.value)}
-                            className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
+                            className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-[#3AB7BF] focus:border-transparent"
                             placeholder="Description"
                           />
                         </div>
@@ -3122,7 +3122,7 @@ const Forecasting: React.FC = () => {
                     <Eye className="w-4 h-4 mr-2" />
                     Impact Preview
                   </h4>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-xs text-gray-700">
                     This scenario will {sidePanelForm.adjustmentValue >= 0 ? 'increase' : 'decrease'} the selected GL account by{' '}
                     {sidePanelForm.adjustmentType === 'percentage' 
                       ? `${Math.abs(sidePanelForm.adjustmentValue)}%`
@@ -3218,19 +3218,19 @@ const Forecasting: React.FC = () => {
 
             <div className="p-6 space-y-4">
               <div>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-xs text-gray-600 mb-4">
                   Apply adjustment to {selectedCells.length} selected cell{selectedCells.length > 1 ? 's' : ''}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   Adjustment Type
                 </label>
                 <select
                   value={bulkAdjustment.type}
                   onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, type: e.target.value as 'percentage' | 'fixed' | 'set' })}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="percentage">Percentage Change</option>
                   <option value="fixed">Fixed Amount Change</option>
@@ -3239,7 +3239,7 @@ const Forecasting: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-700 mb-2">
                   {bulkAdjustment.type === 'percentage' && 'Percentage (%)'}
                   {bulkAdjustment.type === 'fixed' && 'Amount ($)'}
                   {bulkAdjustment.type === 'set' && 'New Value ($)'}
@@ -3248,14 +3248,14 @@ const Forecasting: React.FC = () => {
                   type="number"
                   value={bulkAdjustment.value}
                   onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, value: parseFloat(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   placeholder="Enter value"
                   step={bulkAdjustment.type === 'percentage' ? '0.1' : '1'}
                 />
               </div>
 
               <div className="bg-[#EEF2FF] border border-[#C7D2FE] rounded-lg p-3">
-                <p className="text-sm text-[#312E81]">
+                <p className="text-xs text-[#312E81]">
                   <strong>Preview:</strong>
                   {bulkAdjustment.type === 'percentage' && (
                     <span> All selected values will be {bulkAdjustment.value >= 0 ? 'increased' : 'decreased'} by {Math.abs(bulkAdjustment.value)}%</span>
@@ -3295,7 +3295,7 @@ const Forecasting: React.FC = () => {
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
               <div>
                 <h3 className="text-lg font-semibold">Forecast Alerts</h3>
-                <p className="text-sm text-white/80">Monitor budget variances and anomalies</p>
+                <p className="text-xs text-white/80">Monitor budget variances and anomalies</p>
               </div>
               <button
                 onClick={() => setShowAlertsSidebar(false)}
@@ -3357,10 +3357,10 @@ const Forecasting: React.FC = () => {
                 {(alertFilter === 'all' || alertFilter === 'critical') && (
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-[#101010] text-sm">High Variance Detected</h4>
+                    <h4 className="font-semibold text-[#101010] text-xs">High Variance Detected</h4>
                     <span className="text-xs text-red-600 font-medium">Critical</span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-xs text-gray-700 mb-2">
                     Payroll & Benefits (GL 6000) shows a 35% variance above forecast for Q3
                   </p>
                   <div className="flex items-center justify-between text-xs">
@@ -3374,10 +3374,10 @@ const Forecasting: React.FC = () => {
                 {(alertFilter === 'all' || alertFilter === 'warning') && (
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-[#101010] text-sm">Budget Threshold Approaching</h4>
+                    <h4 className="font-semibold text-[#101010] text-xs">Budget Threshold Approaching</h4>
                     <span className="text-xs text-amber-600 font-medium">Warning</span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-xs text-gray-700 mb-2">
                     Marketing expenses at 85% of annual budget with 3 months remaining
                   </p>
                   <div className="flex items-center justify-between text-xs">
@@ -3391,10 +3391,10 @@ const Forecasting: React.FC = () => {
                 {(alertFilter === 'all' || alertFilter === 'info') && (
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-[#101010] text-sm">Scenario Applied</h4>
+                    <h4 className="font-semibold text-[#101010] text-xs">Scenario Applied</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-xs text-gray-700 mb-2">
                     "Q4 Expansion Plan" scenario has been applied to Revenue accounts
                   </p>
                   <div className="flex items-center justify-between text-xs">
@@ -3408,10 +3408,10 @@ const Forecasting: React.FC = () => {
                 {alertFilter === 'all' && (
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-[#101010] text-sm">Under Budget</h4>
+                    <h4 className="font-semibold text-[#101010] text-xs">Under Budget</h4>
                     <span className="text-xs text-green-600 font-medium">Success</span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-xs text-gray-700 mb-2">
                     Travel & Entertainment expenses are 15% below forecast YTD
                   </p>
                   <div className="flex items-center justify-between text-xs">
@@ -3425,10 +3425,10 @@ const Forecasting: React.FC = () => {
                 {(alertFilter === 'all' || alertFilter === 'info') && (
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-[#101010] text-sm">Forecast Saved</h4>
+                    <h4 className="font-semibold text-[#101010] text-xs">Forecast Saved</h4>
                     <span className="text-xs text-blue-600 font-medium">Info</span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-xs text-gray-700 mb-2">
                     Version "2025 Annual Budget v3" has been saved successfully
                   </p>
                   <div className="flex items-center justify-between text-xs">
@@ -3442,7 +3442,7 @@ const Forecasting: React.FC = () => {
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-xs text-gray-600 mb-2">
                   <strong>5</strong> active alerts
                 </p>
                 <button
@@ -3464,7 +3464,7 @@ const Forecasting: React.FC = () => {
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
               <div>
                 <h3 className="text-lg font-semibold">Applied Drivers</h3>
-                <p className="text-sm text-white/80">Audit history of all scenario changes</p>
+                <p className="text-xs text-white/80">Audit history of all scenario changes</p>
               </div>
               <button
                 onClick={() => setShowScenarioAuditSidebar(false)}
@@ -3483,7 +3483,7 @@ const Forecasting: React.FC = () => {
                   value={scenarioSearchTerm}
                   onChange={(e) => setScenarioSearchTerm(e.target.value)}
                   placeholder="Search by P&L account..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
                 />
               </div>
             </div>
@@ -3493,7 +3493,7 @@ const Forecasting: React.FC = () => {
                 <div className="text-center py-12">
                   <History className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                   <p className="text-gray-500 font-medium">No scenarios applied yet</p>
-                  <p className="text-sm text-gray-400 mt-2">Applied scenarios will appear here</p>
+                  <p className="text-xs text-gray-400 mt-2">Applied scenarios will appear here</p>
                 </div>
               ) : (() => {
                 const filteredScenarios = appliedScenarios.filter((scenario) => {
@@ -3509,7 +3509,7 @@ const Forecasting: React.FC = () => {
                     <div className="text-center py-12">
                       <Search className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                       <p className="text-gray-500 font-medium">No scenarios found</p>
-                      <p className="text-sm text-gray-400 mt-2">Try adjusting your search term</p>
+                      <p className="text-xs text-gray-400 mt-2">Try adjusting your search term</p>
                     </div>
                   );
                 }
@@ -3524,7 +3524,7 @@ const Forecasting: React.FC = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-[#101010] text-sm">{scenario.name}</h4>
+                            <h4 className="font-semibold text-[#101010] text-xs">{scenario.name}</h4>
                             <span className={`px-2 py-0.5 text-xs font-medium rounded transition-all ${
                               scenario.isActive
                                 ? 'bg-[#4ADE80]/10 text-[#4ADE80]'
@@ -3584,19 +3584,19 @@ const Forecasting: React.FC = () => {
                                 setScenarioMenuOpen(null);
                                 setShowScenarioAuditSidebar(false);
                               }}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
+                              className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                             >
                               Adjust
                             </button>
                             <button
                               onClick={() => toggleScenario(scenario.id)}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
+                              className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors"
                             >
                               {scenario.isActive ? 'Deactivate' : 'Activate'}
                             </button>
                             <button
                               onClick={() => setShowDeleteConfirm(scenario.id)}
-                              className="flex-1 px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                              className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
                             >
                               Remove
                             </button>
@@ -3604,9 +3604,9 @@ const Forecasting: React.FC = () => {
                         </div>
                       )}
 
-                      <p className="text-sm text-gray-600 mb-3">{scenario.description}</p>
+                      <p className="text-xs text-gray-600 mb-3">{scenario.description}</p>
 
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-2 text-xs">
                         <div className="flex items-center justify-between">
                           <span className="text-gray-600">Adjustment:</span>
                           <span className="font-medium text-[#101010]">
@@ -3657,7 +3657,7 @@ const Forecasting: React.FC = () => {
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-xs text-gray-600 mb-2">
                   <strong>{appliedScenarios.length}</strong> {appliedScenarios.length === 1 ? 'scenario' : 'scenarios'} applied
                 </p>
                 <button
@@ -3679,7 +3679,7 @@ const Forecasting: React.FC = () => {
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
               <div>
                 <h3 className="text-lg font-semibold">Version History</h3>
-                <p className="text-sm text-white/80">View and manage forecast versions for {selectedYear}</p>
+                <p className="text-xs text-white/80">View and manage forecast versions for {selectedYear}</p>
               </div>
               <button
                 onClick={() => setShowVersionHistorySidebar(false)}
@@ -3694,7 +3694,7 @@ const Forecasting: React.FC = () => {
                 <div className="text-center py-12">
                   <History className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                   <p className="text-gray-500 font-medium">No versions saved yet</p>
-                  <p className="text-sm text-gray-400 mt-2">Saved forecasts will appear here</p>
+                  <p className="text-xs text-gray-400 mt-2">Saved forecasts will appear here</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -3706,7 +3706,7 @@ const Forecasting: React.FC = () => {
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-[#101010] text-sm">{version.name}</h4>
+                            <h4 className="font-semibold text-[#101010] text-xs">{version.name}</h4>
                             <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded">
                               v{version.version_number}
                             </span>
@@ -3734,7 +3734,7 @@ const Forecasting: React.FC = () => {
                             {!version.is_active && (
                               <button
                                 onClick={() => handleLoadVersion(version.id)}
-                                className="px-3 py-2 text-sm font-medium bg-[#7B68EE] text-white hover:bg-[#6A5ACD] rounded transition-colors"
+                                className="px-3 py-2 text-xs font-medium bg-[#7B68EE] text-white hover:bg-[#6A5ACD] rounded transition-colors"
                               >
                                 Load Version
                               </button>
@@ -3747,14 +3747,14 @@ const Forecasting: React.FC = () => {
                                 }
                               }}
                               disabled={versionHistory.length < 2}
-                              className="px-3 py-2 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="px-3 py-2 text-xs font-medium bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Compare Versions
                             </button>
                             {!version.is_active && (
                               <button
                                 onClick={() => setShowDeleteConfirm(version.id)}
-                                className="px-3 py-2 text-sm font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                className="px-3 py-2 text-xs font-medium bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded transition-colors"
                               >
                                 Delete Version
                               </button>
@@ -3763,7 +3763,7 @@ const Forecasting: React.FC = () => {
                         </div>
                       )}
 
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-2 text-xs">
                         <div className="flex items-center justify-between">
                           <span className="text-gray-600">Total Forecasted:</span>
                           <span className="font-medium text-[#101010]">
@@ -3794,7 +3794,7 @@ const Forecasting: React.FC = () => {
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-xs text-gray-600 mb-2">
                   <strong>{versionHistory.length}</strong> {versionHistory.length === 1 ? 'version' : 'versions'} saved
                 </p>
                 <button
@@ -3822,12 +3822,12 @@ const Forecasting: React.FC = () => {
                   <h3 className="text-lg font-bold text-[#101010]">
                     {versionHistory.some(v => v.id === showDeleteConfirm) ? 'Delete Version' : 'Remove Scenario'}
                   </h3>
-                  <p className="text-sm text-gray-600">This action cannot be undone</p>
+                  <p className="text-xs text-gray-600">This action cannot be undone</p>
                 </div>
               </div>
 
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                <p className="text-sm text-red-900">
+                <p className="text-xs text-red-900">
                   {versionHistory.some(v => v.id === showDeleteConfirm)
                     ? 'Deleting this version will permanently remove it from your history. Are you sure you want to continue?'
                     : 'Removing this scenario will permanently delete it and remove any adjustments it made to your forecast. Are you sure you want to continue?'
@@ -3971,7 +3971,7 @@ const Forecasting: React.FC = () => {
         >
           <button
             onClick={() => handleAddNote(contextMenu.rowData)}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+            className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
           >
             <MessageSquare className="w-4 h-4 text-gray-500" />
             Add Comment
@@ -3979,7 +3979,7 @@ const Forecasting: React.FC = () => {
           <div className="border-t border-gray-200 my-2"></div>
           <button
             onClick={() => handleEditDeleteComment(contextMenu.rowData)}
-            className="w-full px-4 py-2 text-left text-sm hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors group"
+            className="w-full px-4 py-2 text-left text-xs hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors group"
           >
             <Trash2 className="w-4 h-4 text-gray-500 group-hover:text-red-600 transition-colors" />
             <span className="text-gray-700 group-hover:text-red-600 transition-colors">Edit Comment</span>
@@ -3998,7 +3998,7 @@ const Forecasting: React.FC = () => {
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
               <div>
                 <h3 className="text-lg font-semibold">Comments</h3>
-                <p className="text-sm text-white/80">{filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''}</p>
+                <p className="text-xs text-white/80">{filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''}</p>
               </div>
               <button
                 onClick={() => setShowCommentsSidebar(false)}
@@ -4015,7 +4015,7 @@ const Forecasting: React.FC = () => {
                 <div className="relative" ref={commentUserDropdownRef}>
                   <button
                     onClick={() => setShowCommentUserDropdown(!showCommentUserDropdown)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
                   >
                     <span className="truncate">{commentFilterUser === 'all' ? 'All Users' : commentFilterUser}</span>
                     <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentUserDropdown ? 'rotate-180' : ''}`} />
@@ -4027,7 +4027,7 @@ const Forecasting: React.FC = () => {
                           setCommentFilterUser('all');
                           setShowCommentUserDropdown(false);
                         }}
-                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                        className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                           commentFilterUser === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                         }`}
                       >
@@ -4040,7 +4040,7 @@ const Forecasting: React.FC = () => {
                             setCommentFilterUser(user);
                             setShowCommentUserDropdown(false);
                           }}
-                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                             commentFilterUser === user ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                           }`}
                         >
@@ -4055,7 +4055,7 @@ const Forecasting: React.FC = () => {
                 <div className="relative" ref={commentDeptDropdownRef}>
                   <button
                     onClick={() => setShowCommentDeptDropdown(!showCommentDeptDropdown)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
                   >
                     <span className="truncate">{commentFilterDept === 'all' ? 'All Depts' : commentFilterDept}</span>
                     <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentDeptDropdown ? 'rotate-180' : ''}`} />
@@ -4067,7 +4067,7 @@ const Forecasting: React.FC = () => {
                           setCommentFilterDept('all');
                           setShowCommentDeptDropdown(false);
                         }}
-                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                        className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                           commentFilterDept === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                         }`}
                       >
@@ -4080,7 +4080,7 @@ const Forecasting: React.FC = () => {
                             setCommentFilterDept(dept);
                             setShowCommentDeptDropdown(false);
                           }}
-                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                             commentFilterDept === dept ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                           }`}
                         >
@@ -4095,7 +4095,7 @@ const Forecasting: React.FC = () => {
                 <div className="relative" ref={commentMonthDropdownRef}>
                   <button
                     onClick={() => setShowCommentMonthDropdown(!showCommentMonthDropdown)}
-                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-xs text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
                   >
                     <span className="truncate">{commentFilterMonth === 'all' ? 'All Months' : commentFilterMonth}</span>
                     <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentMonthDropdown ? 'rotate-180' : ''}`} />
@@ -4107,7 +4107,7 @@ const Forecasting: React.FC = () => {
                           setCommentFilterMonth('all');
                           setShowCommentMonthDropdown(false);
                         }}
-                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                        className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                           commentFilterMonth === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                         }`}
                       >
@@ -4120,7 +4120,7 @@ const Forecasting: React.FC = () => {
                             setCommentFilterMonth(month);
                             setShowCommentMonthDropdown(false);
                           }}
-                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          className={`w-full px-3 py-2 text-xs text-left hover:bg-gray-50 transition-colors ${
                             commentFilterMonth === month ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
                           }`}
                         >
@@ -4138,7 +4138,7 @@ const Forecasting: React.FC = () => {
               {filteredComments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-gray-400">
                   <MessageSquare className="w-12 h-12 mb-2" />
-                  <p className="text-sm">No comments found</p>
+                  <p className="text-xs">No comments found</p>
                 </div>
               ) : (
                 filteredComments.map((comment) => (
@@ -4147,12 +4147,12 @@ const Forecasting: React.FC = () => {
                     className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7B68EE] to-[#9D8FEC] flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7B68EE] to-[#9D8FEC] flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
                         {comment.userInitials}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-gray-900 text-sm">{comment.user}</span>
+                          <span className="font-semibold text-gray-900 text-xs">{comment.user}</span>
                           <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
                             {comment.department}
                           </span>
@@ -4166,7 +4166,7 @@ const Forecasting: React.FC = () => {
                     </div>
 
                     <div className="mb-3 px-1">
-                      <div className="text-sm text-gray-700 whitespace-pre-wrap break-words font-mono leading-relaxed">
+                      <div className="text-xs text-gray-700 whitespace-pre-wrap break-words font-mono leading-relaxed">
                         {comment.comment.split('\n').map((line, i) => (
                           <div key={i} className="mb-1">
                             {line.split(/(\*\*.*?\*\*|_.*?_|@\w+)/).map((part, j) => {
@@ -4244,15 +4244,15 @@ const Forecasting: React.FC = () => {
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Account</label>
-                <div className="text-sm text-gray-900 font-semibold">
+                <label className="block text-xs font-medium text-gray-700 mb-2">Account</label>
+                <div className="text-xs text-gray-900 font-semibold">
                   {showAccountCodes && <span className="font-mono text-xs text-gray-500 mr-2">{notesData.glCode.code}</span>}
                   {notesData.glCode.name}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Month</label>
                 <div className="relative" ref={monthDropdownRef}>
                   <button
                     onClick={() => setShowMonthDropdown(!showMonthDropdown)}
@@ -4277,7 +4277,7 @@ const Forecasting: React.FC = () => {
                                 setNotesData({...notesData, month: monthValue});
                                 setShowMonthDropdown(false);
                               }}
-                              className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                              className={`px-3 py-2 text-xs rounded-lg transition-colors ${
                                 isSelected
                                   ? 'bg-[#7B68EE] text-white font-medium'
                                   : 'text-gray-700 hover:bg-gray-100'
@@ -4306,26 +4306,26 @@ const Forecasting: React.FC = () => {
                   <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600">Budget</span>
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-xs font-semibold text-gray-900">
                         ${formatNumber(forecastAmount)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600">Actuals</span>
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-xs font-semibold text-gray-900">
                         {actualAmount !== undefined ? `$${formatNumber(actualAmount)}` : '-'}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600">Prior Year</span>
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-xs font-semibold text-gray-900">
                         {monthData?.changeVsPrior !== undefined ? `$${formatNumber(monthData.changeVsPrior)}` : '-'}
                       </span>
                     </div>
                     <div className="border-t border-gray-200 pt-2 flex justify-between items-center">
                       <span className="text-xs font-medium text-gray-600">Variance</span>
                       <div className="text-right">
-                        <div className={`text-sm font-semibold ${
+                        <div className={`text-xs font-semibold ${
                           variance >= 0 ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {variance >= 0 ? '+' : ''}${formatNumber(Math.abs(variance))}
@@ -4342,7 +4342,7 @@ const Forecasting: React.FC = () => {
               })()}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Comments</label>
 
                 {/* Formatting Toolbar */}
                 <div className="flex items-center gap-1 p-2 bg-gray-50 border border-gray-300 rounded-t-lg border-b-0">
@@ -4400,7 +4400,7 @@ const Forecasting: React.FC = () => {
                   onChange={(e) => setNotesData({...notesData, note: e.target.value})}
                   placeholder="Add your comments here... Use @ to mention users, ** for bold, _ for italic"
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-b-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent resize-none font-mono text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-b-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent resize-none font-mono text-xs"
                 />
 
                 {/* Preview hint */}

@@ -32,7 +32,7 @@ const MessageList: React.FC<MessageListProps> = ({
         <div className="text-center text-gray-500">
           <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
           <p className="text-xl font-medium">Select a thread</p>
-          <p className="text-sm">Choose a thread to start chatting</p>
+          <p className="text-xs">Choose a thread to start chatting</p>
         </div>
       </div>
     );
@@ -45,7 +45,7 @@ const MessageList: React.FC<MessageListProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-bold text-lg text-[#101010]">{thread.title}</h2>
-            <div className="flex items-center text-sm text-gray-500 mt-1">
+            <div className="flex items-center text-xs text-gray-500 mt-1">
               <span>{thread.messageCount} messages</span>
               <span className="mx-2">•</span>
               <span>{thread.participants.length} participants</span>
@@ -68,7 +68,7 @@ const MessageList: React.FC<MessageListProps> = ({
         {messages.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
             <p className="font-medium">No messages yet</p>
-            <p className="text-sm">Start the conversation!</p>
+            <p className="text-xs">Start the conversation!</p>
           </div>
         ) : (
           messages.map((message, index) => {

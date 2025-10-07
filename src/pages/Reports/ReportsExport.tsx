@@ -100,7 +100,7 @@ const ReportsExport: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Date Range</label>
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
@@ -116,7 +116,7 @@ const ReportsExport: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Format</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Format</label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value)}
@@ -129,7 +129,7 @@ const ReportsExport: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Template</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Template</label>
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
               >
@@ -167,7 +167,7 @@ const ReportsExport: React.FC = () => {
       {reportCategories.filter(category => category.title !== 'Compliance & Tax').map((category, categoryIndex) => (
         <Card key={categoryIndex} title={category.title}>
           <div className="mb-4 flex justify-between items-center">
-            <p className="text-sm text-gray-600">{category.reports.length} reports available</p>
+            <p className="text-xs text-gray-600">{category.reports.length} reports available</p>
             <Button
               variant="outline"
               size="sm"
@@ -195,7 +195,7 @@ const ReportsExport: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#101010]">{report.name}</h3>
-                      <p className="text-sm text-gray-600">{report.description}</p>
+                      <p className="text-xs text-gray-600">{report.description}</p>
                     </div>
                   </div>
                   <input
@@ -206,7 +206,7 @@ const ReportsExport: React.FC = () => {
                   />
                 </div>
                 
-                <div className="flex items-center justify-between text-sm text-gray-500">
+                <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>Size: {report.size}</span>
                   <span>Updated: {report.lastGenerated}</span>
                 </div>
@@ -234,7 +234,7 @@ const ReportsExport: React.FC = () => {
       {/* Scheduled Reports */}
       <Card title="Scheduled Reports">
         <div className="mb-4 flex justify-between items-center">
-          <p className="text-sm text-gray-600">Automated report generation and distribution</p>
+          <p className="text-xs text-gray-600">Automated report generation and distribution</p>
           <Button variant="primary" size="sm">
             <Calendar className="w-4 h-4 mr-2" />
             Schedule New Report
@@ -248,7 +248,7 @@ const ReportsExport: React.FC = () => {
                 <Mail className="w-5 h-5 text-gray-400 mr-3" />
                 <div>
                   <p className="font-medium text-[#101010]">{schedule.name}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs text-gray-600">
                     {schedule.frequency} • Next: {schedule.nextRun} • To: {schedule.recipients}
                   </p>
                 </div>
@@ -285,7 +285,7 @@ const ReportsExport: React.FC = () => {
                     <template.icon className="w-4 h-4 text-[#3AB7BF] mr-3" />
                     <div>
                       <p className="font-medium text-[#101010]">{template.name}</p>
-                      <p className="text-sm text-gray-600">{template.description}</p>
+                      <p className="text-xs text-gray-600">{template.description}</p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">Use Template</Button>
@@ -299,19 +299,19 @@ const ReportsExport: React.FC = () => {
             <div className="space-y-4">
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
                 <h4 className="font-medium text-[#101010] mb-2">Custom Branding</h4>
-                <p className="text-sm text-gray-600 mb-3">Add your company logo and colors to reports</p>
+                <p className="text-xs text-gray-600 mb-3">Add your company logo and colors to reports</p>
                 <Button variant="outline" size="sm">Configure Branding</Button>
               </div>
               
               <div className="p-4 bg-[#4ADE80]/10 rounded-lg">
                 <h4 className="font-medium text-[#101010] mb-2">Data Filters</h4>
-                <p className="text-sm text-gray-600 mb-3">Create custom filters for specific departments or projects</p>
+                <p className="text-xs text-gray-600 mb-3">Create custom filters for specific departments or projects</p>
                 <Button variant="outline" size="sm">Manage Filters</Button>
               </div>
               
               <div className="p-4 bg-[#F59E0B]/10 rounded-lg">
                 <h4 className="font-medium text-[#101010] mb-2">Report Layouts</h4>
-                <p className="text-sm text-gray-600 mb-3">Design custom layouts and formatting options</p>
+                <p className="text-xs text-gray-600 mb-3">Design custom layouts and formatting options</p>
                 <Button variant="outline" size="sm">Design Layout</Button>
               </div>
             </div>
@@ -334,7 +334,7 @@ const ReportsExport: React.FC = () => {
                 <FileText className="w-5 h-5 text-gray-400 mr-3" />
                 <div>
                   <p className="font-medium text-[#101010]">{export_.name}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs text-gray-600">
                     {export_.date} • {export_.size} • {export_.format} • {export_.downloads} downloads
                   </p>
                 </div>
@@ -364,9 +364,9 @@ const ReportsExport: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Reports Generated</p>
+              <p className="text-xs font-medium text-gray-600">Reports Generated</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">247</p>
-              <p className="text-sm text-gray-600 mt-1">This month</p>
+              <p className="text-xs text-gray-600 mt-1">This month</p>
             </div>
             <FileText className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -375,9 +375,9 @@ const ReportsExport: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Downloads</p>
+              <p className="text-xs font-medium text-gray-600">Total Downloads</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">1,847</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+23% vs last month</p>
+              <p className="text-xs text-[#4ADE80] mt-1">+23% vs last month</p>
             </div>
             <Download className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -386,9 +386,9 @@ const ReportsExport: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Scheduled Reports</p>
+              <p className="text-xs font-medium text-gray-600">Scheduled Reports</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">12</p>
-              <p className="text-sm text-gray-600 mt-1">Active schedules</p>
+              <p className="text-xs text-gray-600 mt-1">Active schedules</p>
             </div>
             <Calendar className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -397,9 +397,9 @@ const ReportsExport: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Storage Used</p>
+              <p className="text-xs font-medium text-gray-600">Storage Used</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">2.4 GB</p>
-              <p className="text-sm text-gray-600 mt-1">Of 10 GB limit</p>
+              <p className="text-xs text-gray-600 mt-1">Of 10 GB limit</p>
             </div>
             <Archive className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -412,21 +412,21 @@ const ReportsExport: React.FC = () => {
           <div className="text-center p-4 bg-[#3AB7BF]/10 rounded-lg">
             <Mail className="w-8 h-8 text-[#3AB7BF] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Email Distribution</h3>
-            <p className="text-sm text-gray-600 mb-3">Automatically email reports to stakeholders</p>
+            <p className="text-xs text-gray-600 mb-3">Automatically email reports to stakeholders</p>
             <Button variant="outline" size="sm">Configure</Button>
           </div>
           
           <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
             <RefreshCw className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">API Integration</h3>
-            <p className="text-sm text-gray-600 mb-3">Connect reports to external systems via API</p>
+            <p className="text-xs text-gray-600 mb-3">Connect reports to external systems via API</p>
             <Button variant="outline" size="sm">Setup API</Button>
           </div>
           
           <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
             <Archive className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Archive Management</h3>
-            <p className="text-sm text-gray-600 mb-3">Manage long-term storage and compliance</p>
+            <p className="text-xs text-gray-600 mb-3">Manage long-term storage and compliance</p>
             <Button variant="outline" size="sm">Manage Archive</Button>
           </div>
         </div>

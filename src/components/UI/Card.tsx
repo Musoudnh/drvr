@@ -11,7 +11,7 @@ const Card: React.FC<CardProps> = ({ children, className = '', title }) => {
     <div className={`bg-white rounded-lg shadow-sm border border-gray-200 ${className}`}>
       {title && (
         <div className="px-4 py-2 border-b border-gray-200">
-          <h3 className="text-sm font-semibold text-[#101010]">{title}</h3>
+          <h3 className="text-xs font-semibold text-[#101010]">{title}</h3>
         </div>
       )}
       <div className="p-4">

@@ -70,7 +70,7 @@ const AdminSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Dark Mode</p>
-                  <p className="text-sm text-gray-500">Enable dark theme across the platform</p>
+                  <p className="text-xs text-gray-500">Enable dark theme across the platform</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" />
@@ -89,7 +89,7 @@ const AdminSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">System Alerts</p>
-                  <p className="text-sm text-gray-500">Receive notifications for system events</p>
+                  <p className="text-xs text-gray-500">Receive notifications for system events</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" defaultChecked />

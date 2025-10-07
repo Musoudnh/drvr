@@ -127,10 +127,10 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
                         <span className="text-xs font-medium text-[#7B68EE] px-2 py-1 bg-[#7B68EE]/10 rounded">{project.scenario}</span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 line-clamp-1">{project.description}</p>
+                    <p className="text-xs text-gray-600 line-clamp-1">{project.description}</p>
                   </div>
 
-                  <div className="flex items-center gap-6 text-sm text-gray-600">
+                  <div className="flex items-center gap-6 text-xs text-gray-600">
                     {project.department && (
                       <div className="flex items-center gap-2">
                         <span className="font-medium">Dept:</span>
@@ -174,7 +174,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
                           onEdit(project);
                           setMenuOpen(null);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2"
                       >
                         <Edit className="w-3 h-3" />
                         Edit
@@ -185,7 +185,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, onEdit, onRefresh
                           handleDelete(project.id);
                           setMenuOpen(null);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 text-red-600 flex items-center gap-2"
+                        className="w-full px-4 py-2 text-left text-xs hover:bg-gray-50 text-red-600 flex items-center gap-2"
                       >
                         <Trash2 className="w-3 h-3" />
                         Delete

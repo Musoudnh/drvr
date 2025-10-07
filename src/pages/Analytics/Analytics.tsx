@@ -269,7 +269,7 @@ const Analytics: React.FC = () => {
                 <h5 className="font-medium text-[#101010] mb-3">Chart Colors</h5>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Actual (Bars)</span>
+                    <span className="text-xs text-gray-700">Actual (Bars)</span>
                     <input
                       type="color"
                       value={chartColors.actual}
@@ -278,7 +278,7 @@ const Analytics: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Budget (Line)</span>
+                    <span className="text-xs text-gray-700">Budget (Line)</span>
                     <input
                       type="color"
                       value={chartColors.budget}
@@ -287,7 +287,7 @@ const Analytics: React.FC = () => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-700">Prior (Line)</span>
+                    <span className="text-xs text-gray-700">Prior (Line)</span>
                     <input
                       type="color"
                       value={chartColors.prior}
@@ -373,7 +373,7 @@ const Analytics: React.FC = () => {
             </div>
             
             {/* Legend */}
-            <div className="flex justify-center gap-6 mt-4 text-sm">
+            <div className="flex justify-center gap-6 mt-4 text-xs">
               <div className="flex items-center">
                 <div className="w-4 h-4 rounded mr-2" style={{ backgroundColor: chartColors.actual }}></div>
                 <span className="text-gray-600">Actual (Bars)</span>
@@ -461,7 +461,7 @@ const Analytics: React.FC = () => {
               <select
                 value={selectedTimeframe}
                 onChange={(e) => setSelectedTimeframe(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="px-3 py-1 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
               >
                 <option value="3-months">3 Months</option>
                 <option value="6-months">6 Months</option>
@@ -476,7 +476,7 @@ const Analytics: React.FC = () => {
               <button
                 key={metric.id}
                 onClick={() => handleCategorySelect(metric.name)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
                   selectedCategory === metric.name
                     ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -502,8 +502,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Revenue</p>
-                <p className="text-sm text-gray-600">Actual: $3,670K</p>
-                <p className="text-sm text-gray-600">Budget: $3,400K</p>
+                <p className="text-xs text-gray-600">Actual: $3,670K</p>
+                <p className="text-xs text-gray-600">Budget: $3,400K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -516,8 +516,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Gross Profit</p>
-                <p className="text-sm text-gray-600">Actual: $2,080K</p>
-                <p className="text-sm text-gray-600">Budget: $1,950K</p>
+                <p className="text-xs text-gray-600">Actual: $2,080K</p>
+                <p className="text-xs text-gray-600">Budget: $1,950K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -530,8 +530,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Operating Expenses</p>
-                <p className="text-sm text-gray-600">Actual: $1,246K</p>
-                <p className="text-sm text-gray-600">Budget: $1,300K</p>
+                <p className="text-xs text-gray-600">Actual: $1,246K</p>
+                <p className="text-xs text-gray-600">Budget: $1,300K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -544,8 +544,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Net Income</p>
-                <p className="text-sm text-gray-600">Actual: $834K</p>
-                <p className="text-sm text-gray-600">Budget: $650K</p>
+                <p className="text-xs text-gray-600">Actual: $834K</p>
+                <p className="text-xs text-gray-600">Budget: $650K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -562,8 +562,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Revenue</p>
-                <p className="text-sm text-gray-600">2025: $3,670K</p>
-                <p className="text-sm text-gray-600">2024: $3,180K</p>
+                <p className="text-xs text-gray-600">2025: $3,670K</p>
+                <p className="text-xs text-gray-600">2024: $3,180K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -576,8 +576,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Gross Profit</p>
-                <p className="text-sm text-gray-600">2025: $2,080K</p>
-                <p className="text-sm text-gray-600">2024: $1,850K</p>
+                <p className="text-xs text-gray-600">2025: $2,080K</p>
+                <p className="text-xs text-gray-600">2024: $1,850K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -590,8 +590,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Operating Expenses</p>
-                <p className="text-sm text-gray-600">2025: $1,246K</p>
-                <p className="text-sm text-gray-600">2024: $1,200K</p>
+                <p className="text-xs text-gray-600">2025: $1,246K</p>
+                <p className="text-xs text-gray-600">2024: $1,200K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#F87171] flex items-center justify-end">
@@ -604,8 +604,8 @@ const Analytics: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-[#101010]">Net Income</p>
-                <p className="text-sm text-gray-600">2025: $834K</p>
-                <p className="text-sm text-gray-600">2024: $650K</p>
+                <p className="text-xs text-gray-600">2025: $834K</p>
+                <p className="text-xs text-gray-600">2024: $650K</p>
               </div>
               <div className="text-right">
                 <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -622,7 +622,7 @@ const Analytics: React.FC = () => {
       <Card title="AI-Powered Performance Analysis">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">Intelligent Performance Insights</span>
+            <span className="text-xs font-medium text-gray-600">Intelligent Performance Insights</span>
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Filter className="w-4 h-4 mr-2" />
@@ -644,10 +644,10 @@ const Analytics: React.FC = () => {
                     {action.priority}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-xs text-gray-600 mb-2">
                   {action.currentValue} → {action.targetValue}
                 </p>
-                <p className="text-sm font-medium text-[#4ADE80]">{action.expectedImpact}</p>
+                <p className="text-xs font-medium text-[#4ADE80]">{action.expectedImpact}</p>
                 <div className="mt-3">
                   <Button variant="outline" size="sm" className="w-full">
                     View Details
@@ -663,9 +663,9 @@ const Analytics: React.FC = () => {
       <Card title="12-Month Revenue Trend with Predictive Overlay">
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">Monthly Revenue Performance with AI Predictions</span>
+            <span className="text-xs font-medium text-gray-600">Monthly Revenue Performance with AI Predictions</span>
             <div className="flex gap-2">
-              <span className="text-sm text-[#4ADE80] font-medium">+15.4% YoY Growth</span>
+              <span className="text-xs text-[#4ADE80] font-medium">+15.4% YoY Growth</span>
               <Button variant="outline" size="sm">
                 <Brain className="w-4 h-4 mr-2" />
                 AI Forecast
@@ -714,15 +714,15 @@ const Analytics: React.FC = () => {
           <div className="flex items-center justify-center gap-6 pt-4 border-t border-gray-200">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#3B82F6] rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Historical</span>
+              <span className="text-xs text-gray-600">Historical</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-0.5 bg-[#8B5CF6] mr-2" style={{ borderTop: '3px dashed #8B5CF6' }}></div>
-              <span className="text-sm text-gray-600">AI Prediction</span>
+              <span className="text-xs text-gray-600">AI Prediction</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#8B5CF6] opacity-20 rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Confidence Band</span>
+              <span className="text-xs text-gray-600">Confidence Band</span>
             </div>
           </div>
           
@@ -766,7 +766,7 @@ const Analytics: React.FC = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h4 className="font-semibold text-[#101010]">{action.metric} Optimization</h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs text-gray-600">
                         Current: {action.currentValue} → Target: {action.targetValue}
                       </p>
                     </div>

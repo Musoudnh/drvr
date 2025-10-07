@@ -71,13 +71,13 @@ const ProfitLoss: React.FC = () => {
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-[#101010]">{activity.user}</p>
-                  <p className="text-sm text-gray-600">{activity.action}</p>
+                  <p className="text-xs font-medium text-[#101010]">{activity.user}</p>
+                  <p className="text-xs text-gray-600">{activity.action}</p>
                   <p className="text-xs text-gray-500 mt-1">{activity.date}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium text-[#101010]">{activity.amount}</p>
+                <p className="text-xs font-medium text-[#101010]">{activity.amount}</p>
                 {activity.previousAmount !== '$0' && (
                   <p className="text-xs text-gray-500">was {activity.previousAmount}</p>
                 )}
@@ -118,9 +118,9 @@ const ProfitLoss: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+              <p className="text-xs font-medium text-gray-600">Total Revenue</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">$6,595,000</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+15.3% YoY</p>
+              <p className="text-xs text-[#4ADE80] mt-1">+15.3% YoY</p>
             </div>
             <DollarSign className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -129,9 +129,9 @@ const ProfitLoss: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Expenses</p>
+              <p className="text-xs font-medium text-gray-600">Total Expenses</p>
               <p className="text-2xl font-bold text-[#F87171] mt-1">$4,620,000</p>
-              <p className="text-sm text-gray-600 mt-1">+8.7% YoY</p>
+              <p className="text-xs text-gray-600 mt-1">+8.7% YoY</p>
             </div>
             <LineChart className="w-8 h-8 text-[#F87171]" />
           </div>
@@ -140,9 +140,9 @@ const ProfitLoss: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Net Income</p>
+              <p className="text-xs font-medium text-gray-600">Net Income</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">$1,975,000</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+28.4% YoY</p>
+              <p className="text-xs text-[#4ADE80] mt-1">+28.4% YoY</p>
             </div>
             <TrendingUp className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -151,9 +151,9 @@ const ProfitLoss: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Profit Margin</p>
+              <p className="text-xs font-medium text-gray-600">Profit Margin</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">29.9%</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+2.8% YoY</p>
+              <p className="text-xs text-[#4ADE80] mt-1">+2.8% YoY</p>
             </div>
             <Percent className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -281,7 +281,7 @@ const ProfitLoss: React.FC = () => {
               </div>
               <span className="text-[#4ADE80]">$3,522,000</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Gross Margin: 53.4%</p>
+            <p className="text-xs text-gray-600 mt-1">Gross Margin: 53.4%</p>
             {renderActivityPanel('gross-profit')}
           </div>
 
@@ -333,7 +333,7 @@ const ProfitLoss: React.FC = () => {
               </div>
               <span className="text-[#3AB7BF]">$1,500,600</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Operating Margin: 22.8%</p>
+            <p className="text-xs text-gray-600 mt-1">Operating Margin: 22.8%</p>
             {renderActivityPanel('operating-income')}
           </div>
 
@@ -385,7 +385,7 @@ const ProfitLoss: React.FC = () => {
               </div>
               <span className="text-[#4ADE80]">$975,000</span>
             </div>
-            <p className="text-sm text-gray-600 mt-2">Net Profit Margin: 29.9%</p>
+            <p className="text-xs text-gray-600 mt-2">Net Profit Margin: 29.9%</p>
             {renderActivityPanel('net-income')}
           </div>
         </div>

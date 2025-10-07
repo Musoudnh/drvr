@@ -92,7 +92,7 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
         </div>
 
         <div className="flex items-end">
-          <div className="px-4 py-2 bg-gray-100 rounded-lg text-sm">
+          <div className="px-4 py-2 bg-gray-100 rounded-lg text-xs">
             <span className="font-medium text-gray-700">Viewing:</span>
             <span className="ml-2 text-gray-900">{fiscalYearFilter} {scenarioFilter}</span>
           </div>
@@ -144,13 +144,13 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">{dept}</p>
-                    <p className="text-sm text-gray-600">{data.count} projects</p>
+                    <p className="text-xs text-gray-600">{data.count} projects</p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-[#101010]">
                       ${data.actual.toLocaleString()} / ${data.budget.toLocaleString()}
                     </p>
-                    <p className={`text-sm ${deptVariancePercent >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
+                    <p className={`text-xs ${deptVariancePercent >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>
                       {deptVariancePercent >= 0 ? '+' : ''}{deptVariancePercent.toFixed(1)}% variance
                     </p>
                   </div>
@@ -189,20 +189,20 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
                 const variance = projectBudget - project.actual_total;
                 return (
                   <tr key={project.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4 text-sm text-[#101010]">{project.header}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">{project.department}</td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
+                    <td className="py-3 px-4 text-xs text-[#101010]">{project.header}</td>
+                    <td className="py-3 px-4 text-xs text-gray-600">{project.department}</td>
+                    <td className="py-3 px-4 text-xs text-gray-600">
                       <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
                         {scenarioFilter}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td className="py-3 px-4 text-xs text-right text-gray-600">
                       ${projectBudget.toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-sm text-right text-gray-600">
+                    <td className="py-3 px-4 text-xs text-right text-gray-600">
                       ${project.actual_total.toLocaleString()}
                     </td>
-                    <td className={`py-3 px-4 text-sm text-right font-medium ${
+                    <td className={`py-3 px-4 text-xs text-right font-medium ${
                       variance >= 0 ? 'text-[#4ADE80]' : 'text-[#F87171]'
                     }`}>
                       {variance >= 0 ? '+' : ''}${variance.toLocaleString()}

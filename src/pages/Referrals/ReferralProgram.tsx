@@ -61,7 +61,7 @@ const ReferralProgram: React.FC = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium mb-2" style={{ color: '#878b91', fontSize: '14px' }}>
+                  <p className="text-xs font-medium mb-2" style={{ color: '#878b91', fontSize: '14px' }}>
                     {stat.label}
                   </p>
                   <p className="text-3xl font-bold" style={{ color: stat.color, fontSize: '35px', fontWeight: '600' }}>
@@ -253,7 +253,7 @@ const ReferralProgram: React.FC = () => {
           
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: '#212B36', fontSize: '14px', fontWeight: '500' }}>
+              <label className="block text-xs font-medium mb-3" style={{ color: '#212B36', fontSize: '14px', fontWeight: '500' }}>
                 Email Addresses
               </label>
               <textarea
@@ -370,7 +370,7 @@ const ReferralProgram: React.FC = () => {
                     className="w-10 h-10 rounded-full flex items-center justify-center mr-4"
                     style={{ backgroundColor: '#212B36' }}
                   >
-                    <span className="text-white font-medium text-sm">
+                    <span className="text-white font-medium text-xs">
                       {referral.business.split(' ').map(word => word[0]).join('').substring(0, 2)}
                     </span>
                   </div>

@@ -20,7 +20,7 @@ const CompanyDashboard: React.FC = () => {
         <div className="flex space-x-8">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`pb-4 px-1 border-b-2 font-medium text-xs transition-colors ${
               activeTab === 'overview'
                 ? 'border-[#3AB7BF] text-[#3AB7BF]'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -30,7 +30,7 @@ const CompanyDashboard: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('analysis')}
-            className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`pb-4 px-1 border-b-2 font-medium text-xs transition-colors ${
               activeTab === 'analysis'
                 ? 'border-[#3AB7BF] text-[#3AB7BF]'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -70,8 +70,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Revenue</p>
-                    <p className="text-sm text-gray-600">Actual: $3,670K</p>
-                    <p className="text-sm text-gray-600">Budget: $3,400K</p>
+                    <p className="text-xs text-gray-600">Actual: $3,670K</p>
+                    <p className="text-xs text-gray-600">Budget: $3,400K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -84,8 +84,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Gross Profit</p>
-                    <p className="text-sm text-gray-600">Actual: $2,080K</p>
-                    <p className="text-sm text-gray-600">Budget: $1,950K</p>
+                    <p className="text-xs text-gray-600">Actual: $2,080K</p>
+                    <p className="text-xs text-gray-600">Budget: $1,950K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -98,8 +98,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Operating Expenses</p>
-                    <p className="text-sm text-gray-600">Actual: $1,246K</p>
-                    <p className="text-sm text-gray-600">Budget: $1,300K</p>
+                    <p className="text-xs text-gray-600">Actual: $1,246K</p>
+                    <p className="text-xs text-gray-600">Budget: $1,300K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -112,8 +112,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Net Income</p>
-                    <p className="text-sm text-gray-600">Actual: $834K</p>
-                    <p className="text-sm text-gray-600">Budget: $650K</p>
+                    <p className="text-xs text-gray-600">Actual: $834K</p>
+                    <p className="text-xs text-gray-600">Budget: $650K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -130,8 +130,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Revenue</p>
-                    <p className="text-sm text-gray-600">2025: $3,670K</p>
-                    <p className="text-sm text-gray-600">2024: $3,180K</p>
+                    <p className="text-xs text-gray-600">2025: $3,670K</p>
+                    <p className="text-xs text-gray-600">2024: $3,180K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -144,8 +144,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Gross Profit</p>
-                    <p className="text-sm text-gray-600">2025: $2,080K</p>
-                    <p className="text-sm text-gray-600">2024: $1,850K</p>
+                    <p className="text-xs text-gray-600">2025: $2,080K</p>
+                    <p className="text-xs text-gray-600">2024: $1,850K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -158,8 +158,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Operating Expenses</p>
-                    <p className="text-sm text-gray-600">2025: $1,246K</p>
-                    <p className="text-sm text-gray-600">2024: $1,200K</p>
+                    <p className="text-xs text-gray-600">2025: $1,246K</p>
+                    <p className="text-xs text-gray-600">2024: $1,200K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#F87171] flex items-center justify-end">
@@ -172,8 +172,8 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-[#101010]">Net Income</p>
-                    <p className="text-sm text-gray-600">2025: $834K</p>
-                    <p className="text-sm text-gray-600">2024: $650K</p>
+                    <p className="text-xs text-gray-600">2025: $834K</p>
+                    <p className="text-xs text-gray-600">2024: $650K</p>
                   </div>
                   <div className="text-right">
                     <span className="text-lg font-bold text-[#4ADE80] flex items-center justify-end">
@@ -195,7 +195,7 @@ const CompanyDashboard: React.FC = () => {
                     <span className="text-white text-xs font-bold">AI</span>
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-[#101010] mb-1 text-sm">January 2025 Performance Insights</h4>
+                    <h4 className="font-semibold text-[#101010] mb-1 text-xs">January 2025 Performance Insights</h4>
                     <p className="text-xs text-gray-700 leading-relaxed mb-2">
                       Your January performance shows strong momentum with revenue exceeding targets by 12.5%.
                       Cash flow remains healthy at $224K positive, and profit margins improved to 26.4% -
@@ -225,15 +225,15 @@ const CompanyDashboard: React.FC = () => {
                 <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                   <div className="flex items-center">
                     <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                      <span className="text-white font-medium text-sm">P</span>
+                      <span className="text-white font-medium text-xs">P</span>
                     </div>
                     <div>
                       <p className="font-medium text-[#101010]">Performance vs Targets</p>
                       <div className="flex items-center gap-2">
                         <span className="text-lg font-bold text-[#101010]">+2.7%</span>
-                        <span className="text-sm text-gray-600">vs budget</span>
+                        <span className="text-xs text-gray-600">vs budget</span>
                         <span className="text-lg font-bold text-[#4ADE80]">+12.5%</span>
-                        <span className="text-sm text-gray-600">vs prior</span>
+                        <span className="text-xs text-gray-600">vs prior</span>
                       </div>
                     </div>
                   </div>

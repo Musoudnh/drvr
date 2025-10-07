@@ -101,7 +101,7 @@ const RoadMap: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-3 text-sm font-medium transition-colors relative ${
+                className={`px-6 py-3 text-xs font-medium transition-colors relative ${
                   activeTab === tab.id
                     ? 'text-[#7B68EE] border-b-2 border-[#7B68EE]'
                     : 'text-gray-600 hover:text-gray-900'

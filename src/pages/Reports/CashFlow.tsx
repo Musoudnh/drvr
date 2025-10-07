@@ -345,7 +345,7 @@ const CashFlow: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/forecasting')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/forecasting'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -355,7 +355,7 @@ const CashFlow: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/balance')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -365,7 +365,7 @@ const CashFlow: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/cashflow')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 ${
+            className={`px-2 py-1 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 ${
               location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -378,31 +378,31 @@ const CashFlow: React.FC = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Save className="w-4 h-4 mr-2" />
             Save Forecast
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Bell className="w-4 h-4 mr-2" />
             Alerts
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Applied Scenarios
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <History className="w-4 h-4 mr-2" />
             Version History
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Download className="w-4 h-4 mr-2" />
             Export
@@ -417,7 +417,7 @@ const CashFlow: React.FC = () => {
             <div className="relative" ref={monthDropdownRef}>
               <button
                 onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedMonth}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -432,7 +432,7 @@ const CashFlow: React.FC = () => {
                           setSelectedMonth(month);
                           setMonthDropdownOpen(false);
                         }}
-                        className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
+                        className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
                           selectedMonth === month
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -451,7 +451,7 @@ const CashFlow: React.FC = () => {
             <div className="relative" ref={quarterDropdownRef}>
               <button
                 onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedQuarter}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -466,7 +466,7 @@ const CashFlow: React.FC = () => {
                           setSelectedQuarter(quarter);
                           setQuarterDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedQuarter === quarter
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -485,7 +485,7 @@ const CashFlow: React.FC = () => {
             <div className="relative" ref={yearDropdownRef}>
               <button
                 onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
-                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               >
                 <span>{selectedYear}</span>
                 <ChevronDown className="w-4 h-4 ml-1" />
@@ -500,7 +500,7 @@ const CashFlow: React.FC = () => {
                           setSelectedYear(year);
                           setYearDropdownOpen(false);
                         }}
-                        className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                        className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                           selectedYear === year
                             ? 'bg-[#7B68EE] text-white'
                             : 'text-gray-600 hover:bg-gray-100'
@@ -519,7 +519,7 @@ const CashFlow: React.FC = () => {
 
           <button
             onClick={() => setDateViewMode('months')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               dateViewMode === 'months'
                 ? 'bg-[#7B68EE] text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
@@ -529,7 +529,7 @@ const CashFlow: React.FC = () => {
           </button>
           <button
             onClick={() => setDateViewMode('quarters')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               dateViewMode === 'quarters'
                 ? 'bg-[#7B68EE] text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
@@ -539,7 +539,7 @@ const CashFlow: React.FC = () => {
           </button>
           <button
             onClick={() => setDateViewMode('years')}
-            className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
               dateViewMode === 'years'
                 ? 'bg-[#7B68EE] text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-300'
@@ -576,7 +576,7 @@ const CashFlow: React.FC = () => {
                           {item.type === 'increase' ? 'ADD' : 'LESS'}
                         </span>
                       )}
-                      <span className={`text-sm ${isTotal ? 'font-bold text-[#101010]' : 'text-gray-700'}`}>
+                      <span className={`text-xs ${isTotal ? 'font-bold text-[#101010]' : 'text-gray-700'}`}>
                         {item.label}
                       </span>
                     </div>
@@ -669,7 +669,7 @@ const CashFlow: React.FC = () => {
                 </div>
                 <div className="text-right ml-4">
                   <p className="font-bold text-[#4ADE80]">${item.amount.toLocaleString()}</p>
-                  <p className="text-sm text-gray-500">{item.percentage}%</p>
+                  <p className="text-xs text-gray-500">{item.percentage}%</p>
                 </div>
               </div>
             ))}
@@ -696,7 +696,7 @@ const CashFlow: React.FC = () => {
                 </div>
                 <div className="text-right ml-4">
                   <p className="font-bold text-[#F87171]">${item.amount.toLocaleString()}</p>
-                  <p className="text-sm text-gray-500">{item.percentage}%</p>
+                  <p className="text-xs text-gray-500">{item.percentage}%</p>
                 </div>
               </div>
             ))}

@@ -60,18 +60,18 @@ const BillingSettings: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                <span className="text-white font-medium text-sm">P</span>
+                <span className="text-white font-medium text-xs">P</span>
               </div>
               <div>
                 <h3 className="font-medium text-[#101010]">Professional Plan</h3>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-[#101010]">$79</span>
-                  <span className="text-sm text-gray-600">per month</span>
+                  <span className="text-xs text-gray-600">per month</span>
                 </div>
               </div>
             </div>
             <div className="flex gap-2">
-              <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Change Plan</button>
+              <button className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Change Plan</button>
               <Button variant="danger" size="sm">Cancel</Button>
             </div>
           </div>
@@ -82,7 +82,7 @@ const BillingSettings: React.FC = () => {
               <Calendar className="w-5 h-5 text-gray-400 mr-3" />
               <div>
                 <p className="font-medium text-[#101010]">Next Billing Date</p>
-                <p className="text-sm text-gray-600">February 15, 2025</p>
+                <p className="text-xs text-gray-600">February 15, 2025</p>
               </div>
             </div>
             <div className="text-right">
@@ -97,10 +97,10 @@ const BillingSettings: React.FC = () => {
       <Card title="Payment Methods">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">Manage your payment methods and autopay settings</p>
+            <p className="text-xs text-gray-600">Manage your payment methods and autopay settings</p>
             <button
               onClick={() => setShowPaymentModal(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Payment Method
@@ -119,12 +119,12 @@ const BillingSettings: React.FC = () => {
                   </p>
                   <div className="flex items-center gap-2">
                     {method.expiryMonth && method.expiryYear && (
-                      <span className="text-sm text-gray-600">Expires {method.expiryMonth}/{method.expiryYear}</span>
+                      <span className="text-xs text-gray-600">Expires {method.expiryMonth}/{method.expiryYear}</span>
                     )}
                     {method.isDefault && (
-                      <span className="px-4 py-2 bg-[#4ADE80]/20 text-[#4ADE80] rounded-lg text-sm font-medium shadow-sm">Default</span>
+                      <span className="px-4 py-2 bg-[#4ADE80]/20 text-[#4ADE80] rounded-lg text-xs font-medium shadow-sm">Default</span>
                     )}
-                    <span className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm ${
+                    <span className={`px-4 py-2 rounded-lg text-xs font-medium shadow-sm ${
                       method.isValid ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-[#F87171]/20 text-[#F87171]'
                     }`}>
                       {method.isValid ? 'Valid' : 'Invalid'}
@@ -133,9 +133,9 @@ const BillingSettings: React.FC = () => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Edit</button>
+                <button className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Edit</button>
                 {!method.isDefault && (
-                  <button className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Set Default</button>
+                  <button className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm">Set Default</button>
                 )}
               </div>
             </div>
@@ -144,7 +144,7 @@ const BillingSettings: React.FC = () => {
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
               <p className="font-medium text-[#101010]">Automatic Payments</p>
-              <p className="text-sm text-gray-600">Automatically charge your default payment method</p>
+              <p className="text-xs text-gray-600">Automatically charge your default payment method</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input 
@@ -186,8 +186,8 @@ const BillingSettings: React.FC = () => {
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex-1">
                         <div className="flex justify-between mb-1">
-                          <span className="text-sm font-medium text-gray-700">{usage.feature}</span>
-                          <span className="text-sm text-gray-600">{usage.calls.toLocaleString()} calls</span>
+                          <span className="text-xs font-medium text-gray-700">{usage.feature}</span>
+                          <span className="text-xs text-gray-600">{usage.calls.toLocaleString()} calls</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 

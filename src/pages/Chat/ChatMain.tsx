@@ -112,7 +112,7 @@ const ChatMain: React.FC = () => {
             >
               <CheckCircle className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-medium text-[#101010]">Connected to {serviceName}</span>
+            <span className="text-xs font-medium text-[#101010]">Connected to {serviceName}</span>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
@@ -156,7 +156,7 @@ const ChatMain: React.FC = () => {
             <input
               type="text"
               placeholder="Search messages..."
-              className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-400 focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-xs text-white placeholder-gray-400 focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
             />
           </div>
         </div>
@@ -176,7 +176,7 @@ const ChatMain: React.FC = () => {
                 <button
                   key={channel.id}
                   onClick={() => setSelectedChannelId(channel.id)}
-                  className={`w-full flex items-center px-2 py-2 text-sm rounded-lg transition-colors ${
+                  className={`w-full flex items-center px-2 py-2 text-xs rounded-lg transition-colors ${
                     selectedChannelId === channel.id
                       ? 'bg-[#3AB7BF]/10 text-[#3AB7BF] font-medium'
                       : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -199,10 +199,10 @@ const ChatMain: React.FC = () => {
         <div className="p-4 border-t border-gray-600">
           <div className="flex items-center">
             <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
-              <span className="text-sm font-medium">SJ</span>
+              <span className="text-xs font-medium">SJ</span>
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium">Sarah Johnson</p>
+              <p className="text-xs font-medium">Sarah Johnson</p>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></div>
                 <span className="text-xs text-gray-400">Online</span>
@@ -236,7 +236,7 @@ const ChatMain: React.FC = () => {
                   <div className="mr-3">
                     {showAvatar ? (
                       <div className="w-8 h-8 bg-[#3AB7BF] rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-xs font-medium text-white">
                           {message.avatar}
                         </span>
                       </div>
@@ -250,7 +250,7 @@ const ChatMain: React.FC = () => {
                     {/* Author and Timestamp */}
                     {showAvatar && (
                       <div className="flex items-center mb-1">
-                        <span className="font-semibold text-[#101010] text-sm mr-2">
+                        <span className="font-semibold text-[#101010] text-xs mr-2">
                           {message.author}
                         </span>
                         <span className="text-xs text-gray-500">
@@ -264,7 +264,7 @@ const ChatMain: React.FC = () => {
                     )}
 
                     {/* Message Body */}
-                    <div className="text-sm text-gray-800 leading-relaxed">
+                    <div className="text-xs text-gray-800 leading-relaxed">
                       {message.content}
                     </div>
                   </div>
@@ -339,7 +339,7 @@ const ChatMain: React.FC = () => {
           <nav className="flex space-x-8 px-6" aria-label="Chat Navigation">
             <button
               onClick={() => setShowConnectModal(true)}
-              className="flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className="flex items-center py-4 px-1 border-b-2 font-medium text-xs transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             >
               <Plus className="w-4 h-4 mr-2" />
               Connect Chat
@@ -371,7 +371,7 @@ const ChatMain: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tab Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Tab Name</label>
                 <input
                   type="text"
                   value={connectForm.tabName}
@@ -382,7 +382,7 @@ const ChatMain: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Platform</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Platform</label>
                 <div className="grid grid-cols-3 gap-3">
                   <button
                     onClick={() => setConnectForm({...connectForm, platform: 'slack'})}
@@ -421,7 +421,7 @@ const ChatMain: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">View Type</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">View Type</label>
                 <div className="space-y-3">
                   <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
@@ -433,7 +433,7 @@ const ChatMain: React.FC = () => {
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Embedded</p>
-                      <p className="text-sm text-gray-600">Display the chat directly within FinanceFlow</p>
+                      <p className="text-xs text-gray-600">Display the chat directly within FinanceFlow</p>
                     </div>
                   </label>
                   
@@ -446,17 +446,17 @@ const ChatMain: React.FC = () => {
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Link</p>
-                      <p className="text-sm text-gray-600">Open the chat in a new tab/window</p>
+                      <p className="text-xs text-gray-600">Open the chat in a new tab/window</p>
                     </div>
                   </label>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Embed Code</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Embed Code</label>
                 <textarea
                   placeholder="Paste your embed code here (for embedded view type)"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent text-xs"
                   rows={4}
                 />
                 <p className="text-xs text-gray-500 mt-1">

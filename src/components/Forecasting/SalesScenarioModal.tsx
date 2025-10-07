@@ -287,7 +287,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Volume Growth %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Volume Growth %</label>
               <input
                 type="number"
                 value={vpParams.volumeGrowthPercent}
@@ -298,7 +298,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Price Growth %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Price Growth %</label>
               <input
                 type="number"
                 value={vpParams.priceGrowthPercent}
@@ -309,7 +309,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Base Units</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Base Units</label>
               <input
                 type="number"
                 value={vpParams.baseUnits}
@@ -320,7 +320,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Base Price</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Base Price</label>
               <input
                 type="number"
                 value={vpParams.basePrice}
@@ -338,7 +338,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Marketing Spend (Monthly)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Marketing Spend (Monthly)</label>
               <input
                 type="number"
                 value={cacParams.marketingSpendMonthly}
@@ -349,7 +349,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Customers Acquired</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Customers Acquired</label>
               <input
                 type="number"
                 value={cacParams.customersAcquired}
@@ -360,7 +360,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Avg Revenue Per Customer</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Avg Revenue Per Customer</label>
               <input
                 type="number"
                 value={cacParams.averageRevenuePerCustomer}
@@ -371,7 +371,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">CAC Payback (Months)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">CAC Payback (Months)</label>
               <input
                 type="number"
                 value={cacParams.cacPaybackMonths}
@@ -389,7 +389,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Current Churn Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Current Churn Rate %</label>
               <input
                 type="number"
                 value={retParams.currentChurnRatePercent}
@@ -400,7 +400,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Target Churn Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Target Churn Rate %</label>
               <input
                 type="number"
                 value={retParams.targetChurnRatePercent}
@@ -411,7 +411,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Current MRR</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Current MRR</label>
               <input
                 type="number"
                 value={retParams.currentMRR}
@@ -422,7 +422,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Avg Customer Count</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Avg Customer Count</label>
               <input
                 type="number"
                 value={retParams.averageCustomerCount}
@@ -441,7 +441,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Leads Per Month</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Leads Per Month</label>
                 <input
                   type="number"
                   value={funnelParams.leadsPerMonth}
@@ -452,7 +452,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Avg Deal Size</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Avg Deal Size</label>
                 <input
                   type="number"
                   value={funnelParams.averageDealSize}
@@ -464,7 +464,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Conversion Stages</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Conversion Stages</label>
               {funnelParams.stages.map((stage, idx) => (
                 <div key={idx} className="flex items-center gap-2 mb-2">
                   <input
@@ -500,7 +500,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Baseline Revenue</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Baseline Revenue</label>
               <input
                 type="number"
                 value={seasonParams.baselineRevenue}
@@ -511,7 +511,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Multipliers</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Monthly Multipliers</label>
               <div className="grid grid-cols-4 gap-2">
                 {MONTHS.map(month => (
                   <div key={month}>
@@ -524,7 +524,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                         const newMultipliers = { ...seasonParams.monthlyMultipliers, [month]: parseFloat(e.target.value) };
                         updateDriver(driver.id, { parameters: { ...seasonParams, monthlyMultipliers: newMultipliers } });
                       }}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                 ))}
@@ -538,7 +538,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Avg Contract Length (Months)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Avg Contract Length (Months)</label>
               <input
                 type="number"
                 value={contractParams.averageContractLengthMonths}
@@ -549,7 +549,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Renewal Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Renewal Rate %</label>
               <input
                 type="number"
                 value={contractParams.renewalRatePercent}
@@ -560,7 +560,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Expansion Revenue %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Expansion Revenue %</label>
               <input
                 type="number"
                 value={contractParams.expansionRevenuePercent}
@@ -571,7 +571,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">New ARR</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">New ARR</label>
               <input
                 type="number"
                 value={contractParams.newARR}
@@ -589,7 +589,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Number of Reps</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Number of Reps</label>
               <input
                 type="number"
                 value={repParams.numberOfReps}
@@ -600,7 +600,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Quota Per Rep (Monthly)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Quota Per Rep (Monthly)</label>
               <input
                 type="number"
                 value={repParams.quotaPerRepMonthly}
@@ -611,7 +611,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attainment %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Attainment %</label>
               <input
                 type="number"
                 value={repParams.attainmentPercent}
@@ -622,7 +622,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">New Hires</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">New Hires</label>
               <input
                 type="number"
                 value={repParams.newHires}
@@ -640,7 +640,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Discount %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Discount %</label>
               <input
                 type="number"
                 value={discountParams.discountPercent}
@@ -651,7 +651,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Volume Lift %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Volume Lift %</label>
               <input
                 type="number"
                 value={discountParams.volumeLiftPercent}
@@ -662,7 +662,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Affected Revenue %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Affected Revenue %</label>
               <input
                 type="number"
                 value={discountParams.affectedRevenuePercent}
@@ -673,7 +673,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Margin Impact %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Margin Impact %</label>
               <input
                 type="number"
                 value={discountParams.marginImpactPercent}
@@ -691,7 +691,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
                 type="text"
                 value={payrollHCParams.departmentName}
@@ -702,7 +702,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Current Headcount</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Current Headcount</label>
               <input
                 type="number"
                 value={payrollHCParams.currentHeadcount}
@@ -713,7 +713,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Planned Hires</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Planned Hires</label>
               <p className="text-xs text-gray-500 mb-2">Add hire plans by month (e.g., "2025-11" for November 2025)</p>
               {payrollHCParams.plannedHires.map((hire, idx) => (
                 <div key={idx} className="flex items-center gap-2 mb-2">
@@ -755,7 +755,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   const newHires = [...payrollHCParams.plannedHires, { month: '', count: 1 }];
                   updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
                 }}
-                className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
+                className="text-xs text-blue-600 hover:text-blue-700 flex items-center"
               >
                 <Plus className="w-4 h-4 mr-1" /> Add Hire Plan
               </button>
@@ -768,7 +768,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
                 type="text"
                 value={payrollSalParams.departmentName}
@@ -779,7 +779,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Average Salary</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Average Salary</label>
               <input
                 type="number"
                 value={payrollSalParams.avgSalary}
@@ -790,7 +790,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Benefits %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Benefits %</label>
               <input
                 type="number"
                 value={payrollSalParams.benefitsPct}
@@ -801,7 +801,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Taxes %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Taxes %</label>
               <input
                 type="number"
                 value={payrollSalParams.taxesPct}
@@ -812,7 +812,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Bonus %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Bonus %</label>
               <input
                 type="number"
                 value={payrollSalParams.bonusPct}
@@ -823,7 +823,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Commission % (Optional)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Commission % (Optional)</label>
               <input
                 type="number"
                 value={payrollSalParams.commissionPct || 0}
@@ -841,7 +841,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
                 type="text"
                 value={payrollMeritParams.departmentName}
@@ -852,7 +852,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Annual Increase %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Annual Increase %</label>
               <input
                 type="number"
                 value={payrollMeritParams.annualIncreasePct}
@@ -863,7 +863,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Effective Month</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Effective Month</label>
               <select
                 value={payrollMeritParams.effectiveMonth}
                 onChange={(e) => updateDriver(driver.id, {
@@ -884,7 +884,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Channel Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Channel Name</label>
               <input
                 type="text"
                 value={mktChannelParams.channelName}
@@ -895,7 +895,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Monthly Budget</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Monthly Budget</label>
               <input
                 type="number"
                 value={mktChannelParams.monthlyBudget}
@@ -906,7 +906,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Cost Per Lead</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Cost Per Lead</label>
               <input
                 type="number"
                 value={mktChannelParams.costPerLead}
@@ -917,7 +917,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Lead to Customer Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Lead to Customer Rate %</label>
               <input
                 type="number"
                 value={mktChannelParams.leadToCustomerRate}
@@ -928,7 +928,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Avg ARR Per Customer</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Avg ARR Per Customer</label>
               <input
                 type="number"
                 value={mktChannelParams.avgARRPerCustomer}
@@ -939,7 +939,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Gross Margin %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Gross Margin %</label>
               <input
                 type="number"
                 value={mktChannelParams.grossMarginPct}
@@ -957,7 +957,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Total Spend</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Total Spend</label>
               <input
                 type="number"
                 value={mktCACParams.totalSpend}
@@ -968,7 +968,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Leads Generated</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Leads Generated</label>
               <input
                 type="number"
                 value={mktCACParams.leadsGenerated}
@@ -979,7 +979,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Customers Acquired</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Customers Acquired</label>
               <input
                 type="number"
                 value={mktCACParams.customersAcquired}
@@ -990,7 +990,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Conversion Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Conversion Rate %</label>
               <input
                 type="number"
                 value={mktCACParams.conversionRate}
@@ -1008,7 +1008,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Spend</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Campaign Spend</label>
               <input
                 type="number"
                 value={mktROIParams.campaignSpend}
@@ -1019,7 +1019,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attributed Revenue</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Attributed Revenue</label>
               <input
                 type="number"
                 value={mktROIParams.attributedRevenue}
@@ -1030,7 +1030,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Gross Margin %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Gross Margin %</label>
               <input
                 type="number"
                 value={mktROIParams.grossMarginPct}
@@ -1048,7 +1048,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
                 type="text"
                 value={eqPurchaseParams.assetName}
@@ -1059,7 +1059,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Purchase Cost</label>
               <input
                 type="number"
                 value={eqPurchaseParams.purchaseCost}
@@ -1070,7 +1070,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Month</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Purchase Month</label>
               <select
                 value={eqPurchaseParams.purchaseMonth}
                 onChange={(e) => updateDriver(driver.id, {
@@ -1084,7 +1084,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Useful Life (Years)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Useful Life (Years)</label>
               <input
                 type="number"
                 value={eqPurchaseParams.usefulLifeYears}
@@ -1095,7 +1095,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Salvage Value</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Salvage Value</label>
               <input
                 type="number"
                 value={eqPurchaseParams.salvageValue}
@@ -1106,7 +1106,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Depreciation Method</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Depreciation Method</label>
               <select
                 value={eqPurchaseParams.depreciationMethod}
                 onChange={(e) => updateDriver(driver.id, {
@@ -1126,7 +1126,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
                 type="text"
                 value={eqFinanceParams.assetName}
@@ -1137,7 +1137,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Purchase Cost</label>
               <input
                 type="number"
                 value={eqFinanceParams.purchaseCost}
@@ -1148,7 +1148,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Payment Term (Months)</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Payment Term (Months)</label>
               <input
                 type="number"
                 value={eqFinanceParams.paymentTermMonths}
@@ -1159,7 +1159,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Interest Rate %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Interest Rate %</label>
               <input
                 type="number"
                 value={eqFinanceParams.interestRatePct}
@@ -1170,7 +1170,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Down Payment %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Down Payment %</label>
               <input
                 type="number"
                 value={eqFinanceParams.downPaymentPct}
@@ -1188,7 +1188,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         return (
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
                 type="text"
                 value={eqMaintParams.assetName}
@@ -1199,7 +1199,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Purchase Cost</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Purchase Cost</label>
               <input
                 type="number"
                 value={eqMaintParams.purchaseCost}
@@ -1210,7 +1210,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Maintenance %</label>
+              <label className="block text-xs font-medium text-gray-700 mb-2">Maintenance %</label>
               <input
                 type="number"
                 value={eqMaintParams.maintenancePct}
@@ -1242,7 +1242,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Customer Scenario Builder</h2>
-            <p className="text-sm text-gray-600 mt-1">Build advanced revenue scenarios with multiple drivers</p>
+            <p className="text-xs text-gray-600 mt-1">Build advanced revenue scenarios with multiple drivers</p>
           </div>
           <button
             onClick={onClose}
@@ -1256,7 +1256,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         <div className="flex border-b border-gray-200 px-6">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'overview'
                 ? 'border-purple-600 text-purple-600'
                 : 'border-transparent text-gray-600 hover:text-purple-600'
@@ -1266,7 +1266,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('drivers')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'drivers'
                 ? 'border-purple-600 text-purple-600'
                 : 'border-transparent text-gray-600 hover:text-purple-600'
@@ -1276,7 +1276,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('ai')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'ai'
                 ? 'border-purple-600 text-purple-600'
                 : 'border-transparent text-gray-600 hover:text-purple-600'
@@ -1286,7 +1286,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('preview')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'preview'
                 ? 'border-purple-600 text-purple-600'
                 : 'border-transparent text-gray-600 hover:text-purple-600'
@@ -1302,7 +1302,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Scenario Name</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
                   <input
                     type="text"
                     value={scenarioName}
@@ -1312,7 +1312,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Base Revenue (Monthly)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Base Revenue (Monthly)</label>
                   <input
                     type="number"
                     value={baseRevenue}
@@ -1323,7 +1323,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   value={scenarioDescription}
                   onChange={(e) => setScenarioDescription(e.target.value)}
@@ -1335,12 +1335,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
                   <div className="relative" ref={startMonthDropdownRef}>
                     <button
                       type="button"
                       onClick={() => setStartMonthDropdownOpen(!startMonthDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{startMonth}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1363,7 +1363,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                   setStartMonth(m);
                                   setStartMonthDropdownOpen(false);
                                 }}
-                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                   startMonth === m
                                     ? 'bg-[#7B68EE] text-white'
                                     : isActualized
@@ -1381,12 +1381,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Month</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
                   <div className="relative" ref={endMonthDropdownRef}>
                     <button
                       type="button"
                       onClick={() => setEndMonthDropdownOpen(!endMonthDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{endMonth}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1409,7 +1409,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                   setEndMonth(m);
                                   setEndMonthDropdownOpen(false);
                                 }}
-                                className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                   endMonth === m
                                     ? 'bg-[#7B68EE] text-white'
                                     : isActualized
@@ -1427,12 +1427,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Year</label>
                   <div className="relative" ref={startYearDropdownRef}>
                     <button
                       type="button"
                       onClick={() => setStartYearDropdownOpen(!startYearDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{startYear}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1448,7 +1448,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 setStartYear(year);
                                 setStartYearDropdownOpen(false);
                               }}
-                              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                 startYear === year
                                   ? 'bg-[#7B68EE] text-white'
                                   : 'text-gray-600 hover:bg-gray-100'
@@ -1473,7 +1473,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowDriverLibrary(!showDriverLibrary)}
-                    className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                    className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-xs font-medium"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Driver
@@ -1488,7 +1488,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <select
                       value={driverCategory}
                       onChange={(e) => setDriverCategory(e.target.value as any)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="px-3 py-2 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       <option value="sales">Customer Drivers</option>
                       <option value="payroll">Payroll Drivers</option>
@@ -1505,7 +1505,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <h5 className="font-medium text-gray-900 text-xs">{template.name}</h5>
                             <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
@@ -1519,7 +1519,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <h5 className="font-medium text-gray-900 text-xs">{template.name}</h5>
                             <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
@@ -1533,7 +1533,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <h5 className="font-medium text-gray-900 text-xs">{template.name}</h5>
                             <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
@@ -1547,7 +1547,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           className="flex items-start p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-all text-left"
                         >
                           <div>
-                            <h5 className="font-medium text-gray-900 text-sm">{template.name}</h5>
+                            <h5 className="font-medium text-gray-900 text-xs">{template.name}</h5>
                             <p className="text-xs text-gray-600 mt-1">{template.description}</p>
                           </div>
                         </button>
@@ -1562,7 +1562,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                     <Zap className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                     <p className="text-gray-600">No drivers added yet</p>
-                    <p className="text-sm text-gray-500 mt-1">Click "Add Driver" to start building your scenario</p>
+                    <p className="text-xs text-gray-500 mt-1">Click "Add Driver" to start building your scenario</p>
                   </div>
                 ) : (
                   activeDrivers.map(driver => {
@@ -1589,11 +1589,11 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                   onChange={(e) => updateDriver(driver.id, { isActive: e.target.checked })}
                                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                 />
-                                <span className="ml-2 text-sm text-gray-700">Active</span>
+                                <span className="ml-2 text-xs text-gray-700">Active</span>
                               </label>
                               <button
                                 onClick={() => setEditingDriver(driver)}
-                                className="px-3 py-1 text-sm bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition-colors"
+                                className="px-3 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition-colors"
                               >
                                 Edit
                               </button>
@@ -1654,7 +1654,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       Discuss your assumptions with AI to help build your customer drivers.
                       The AI can suggest parameters and help you think through your scenarios.
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500 mt-2">
                       Upload files like spreadsheets, reports, or financial data for AI analysis.
                     </p>
                   </div>
@@ -1682,7 +1682,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                             </div>
                           </div>
                         )}
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                        <p className="text-xs whitespace-pre-wrap">{msg.content}</p>
                       </div>
                     </div>
                   ))
@@ -1694,7 +1694,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     {uploadedFiles.map((file, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg text-sm"
+                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg text-xs"
                       >
                         <Paperclip className="w-4 h-4 text-purple-600" />
                         <span className="text-purple-900 font-medium">{file.name}</span>
@@ -1805,7 +1805,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-900">Base Revenue</span>
+                    <span className="text-xs font-medium text-gray-900">Base Revenue</span>
                   </div>
                   <p className="text-2xl font-bold text-gray-900">
                     ${(baseRevenue * 12).toLocaleString()}
@@ -1815,7 +1815,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-900">Total Impact</span>
+                    <span className="text-xs font-medium text-gray-900">Total Impact</span>
                   </div>
                   <p className="text-2xl font-bold text-gray-900">
                     ${totalImpact.toLocaleString()}
@@ -1825,7 +1825,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-900">Final Revenue</span>
+                    <span className="text-xs font-medium text-gray-900">Final Revenue</span>
                   </div>
                   <p className="text-2xl font-bold text-gray-900">
                     ${finalRevenue.toLocaleString()}
@@ -1848,27 +1848,27 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   <table className="w-full">
                     <thead className="bg-gray-50 border-b border-gray-200">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Month</th>
-                        <th className="px-4 py-3 text-right text-sm font-medium text-gray-700">Base</th>
-                        <th className="px-4 py-3 text-right text-sm font-medium text-gray-700">Impact</th>
-                        <th className="px-4 py-3 text-right text-sm font-medium text-gray-700">Final</th>
-                        <th className="px-4 py-3 text-right text-sm font-medium text-gray-700">Growth</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700">Month</th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Base</th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Impact</th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Final</th>
+                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Growth</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {previewData.map(month => (
                         <tr key={month.month} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm font-medium text-gray-900">{month.month}</td>
-                          <td className="px-4 py-3 text-sm text-right text-gray-600">
+                          <td className="px-4 py-3 text-xs font-medium text-gray-900">{month.month}</td>
+                          <td className="px-4 py-3 text-xs text-right text-gray-600">
                             ${month.baseRevenue.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-sm text-right font-medium text-green-600">
+                          <td className="px-4 py-3 text-xs text-right font-medium text-green-600">
                             +${month.totalImpact.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-sm text-right font-bold text-gray-900">
+                          <td className="px-4 py-3 text-xs text-right font-bold text-gray-900">
                             ${month.finalRevenue.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-sm text-right font-medium text-blue-600">
+                          <td className="px-4 py-3 text-xs text-right font-medium text-blue-600">
                             +{((month.finalRevenue / month.baseRevenue - 1) * 100).toFixed(1)}%
                           </td>
                         </tr>
@@ -1910,7 +1910,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Edit Driver</h3>
-                <p className="text-sm text-gray-600 mt-1">{editingDriver.driverName}</p>
+                <p className="text-xs text-gray-600 mt-1">{editingDriver.driverName}</p>
               </div>
               <button
                 onClick={() => setEditingDriver(null)}
@@ -1925,7 +1925,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Apply From</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Apply From</label>
                   <select
                     value={editingDriver.startMonth}
                     onChange={(e) => {
@@ -1940,7 +1940,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Apply Until</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Apply Until</label>
                   <select
                     value={editingDriver.endMonth}
                     onChange={(e) => {

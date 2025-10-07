@@ -103,7 +103,7 @@ const MyViewSettings: React.FC<MyViewSettingsProps> = ({
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">My Views</h2>
-              <p className="text-sm text-gray-500">Save and manage personalized view settings</p>
+              <p className="text-xs text-gray-500">Save and manage personalized view settings</p>
             </div>
           </div>
           <button
@@ -128,7 +128,7 @@ const MyViewSettings: React.FC<MyViewSettingsProps> = ({
 
           {isCreatingNew && (
             <div className="bg-gradient-to-r from-[#3AB7BF]/10 to-[#4ADE80]/10 rounded-lg p-4 mb-4 border border-[#3AB7BF]/20">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 View Name
               </label>
               <div className="flex gap-2">
@@ -160,7 +160,7 @@ const MyViewSettings: React.FC<MyViewSettingsProps> = ({
             <div className="text-center py-12">
               <Eye className="w-12 h-12 text-gray-300 mx-auto mb-3" />
               <p className="text-gray-500 mb-2">No saved views yet</p>
-              <p className="text-sm text-gray-400">
+              <p className="text-xs text-gray-400">
                 Configure your filters and layout, then save as a custom view
               </p>
             </div>

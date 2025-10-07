@@ -189,9 +189,9 @@ const DataIntegration: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Active Integrations</p>
+              <p className="text-xs font-medium text-gray-600">Active Integrations</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">{integrations.filter(i => i.status === 'connected').length}</p>
-              <p className="text-sm text-gray-600 mt-1">Connected systems</p>
+              <p className="text-xs text-gray-600 mt-1">Connected systems</p>
             </div>
             <CheckCircle className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -200,9 +200,9 @@ const DataIntegration: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Records</p>
+              <p className="text-xs font-medium text-gray-600">Total Records</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{integrations.reduce((sum, i) => sum + i.recordsCount, 0).toLocaleString()}</p>
-              <p className="text-sm text-gray-600 mt-1">Synced data points</p>
+              <p className="text-xs text-gray-600 mt-1">Synced data points</p>
             </div>
             <Database className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -211,9 +211,9 @@ const DataIntegration: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Sync Status</p>
+              <p className="text-xs font-medium text-gray-600">Sync Status</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">{integrations.filter(i => i.status === 'syncing').length}</p>
-              <p className="text-sm text-gray-600 mt-1">Currently syncing</p>
+              <p className="text-xs text-gray-600 mt-1">Currently syncing</p>
             </div>
             <RefreshCw className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -222,9 +222,9 @@ const DataIntegration: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Errors</p>
+              <p className="text-xs font-medium text-gray-600">Errors</p>
               <p className="text-2xl font-bold text-[#F87171] mt-1">{integrations.filter(i => i.status === 'error').length}</p>
-              <p className="text-sm text-gray-600 mt-1">Need attention</p>
+              <p className="text-xs text-gray-600 mt-1">Need attention</p>
             </div>
             <AlertTriangle className="w-8 h-8 text-[#F87171]" />
           </div>
@@ -247,7 +247,7 @@ const DataIntegration: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#101010]">{integration.name}</h3>
-                      <p className="text-sm text-gray-600">{integration.type.toUpperCase()} • {integration.recordsCount.toLocaleString()} records</p>
+                      <p className="text-xs text-gray-600">{integration.type.toUpperCase()} • {integration.recordsCount.toLocaleString()} records</p>
                     </div>
                   </div>
                   
@@ -288,14 +288,14 @@ const DataIntegration: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between text-sm text-gray-500">
+                <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>Last sync: {formatTimeAgo(integration.lastSync)}</span>
                   <span>Frequency: {integration.syncFrequency}</span>
                 </div>
                 
                 {integration.status === 'error' && (
                   <div className="mt-3 p-3 bg-[#F87171]/10 rounded-lg">
-                    <p className="text-sm text-[#F87171]">Connection failed. Please check API credentials and try again.</p>
+                    <p className="text-xs text-[#F87171]">Connection failed. Please check API credentials and try again.</p>
                   </div>
                 )}
               </div>
@@ -312,20 +312,20 @@ const DataIntegration: React.FC = () => {
             <div className="space-y-3">
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Revenue</span>
-                  <span className="text-sm text-[#3AB7BF]">→ total_sales</span>
+                  <span className="text-xs font-medium text-gray-700">Revenue</span>
+                  <span className="text-xs text-[#3AB7BF]">→ total_sales</span>
                 </div>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Expenses</span>
-                  <span className="text-sm text-[#3AB7BF]">→ operating_costs</span>
+                  <span className="text-xs font-medium text-gray-700">Expenses</span>
+                  <span className="text-xs text-[#3AB7BF]">→ operating_costs</span>
                 </div>
               </div>
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-700">Cash Flow</span>
-                  <span className="text-sm text-[#3AB7BF]">→ cash_movements</span>
+                  <span className="text-xs font-medium text-gray-700">Cash Flow</span>
+                  <span className="text-xs text-[#3AB7BF]">→ cash_movements</span>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ const DataIntegration: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Sync Settings</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Default Sync Frequency</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Default Sync Frequency</label>
                 <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent">
                   <option value="realtime">Real-time</option>
                   <option value="hourly">Hourly</option>
@@ -347,7 +347,7 @@ const DataIntegration: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Auto-retry on failure</p>
-                  <p className="text-sm text-gray-500">Automatically retry failed syncs</p>
+                  <p className="text-xs text-gray-500">Automatically retry failed syncs</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" defaultChecked />
@@ -375,7 +375,7 @@ const DataIntegration: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">System Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">System Name</label>
                 <input
                   type="text"
                   value={newIntegration.name}
@@ -386,7 +386,7 @@ const DataIntegration: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">System Type</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">System Type</label>
                 <select
                   value={newIntegration.type}
                   onChange={(e) => setNewIntegration({...newIntegration, type: e.target.value as any})}
@@ -401,7 +401,7 @@ const DataIntegration: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">API Endpoint</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">API Endpoint</label>
                 <input
                   type="url"
                   value={newIntegration.apiEndpoint}
@@ -412,7 +412,7 @@ const DataIntegration: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">API Key</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">API Key</label>
                 <input
                   type="password"
                   value={newIntegration.apiKey}
@@ -459,7 +459,7 @@ const DataIntegration: React.FC = () => {
             <div className="space-y-4">
               <div className="p-4 bg-[#3AB7BF]/10 rounded-lg">
                 <h4 className="font-medium text-[#101010] mb-2">{selectedIntegration.name}</h4>
-                <p className="text-sm text-gray-600">Map external system fields to FinanceFlow data points</p>
+                <p className="text-xs text-gray-600">Map external system fields to FinanceFlow data points</p>
               </div>
               
               <div className="space-y-3">

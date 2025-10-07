@@ -93,28 +93,28 @@ const ChatSettings: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Desktop Notifications</p>
-                    <p className="text-sm text-gray-500">Show notifications on your desktop</p>
+                    <p className="text-xs text-gray-500">Show notifications on your desktop</p>
                   </div>
                   {renderToggle('notifications', 'desktop', settings.notifications.desktop)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Mobile Push Notifications</p>
-                    <p className="text-sm text-gray-500">Receive notifications on mobile devices</p>
+                    <p className="text-xs text-gray-500">Receive notifications on mobile devices</p>
                   </div>
                   {renderToggle('notifications', 'mobile', settings.notifications.mobile)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Email Notifications</p>
-                    <p className="text-sm text-gray-500">Get notified via email for important messages</p>
+                    <p className="text-xs text-gray-500">Get notified via email for important messages</p>
                   </div>
                   {renderToggle('notifications', 'email', settings.notifications.email)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Sound Alerts</p>
-                    <p className="text-sm text-gray-500">Play sound when receiving messages</p>
+                    <p className="text-xs text-gray-500">Play sound when receiving messages</p>
                   </div>
                   {renderToggle('notifications', 'sound', settings.notifications.sound)}
                 </div>
@@ -130,21 +130,21 @@ const ChatSettings: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Mentions & Replies</p>
-                    <p className="text-sm text-gray-500">When someone mentions you or replies</p>
+                    <p className="text-xs text-gray-500">When someone mentions you or replies</p>
                   </div>
                   {renderToggle('notifications', 'mentions', settings.notifications.mentions)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Direct Messages</p>
-                    <p className="text-sm text-gray-500">All direct message notifications</p>
+                    <p className="text-xs text-gray-500">All direct message notifications</p>
                   </div>
                   {renderToggle('notifications', 'directMessages', settings.notifications.directMessages)}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-gray-700">Channel Messages</p>
-                    <p className="text-sm text-gray-500">All messages in channels you're in</p>
+                    <p className="text-xs text-gray-500">All messages in channels you're in</p>
                   </div>
                   {renderToggle('notifications', 'channelMessages', settings.notifications.channelMessages)}
                 </div>
@@ -162,14 +162,14 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Enable Quiet Hours</p>
-                  <p className="text-sm text-gray-500">Mute notifications during specified hours</p>
+                  <p className="text-xs text-gray-500">Mute notifications during specified hours</p>
                 </div>
                 {renderToggle('notifications', 'quietHours', settings.notifications.quietHours)}
               </div>
               {settings.notifications.quietHours && (
                 <div className="grid grid-cols-2 gap-4 ml-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Start Time</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Start Time</label>
                     <input
                       type="time"
                       value={settings.notifications.quietStart}
@@ -178,7 +178,7 @@ const ChatSettings: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">End Time</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">End Time</label>
                     <input
                       type="time"
                       value={settings.notifications.quietEnd}
@@ -203,7 +203,7 @@ const ChatSettings: React.FC = () => {
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Theme</label>
                 <select
                   value={settings.appearance.theme}
                   onChange={(e) => handleSelectChange('appearance', 'theme', e.target.value)}
@@ -215,7 +215,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Font Size</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Font Size</label>
                 <select
                   value={settings.appearance.fontSize}
                   onChange={(e) => handleSelectChange('appearance', 'fontSize', e.target.value)}
@@ -227,7 +227,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Emoji Size</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Emoji Size</label>
                 <select
                   value={settings.appearance.emojiSize}
                   onChange={(e) => handleSelectChange('appearance', 'emojiSize', e.target.value)}
@@ -250,21 +250,21 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Group Messages</p>
-                  <p className="text-sm text-gray-500">Group consecutive messages from same user</p>
+                  <p className="text-xs text-gray-500">Group consecutive messages from same user</p>
                 </div>
                 {renderToggle('appearance', 'messageGrouping', settings.appearance.messageGrouping)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Show Avatars</p>
-                  <p className="text-sm text-gray-500">Display user avatars next to messages</p>
+                  <p className="text-xs text-gray-500">Display user avatars next to messages</p>
                 </div>
                 {renderToggle('appearance', 'showAvatars', settings.appearance.showAvatars)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Compact Mode</p>
-                  <p className="text-sm text-gray-500">Reduce spacing between messages</p>
+                  <p className="text-xs text-gray-500">Reduce spacing between messages</p>
                 </div>
                 {renderToggle('appearance', 'compactMode', settings.appearance.compactMode)}
               </div>
@@ -285,28 +285,28 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Read Receipts</p>
-                  <p className="text-sm text-gray-500">Let others know when you've read their messages</p>
+                  <p className="text-xs text-gray-500">Let others know when you've read their messages</p>
                 </div>
                 {renderToggle('privacy', 'readReceipts', settings.privacy.readReceipts)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Typing Indicators</p>
-                  <p className="text-sm text-gray-500">Show when you're typing a message</p>
+                  <p className="text-xs text-gray-500">Show when you're typing a message</p>
                 </div>
                 {renderToggle('privacy', 'typingIndicators', settings.privacy.typingIndicators)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Online Status</p>
-                  <p className="text-sm text-gray-500">Show your online/offline status to others</p>
+                  <p className="text-xs text-gray-500">Show your online/offline status to others</p>
                 </div>
                 {renderToggle('privacy', 'onlineStatus', settings.privacy.onlineStatus)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Last Seen</p>
-                  <p className="text-sm text-gray-500">Show when you were last active</p>
+                  <p className="text-xs text-gray-500">Show when you were last active</p>
                 </div>
                 {renderToggle('privacy', 'lastSeen', settings.privacy.lastSeen)}
               </div>
@@ -322,12 +322,12 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Message Previews</p>
-                  <p className="text-sm text-gray-500">Show message content in notifications</p>
+                  <p className="text-xs text-gray-500">Show message content in notifications</p>
                 </div>
                 {renderToggle('privacy', 'messagePreview', settings.privacy.messagePreview)}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Auto-mark as Read</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Auto-mark as Read</label>
                 <select
                   value={settings.channels.markAsRead}
                   onChange={(e) => handleSelectChange('channels', 'markAsRead', e.target.value)}
@@ -355,28 +355,28 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Auto-join New Channels</p>
-                  <p className="text-sm text-gray-500">Automatically join channels you're invited to</p>
+                  <p className="text-xs text-gray-500">Automatically join channels you're invited to</p>
                 </div>
                 {renderToggle('channels', 'autoJoin', settings.channels.autoJoin)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Show Unread Indicators</p>
-                  <p className="text-sm text-gray-500">Display unread message counts</p>
+                  <p className="text-xs text-gray-500">Display unread message counts</p>
                 </div>
                 {renderToggle('channels', 'showUnread', settings.channels.showUnread)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Thread Notifications</p>
-                  <p className="text-sm text-gray-500">Get notified about thread replies</p>
+                  <p className="text-xs text-gray-500">Get notified about thread replies</p>
                 </div>
                 {renderToggle('channels', 'threadNotifications', settings.channels.threadNotifications)}
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Channel Suggestions</p>
-                  <p className="text-sm text-gray-500">Show suggested channels to join</p>
+                  <p className="text-xs text-gray-500">Show suggested channels to join</p>
                 </div>
                 {renderToggle('channels', 'channelSuggestions', settings.channels.channelSuggestions)}
               </div>
@@ -390,7 +390,7 @@ const ChatSettings: React.FC = () => {
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Notification Sound</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Notification Sound</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
@@ -402,7 +402,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Alert Frequency</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Alert Frequency</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
@@ -413,7 +413,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div className="p-3 bg-[#F59E0B]/10 rounded-lg">
-                <p className="text-sm font-medium text-[#101010] mb-1">Test Notifications</p>
+                <p className="text-xs font-medium text-[#101010] mb-1">Test Notifications</p>
                 <p className="text-xs text-gray-600 mb-2">Send a test notification to verify your settings</p>
                 <Button variant="outline" size="sm">Send Test</Button>
               </div>
@@ -432,7 +432,7 @@ const ChatSettings: React.FC = () => {
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Message Retention</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Message Retention</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
@@ -444,7 +444,7 @@ const ChatSettings: React.FC = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Search History</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Search History</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
@@ -465,12 +465,12 @@ const ChatSettings: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-medium text-gray-700">Mobile Sync</p>
-                  <p className="text-sm text-gray-500">Sync settings across devices</p>
+                  <p className="text-xs text-gray-500">Sync settings across devices</p>
                 </div>
                 {renderToggle('notifications', 'mobile', settings.notifications.mobile)}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Mobile Notification Style</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Mobile Notification Style</label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
                 >
@@ -489,7 +489,7 @@ const ChatSettings: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h3 className="font-semibold text-[#101010] mb-4">Message Actions</h3>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-gray-600">Send message</span>
                 <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Enter</kbd>
@@ -510,7 +510,7 @@ const ChatSettings: React.FC = () => {
           </div>
           <div>
             <h3 className="font-semibold text-[#101010] mb-4">Navigation</h3>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-gray-600">Next channel</span>
                 <kbd className="px-2 py-1 bg-gray-100 rounded text-xs">Ctrl + K</kbd>
@@ -540,8 +540,8 @@ const ChatSettings: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">Messages</span>
-                  <span className="text-sm text-gray-600">2.4 GB</span>
+                  <span className="text-xs font-medium text-gray-700">Messages</span>
+                  <span className="text-xs text-gray-600">2.4 GB</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-[#3AB7BF] h-2 rounded-full" style={{ width: '60%' }} />
@@ -549,8 +549,8 @@ const ChatSettings: React.FC = () => {
               </div>
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-700">Files & Media</span>
-                  <span className="text-sm text-gray-600">1.8 GB</span>
+                  <span className="text-xs font-medium text-gray-700">Files & Media</span>
+                  <span className="text-xs text-gray-600">1.8 GB</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-[#4ADE80] h-2 rounded-full" style={{ width: '45%' }} />

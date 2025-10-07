@@ -32,23 +32,23 @@ const FinancialSummary: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-600 mb-2">Total Revenue</p>
+            <p className="text-xs font-medium text-gray-600 mb-2">Total Revenue</p>
             <p className="text-3xl font-bold text-[#4ADE80]">$1,247,850</p>
-            <p className="text-sm text-gray-500 mt-1">+15.3% from last quarter</p>
+            <p className="text-xs text-gray-500 mt-1">+15.3% from last quarter</p>
           </div>
         </Card>
         <Card>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-600 mb-2">Total Expenses</p>
+            <p className="text-xs font-medium text-gray-600 mb-2">Total Expenses</p>
             <p className="text-3xl font-bold text-[#F87171]">$847,200</p>
-            <p className="text-sm text-gray-500 mt-1">+8.7% from last quarter</p>
+            <p className="text-xs text-gray-500 mt-1">+8.7% from last quarter</p>
           </div>
         </Card>
         <Card>
           <div className="text-center">
-            <p className="text-sm font-medium text-gray-600 mb-2">Net Profit</p>
+            <p className="text-xs font-medium text-gray-600 mb-2">Net Profit</p>
             <p className="text-3xl font-bold text-[#3AB7BF]">$400,650</p>
-            <p className="text-sm text-gray-500 mt-1">+28.4% from last quarter</p>
+            <p className="text-xs text-gray-500 mt-1">+28.4% from last quarter</p>
           </div>
         </Card>
       </div>

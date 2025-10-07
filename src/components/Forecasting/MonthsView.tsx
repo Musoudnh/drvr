@@ -132,7 +132,7 @@ const MonthsView: React.FC<MonthsViewProps> = ({
   return (
     <div className="w-full">
       <div className="flex items-center mb-2">
-        <span className="text-sm font-semibold text-gray-700 min-w-[200px]">{rowLabel}</span>
+        <span className="text-xs font-semibold text-gray-700 min-w-[200px]">{rowLabel}</span>
       </div>
 
       <div className="flex items-center gap-4 mb-3 ml-2">
@@ -209,11 +209,11 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                           onChange={handleInputChange}
                           onBlur={handleInputBlur}
                           onKeyDown={handleInputKeyDown}
-                          className="w-full px-2 py-1 text-sm font-semibold text-gray-900 border-2 border-blue-500 rounded focus:outline-none"
+                          className="w-full px-2 py-1 text-xs font-semibold text-gray-900 border-2 border-blue-500 rounded focus:outline-none"
                         />
                       ) : (
                         <div
-                          className={`text-sm font-semibold ${
+                          className={`text-xs font-semibold ${
                             monthData.isActual
                               ? 'text-gray-900'
                               : 'text-gray-900 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:ring-2 group-hover:ring-blue-200'
@@ -230,7 +230,7 @@ const MonthsView: React.FC<MonthsViewProps> = ({
                     {monthData.actualValue !== undefined && (
                       <>
                         <div className="text-[10px] text-gray-500 font-medium mb-1">Actuals</div>
-                        <div className="text-sm font-semibold text-gray-900 mb-2">
+                        <div className="text-xs font-semibold text-gray-900 mb-2">
                           {formatValue(monthData.actualValue)}
                         </div>
 

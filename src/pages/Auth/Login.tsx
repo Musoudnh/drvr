@@ -32,7 +32,7 @@ const Login: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-xs font-medium text-gray-700 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -68,9 +68,9 @@ const Login: React.FC = () => {
             <div className="flex items-center justify-between">
               <label className="flex items-center">
                 <input type="checkbox" className="w-4 h-4 text-[#3AB7BF] border-gray-300 rounded focus:ring-[#3AB7BF]" />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                <span className="ml-2 text-xs text-gray-600">Remember me</span>
               </label>
-              <Link to="/forgot-password" className="text-sm text-[#3AB7BF] hover:underline">
+              <Link to="/forgot-password" className="text-xs text-[#3AB7BF] hover:underline">
                 Forgot password?
               </Link>
             </div>
@@ -87,7 +87,7 @@ const Login: React.FC = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-xs text-gray-600">
               Don't have an account?{' '}
               <Link to="/setup" className="text-[#3AB7BF] hover:underline font-medium">
                 Get started

@@ -140,9 +140,9 @@ const HiringRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Current Team</p>
+              <p className="text-xs font-medium text-gray-600">Current Team</p>
               <p className="text-2xl font-bold text-[#3AB7BF] mt-1">{currentHeadcount}</p>
-              <p className="text-sm text-gray-600 mt-1">Total employees</p>
+              <p className="text-xs text-gray-600 mt-1">Total employees</p>
             </div>
             <Users className="w-8 h-8 text-[#3AB7BF]" />
           </div>
@@ -151,9 +151,9 @@ const HiringRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Planned Hires</p>
+              <p className="text-xs font-medium text-gray-600">Planned Hires</p>
               <p className="text-2xl font-bold text-[#4ADE80] mt-1">+{totalNewHires}</p>
-              <p className="text-sm text-gray-600 mt-1">New positions</p>
+              <p className="text-xs text-gray-600 mt-1">New positions</p>
             </div>
             <UserPlus className="w-8 h-8 text-[#4ADE80]" />
           </div>
@@ -162,9 +162,9 @@ const HiringRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Final Headcount</p>
+              <p className="text-xs font-medium text-gray-600">Final Headcount</p>
               <p className="text-2xl font-bold text-[#F59E0B] mt-1">{finalHeadcount}</p>
-              <p className="text-sm text-[#4ADE80] mt-1">+{((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% growth</p>
+              <p className="text-xs text-[#4ADE80] mt-1">+{((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% growth</p>
             </div>
             <Target className="w-8 h-8 text-[#F59E0B]" />
           </div>
@@ -173,9 +173,9 @@ const HiringRunway: React.FC = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Annual Cost</p>
+              <p className="text-xs font-medium text-gray-600">Annual Cost</p>
               <p className="text-2xl font-bold text-[#8B5CF6] mt-1">${(totalAnnualCost / 1000000).toFixed(1)}M</p>
-              <p className="text-sm text-gray-600 mt-1">Total compensation</p>
+              <p className="text-xs text-gray-600 mt-1">Total compensation</p>
             </div>
             <DollarSign className="w-8 h-8 text-[#8B5CF6]" />
           </div>
@@ -186,7 +186,7 @@ const HiringRunway: React.FC = () => {
       <Card title="Hiring Roles">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <p className="text-sm text-gray-600">Comprehensive role planning with fully-loaded cost calculations</p>
+            <p className="text-xs text-gray-600">Comprehensive role planning with fully-loaded cost calculations</p>
             <p className="text-xs text-gray-500 mt-1">Includes base compensation, payroll taxes, and benefits</p>
           </div>
           <Button
@@ -207,7 +207,7 @@ const HiringRunway: React.FC = () => {
           <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
             <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <p className="text-gray-600 font-medium mb-2">No roles added yet</p>
-            <p className="text-sm text-gray-500 mb-4">Add your first role to start planning your hiring budget</p>
+            <p className="text-xs text-gray-500 mb-4">Add your first role to start planning your hiring budget</p>
             <Button
               variant="primary"
               size="sm"
@@ -231,17 +231,17 @@ const HiringRunway: React.FC = () => {
             <h3 className="text-white font-semibold mb-4">Total Hiring Budget</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <p className="text-gray-300 text-sm mb-1">Total Roles</p>
+                <p className="text-gray-300 text-xs mb-1">Total Roles</p>
                 <p className="text-2xl font-bold text-white">{roles.length}</p>
               </div>
               <div>
-                <p className="text-gray-300 text-sm mb-1">Base Compensation</p>
+                <p className="text-gray-300 text-xs mb-1">Base Compensation</p>
                 <p className="text-2xl font-bold text-white">
                   ${roles.reduce((sum, role) => sum + role.base_compensation, 0).toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-gray-300 text-sm mb-1">Total Loaded Cost</p>
+                <p className="text-gray-300 text-xs mb-1">Total Loaded Cost</p>
                 <p className="text-2xl font-bold text-[#4ADE80]">
                   ${roles.reduce((sum, role) => sum + role.total_loaded_cost, 0).toLocaleString()}
                 </p>
@@ -254,7 +254,7 @@ const HiringRunway: React.FC = () => {
       {/* Legacy Hiring Plans Management */}
       <Card title="Additional Hiring Plans">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Quick hiring plans and payroll timeline</p>
+          <p className="text-xs text-gray-600">Quick hiring plans and payroll timeline</p>
           <Button
             variant="outline"
             size="sm"
@@ -276,7 +276,7 @@ const HiringRunway: React.FC = () => {
                   />
                   <div>
                     <h3 className="font-semibold text-[#101010] text-lg">{plan.role}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{plan.department} • ${plan.salary.toLocaleString()}/year</p>
+                    <p className="text-xs text-gray-600 mt-1">{plan.department} • ${plan.salary.toLocaleString()}/year</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -294,10 +294,10 @@ const HiringRunway: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div className="text-sm text-gray-600">
+                <div className="text-xs text-gray-600">
                   <span className="font-medium">Timeline:</span> {plan.startMonth} - {plan.endMonth}
                 </div>
-                <div className="text-sm font-semibold" style={{ color: getDepartmentColor(plan.department) }}>
+                <div className="text-xs font-semibold" style={{ color: getDepartmentColor(plan.department) }}>
                   ${(plan.salary * 1.3).toLocaleString()}/year fully loaded
                 </div>
               </div>
@@ -336,13 +336,13 @@ const HiringRunway: React.FC = () => {
                           <span className="font-semibold text-[#101010]">{plan.role}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-center text-sm font-medium text-gray-700">{plan.department}</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">Mid</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">{plan.startMonth.split(' ')[0]}</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">1</td>
-                      <td className="py-3 px-4 text-right text-sm font-bold" style={{ color: getDepartmentColor(plan.department) }}>${plan.salary.toLocaleString()}</td>
-                      <td className="py-3 px-4 text-center text-sm font-semibold text-gray-700">${(plan.salary * 1.3).toLocaleString()}</td>
-                      <td className="py-3 px-4 text-center text-sm text-gray-600">Remote</td>
+                      <td className="py-3 px-4 text-center text-xs font-medium text-gray-700">{plan.department}</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">Mid</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">{plan.startMonth.split(' ')[0]}</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">1</td>
+                      <td className="py-3 px-4 text-right text-xs font-bold" style={{ color: getDepartmentColor(plan.department) }}>${plan.salary.toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-xs font-semibold text-gray-700">${(plan.salary * 1.3).toLocaleString()}</td>
+                      <td className="py-3 px-4 text-center text-xs text-gray-600">Remote</td>
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-2">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -357,7 +357,7 @@ const HiringRunway: React.FC = () => {
                             <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 min-w-[120px]">
                               <button
                                 onClick={() => handleDeleteRole(plan.id)}
-                                className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                                className="w-full px-3 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center"
                               >
                                 Delete
                               </button>
@@ -379,7 +379,7 @@ const HiringRunway: React.FC = () => {
               <div className="min-w-[1200px]">
                 {/* Timeline Header */}
                 <div className="flex mb-4">
-                  <div className="w-48 text-sm font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Role</div>
+                  <div className="w-48 text-xs font-bold text-gray-800 p-3 bg-gray-100 rounded-l-lg">Role</div>
                   <div className="flex-1 grid grid-cols-12 gap-1 bg-gray-100 rounded-r-lg p-3">
                     {months.map((month, index) => (
                       <div key={index} className="text-xs font-bold text-gray-700 text-center">
@@ -392,7 +392,7 @@ const HiringRunway: React.FC = () => {
                 {/* Timeline Rows */}
                 {hiringPlans.map(plan => (
                   <div key={plan.id} className="flex mb-3 items-center bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                    <div className="w-48 text-sm font-medium text-[#101010] p-2 truncate">
+                    <div className="w-48 text-xs font-medium text-[#101010] p-2 truncate">
                       <div className="flex items-center">
                         <div 
                           className="w-3 h-3 rounded-full mr-3"
@@ -432,7 +432,7 @@ const HiringRunway: React.FC = () => {
       {/* Hiring Drivers */}
       <Card title="Hiring Plans">
         <div className="flex justify-between items-center mb-6">
-          <p className="text-sm text-gray-600">Manage team expansion plans and hiring timeline</p>
+          <p className="text-xs text-gray-600">Manage team expansion plans and hiring timeline</p>
           <div className="flex gap-2">
             <Button 
               variant="outline" 
@@ -461,7 +461,7 @@ const HiringRunway: React.FC = () => {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-bold text-[#101010] text-lg">{driver.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">Department: {driver.department}</p>
+                  <p className="text-xs text-gray-600 mt-1">Department: {driver.department}</p>
                 </div>
                 <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
                   driver.active ? 'bg-[#4ADE80]/20 text-[#4ADE80]' : 'bg-gray-200 text-gray-600'
@@ -471,15 +471,15 @@ const HiringRunway: React.FC = () => {
               </div>
               
               <div className="space-y-2">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-600">New Hires:</span>
                   <span className="font-bold text-[#4ADE80]">{driver.hires} people</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-600">Avg Salary:</span>
                   <span className="font-semibold text-[#101010]">${driver.avgSalary.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-xs">
                   <span className="text-gray-600">Start Date:</span>
                   <span className="font-semibold text-[#101010]">{driver.startMonth}</span>
                 </div>
@@ -525,19 +525,19 @@ const HiringRunway: React.FC = () => {
           <div className="text-center p-4 bg-[#4ADE80]/10 rounded-lg">
             <TrendingUp className="w-8 h-8 text-[#4ADE80] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Growth Rate</h3>
-            <p className="text-sm text-gray-600">Team will grow by {((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% over 12 months</p>
+            <p className="text-xs text-gray-600">Team will grow by {((finalHeadcount - currentHeadcount) / currentHeadcount * 100).toFixed(1)}% over 12 months</p>
           </div>
           
           <div className="text-center p-4 bg-[#3AB7BF]/10 rounded-lg">
             <Building className="w-8 h-8 text-[#3AB7BF] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Department Focus</h3>
-            <p className="text-sm text-gray-600">Engineering and Sales are primary growth areas</p>
+            <p className="text-xs text-gray-600">Engineering and Sales are primary growth areas</p>
           </div>
           
           <div className="text-center p-4 bg-[#F59E0B]/10 rounded-lg">
             <Calendar className="w-8 h-8 text-[#F59E0B] mx-auto mb-3" />
             <h3 className="font-semibold text-[#101010] mb-2">Hiring Timeline</h3>
-            <p className="text-sm text-gray-600">Peak hiring in Q2 with 4 new team members</p>
+            <p className="text-xs text-gray-600">Peak hiring in Q2 with 4 new team members</p>
           </div>
         </div>
       </Card>
@@ -546,19 +546,19 @@ const HiringRunway: React.FC = () => {
       <div className="grid grid-cols-3 gap-4 text-center mt-8">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#3B82F6]">{currentHeadcount}</p>
-          <p className="text-sm text-gray-500">Base Headcount</p>
+          <p className="text-xs text-gray-500">Base Headcount</p>
           <p className="text-xs text-gray-600">(Current)</p>
           <p className="text-xs text-[#3B82F6]">Starting team size</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#4ADE80]">{finalHeadcount}</p>
-          <p className="text-sm text-gray-500">Total Scenario</p>
+          <p className="text-xs text-gray-500">Total Scenario</p>
           <p className="text-xs text-gray-600">(12M)</p>
           <p className="text-xs text-[#4ADE80]">With all active hires</p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <p className="text-2xl font-bold text-[#F59E0B]">+{totalNewHires}</p>
-          <p className="text-sm text-gray-500">Hiring Impact</p>
+          <p className="text-xs text-gray-500">Hiring Impact</p>
           <p className="text-xs text-gray-600">(12M)</p>
           <p className="text-xs text-[#4ADE80]">New team members</p>
         </div>

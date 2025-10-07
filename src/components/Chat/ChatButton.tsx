@@ -32,7 +32,7 @@ const ChatButton: React.FC<ChatButtonProps> = ({ onClick, unreadCount = 0 }) => 
       )}
       
       {/* Tooltip */}
-      <div className="absolute left-full ml-3 bg-[#101010] text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="absolute left-full ml-3 bg-[#101010] text-white px-3 py-2 rounded-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         Team Chat
         {unreadCount > 0 && ` (${unreadCount} unread)`}
         <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-2 h-2 bg-[#101010] rotate-45" />

@@ -237,21 +237,21 @@ const ExpertSelection: React.FC = () => {
                   <span className="text-[#3AB7BF] font-bold text-lg">1</span>
                 </div>
                 <h4 className="font-semibold text-[#101010] mb-2">Choose Your Expert</h4>
-                <p className="text-sm text-gray-600">Select the type of expertise you need for your specific situation</p>
+                <p className="text-xs text-gray-600">Select the type of expertise you need for your specific situation</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-[#4ADE80]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <span className="text-[#4ADE80] font-bold text-lg">2</span>
                 </div>
                 <h4 className="font-semibold text-[#101010] mb-2">Share Your Details</h4>
-                <p className="text-sm text-gray-600">Provide context about your business and specific questions or challenges</p>
+                <p className="text-xs text-gray-600">Provide context about your business and specific questions or challenges</p>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 bg-[#F59E0B]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <span className="text-[#F59E0B] font-bold text-lg">3</span>
                 </div>
                 <h4 className="font-semibold text-[#101010] mb-2">Get Expert Advice</h4>
-                <p className="text-sm text-gray-600">Receive personalized guidance and actionable recommendations</p>
+                <p className="text-xs text-gray-600">Receive personalized guidance and actionable recommendations</p>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@ const ExpertSelection: React.FC = () => {
             </div>
 
             <div className="space-y-4 mb-6">
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-[#4ADE80] rounded-full mr-2"></div>
                   <span className="text-[#4ADE80] font-medium">{expert.availability}</span>
@@ -281,7 +281,7 @@ const ExpertSelection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="flex items-center justify-between text-xs text-gray-600">
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
                   <span>Response time: {expert.responseTime}</span>
@@ -297,7 +297,7 @@ const ExpertSelection: React.FC = () => {
               <h4 className="font-semibold text-[#101010] mb-3">What you'll get:</h4>
               <ul className="space-y-2">
                 {expert.features.map((feature, index) => (
-                  <li key={index} className="flex items-start text-sm text-gray-700">
+                  <li key={index} className="flex items-start text-xs text-gray-700">
                     <div className="w-1.5 h-1.5 bg-[#3AB7BF] rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     {feature}
                   </li>
@@ -309,7 +309,7 @@ const ExpertSelection: React.FC = () => {
               <Button
                 variant="primary"
                 size="sm"
-                className="py-2 px-4 text-sm"
+                className="py-2 px-4 text-xs"
                 onClick={() => handleExpertSelect(expert.type)}
               >
                 Connect with {expert.title}
@@ -347,7 +347,7 @@ const ExpertSelection: React.FC = () => {
                       <div>
                         <h4 className="text-lg font-bold text-[#101010]">{expert.name}</h4>
                         <p className="text-gray-600 mb-2">{expert.title}</p>
-                        <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-4 text-xs">
                           <div className="flex items-center">
                             <Star className="w-4 h-4 text-[#F59E0B] mr-1" />
                             <span className="font-medium">{expert.rating}</span>
@@ -365,7 +365,7 @@ const ExpertSelection: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-[#3AB7BF]">${expert.hourlyRate}/hr</p>
-                      <p className="text-sm text-gray-600">{expert.timezone}</p>
+                      <p className="text-xs text-gray-600">{expert.timezone}</p>
                     </div>
                   </div>
                   
@@ -393,7 +393,7 @@ const ExpertSelection: React.FC = () => {
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-4 text-xs text-gray-600">
                       <span>{expert.experience} experience</span>
                       <span>Languages: {expert.languages.join(', ')}</span>
                     </div>
@@ -453,7 +453,7 @@ const ExpertSelection: React.FC = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Date</label>
                   <input
                     type="date"
                     value={bookingForm.date}
@@ -463,7 +463,7 @@ const ExpertSelection: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Time</label>
                   <select
                     value={bookingForm.time}
                     onChange={(e) => setBookingForm({...bookingForm, time: e.target.value})}
@@ -482,7 +482,7 @@ const ExpertSelection: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Duration</label>
                   <select
                     value={bookingForm.duration}
                     onChange={(e) => setBookingForm({...bookingForm, duration: e.target.value})}
@@ -495,7 +495,7 @@ const ExpertSelection: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Method</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Method</label>
                   <select
                     value={bookingForm.preferredMethod}
                     onChange={(e) => setBookingForm({...bookingForm, preferredMethod: e.target.value})}
@@ -509,7 +509,7 @@ const ExpertSelection: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Topic/Question</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Topic/Question</label>
                 <textarea
                   value={bookingForm.topic}
                   onChange={(e) => setBookingForm({...bookingForm, topic: e.target.value})}
@@ -520,7 +520,7 @@ const ExpertSelection: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Urgency</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Urgency</label>
                 <select
                   value={bookingForm.urgency}
                   onChange={(e) => setBookingForm({...bookingForm, urgency: e.target.value})}
@@ -539,7 +539,7 @@ const ExpertSelection: React.FC = () => {
                     ${(selectedExpert.hourlyRate * parseInt(bookingForm.duration) / 60).toFixed(0)}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-xs text-gray-600 mt-1">
                   {bookingForm.duration} minutes at ${selectedExpert.hourlyRate}/hour
                 </p>
               </div>
@@ -584,8 +584,8 @@ const ExpertSelection: React.FC = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h4 className="font-semibold text-[#101010]">{session.topic}</h4>
-                      <p className="text-sm text-gray-600">with {session.expertName}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs text-gray-600">with {session.expertName}</p>
+                      <p className="text-xs text-gray-500">
                         {session.date.toLocaleDateString()} • {session.duration} minutes
                       </p>
                     </div>
@@ -611,14 +611,14 @@ const ExpertSelection: React.FC = () => {
                   <div className="space-y-3">
                     <div>
                       <h5 className="font-medium text-[#101010] mb-1">Session Notes:</h5>
-                      <p className="text-sm text-gray-700">{session.notes}</p>
+                      <p className="text-xs text-gray-700">{session.notes}</p>
                     </div>
                     
                     <div>
                       <h5 className="font-medium text-[#101010] mb-2">Recommendations:</h5>
                       <ul className="space-y-1">
                         {session.recommendations.map((rec, index) => (
-                          <li key={index} className="flex items-start text-sm text-gray-700">
+                          <li key={index} className="flex items-start text-xs text-gray-700">
                             <CheckCircle className="w-3 h-3 text-[#4ADE80] mr-2 mt-0.5" />
                             {rec}
                           </li>
@@ -663,23 +663,23 @@ const ExpertSelection: React.FC = () => {
               <Brain className="w-5 h-5 text-[#8B5CF6] mr-2" />
               <h4 className="font-semibold text-[#101010]">Smart Expert Recommendations</h4>
             </div>
-            <p className="text-sm text-gray-700 mb-3">
+            <p className="text-xs text-gray-700 mb-3">
               Based on your business profile, recent questions, and industry, we recommend:
             </p>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-3 bg-white rounded border border-gray-200">
                 <div>
                   <p className="font-medium text-[#101010]">Jennifer Martinez, CPA</p>
-                  <p className="text-sm text-gray-600">Best match for your R&D tax credit questions</p>
+                  <p className="text-xs text-gray-600">Best match for your R&D tax credit questions</p>
                 </div>
-                <span className="text-sm font-bold text-[#8B5CF6]">94% match</span>
+                <span className="text-xs font-bold text-[#8B5CF6]">94% match</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-white rounded border border-gray-200">
                 <div>
                   <p className="font-medium text-[#101010]">Sarah Thompson, CFA</p>
-                  <p className="text-sm text-gray-600">Ideal for financial modeling and forecasting</p>
+                  <p className="text-xs text-gray-600">Ideal for financial modeling and forecasting</p>
                 </div>
-                <span className="text-sm font-bold text-[#8B5CF6]">91% match</span>
+                <span className="text-xs font-bold text-[#8B5CF6]">91% match</span>
               </div>
             </div>
           </div>
@@ -692,11 +692,11 @@ const ExpertSelection: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-[#101010]">Encrypted Document Portal</h3>
-              <p className="text-sm text-gray-600">Share sensitive financial documents securely with experts</p>
+              <p className="text-xs text-gray-600">Share sensitive financial documents securely with experts</p>
             </div>
             <div className="flex items-center">
               <Shield className="w-4 h-4 text-[#4ADE80] mr-2" />
-              <span className="text-sm text-[#4ADE80] font-medium">256-bit encryption</span>
+              <span className="text-xs text-[#4ADE80] font-medium">256-bit encryption</span>
             </div>
           </div>
           
@@ -704,11 +704,11 @@ const ExpertSelection: React.FC = () => {
             <div className="p-4 bg-gray-50 rounded-lg">
               <h4 className="font-medium text-[#101010] mb-2">Recent Uploads</h4>
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-700">Financial_Statements_Q4.pdf</span>
                   <span className="text-gray-500">2 days ago</span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-700">Tax_Documents_2024.zip</span>
                   <span className="text-gray-500">1 week ago</span>
                 </div>
@@ -717,7 +717,7 @@ const ExpertSelection: React.FC = () => {
             
             <div className="p-4 bg-gray-50 rounded-lg">
               <h4 className="font-medium text-[#101010] mb-2">Access Permissions</h4>
-              <div className="space-y-2 text-sm">
+              <div className="space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-gray-700">Jennifer Martinez</span>
                   <span className="text-[#4ADE80]">Full access</span>

@@ -114,7 +114,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                 onClick={() => onTaskClick(task)}
                 className="text-left hover:text-[#3AB7BF] transition-colors"
               >
-                <h3 className="font-medium text-[#101010] text-sm truncate">{task.title}</h3>
+                <h3 className="font-medium text-[#101010] text-xs truncate">{task.title}</h3>
               </button>
             </div>
 
@@ -145,7 +145,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                           onTaskUpdate(task.id, { status });
                           setStatusDropdownOpen(null);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-between"
+                        className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center justify-between"
                       >
                         <span>{getStatusLabel(status)}</span>
                         {task.status === status && <Check className="w-4 h-4 text-[#3AB7BF]" />}
@@ -181,7 +181,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                           onTaskUpdate(task.id, { priority });
                           setPriorityDropdownOpen(null);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-between capitalize"
+                        className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center justify-between capitalize"
                       >
                         <span>{priority}</span>
                         {task.priority === priority && <Check className="w-4 h-4 text-[#3AB7BF]" />}
@@ -191,12 +191,12 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                 )}
               </div>
 
-              <div className="w-32 flex items-center text-sm text-gray-600">
+              <div className="w-32 flex items-center text-xs text-gray-600">
                 <User className="w-3.5 h-3.5 mr-1.5 text-gray-400" />
                 <span className="truncate">{task.assignee}</span>
               </div>
 
-              <div className="w-28 flex items-center text-sm">
+              <div className="w-28 flex items-center text-xs">
                 <Calendar className="w-3.5 h-3.5 mr-1.5 text-gray-400" />
                 <span className={isOverdue(task.dueDate) ? 'text-red-600 font-medium flex items-center' : 'text-gray-600'}>
                   {isOverdue(task.dueDate) && <AlertTriangle className="w-3 h-3 mr-1" />}
@@ -227,7 +227,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                         onTaskClick(task);
                         setTaskMenuOpen(null);
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                      className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center"
                     >
                       <Edit3 className="w-4 h-4 mr-2" />
                       Edit
@@ -240,7 +240,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                         }
                         setTaskMenuOpen(null);
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                      className="w-full px-4 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Delete
@@ -283,7 +283,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                         setTempColumnColor(settings.color);
                         setColumnMenuOpen(null);
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                      className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center"
                     >
                       <Settings className="w-4 h-4 mr-2" />
                       Customize Column
@@ -291,7 +291,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                   </div>
                 )}
               </div>
-              <h3 className="font-semibold text-[#101010] text-sm flex items-center">
+              <h3 className="font-semibold text-[#101010] text-xs flex items-center">
                 <span className={`px-3 py-1.5 rounded-md text-xs font-medium ${settings.color} ${settings.textColor} border border-gray-200`}>
                   {settings.label}
                 </span>
@@ -312,7 +312,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
                 }`}
               >
                 {columnTasks.length === 0 ? (
-                  <div className="p-8 text-center text-gray-400 text-sm">
+                  <div className="p-8 text-center text-gray-400 text-xs">
                     No tasks
                   </div>
                 ) : (
@@ -360,7 +360,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Column Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Column Name</label>
                 <input
                   type="text"
                   value={tempColumnLabel}
@@ -371,7 +371,7 @@ const ListView: React.FC<ListViewProps> = ({ tasks, onTaskClick, onTaskUpdate, o
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Color</label>
                 <div className="grid grid-cols-4 gap-2">
                   {[
                     { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Grey' },

@@ -88,7 +88,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           }`}
         >
           <TableIcon className="w-4 h-4" />
-          <span className="text-sm font-medium hidden sm:inline">Table</span>
+          <span className="text-xs font-medium hidden sm:inline">Table</span>
         </button>
         <button
           onClick={() => handleViewModeChange('chart')}
@@ -99,7 +99,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           }`}
         >
           <BarChart3 className="w-4 h-4" />
-          <span className="text-sm font-medium hidden sm:inline">Chart</span>
+          <span className="text-xs font-medium hidden sm:inline">Chart</span>
         </button>
       </div>
 
@@ -119,7 +119,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           title="Add Forecast"
         >
           <Plus className="w-6 h-6" />
-          <span className="absolute right-full mr-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <span className="absolute right-full mr-3 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             Add Forecast
           </span>
         </button>
@@ -138,7 +138,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           {onDrillDown && (
             <button
               onClick={() => handleMenuAction(() => onDrillDown(contextMenu.rowData))}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+              className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
               <TrendingUp className="w-4 h-4 text-[#3AB7BF]" />
               Drill Down
@@ -147,7 +147,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           {onAddNote && (
             <button
               onClick={() => handleMenuAction(() => onAddNote(contextMenu.rowData))}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+              className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
               <MessageSquare className="w-4 h-4 text-[#F59E0B]" />
               Add Note
@@ -156,7 +156,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           {onViewDetails && (
             <button
               onClick={() => handleMenuAction(() => onViewDetails(contextMenu.rowData))}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+              className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
               <Eye className="w-4 h-4 text-[#3AB7BF]" />
               View Details
@@ -165,7 +165,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           {onEdit && (
             <button
               onClick={() => handleMenuAction(() => onEdit(contextMenu.rowData))}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+              className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
               <Edit3 className="w-4 h-4 text-[#3AB7BF]" />
               Edit
@@ -174,7 +174,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
           {onDuplicate && (
             <button
               onClick={() => handleMenuAction(() => onDuplicate(contextMenu.rowData))}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
+              className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
               <Copy className="w-4 h-4 text-[#3AB7BF]" />
               Duplicate
@@ -185,7 +185,7 @@ const ForecastingTableEnhanced: React.FC<ForecastingTableEnhancedProps> = ({
               <div className="border-t border-gray-200 my-2"></div>
               <button
                 onClick={() => handleMenuAction(() => onDelete(contextMenu.rowData))}
-                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
+                className="w-full px-4 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
                 Delete

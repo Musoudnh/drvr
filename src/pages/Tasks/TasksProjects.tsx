@@ -359,7 +359,7 @@ const TasksProjects: React.FC = () => {
           }}
         >
           <div className="flex items-start justify-between mb-2">
-            <h3 className="font-semibold text-[#101010] text-sm leading-tight flex-1 pr-2">{task.title}</h3>
+            <h3 className="font-semibold text-[#101010] text-xs leading-tight flex-1 pr-2">{task.title}</h3>
             <div className="flex items-center gap-1 flex-shrink-0">
               <div className="relative">
                 <button
@@ -386,7 +386,7 @@ const TasksProjects: React.FC = () => {
                           handleTaskUpdate(task.id, { priority });
                           setPriorityDropdownOpen(null);
                         }}
-                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-between capitalize"
+                        className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center justify-between capitalize"
                       >
                         <span>{priority}</span>
                         {task.priority === priority && <Check className="w-4 h-4 text-[#3AB7BF]" />}
@@ -441,7 +441,7 @@ const TasksProjects: React.FC = () => {
                   setShowTaskDetail(true);
                   setTaskMenuOpen(null);
                 }}
-                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                className="w-full px-4 py-2 text-left text-xs text-gray-700 hover:bg-gray-50 flex items-center"
               >
                 <Edit3 className="w-4 h-4 mr-2" />
                 Edit
@@ -454,7 +454,7 @@ const TasksProjects: React.FC = () => {
                   }
                   setTaskMenuOpen(null);
                 }}
-                className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                className="w-full px-4 py-2 text-left text-xs text-red-600 hover:bg-red-50 flex items-center"
               >
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
@@ -509,7 +509,7 @@ const TasksProjects: React.FC = () => {
                     {/* Drop zone indicator when dragging over */}
                     {snapshot.isDraggingOver && (
                       <div className="text-center py-4 border-2 border-dashed border-[#3AB7BF] rounded-lg bg-[#3AB7BF]/5 mt-2">
-                        <p className="text-sm font-medium text-[#3AB7BF]">Drop here</p>
+                        <p className="text-xs font-medium text-[#3AB7BF]">Drop here</p>
                       </div>
                     )}
                   </div>
@@ -597,7 +597,7 @@ const TasksProjects: React.FC = () => {
             >
               <CheckCircle className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-medium text-[#101010]">Connected to {serviceName}</span>
+            <span className="text-xs font-medium text-[#101010]">Connected to {serviceName}</span>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm">
@@ -645,7 +645,7 @@ const TasksProjects: React.FC = () => {
                           {...provided.dragHandleProps}
                           onClick={() => setActiveTab(tab.id)}
                           disabled={isDraggingTask}
-                          className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-all duration-200 group cursor-grab active:cursor-grabbing ${
+                          className={`flex items-center py-3 px-3 border-b-2 font-medium text-xs transition-all duration-200 group cursor-grab active:cursor-grabbing ${
                             activeTab === tab.id
                               ? tab.platform === 'clickup'
                                 ? 'border-[#7B68EE] text-[#7B68EE]'
@@ -678,7 +678,7 @@ const TasksProjects: React.FC = () => {
                   <button
                     onClick={() => setShowConnectModal(true)}
                     disabled={isDraggingTask}
-                    className={`flex items-center py-3 px-3 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`flex items-center py-3 px-3 border-b-2 font-medium text-xs transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Connect Board
@@ -697,7 +697,7 @@ const TasksProjects: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowAddTaskModal(true)}
-                    className="flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                    className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Task
@@ -708,7 +708,7 @@ const TasksProjects: React.FC = () => {
                   <div className="flex bg-gray-100 rounded-lg p-0.5">
                     <button
                       onClick={() => setViewMode('board')}
-                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'board'
                           ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -719,7 +719,7 @@ const TasksProjects: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'list'
                           ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -730,7 +730,7 @@ const TasksProjects: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setViewMode('gantt')}
-                      className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'gantt'
                           ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
@@ -743,7 +743,7 @@ const TasksProjects: React.FC = () => {
 
                   <button
                     onClick={() => setShowActivityLog(true)}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium flex items-center"
+                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-xs font-medium flex items-center"
                   >
                     <Activity className="w-4 h-4 mr-1.5" />
                     Activity Log
@@ -816,7 +816,7 @@ const TasksProjects: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Task Title *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Task Title *</label>
                 <input
                   type="text"
                   value={newTask.title}
@@ -827,7 +827,7 @@ const TasksProjects: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   value={newTask.description}
                   onChange={(e) => setNewTask({...newTask, description: e.target.value})}
@@ -839,7 +839,7 @@ const TasksProjects: React.FC = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Assignee *</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Assignee *</label>
                   <select
                     value={newTask.assignee}
                     onChange={(e) => setNewTask({...newTask, assignee: e.target.value})}
@@ -853,7 +853,7 @@ const TasksProjects: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Priority</label>
                   <select
                     value={newTask.priority}
                     onChange={(e) => setNewTask({...newTask, priority: e.target.value as any})}
@@ -867,7 +867,7 @@ const TasksProjects: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Due Date *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Due Date *</label>
                 <input
                   type="date"
                   value={newTask.dueDate}
@@ -936,7 +936,7 @@ const TasksProjects: React.FC = () => {
             {isEditingTask && editTaskForm ? (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Title</label>
                   <input
                     type="text"
                     value={editTaskForm.title}
@@ -946,7 +946,7 @@ const TasksProjects: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
                   <textarea
                     value={editTaskForm.description}
                     onChange={(e) => setEditTaskForm({...editTaskForm, description: e.target.value})}
@@ -957,7 +957,7 @@ const TasksProjects: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Assignee</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Assignee</label>
                     <input
                       type="text"
                       value={editTaskForm.assignee}
@@ -967,7 +967,7 @@ const TasksProjects: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Due Date</label>
                     <input
                       type="date"
                       value={editTaskForm.dueDate.toISOString().split('T')[0]}
@@ -979,7 +979,7 @@ const TasksProjects: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Priority</label>
                     <select
                       value={editTaskForm.priority}
                       onChange={(e) => setEditTaskForm({...editTaskForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
@@ -992,7 +992,7 @@ const TasksProjects: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-2">Status</label>
                     <select
                       value={editTaskForm.status}
                       onChange={(e) => setEditTaskForm({...editTaskForm, status: e.target.value as Task['status']})}
@@ -1035,14 +1035,14 @@ const TasksProjects: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Priority</h4>
-                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getPriorityColor(selectedTask.priority)}`}>
+                    <span className={`px-3 py-1 rounded-lg text-xs font-medium ${getPriorityColor(selectedTask.priority)}`}>
                       {selectedTask.priority.charAt(0).toUpperCase() + selectedTask.priority.slice(1)}
                     </span>
                   </div>
 
                   <div>
                     <h4 className="font-semibold text-[#101010] mb-2">Status</h4>
-                    <span className={`px-3 py-1 rounded-lg text-sm font-medium ${getStatusColor(selectedTask.status)}`}>
+                    <span className={`px-3 py-1 rounded-lg text-xs font-medium ${getStatusColor(selectedTask.status)}`}>
                       {selectedTask.status.replace('_', ' ').charAt(0).toUpperCase() + selectedTask.status.replace('_', ' ').slice(1)}
                     </span>
                   </div>
@@ -1055,14 +1055,14 @@ const TasksProjects: React.FC = () => {
                     {selectedTask.comments.map(comment => (
                       <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-[#101010] text-sm">{comment.author}</span>
+                          <span className="font-medium text-[#101010] text-xs">{comment.author}</span>
                           <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
                         </div>
-                        <p className="text-sm text-gray-700">{comment.content}</p>
+                        <p className="text-xs text-gray-700">{comment.content}</p>
                       </div>
                     ))}
                     {selectedTask.comments.length === 0 && (
-                      <p className="text-sm text-gray-500 text-center py-4">No comments yet</p>
+                      <p className="text-xs text-gray-500 text-center py-4">No comments yet</p>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -1071,7 +1071,7 @@ const TasksProjects: React.FC = () => {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Add a comment..."
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && newComment.trim()) {
                           const updatedTask = {
@@ -1223,7 +1223,7 @@ const TasksProjects: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tab Name</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Tab Name</label>
                 <input
                   type="text"
                   value={connectForm.tabName}
@@ -1234,7 +1234,7 @@ const TasksProjects: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Platform</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Platform</label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setConnectForm({...connectForm, platform: 'clickup'})}
@@ -1262,7 +1262,7 @@ const TasksProjects: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">View Type</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">View Type</label>
                 <div className="space-y-3">
                   <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
@@ -1274,7 +1274,7 @@ const TasksProjects: React.FC = () => {
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Embedded</p>
-                      <p className="text-sm text-gray-600">Display the board directly within FinanceFlow</p>
+                      <p className="text-xs text-gray-600">Display the board directly within FinanceFlow</p>
                     </div>
                   </label>
                   
@@ -1287,17 +1287,17 @@ const TasksProjects: React.FC = () => {
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Link</p>
-                      <p className="text-sm text-gray-600">Open the board in a new tab/window</p>
+                      <p className="text-xs text-gray-600">Open the board in a new tab/window</p>
                     </div>
                   </label>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Embed Code</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Embed Code</label>
                 <textarea
                   placeholder="Paste your embed code here (for embedded view type)"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent text-xs"
                   rows={4}
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -1382,11 +1382,11 @@ const TasksProjects: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Filter by User</label>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Filter by User</label>
                 <select
                   value={activityLogFilter}
                   onChange={(e) => setActivityLogFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
                 >
                   <option value="all">All Users</option>
                   {teamMembers.map(member => (
@@ -1415,15 +1415,15 @@ const TasksProjects: React.FC = () => {
                         }}
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium text-[#101010] text-sm">{entry.user}</span>
+                          <span className="font-medium text-[#101010] text-xs">{entry.user}</span>
                           <span className="text-xs text-gray-500">
                             {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600 mb-1">
+                        <p className="text-xs text-gray-600 mb-1">
                           <span className="font-medium text-[#101010]">{entry.taskTitle}</span>
                         </p>
-                        <p className="text-sm text-gray-700">{entry.details}</p>
+                        <p className="text-xs text-gray-700">{entry.details}</p>
                         <p className="text-xs text-gray-400 mt-2">
                           {entry.timestamp.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>

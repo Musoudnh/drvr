@@ -192,7 +192,7 @@ const PredictiveAnalytics: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-[#101010]">{prediction.title}</h3>
-                    <p className="text-sm text-gray-600">{prediction.timeframe}</p>
+                    <p className="text-xs text-gray-600">{prediction.timeframe}</p>
                   </div>
                 </div>
                 
@@ -201,7 +201,7 @@ const PredictiveAnalytics: React.FC = () => {
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(prediction.impact)}`}>
                       {prediction.impact} impact
                     </span>
-                    <span className="text-sm font-medium text-gray-600">{prediction.confidence}% confidence</span>
+                    <span className="text-xs font-medium text-gray-600">{prediction.confidence}% confidence</span>
                   </div>
                   <p className="text-lg font-bold text-[#8B5CF6]">
                     {prediction.type === 'customer_churn' 
@@ -226,7 +226,7 @@ const PredictiveAnalytics: React.FC = () => {
               <div className="p-3 bg-[#4ADE80]/10 rounded-lg">
                 <div className="flex items-start">
                   <Lightbulb className="w-4 h-4 text-[#4ADE80] mr-2 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-gray-700">{prediction.recommendation}</p>
+                  <p className="text-xs text-gray-700">{prediction.recommendation}</p>
                 </div>
               </div>
             </div>
@@ -247,7 +247,7 @@ const PredictiveAnalytics: React.FC = () => {
                   }`} />
                   <div>
                     <h3 className="font-semibold text-[#101010]">{anomaly.metric}</h3>
-                    <p className="text-sm text-gray-600">Detected {anomaly.detectedAt.toLocaleTimeString()}</p>
+                    <p className="text-xs text-gray-600">Detected {anomaly.detectedAt.toLocaleTimeString()}</p>
                   </div>
                 </div>
                 
@@ -255,13 +255,13 @@ const PredictiveAnalytics: React.FC = () => {
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(anomaly.severity)}`}>
                     {anomaly.severity}
                   </span>
-                  <p className="text-sm font-medium text-gray-600 mt-1">
+                  <p className="text-xs font-medium text-gray-600 mt-1">
                     {anomaly.deviation > 0 ? '+' : ''}{anomaly.deviation.toFixed(1)}%
                   </p>
                 </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-3 gap-4 text-xs">
                 <div>
                   <p className="text-gray-600">Actual</p>
                   <p className="font-bold text-[#101010]">{anomaly.value.toLocaleString()}</p>
@@ -278,7 +278,7 @@ const PredictiveAnalytics: React.FC = () => {
                 </div>
               </div>
               
-              <p className="text-sm text-gray-700 mt-3">{anomaly.description}</p>
+              <p className="text-xs text-gray-700 mt-3">{anomaly.description}</p>
             </div>
           ))}
         </div>
@@ -293,7 +293,7 @@ const PredictiveAnalytics: React.FC = () => {
                 <TrendingUp className="w-5 h-5 text-[#4ADE80] mr-2" />
                 <h3 className="font-semibold text-[#101010]">Growth Opportunity</h3>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs text-gray-700">
                 AI analysis suggests Q2 revenue could increase by 18% with optimized pricing strategy. 
                 Historical data shows similar patterns in previous years.
               </p>
@@ -304,7 +304,7 @@ const PredictiveAnalytics: React.FC = () => {
                 <AlertTriangle className="w-5 h-5 text-[#F59E0B] mr-2" />
                 <h3 className="font-semibold text-[#101010]">Risk Alert</h3>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs text-gray-700">
                 Customer acquisition cost trending upward. Model predicts 25% increase if current 
                 marketing efficiency trends continue.
               </p>
@@ -317,7 +317,7 @@ const PredictiveAnalytics: React.FC = () => {
                 <Target className="w-5 h-5 text-[#3AB7BF] mr-2" />
                 <h3 className="font-semibold text-[#101010]">Optimization</h3>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs text-gray-700">
                 Expense optimization model identifies $45K monthly savings opportunity through 
                 vendor consolidation and process automation.
               </p>
@@ -328,7 +328,7 @@ const PredictiveAnalytics: React.FC = () => {
                 <Lightbulb className="w-5 h-5 text-[#8B5CF6] mr-2" />
                 <h3 className="font-semibold text-[#101010]">Strategic Insight</h3>
               </div>
-              <p className="text-sm text-gray-700">
+              <p className="text-xs text-gray-700">
                 Seasonal analysis reveals untapped revenue potential in Q3. Consider launching 
                 targeted campaigns 6 weeks before peak season.
               </p>
@@ -344,20 +344,20 @@ const PredictiveAnalytics: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Training Data</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Historical Period</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Historical Period</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>24 months</option>
                   <option>36 months</option>
                   <option>48 months</option>
                 </select>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Data Sources</span>
-                <span className="text-sm font-medium text-[#3AB7BF]">4 connected</span>
+                <span className="text-xs text-gray-600">Data Sources</span>
+                <span className="text-xs font-medium text-[#3AB7BF]">4 connected</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Update Frequency</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Update Frequency</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>Daily</option>
                   <option>Weekly</option>
                   <option>Monthly</option>
@@ -370,23 +370,23 @@ const PredictiveAnalytics: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Prediction Settings</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Forecast Horizon</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Forecast Horizon</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>3 months</option>
                   <option>6 months</option>
                   <option>12 months</option>
                 </select>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Confidence Threshold</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Confidence Threshold</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>70%</option>
                   <option>80%</option>
                   <option>90%</option>
                 </select>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Auto-alerts</span>
+                <span className="text-xs text-gray-600">Auto-alerts</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" defaultChecked />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#8B5CF6]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8B5CF6]"></div>
@@ -399,23 +399,23 @@ const PredictiveAnalytics: React.FC = () => {
             <h3 className="font-semibold text-[#101010] mb-4">Anomaly Detection</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Sensitivity</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Sensitivity</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>High</option>
                   <option>Medium</option>
                   <option>Low</option>
                 </select>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Alert Threshold</span>
-                <select className="px-2 py-1 border border-gray-300 rounded text-sm">
+                <span className="text-xs text-gray-600">Alert Threshold</span>
+                <select className="px-2 py-1 border border-gray-300 rounded text-xs">
                   <option>±10%</option>
                   <option>±15%</option>
                   <option>±20%</option>
                 </select>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Real-time monitoring</span>
+                <span className="text-xs text-gray-600">Real-time monitoring</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" defaultChecked />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#8B5CF6]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#8B5CF6]"></div>
@@ -431,7 +431,7 @@ const PredictiveAnalytics: React.FC = () => {
         <Card title="Revenue Forecast Model">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600">Model Accuracy</span>
+              <span className="text-xs font-medium text-gray-600">Model Accuracy</span>
               <span className="text-lg font-bold text-[#4ADE80]">87%</span>
             </div>
             
@@ -461,7 +461,7 @@ const PredictiveAnalytics: React.FC = () => {
               </svg>
             </div>
             
-            <div className="flex justify-center gap-4 text-sm">
+            <div className="flex justify-center gap-4 text-xs">
               <div className="flex items-center">
                 <div className="w-4 h-4 bg-[#3AB7BF] rounded mr-2"></div>
                 <span className="text-gray-600">Historical</span>
@@ -489,7 +489,7 @@ const PredictiveAnalytics: React.FC = () => {
               { feature: 'Competitive Activity', importance: 32 }
             ].map((item, index) => (
               <div key={index} className="flex items-center justify-between">
-                <span className="text-sm text-gray-700">{item.feature}</span>
+                <span className="text-xs text-gray-700">{item.feature}</span>
                 <div className="flex items-center gap-2">
                   <div className="w-20 bg-gray-200 rounded-full h-2">
                     <div 
@@ -497,7 +497,7 @@ const PredictiveAnalytics: React.FC = () => {
                       style={{ width: `${item.importance}%` }}
                     />
                   </div>
-                  <span className="text-sm font-medium text-gray-600 w-8">{item.importance}%</span>
+                  <span className="text-xs font-medium text-gray-600 w-8">{item.importance}%</span>
                 </div>
               </div>
             ))}
