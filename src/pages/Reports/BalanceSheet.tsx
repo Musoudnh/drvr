@@ -409,33 +409,6 @@ const BalanceSheet: React.FC = () => {
         </div>
       </Card>
 
-      {/* Balance Sheet Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <div className="p-2">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Assets</p>
-            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(totalAssets)}</p>
-            <p className="text-xs text-[#4ADE80] mt-1">+8.3% from last period</p>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="p-2">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Liabilities</p>
-            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(Math.abs(totalLiabilities))}</p>
-            <p className="text-xs text-gray-500 mt-1">+2.1% from last period</p>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="p-2">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Shareholders' Equity</p>
-            <p className="text-lg font-bold text-gray-900 mt-2">{formatCurrency(totalEquity)}</p>
-            <p className="text-xs text-[#4ADE80] mt-1">+12.7% from last period</p>
-          </div>
-        </Card>
-      </div>
-
       {/* Detailed Balance Sheet Table */}
       <Card title={getTitle()}>
         <div className="overflow-x-auto">
