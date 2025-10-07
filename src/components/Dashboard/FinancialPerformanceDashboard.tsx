@@ -159,15 +159,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded" style={{ backgroundColor: barColor }}></div>
-              <span className="text-xs text-gray-600">Actual (Bar)</span>
+              <span className="text-xs text-gray-600">Act</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-1 rounded" style={{ backgroundColor: budgetLineColor }}></div>
-              <span className="text-xs text-gray-600">Budget (Line)</span>
+              <span className="text-xs text-gray-600">Budget</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded" style={{ backgroundColor: pyLineColor }}></div>
-              <span className="text-xs text-gray-600">Prior Year (Bar)</span>
+              <span className="text-xs text-gray-600">PY</span>
             </div>
             <div className="relative ml-2">
               <button
