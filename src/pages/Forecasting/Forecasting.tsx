@@ -3288,16 +3288,16 @@ const Forecasting: React.FC = () => {
       {showAlertsSidebar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div>
-                <h3 className="text-lg font-semibold">Forecast Alerts</h3>
-                <p className="text-xs text-white/80">Monitor budget variances and anomalies</p>
+                <h3 className="text-lg font-semibold text-gray-900">Forecast Alerts</h3>
+                <p className="text-xs text-gray-600">Monitor budget variances and anomalies</p>
               </div>
               <button
                 onClick={() => setShowAlertsSidebar(false)}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -3451,16 +3451,16 @@ const Forecasting: React.FC = () => {
       {showScenarioAuditSidebar && (
         <div className="fixed inset-0 bg-black/30 z-50 flex justify-end">
           <div className="w-[500px] bg-white/95 backdrop-blur-md h-full shadow-2xl flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div>
-                <h3 className="text-lg font-semibold">Applied Drivers</h3>
-                <p className="text-xs text-white/80">Audit history of all scenario changes</p>
+                <h3 className="text-lg font-semibold text-gray-900">Applied Drivers</h3>
+                <p className="text-xs text-gray-600">Audit history of all scenario changes</p>
               </div>
               <button
                 onClick={() => setShowScenarioAuditSidebar(false)}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -3660,16 +3660,16 @@ const Forecasting: React.FC = () => {
       {showVersionHistorySidebar && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
           <div className="w-[500px] bg-white h-full shadow-2xl flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div>
-                <h3 className="text-lg font-semibold">Version History</h3>
-                <p className="text-xs text-white/80">View and manage forecast versions for {selectedYear}</p>
+                <h3 className="text-lg font-semibold text-gray-900">Version History</h3>
+                <p className="text-xs text-gray-600">View and manage forecast versions for {selectedYear}</p>
               </div>
               <button
                 onClick={() => setShowVersionHistorySidebar(false)}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -3973,16 +3973,16 @@ const Forecasting: React.FC = () => {
             onClick={() => setShowCommentsSidebar(false)}
           />
           <div className="fixed right-0 top-0 h-full w-[500px] bg-white shadow-2xl z-50 flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
               <div>
-                <h3 className="text-lg font-semibold">Comments</h3>
-                <p className="text-xs text-white/80">{filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''}</p>
+                <h3 className="text-lg font-semibold text-gray-900">Comments</h3>
+                <p className="text-xs text-gray-600">{filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''}</p>
               </div>
               <button
                 onClick={() => setShowCommentsSidebar(false)}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -4210,13 +4210,13 @@ const Forecasting: React.FC = () => {
             onClick={handleCloseNotesPanel}
           />
           <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
-              <h3 className="text-lg font-semibold">Add Comment</h3>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+              <h3 className="text-lg font-semibold text-gray-900">Add Comment</h3>
               <button
                 onClick={handleCloseNotesPanel}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
