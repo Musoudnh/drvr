@@ -388,44 +388,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-gray-600 text-xs mb-1">
-              <DollarSign className="w-4 h-4" />
-              <span>Total Budget</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(totalBudget)}</div>
-            <div className="text-xs text-gray-500 mt-1">{selectedYear} Annual Target</div>
-          </div>
-
-          <div className="bg-green-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-green-600 text-xs mb-1">
-              <TrendingUp className="w-4 h-4" />
-              <span>Total Actual</span>
-            </div>
-            <div className="text-2xl font-bold text-green-700">{formatCurrency(totalActual)}</div>
-            <div className="text-xs text-green-600 mt-1">+{variancePercent}% vs Budget</div>
-          </div>
-
-          <div className="bg-blue-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-blue-600 text-xs mb-1">
-              <Calendar className="w-4 h-4" />
-              <span>Variance</span>
-            </div>
-            <div className="text-2xl font-bold text-blue-700">{formatCurrency(Math.abs(variance))}</div>
-            <div className="text-xs text-blue-600 mt-1">{variance >= 0 ? 'Over' : 'Under'} Budget</div>
-          </div>
-
-          <div className="bg-purple-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-purple-600 text-xs mb-1">
-              <TrendingUp className="w-4 h-4" />
-              <span>YoY Growth</span>
-            </div>
-            <div className="text-2xl font-bold text-purple-700">+{yoyGrowth}%</div>
-            <div className="text-xs text-purple-600 mt-1">vs Prior Year</div>
-          </div>
-        </div>
-
         <div className="w-full mb-8" style={{ height: '400px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart
