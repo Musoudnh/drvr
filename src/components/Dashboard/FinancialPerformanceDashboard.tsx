@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings } from 'lucide-react';
+import { useForecastingData } from '../../context/ForecastingContext';
 import {
   ComposedChart,
   Line,
@@ -18,6 +19,7 @@ interface MonthlyData {
   Budget: number;
   Actual: number;
   PY: number;
+  hasActual: boolean;
 }
 
 const FinancialPerformanceDashboard: React.FC = () => {
@@ -26,21 +28,41 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [barColor, setBarColor] = useState('#4ade80');
   const [budgetLineColor, setBudgetLineColor] = useState('#7B68EE');
   const [pyLineColor, setPyLineColor] = useState('#3B82F6');
+  const { getMonthlyTotals, forecastData } = useForecastingData();
+  const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
 
-  const monthlyData: MonthlyData[] = [
-    { month: 'Jan', Budget: 450000, Actual: 485000, PY: 420000 },
-    { month: 'Feb', Budget: 460000, Actual: 472000, PY: 435000 },
-    { month: 'Mar', Budget: 475000, Actual: 495000, PY: 445000 },
-    { month: 'Apr', Budget: 480000, Actual: 490000, PY: 455000 },
-    { month: 'May', Budget: 490000, Actual: 505000, PY: 470000 },
-    { month: 'Jun', Budget: 500000, Actual: 515000, PY: 480000 },
-    { month: 'Jul', Budget: 510000, Actual: 525000, PY: 490000 },
-    { month: 'Aug', Budget: 520000, Actual: 535000, PY: 500000 },
-    { month: 'Sep', Budget: 530000, Actual: 545000, PY: 510000 },
-    { month: 'Oct', Budget: 540000, Actual: 554000, PY: 520000 },
-    { month: 'Nov', Budget: 550000, Actual: 565000, PY: 530000 },
-    { month: 'Dec', Budget: 560000, Actual: 575000, PY: 540000 }
-  ];
+  useEffect(() => {
+    if (forecastData.length === 0) {
+      setMonthlyData([
+        { month: 'Jan', Budget: 450000, Actual: 485000, PY: 420000, hasActual: true },
+        { month: 'Feb', Budget: 460000, Actual: 472000, PY: 435000, hasActual: true },
+        { month: 'Mar', Budget: 475000, Actual: 495000, PY: 445000, hasActual: true },
+        { month: 'Apr', Budget: 480000, Actual: 490000, PY: 455000, hasActual: true },
+        { month: 'May', Budget: 490000, Actual: 505000, PY: 470000, hasActual: true },
+        { month: 'Jun', Budget: 500000, Actual: 515000, PY: 480000, hasActual: true },
+        { month: 'Jul', Budget: 510000, Actual: 525000, PY: 490000, hasActual: true },
+        { month: 'Aug', Budget: 520000, Actual: 535000, PY: 500000, hasActual: true },
+        { month: 'Sep', Budget: 530000, Actual: 545000, PY: 510000, hasActual: true },
+        { month: 'Oct', Budget: 540000, Actual: 554000, PY: 520000, hasActual: true },
+        { month: 'Nov', Budget: 550000, Actual: 565000, PY: 530000, hasActual: false },
+        { month: 'Dec', Budget: 560000, Actual: 575000, PY: 540000, hasActual: false }
+      ]);
+      return;
+    }
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const data: MonthlyData[] = months.map(month => {
+      const totals = getMonthlyTotals(`${month} ${selectedYear}`);
+      return {
+        month,
+        Budget: totals.budget,
+        Actual: totals.actual,
+        PY: totals.py,
+        hasActual: totals.hasActual
+      };
+    });
+    setMonthlyData(data);
+  }, [forecastData, selectedYear, getMonthlyTotals]);
 
   const predictiveData = [
     { month: 'Jan', historical: 485000, prediction: 485000, upper: 500000, lower: 470000 },
@@ -240,6 +262,21 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 radius={[6, 6, 0, 0]}
                 barSize={80}
                 isAnimationActive={true}
+                shape={(props: any) => {
+                  const { x, y, width, height, payload } = props;
+                  const fillColor = payload.hasActual ? barColor : '#9ca3af';
+                  return (
+                    <rect
+                      x={x}
+                      y={y}
+                      width={width}
+                      height={height}
+                      fill={fillColor}
+                      rx={6}
+                      ry={6}
+                    />
+                  );
+                }}
               />
 
               <Line

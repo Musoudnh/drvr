@@ -15,6 +15,7 @@ import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
 import type { SalesScenario } from '../../types/salesDriver';
 import { getViewSettings, updateViewSetting } from '../../utils/viewSettings';
+import { useForecastingData } from '../../context/ForecastingContext';
 
 interface GLCode {
   code: string;
@@ -63,6 +64,7 @@ interface AppliedScenario {
 const Forecasting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setForecastData: setContextForecastData } = useForecastingData();
   const [selectedYear, setSelectedYear] = useState(2025);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
   const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
@@ -707,6 +709,10 @@ const Forecasting: React.FC = () => {
 
     return data;
   });
+
+  useEffect(() => {
+    setContextForecastData(forecastData);
+  }, [forecastData, setContextForecastData]);
 
   const updateForecastAmount = (glCode: string, month: string, newAmount: number) => {
     setForecastData(prev => prev.map(item => 
