@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Area,
 } from 'recharts';
 
 interface MonthlyData {
@@ -64,25 +63,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
     setMonthlyData(data);
   }, [forecastData, selectedYear, getMonthlyTotals]);
 
-  const predictiveData = [
-    { month: 'Jan', historical: 485000, prediction: 485000, upper: null, lower: null },
-    { month: 'Feb', historical: 472000, prediction: 472000, upper: null, lower: null },
-    { month: 'Mar', historical: 495000, prediction: 495000, upper: null, lower: null },
-    { month: 'Apr', historical: 490000, prediction: 490000, upper: null, lower: null },
-    { month: 'May', historical: 505000, prediction: 505000, upper: null, lower: null },
-    { month: 'Jun', historical: 515000, prediction: 515000, upper: null, lower: null },
-    { month: 'Jul', historical: 525000, prediction: 530000, upper: null, lower: null },
-    { month: 'Aug', historical: null, prediction: 542000, upper: 564000, lower: 520000 },
-    { month: 'Sep', historical: null, prediction: 555000, upper: 583000, lower: 527000 },
-    { month: 'Oct', historical: null, prediction: 568000, upper: 602000, lower: 534000 },
-    { month: 'Nov', historical: null, prediction: 580000, upper: 620000, lower: 540000 },
-    { month: 'Dec', historical: null, prediction: 593000, upper: 638000, lower: 548000 }
-  ];
-
   const maxValue = Math.max(...monthlyData.map(d => Math.max(d.Budget, d.Actual, d.PY)));
-  const maxPredictiveValue = Math.max(...predictiveData.map(d => d.prediction || 0));
   const scale = 100 / maxValue;
-  const predictiveScale = 100 / maxPredictiveValue;
 
   const formatCurrency = (value: number): string => {
     if (value >= 1000000) {
@@ -97,29 +79,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const variancePercent = ((variance / totalBudget) * 100).toFixed(1);
   const yoyGrowth = ((totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) / monthlyData.reduce((sum, d) => sum + d.PY, 0) * 100).toFixed(1);
 
-  const getPredictivePathD = (): string => {
-    const points = predictiveData.map((d, index) => {
-      const x = (index / (predictiveData.length - 1)) * 100;
-      const y = 100 - ((d.historical || d.prediction) * predictiveScale);
-      return { x, y, isHistorical: d.historical !== null };
-    });
-
-    if (points.length === 0) return '';
-
-    let path = `M ${points[0].x} ${points[0].y}`;
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const current = points[i];
-      const next = points[i + 1];
-      const controlX = (current.x + next.x) / 2;
-
-      path += ` C ${controlX} ${current.y}, ${controlX} ${next.y}, ${next.x} ${next.y}`;
-    }
-
-    return path;
-  };
-
-  const predictionStartIndex = predictiveData.findIndex(d => d.historical === null);
 
   return (
     <div className="space-y-6">
@@ -346,165 +305,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">Monthly Revenue Performance with AI Predictions</h3>
-            <p className="text-xs text-gray-500 mt-1">12-Month Forward-Looking Forecast</p>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-600 rounded-lg border border-green-200">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-xs font-semibold">+{yoyGrowth}% YoY Growth</span>
-          </div>
-        </div>
-
-        <div className="w-full mb-6" style={{ height: '300px' }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart
-              data={predictiveData}
-              margin={{ top: 20, right: 40, bottom: 20, left: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis
-                dataKey="month"
-                tick={{ fontSize: 12, fill: '#9ca3af' }}
-                axisLine={{ stroke: '#e5e7eb' }}
-                tickLine={{ stroke: '#e5e7eb' }}
-              />
-              <YAxis
-                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
-                width={80}
-                tick={{ fontSize: 12, fill: '#9ca3af' }}
-                axisLine={{ stroke: '#e5e7eb' }}
-                tickLine={{ stroke: '#e5e7eb' }}
-              />
-              <Tooltip
-                formatter={(value: number) => `$${(value / 1000).toFixed(0)}K`}
-                contentStyle={{ borderRadius: '10px' }}
-              />
-
-              <defs>
-                <linearGradient id="upperBand" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity={0.15} />
-                </linearGradient>
-                <linearGradient id="lowerBand" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#F97316" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="#F97316" stopOpacity={0.15} />
-                </linearGradient>
-              </defs>
-
-              <Area
-                type="monotone"
-                dataKey="upper"
-                stroke="none"
-                fill="url(#upperBand)"
-                fillOpacity={1}
-                isAnimationActive={true}
-              />
-
-              <Area
-                type="monotone"
-                dataKey="lower"
-                stroke="none"
-                fill="#ffffff"
-                fillOpacity={1}
-                isAnimationActive={true}
-              />
-
-              <Area
-                type="monotone"
-                dataKey="prediction"
-                stroke="none"
-                fill="url(#lowerBand)"
-                fillOpacity={1}
-                isAnimationActive={true}
-              />
-
-              <Line
-                type="monotone"
-                dataKey="historical"
-                name="Actuals"
-                stroke="#3B82F6"
-                strokeWidth={3}
-                dot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 7 }}
-                connectNulls={false}
-                isAnimationActive={true}
-              />
-
-              <Line
-                type="monotone"
-                dataKey="upper"
-                name="High Confidence"
-                stroke="#10B981"
-                strokeWidth={2}
-                dot={false}
-                isAnimationActive={true}
-              />
-
-              <Line
-                type="monotone"
-                dataKey="prediction"
-                name="Base Prediction"
-                stroke="#8B5CF6"
-                strokeWidth={4}
-                dot={false}
-                isAnimationActive={true}
-              />
-
-              <Line
-                type="monotone"
-                dataKey="lower"
-                name="Low Confidence"
-                stroke="#F97316"
-                strokeWidth={2}
-                dot={false}
-                isAnimationActive={true}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="grid grid-cols-4 gap-4">
-          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-              <span className="text-xs text-gray-700 font-medium">Historical</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(515000)}</div>
-            <div className="text-xs text-gray-600 mt-1">Last Recorded Month</div>
-          </div>
-
-          <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-xs text-gray-700 font-medium">High Confidence</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(638000)}</div>
-            <div className="text-xs text-gray-600 mt-1">Best Case by Dec</div>
-          </div>
-
-          <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-              <span className="text-xs text-gray-700 font-medium">Base Prediction</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(593000)}</div>
-            <div className="text-xs text-gray-600 mt-1">Expected by Dec</div>
-          </div>
-
-          <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
-            <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-              <span className="text-xs text-gray-700 font-medium">Low Confidence</span>
-            </div>
-            <div className="text-2xl font-bold text-gray-900">{formatCurrency(548000)}</div>
-            <div className="text-xs text-gray-600 mt-1">Worst Case by Dec</div>
           </div>
         </div>
       </div>
