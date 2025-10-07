@@ -429,7 +429,7 @@ const ChatMain: React.FC = () => {
                       name="viewType"
                       value="embedded"
                       defaultChecked
-                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Embedded</p>
@@ -442,7 +442,7 @@ const ChatMain: React.FC = () => {
                       type="radio"
                       name="viewType"
                       value="link"
-                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Link</p>

@@ -103,7 +103,7 @@ const RoadMap: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-6 py-3 text-xs font-medium transition-colors relative ${
                   activeTab === tab.id
-                    ? 'text-[#3AB7BF] border-b-2 border-[#3AB7BF]'
+                    ? 'text-[#7B68EE] border-b-2 border-[#7B68EE]'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -116,7 +116,7 @@ const RoadMap: React.FC = () => {
         <div className="p-6">
           {loading ? (
             <div className="text-center py-12">
-              <div className="inline-block w-8 h-8 border-4 border-[#3AB7BF] border-t-transparent rounded-full animate-spin"></div>
+              <div className="inline-block w-8 h-8 border-4 border-[#7B68EE] border-t-transparent rounded-full animate-spin"></div>
               <p className="text-gray-600 mt-4">Loading...</p>
             </div>
           ) : (

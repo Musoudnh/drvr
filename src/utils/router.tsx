@@ -1,244 +1,378 @@
+import React from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout/Layout';
+import AdminLayout from '../pages/Admin/AdminLayout';
+import ChatLayout from '../pages/Chat/ChatLayout';
+import ChatMain from '../pages/Chat/ChatMain';
 import Login from '../pages/Auth/Login';
-import SignIn from '../pages/Auth/SignIn';
 import Setup from '../pages/Auth/Setup';
 import CompanyDashboard from '../pages/Dashboard/CompanyDashboard';
 import AdminDashboard from '../pages/Dashboard/AdminDashboard';
-import Forecasting from '../pages/Forecasting/Forecasting';
-import ScenarioPlanning from '../pages/Forecasting/ScenarioPlanning';
-import VarianceInsights from '../pages/Forecasting/VarianceInsights';
-import MonthsViewDemo from '../pages/Forecasting/MonthsViewDemo';
-import Reports from '../pages/Reports/Reports';
-import ProfitLoss from '../pages/Reports/ProfitLoss';
-import BalanceSheet from '../pages/Reports/BalanceSheet';
-import CashFlow from '../pages/Reports/CashFlow';
 import FinancialSummary from '../pages/Reports/FinancialSummary';
-import ReportsExport from '../pages/Reports/ReportsExport';
+import CashFlow from '../pages/Reports/CashFlow';
 import Analytics from '../pages/Analytics/Analytics';
-import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
-import Insights from '../pages/Insights/Insights';
-import Alerts from '../pages/Alerts/Alerts';
-import Benchmarks from '../pages/Benchmarks/Benchmarks';
-import Integrations from '../pages/Integrations/Integrations';
-import DataIntegration from '../pages/Integrations/DataIntegration';
-import TeamManagement from '../pages/Team/TeamManagement';
 import AccountProfile from '../pages/Settings/AccountProfile';
+import TeamManagement from '../pages/Team/TeamManagement';
 import BillingSettings from '../pages/Settings/BillingSettings';
-import AdminLayout from '../pages/Admin/AdminLayout';
-import AdminSettings from '../pages/Admin/AdminSettings';
+import Integrations from '../pages/Integrations/Integrations';
 import Security from '../pages/Admin/Security';
 import AuditLog from '../pages/Admin/AuditLog';
-import ReferralProgram from '../pages/Referrals/ReferralProgram';
-import ExpertSelection from '../pages/Expert/ExpertSelection';
+import AdminSettings from '../pages/Admin/AdminSettings';
+import Forecasting from '../pages/Forecasting/Forecasting';
+import MonthsViewDemo from '../pages/Forecasting/MonthsViewDemo';
+import Benchmarks from '../pages/Benchmarks/Benchmarks';
 import TaxDocuments from '../pages/Tax/TaxDocuments';
-import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
-import AuditTrailPage from '../pages/Compliance/AuditTrail';
-import TasksProjects from '../pages/Tasks/TasksProjects';
+import Alerts from '../pages/Alerts/Alerts';
+import BalanceSheet from '../pages/Reports/BalanceSheet';
+import ProfitLoss from '../pages/Reports/ProfitLoss';
+import ChatInterface from '../components/Chat/ChatInterface';
+import ChatSettings from '../pages/Chat/ChatSettings';
+import ExpertSelection from '../pages/Expert/ExpertSelection';
+import ReferralProgram from '../pages/Referrals/ReferralProgram';
+import Insights from '../pages/Insights/Insights';
+import ScenarioPlanning from '../pages/ScenarioPlanning/ScenarioPlanning';
 import RunwayPlanning from '../pages/Runway/RunwayPlanning';
 import RevenueRunway from '../pages/Runway/RevenueRunway';
 import OpExRunway from '../pages/Runway/OpExRunway';
 import HiringRunway from '../pages/Runway/HiringRunway';
+import VarianceInsights from '../pages/Forecasting/VarianceInsights';
+import DataIntegration from '../pages/Integrations/DataIntegration';
+import WorkflowManagement from '../pages/Collaboration/WorkflowManagement';
+import PredictiveAnalytics from '../pages/Analytics/PredictiveAnalytics';
+import AuditTrail from '../pages/Compliance/AuditTrail';
+import TasksProjects from '../pages/Tasks/TasksProjects';
+import Sandbox from '../pages/Financials/Sandbox';
 import RoadMap from '../pages/RoadMap/RoadMap';
 import Approvals from '../pages/RoadMap/Approvals';
-import Sandbox from '../pages/Financials/Sandbox';
-import ChatLayout from '../pages/Chat/ChatLayout';
-import ChatMain from '../pages/Chat/ChatMain';
-import ChatSettings from '../pages/Chat/ChatSettings';
+import { Database, GitBranch, Brain } from 'lucide-react';
+import SignIn from '../pages/Auth/SignIn';
+
+// Protected Route Component
+const ProtectedRoute: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <Layout title={title}>
+      {children}
+    </Layout>
+  );
+};
+
+// Public Route Component (redirects if authenticated)
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user } = useAuth();
+  
+  if (user) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+// Placeholder components for other pages
+const PlaceholderPage: React.FC<{ title: string; description: string }> = ({ title, description }) => (
+  <div className="flex items-center justify-center h-96">
+    <div className="text-center">
+      <h2 className="text-2xl font-bold text-[#101010] mb-4">{title}</h2>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  </div>
+);
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />,
+    path: "/",
+    element: <Navigate to="/dashboard" replace />
   },
   {
-    path: '/signin',
-    element: <SignIn />,
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute title="Dashboard">
+        <CompanyDashboard />
+      </ProtectedRoute>
+    )
   },
   {
-    path: '/setup',
-    element: <Setup />,
+    path: "/signin",
+    element: (
+      <PublicRoute>
+        <SignIn />
+      </PublicRoute>
+    )
   },
   {
-    path: '/',
-    element: <Layout />,
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <SignIn />
+      </PublicRoute>
+    )
+  },
+  {
+    path: "/chat",
+    element: (
+      <ProtectedRoute title="Chat">
+        <ChatMain />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute title="Admin">
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />,
+        element: <Navigate to="/admin/security" replace />
       },
       {
-        path: 'dashboard',
-        element: <CompanyDashboard />,
+        path: "security",
+        element: <Security />
       },
       {
-        path: 'forecasting',
-        element: <Forecasting />,
+        path: "audit",
+        element: <AuditLog />
       },
       {
-        path: 'forecasting/scenario-planning',
-        element: <ScenarioPlanning />,
+        path: "settings",
+        element: <AdminSettings />
       },
       {
-        path: 'forecasting/variance',
-        element: <VarianceInsights />,
+        path: "billing",
+        element: <BillingSettings />
       },
       {
-        path: 'forecasting/months-view',
-        element: <MonthsViewDemo />,
+        path: "integrations",
+        element: <Integrations />
       },
       {
-        path: 'reports',
-        element: <Reports />,
+        path: "team",
+        element: <TeamManagement />
       },
       {
-        path: 'reports/profit-loss',
-        element: <ProfitLoss />,
-      },
-      {
-        path: 'reports/balance-sheet',
-        element: <BalanceSheet />,
-      },
-      {
-        path: 'reports/cash-flow',
-        element: <CashFlow />,
-      },
-      {
-        path: 'reports/financial-summary',
-        element: <FinancialSummary />,
-      },
-      {
-        path: 'reports/export',
-        element: <ReportsExport />,
-      },
-      {
-        path: 'analytics',
-        element: <Analytics />,
-      },
-      {
-        path: 'analytics/predictive',
-        element: <PredictiveAnalytics />,
-      },
-      {
-        path: 'insights',
-        element: <Insights />,
-      },
-      {
-        path: 'alerts',
-        element: <Alerts />,
-      },
-      {
-        path: 'benchmarks',
-        element: <Benchmarks />,
-      },
-      {
-        path: 'integrations',
-        element: <Integrations />,
-      },
-      {
-        path: 'integrations/data',
-        element: <DataIntegration />,
-      },
-      {
-        path: 'team',
-        element: <TeamManagement />,
-      },
-      {
-        path: 'referrals',
-        element: <ReferralProgram />,
-      },
-      {
-        path: 'expert',
-        element: <ExpertSelection />,
-      },
-      {
-        path: 'tax',
-        element: <TaxDocuments />,
-      },
-      {
-        path: 'collaboration',
-        element: <WorkflowManagement />,
-      },
-      {
-        path: 'compliance/audit',
-        element: <AuditTrailPage />,
-      },
-      {
-        path: 'tasks',
-        element: <TasksProjects />,
-      },
-      {
-        path: 'runway',
-        element: <RunwayPlanning />,
-      },
-      {
-        path: 'runway/revenue',
-        element: <RevenueRunway />,
-      },
-      {
-        path: 'runway/opex',
-        element: <OpExRunway />,
-      },
-      {
-        path: 'runway/hiring',
-        element: <HiringRunway />,
-      },
-      {
-        path: 'roadmap',
-        element: <RoadMap />,
-      },
-      {
-        path: 'roadmap/approvals',
-        element: <Approvals />,
-      },
-      {
-        path: 'sandbox',
-        element: <Sandbox />,
-      },
-      {
-        path: 'admin',
-        element: <AdminLayout />,
-        children: [
-          {
-            index: true,
-            element: <AdminDashboard />,
-          },
-          {
-            path: 'profile',
-            element: <AccountProfile />,
-          },
-          {
-            path: 'billing',
-            element: <BillingSettings />,
-          },
-          {
-            path: 'settings',
-            element: <AdminSettings />,
-          },
-          {
-            path: 'security',
-            element: <Security />,
-          },
-          {
-            path: 'audit',
-            element: <AuditLog />,
-          },
-        ],
-      },
-      {
-        path: 'chat',
-        element: <ChatLayout />,
-        children: [
-          {
-            index: true,
-            element: <ChatMain />,
-          },
-          {
-            path: 'settings',
-            element: <ChatSettings />,
-          },
-        ],
-      },
-    ],
+        path: "profile",
+        element: <AccountProfile />
+      }
+    ]
   },
+  {
+    path: "/reports",
+    element: <Navigate to="/reports/financial" replace />
+  },
+  {
+    path: "/reports/financial",
+    element: (
+      <ProtectedRoute title="Financial Summary">
+        <FinancialSummary />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/reports/cashflow",
+    element: (
+      <ProtectedRoute title="Cash Flow">
+        <CashFlow />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/reports/balance",
+    element: (
+      <ProtectedRoute title="Balance Sheet">
+        <BalanceSheet />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/reports/profit-loss",
+    element: (
+      <ProtectedRoute title="Profit & Loss">
+        <ProfitLoss />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/analytics",
+    element: (
+      <ProtectedRoute title="Analysis">
+        <Analytics />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/financials",
+    element: <Navigate to="/forecasting" replace />
+  },
+  {
+    path: "/forecasting",
+    element: (
+      <ProtectedRoute title="Forecasting">
+        <Forecasting />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/forecasting/months-view",
+    element: (
+      <ProtectedRoute title="Months View - Financial Forecasting">
+        <MonthsViewDemo />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/runway",
+    element: (
+      <ProtectedRoute title="Scenario Planner">
+        <RunwayPlanning />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/runway/revenue",
+    element: (
+      <ProtectedRoute title="Revenue Scenarios">
+        <RevenueRunway />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/runway/opex",
+    element: (
+      <ProtectedRoute title="OpEx Scenarios">
+        <OpExRunway />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/runway/hiring",
+    element: (
+      <ProtectedRoute title="Hiring Scenarios">
+        <HiringRunway />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/scenario-planning",
+    element: (
+      <ProtectedRoute title="Scenario Planning">
+        <PlaceholderPage title="Scenario Planning" description="Model different business scenarios and compare outcomes" />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/forecasting/variance-insights",
+    element: (
+      <ProtectedRoute title="Variance & Insights">
+        <VarianceInsights />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/financials/sandbox",
+    element: (
+      <ProtectedRoute title="Financial Sandbox">
+        <Sandbox />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/insights",
+    element: (
+      <ProtectedRoute title="Business Insights">
+        <Insights />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/benchmarks",
+    element: (
+      <ProtectedRoute title="Benchmarks">
+        <Benchmarks />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/tax",
+    element: (
+      <ProtectedRoute title="Tax Documents">
+        <TaxDocuments />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/alerts",
+    element: (
+      <ProtectedRoute title="Alerts">
+        <Alerts />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/expert",
+    element: (
+      <ProtectedRoute title="Talk to Expert">
+        <ExpertSelection />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/referrals",
+    element: (
+      <ProtectedRoute title="Referrals">
+        <ReferralProgram />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/team",
+    element: <Navigate to="/team/members" replace />
+  },
+  {
+    path: "/team/members",
+    element: (
+      <ProtectedRoute title="Team Members">
+        <TeamManagement />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/team/accounting-firms",
+    element: (
+      <ProtectedRoute title="Add Accounting Firms">
+        <PlaceholderPage title="Add Accounting Firms" description="Manage your accounting firm partnerships" />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/tasks",
+    element: (
+      <ProtectedRoute title="Tasks & Projects">
+        <TasksProjects />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/roadmap",
+    element: (
+      <ProtectedRoute title="Road Map">
+        <RoadMap />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/roadmap/approvals",
+    element: (
+      <ProtectedRoute title="Project Approvals">
+        <Approvals />
+      </ProtectedRoute>
+    )
+  }
 ]);

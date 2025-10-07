@@ -5,44 +5,40 @@ export interface ViewSettings {
   numberFormat: 'actual' | 'thousands' | 'millions';
 }
 
-const VIEW_SETTINGS_KEY = 'forecastViewSettings';
+const VIEW_SETTINGS_KEY = 'forecast_view_settings';
+
+const defaultSettings: ViewSettings = {
+  hideEmptyAccounts: false,
+  showAccountCodes: true,
+  showActualsAsAmount: false,
+  numberFormat: 'actual',
+};
 
 export const getViewSettings = (): ViewSettings => {
   try {
     const stored = localStorage.getItem(VIEW_SETTINGS_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      return { ...defaultSettings, ...JSON.parse(stored) };
     }
   } catch (error) {
-    console.error('Error loading view settings:', error);
+    console.error('Error reading view settings:', error);
   }
-
-  return {
-    hideEmptyAccounts: false,
-    showAccountCodes: false,
-    showActualsAsAmount: true,
-    numberFormat: 'actual',
-  };
+  return defaultSettings;
 };
 
-export const saveViewSettings = (settings: ViewSettings): void => {
+export const saveViewSettings = (settings: Partial<ViewSettings>): void => {
   try {
-    localStorage.setItem(VIEW_SETTINGS_KEY, JSON.stringify(settings));
+    const current = getViewSettings();
+    const updated = { ...current, ...settings };
+    localStorage.setItem(VIEW_SETTINGS_KEY, JSON.stringify(updated));
   } catch (error) {
     console.error('Error saving view settings:', error);
   }
 };
 
-export const formatNumber = (
-  value: number,
-  format: 'actual' | 'thousands' | 'millions'
-): string => {
-  switch (format) {
-    case 'thousands':
-      return `${(value / 1000).toFixed(1)}K`;
-    case 'millions':
-      return `${(value / 1000000).toFixed(1)}M`;
-    default:
-      return value.toLocaleString();
-  }
+export const updateViewSetting = <K extends keyof ViewSettings>(
+  key: K,
+  value: ViewSettings[K]
+): void => {
+  saveViewSettings({ [key]: value });
 };

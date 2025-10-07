@@ -648,10 +648,10 @@ const TasksProjects: React.FC = () => {
                           className={`flex items-center py-3 px-3 border-b-2 font-medium text-xs transition-all duration-200 group cursor-grab active:cursor-grabbing ${
                             activeTab === tab.id
                               ? tab.platform === 'clickup'
-                                ? 'border-[#3AB7BF] text-[#3AB7BF]'
+                                ? 'border-[#7B68EE] text-[#7B68EE]'
                                 : tab.platform === 'monday'
                                 ? 'border-[#FF6B6B] text-[#FF6B6B]'
-                                : 'border-[#3AB7BF] text-[#3AB7BF]'
+                                : 'border-[#4F46E5] text-[#4F46E5]'
                               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                           } ${isDraggingTask ? 'opacity-50 cursor-not-allowed' : ''} ${
                             snapshot.isDragging ? 'bg-white shadow-xl ring-2 ring-blue-400 z-50 scale-105' : ''
@@ -710,7 +710,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('board')}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'board'
-                          ? 'bg-white text-[#3AB7BF] shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -721,7 +721,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('list')}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'list'
-                          ? 'bg-white text-[#3AB7BF] shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -732,7 +732,7 @@ const TasksProjects: React.FC = () => {
                       onClick={() => setViewMode('gantt')}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         viewMode === 'gantt'
-                          ? 'bg-white text-[#3AB7BF] shadow-sm'
+                          ? 'bg-white text-[#4F46E5] shadow-sm'
                           : 'text-gray-600 hover:text-gray-800'
                       }`}
                     >
@@ -1240,11 +1240,11 @@ const TasksProjects: React.FC = () => {
                     onClick={() => setConnectForm({...connectForm, platform: 'clickup'})}
                     className={`p-4 border-2 rounded-lg transition-all ${
                       connectForm.platform === 'clickup'
-                        ? 'border-[#3AB7BF] bg-[#3AB7BF]/10'
+                        ? 'border-[#7B68EE] bg-[#7B68EE]/10'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <div className="w-8 h-8 bg-[#3AB7BF] rounded mx-auto mb-2" />
+                    <div className="w-8 h-8 bg-[#7B68EE] rounded mx-auto mb-2" />
                     <p className="font-medium text-[#101010]">ClickUp</p>
                   </button>
                   <button
@@ -1270,7 +1270,7 @@ const TasksProjects: React.FC = () => {
                       name="viewType"
                       value="embedded"
                       defaultChecked
-                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Embedded</p>
@@ -1283,7 +1283,7 @@ const TasksProjects: React.FC = () => {
                       type="radio"
                       name="viewType"
                       value="link"
-                      className="w-4 h-4 text-[#3AB7BF] border-gray-300 focus:ring-[#4F46E5] mr-3"
+                      className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-3"
                     />
                     <div>
                       <p className="font-medium text-[#101010]">Connected as Link</p>

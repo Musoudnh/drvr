@@ -158,7 +158,7 @@ const ForecastView: React.FC<ForecastViewProps> = ({ projects }) => {
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className={`h-2 rounded-full ${
-                      progressPercent > 100 ? 'bg-[#F87171]' : 'bg-[#3AB7BF]'
+                      progressPercent > 100 ? 'bg-[#F87171]' : 'bg-[#7B68EE]'
                     }`}
                     style={{ width: `${Math.min(progressPercent, 100)}%` }}
                   />

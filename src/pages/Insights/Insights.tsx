@@ -318,7 +318,7 @@ const Insights: React.FC = () => {
           onClick={() => setSelectedKPIView('all')}
           className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
             selectedKPIView === 'all'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >
@@ -328,7 +328,7 @@ const Insights: React.FC = () => {
           onClick={() => setSelectedKPIView('revenue')}
           className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
             selectedKPIView === 'revenue'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >
@@ -338,7 +338,7 @@ const Insights: React.FC = () => {
           onClick={() => setSelectedKPIView('efficiency')}
           className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
             selectedKPIView === 'efficiency'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              ? 'bg-white text-[#7B68EE] shadow-sm'
               : 'text-gray-600 hover:text-gray-800'
           }`}
         >

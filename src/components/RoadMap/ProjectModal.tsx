@@ -369,7 +369,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                 <button
                   type="button"
                   onClick={() => setDepartmentDropdownOpen(!departmentDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#3AB7BF] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.department || 'Select Department'}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -395,7 +395,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                           }}
                           className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.department === option.value
-                              ? 'bg-[#3AB7BF] text-white'
+                              ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
                           }`}
                         >
@@ -418,7 +418,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                 <button
                   type="button"
                   onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#3AB7BF] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.status}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -442,7 +442,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                           }}
                           className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.status === option.value
-                              ? 'bg-[#3AB7BF] text-white'
+                              ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
                           }`}
                         >
@@ -463,7 +463,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                 <button
                   type="button"
                   onClick={() => setScenarioDropdownOpen(!scenarioDropdownOpen)}
-                  className="w-full px-3 py-2 bg-white text-[#3AB7BF] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full px-3 py-2 bg-white text-[#7B68EE] border border-gray-300 rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span>{formData.scenario}</span>
                   <ChevronDown className="w-4 h-4" />
@@ -485,7 +485,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                           }}
                           className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                             formData.scenario === option.value
-                              ? 'bg-[#3AB7BF] text-white'
+                              ? 'bg-[#7B68EE] text-white'
                               : 'text-gray-600 hover:bg-gray-100'
                           }`}
                         >
@@ -618,7 +618,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
               <button
                 type="button"
                 onClick={() => setShowGLPicker(!showGLPicker)}
-                className="w-full px-4 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9AA5] transition-colors flex items-center justify-center gap-2"
+                className="w-full px-4 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6B58DE] transition-colors flex items-center justify-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 Add GL Account
@@ -653,7 +653,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                           </div>
                           <div className="text-xs text-gray-600">{gl.category}</div>
                         </div>
-                        <Plus className="w-4 h-4 text-[#3AB7BF]" />
+                        <Plus className="w-4 h-4 text-[#7B68EE]" />
                       </button>
                     ))}
                   </div>
@@ -728,7 +728,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                             <div className="text-xs text-gray-600">{member.email}</div>
                           )}
                         </div>
-                        <Plus className="w-4 h-4 text-[#3AB7BF]" />
+                        <Plus className="w-4 h-4 text-[#7B68EE]" />
                       </button>
                     ))}
                   </div>
@@ -790,7 +790,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onSave })
                   <button
                     type="button"
                     onClick={handleAddMilestone}
-                    className="px-3 py-2 bg-[#3AB7BF] text-white rounded-lg hover:bg-[#2A9AA5] transition-colors"
+                    className="px-3 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6B58DE] transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>

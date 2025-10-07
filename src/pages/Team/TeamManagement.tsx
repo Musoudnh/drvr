@@ -191,7 +191,7 @@ const TeamManagement: React.FC = () => {
           {activeTab === 'team' ? (
             <button 
               onClick={() => setShowAddMemberModal(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#3AB7BF] hover:bg-[#F7F8FD]" 
+              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
               style={{ backgroundColor: '#4F46E5' }}
             >
               <UserPlus className="w-4 h-4 mr-2" />
@@ -200,7 +200,7 @@ const TeamManagement: React.FC = () => {
           ) : (
             <button 
               onClick={() => setShowAddFirmModal(true)}
-              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#3AB7BF] hover:bg-[#F7F8FD]" 
+              className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-white hover:text-[#4F46E5] hover:bg-[#F7F8FD]" 
               style={{ backgroundColor: '#4F46E5' }}
             >
               <Building2 className="w-4 h-4 mr-2" />
@@ -216,7 +216,7 @@ const TeamManagement: React.FC = () => {
           onClick={() => setActiveTab('team')}
           className={`flex-1 px-4 py-2 text-xs font-medium rounded-md transition-colors ${
             activeTab === 'team'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              ? 'bg-white text-[#4F46E5] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -227,7 +227,7 @@ const TeamManagement: React.FC = () => {
           onClick={() => setActiveTab('firms')}
           className={`flex-1 px-4 py-2 text-xs font-medium rounded-md transition-colors ${
             activeTab === 'firms'
-              ? 'bg-white text-[#3AB7BF] shadow-sm'
+              ? 'bg-white text-[#4F46E5] shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -254,7 +254,7 @@ const TeamManagement: React.FC = () => {
               <div key={member.id} className="py-4 px-4 hover:bg-gray-50 transition-colors relative">
                 <div className="grid grid-cols-12 gap-4 items-center">
                   <div className="col-span-3 flex items-center">
-                    <div className="w-10 h-10 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-4">
+                    <div className="w-10 h-10 bg-[#4F46E5] rounded-full flex items-center justify-center mr-4">
                       <span className="text-white font-semibold">
                         {member.name.split(' ').map(n => n[0]).join('')}
                       </span>

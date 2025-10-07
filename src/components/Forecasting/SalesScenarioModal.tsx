@@ -1340,7 +1340,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setStartMonthDropdownOpen(!startMonthDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{startMonth}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1365,7 +1365,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 }}
                                 className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                   startMonth === m
-                                    ? 'bg-[#3AB7BF] text-white'
+                                    ? 'bg-[#7B68EE] text-white'
                                     : isActualized
                                     ? 'text-gray-400 cursor-not-allowed'
                                     : 'text-gray-600 hover:bg-gray-100'
@@ -1386,7 +1386,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setEndMonthDropdownOpen(!endMonthDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{endMonth}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1411,7 +1411,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 }}
                                 className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                   endMonth === m
-                                    ? 'bg-[#3AB7BF] text-white'
+                                    ? 'bg-[#7B68EE] text-white'
                                     : isActualized
                                     ? 'text-gray-400 cursor-not-allowed'
                                     : 'text-gray-600 hover:bg-gray-100'
@@ -1432,7 +1432,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setStartYearDropdownOpen(!startYearDropdownOpen)}
-                      className="w-full px-3 py-2 bg-white text-[#3AB7BF] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
                     >
                       <span>{startYear}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
@@ -1450,7 +1450,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                               }}
                               className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
                                 startYear === year
-                                  ? 'bg-[#3AB7BF] text-white'
+                                  ? 'bg-[#7B68EE] text-white'
                                   : 'text-gray-600 hover:bg-gray-100'
                               }`}
                             >

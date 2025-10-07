@@ -396,8 +396,8 @@ const Sandbox: React.FC = () => {
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-[#3AB7BF]/10 rounded-full flex items-center justify-center mr-3">
-                  <Brain className="w-4 h-4 text-[#3AB7BF]" />
+                <div className="w-8 h-8 bg-[#4F46E5]/10 rounded-full flex items-center justify-center mr-3">
+                  <Brain className="w-4 h-4 text-[#4F46E5]" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">AI Financial Assistant</h3>
@@ -412,13 +412,13 @@ const Sandbox: React.FC = () => {
           </div>
 
           {/* Financial Context Bar */}
-          <div className="px-6 py-3 bg-[#3AB7BF]/10 border-b border-[#3AB7BF]/20">
+          <div className="px-6 py-3 bg-[#4F46E5]/10 border-b border-[#4F46E5]/20">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center">
-                <Database className="w-3 h-3 text-[#3AB7BF] mr-2" />
-                <span className="font-medium text-[#3AB7BF]">Live Financial Data</span>
+                <Database className="w-3 h-3 text-[#4F46E5] mr-2" />
+                <span className="font-medium text-[#4F46E5]">Live Financial Data</span>
               </div>
-              <button className="text-[#3AB7BF] hover:text-[#4338CA] transition-colors">
+              <button className="text-[#4F46E5] hover:text-[#4338CA] transition-colors">
                 <RefreshCw className="w-3 h-3" />
               </button>
             </div>
@@ -450,7 +450,7 @@ const Sandbox: React.FC = () => {
                   <div className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.type === 'user' 
-                        ? 'bg-[#3AB7BF]' 
+                        ? 'bg-[#4F46E5]' 
                         : 'bg-gray-100'
                     }`}>
                       {message.type === 'user' ? (
@@ -461,12 +461,12 @@ const Sandbox: React.FC = () => {
                     </div>
                     <div className={`rounded-2xl px-4 py-3 ${
                       message.type === 'user'
-                        ? 'bg-[#3AB7BF] text-white'
+                        ? 'bg-[#4F46E5] text-white'
                         : 'bg-gray-100 text-gray-900'
                     }`}>
                       <p className="text-xs leading-relaxed">{message.content}</p>
                       <p className={`text-xs mt-2 ${
-                        message.type === 'user' ? 'text-[#3AB7BF]/70' : 'text-gray-500'
+                        message.type === 'user' ? 'text-[#4F46E5]/70' : 'text-gray-500'
                       }`}>
                         {message.timestamp.toLocaleTimeString()}
                       </p>
@@ -478,7 +478,7 @@ const Sandbox: React.FC = () => {
                     <div className="mt-2 ml-11">
                       <button
                         onClick={() => setActiveResult(message.result!)}
-                        className="px-3 py-2 text-xs font-medium text-[#3AB7BF] bg-[#3AB7BF]/10 border border-[#3AB7BF]/20 rounded-lg hover:bg-[#3AB7BF]/20 transition-colors flex items-center"
+                        className="px-3 py-2 text-xs font-medium text-[#4F46E5] bg-[#4F46E5]/10 border border-[#4F46E5]/20 rounded-lg hover:bg-[#4F46E5]/20 transition-colors flex items-center"
                       >
                         <BarChart3 className="w-4 h-4 mr-2" />
                         View Detailed Results
@@ -523,7 +523,7 @@ const Sandbox: React.FC = () => {
                 <button
                   key={index}
                   onClick={() => setQuery(example)}
-                  className="px-3 py-1 text-xs text-[#3AB7BF] bg-[#3AB7BF]/10 border border-[#3AB7BF]/20 rounded-full hover:bg-[#3AB7BF]/20 transition-colors"
+                  className="px-3 py-1 text-xs text-[#4F46E5] bg-[#4F46E5]/10 border border-[#4F46E5]/20 rounded-full hover:bg-[#4F46E5]/20 transition-colors"
                 >
                   {example.length > 40 ? example.substring(0, 40) + '...' : example}
                 </button>
@@ -553,7 +553,7 @@ const Sandbox: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!query.trim() || isProcessing}
-                  className="absolute right-3 bottom-3 p-2 text-[#3AB7BF] hover:text-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="absolute right-3 bottom-3 p-2 text-[#4F46E5] hover:text-[#4338CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   title="Send query"
                 >
                   <Send className="w-4 h-4" />
@@ -616,7 +616,7 @@ const Sandbox: React.FC = () => {
                 {activeResult.results.calculations.length > 0 && (
                   <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                     <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
-                      <Calculator className="w-4 h-4 mr-2 text-[#3AB7BF]" />
+                      <Calculator className="w-4 h-4 mr-2 text-[#4F46E5]" />
                       Step-by-Step Calculation
                     </h4>
                     <div className="space-y-4">
@@ -624,12 +624,12 @@ const Sandbox: React.FC = () => {
                         <div key={index} className="border border-gray-100 rounded-lg p-4 bg-gray-50">
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center">
-                              <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center mr-3">
+                              <div className="w-6 h-6 bg-[#4F46E5] rounded-full flex items-center justify-center mr-3">
                                 <span className="text-white text-xs font-bold">{step.step}</span>
                               </div>
                               <h5 className="font-medium text-gray-900">{step.description}</h5>
                             </div>
-                            <span className="font-bold text-[#3AB7BF] text-lg">
+                            <span className="font-bold text-[#4F46E5] text-lg">
                               {typeof step.result === 'number' && step.result > 1000 
                                 ? formatCurrency(step.result)
                                 : step.result.toLocaleString()
@@ -639,7 +639,7 @@ const Sandbox: React.FC = () => {
                           <div className="ml-9">
                             <p className="text-xs text-gray-700 mb-2">{step.explanation}</p>
                             <div className="bg-white rounded-lg p-3 border border-gray-200">
-                              <code className="text-xs text-[#3AB7BF] font-mono">
+                              <code className="text-xs text-[#4F46E5] font-mono">
                                 {step.formula}
                               </code>
                             </div>
