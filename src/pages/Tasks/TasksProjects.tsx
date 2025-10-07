@@ -1405,7 +1405,7 @@ const TasksProjects: React.FC = () => {
                     return (
                       <div
                         key={entry.id}
-                        className="bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg p-4 shadow-lg hover:shadow-xl transition-all cursor-pointer"
+                        className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
                         onClick={() => {
                           const task = tasks.find(t => t.id === entry.taskId);
                           if (task) {
