@@ -3969,7 +3969,7 @@ const Forecasting: React.FC = () => {
             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
           >
             <MessageSquare className="w-4 h-4 text-gray-500" />
-            Add Notes
+            Add Comment
           </button>
           <div className="border-t border-gray-200 my-2"></div>
           <button
@@ -4203,13 +4203,13 @@ const Forecasting: React.FC = () => {
             onClick={handleCloseNotesPanel}
           />
           <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Add Notes</h3>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+              <h3 className="text-lg font-semibold">Add Comment</h3>
               <button
                 onClick={handleCloseNotesPanel}
-                className="p-1 hover:bg-gray-100 rounded transition-colors"
+                className="p-1 hover:bg-white/20 rounded transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -4396,7 +4396,7 @@ const Forecasting: React.FC = () => {
                 disabled={!notesData.month || !notesData.note.trim()}
                 className="flex-1 px-4 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6A5ADB] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Save Note
+                Save Comment
               </button>
             </div>
           </div>
