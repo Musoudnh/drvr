@@ -34,7 +34,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
   const monthDropdownRef = useRef<HTMLDivElement>(null);
   const quarterDropdownRef = useRef<HTMLDivElement>(null);
-  const { getMonthlyTotals, forecastData } = useForecastingData();
+  const { getMonthlyTotals, getMonthlyExpenseTotals, forecastData } = useForecastingData();
   const { fontSize } = useSettings();
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
 
@@ -225,8 +225,22 @@ const FinancialPerformanceDashboard: React.FC = () => {
         { month: 'Nov', Budget: 370000, Actual: 365000, PY: 360000, hasActual: false },
         { month: 'Dec', Budget: 375000, Actual: 380000, PY: 365000, hasActual: false }
       ]);
+      return;
     }
-  }, [forecastData]);
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const data: MonthlyData[] = months.map(month => {
+      const totals = getMonthlyExpenseTotals(`${month} ${selectedYear}`);
+      return {
+        month,
+        Budget: totals.budget,
+        Actual: totals.actual,
+        PY: totals.py,
+        hasActual: totals.hasActual
+      };
+    });
+    setExpenseMonthlyData(data);
+  }, [forecastData, selectedYear, getMonthlyExpenseTotals]);
 
   return (
     <div className="space-y-6">

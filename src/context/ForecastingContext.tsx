@@ -20,6 +20,12 @@ interface ForecastingContextType {
     py: number;
     hasActual: boolean;
   };
+  getMonthlyExpenseTotals: (month: string) => {
+    budget: number;
+    actual: number;
+    py: number;
+    hasActual: boolean;
+  };
 }
 
 const ForecastingContext = createContext<ForecastingContextType | undefined>(undefined);
@@ -87,8 +93,56 @@ export const ForecastingProvider: React.FC<ForecastingProviderProps> = ({ childr
     };
   };
 
+  const getMonthlyExpenseTotals = (month: string) => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const [monthName, yearStr] = month.split(' ');
+    const year = parseInt(yearStr);
+    const monthIndex = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(monthName);
+
+    const isHistorical = year < currentYear || (year === currentYear && monthIndex <= currentMonth);
+
+    const monthData = forecastData.filter(item => item.month === month);
+
+    const budget = monthData.reduce((sum, item) => {
+      if (item.glCode.startsWith('5') || item.glCode.startsWith('6') || item.glCode.startsWith('7')) {
+        return sum + item.forecastedAmount;
+      }
+      return sum;
+    }, 0);
+
+    const actual = isHistorical ? monthData.reduce((sum, item) => {
+      if (item.glCode.startsWith('5') || item.glCode.startsWith('6') || item.glCode.startsWith('7')) {
+        return sum + (item.actualAmount || item.forecastedAmount);
+      }
+      return sum;
+    }, 0) : monthData.reduce((sum, item) => {
+      if (item.glCode.startsWith('5') || item.glCode.startsWith('6') || item.glCode.startsWith('7')) {
+        return sum + item.forecastedAmount;
+      }
+      return sum;
+    }, 0);
+
+    const pyYear = year - 1;
+    const pyMonth = `${monthName} ${pyYear}`;
+    const pyData = forecastData.filter(item => item.month === pyMonth);
+    const py = pyData.reduce((sum, item) => {
+      if (item.glCode.startsWith('5') || item.glCode.startsWith('6') || item.glCode.startsWith('7')) {
+        return sum + (item.actualAmount || item.forecastedAmount);
+      }
+      return sum;
+    }, 0);
+
+    return {
+      budget,
+      actual,
+      py,
+      hasActual: isHistorical
+    };
+  };
+
   return (
-    <ForecastingContext.Provider value={{ forecastData, setForecastData, getMonthlyTotals }}>
+    <ForecastingContext.Provider value={{ forecastData, setForecastData, getMonthlyTotals, getMonthlyExpenseTotals }}>
       {children}
     </ForecastingContext.Provider>
   );
