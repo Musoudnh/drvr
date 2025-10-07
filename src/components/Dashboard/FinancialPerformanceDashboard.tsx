@@ -65,13 +65,13 @@ const FinancialPerformanceDashboard: React.FC = () => {
   }, [forecastData, selectedYear, getMonthlyTotals]);
 
   const predictiveData = [
-    { month: 'Jan', historical: 485000, prediction: 485000, upper: 500000, lower: 470000 },
-    { month: 'Feb', historical: 472000, prediction: 472000, upper: 487000, lower: 457000 },
-    { month: 'Mar', historical: 495000, prediction: 495000, upper: 510000, lower: 480000 },
-    { month: 'Apr', historical: 490000, prediction: 490000, upper: 505000, lower: 475000 },
-    { month: 'May', historical: 505000, prediction: 505000, upper: 520000, lower: 490000 },
-    { month: 'Jun', historical: 515000, prediction: 515000, upper: 530000, lower: 500000 },
-    { month: 'Jul', historical: 525000, prediction: 530000, upper: 546000, lower: 514000 },
+    { month: 'Jan', historical: 485000, prediction: 485000, upper: null, lower: null },
+    { month: 'Feb', historical: 472000, prediction: 472000, upper: null, lower: null },
+    { month: 'Mar', historical: 495000, prediction: 495000, upper: null, lower: null },
+    { month: 'Apr', historical: 490000, prediction: 490000, upper: null, lower: null },
+    { month: 'May', historical: 505000, prediction: 505000, upper: null, lower: null },
+    { month: 'Jun', historical: 515000, prediction: 515000, upper: null, lower: null },
+    { month: 'Jul', historical: 525000, prediction: 530000, upper: null, lower: null },
     { month: 'Aug', historical: null, prediction: 542000, upper: 564000, lower: 520000 },
     { month: 'Sep', historical: null, prediction: 555000, upper: 583000, lower: 527000 },
     { month: 'Oct', historical: null, prediction: 568000, upper: 602000, lower: 534000 },
@@ -387,6 +387,30 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 contentStyle={{ borderRadius: '10px' }}
               />
 
+              <defs>
+                <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.2} />
+                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                </linearGradient>
+              </defs>
+
+              <Area
+                type="monotone"
+                dataKey="upper"
+                stroke="none"
+                fill="url(#confidenceBand)"
+                fillOpacity={1}
+                isAnimationActive={true}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="lower"
+                stroke="none"
+                fill="#ffffff"
+                fillOpacity={1}
+                isAnimationActive={true}
+              />
 
               <Line
                 type="monotone"
