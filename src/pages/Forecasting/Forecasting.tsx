@@ -1412,7 +1412,7 @@ const Forecasting: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/forecasting')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/forecasting'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1422,7 +1422,7 @@ const Forecasting: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/balance')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/reports/balance'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1432,7 +1432,7 @@ const Forecasting: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/reports/cashflow')}
-            className={`px-2 py-1 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
+            className={`px-2 py-1 rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center ${
               location.pathname === '/reports/cashflow'
                 ? 'bg-[#7B68EE] text-white'
                 : 'bg-white text-[#7B68EE]'
@@ -1446,36 +1446,36 @@ const Forecasting: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowSaveForecastModal(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <Save className="w-4 h-4 mr-2" />
+            <Save className="w-4 h-4 mr-2" strokeWidth={2.5} />
             Save Forecast
           </button>
           <button
             onClick={() => setShowScenarioAuditSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <History className="w-4 h-4 mr-2" />
+            <History className="w-4 h-4 mr-2" strokeWidth={2.5} />
             Applied Drivers
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <History className="w-4 h-4 mr-2" />
+            <History className="w-4 h-4 mr-2" strokeWidth={2.5} />
             Version History
           </button>
           <button
             onClick={() => setShowAlertsSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <Bell className="w-4 h-4 mr-2" />
+            <Bell className="w-4 h-4 mr-2" strokeWidth={2.5} />
             Alerts
           </button>
           <button
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-bold shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <Download className="w-4 h-4 mr-2" />
+            <Download className="w-4 h-4 mr-2" strokeWidth={2.5} />
             Export
           </button>
         </div>
