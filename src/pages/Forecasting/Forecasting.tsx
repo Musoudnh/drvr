@@ -3651,15 +3651,9 @@ const Forecasting: React.FC = () => {
 
             <div className="p-6 border-t border-gray-200 bg-gray-50">
               <div className="text-center">
-                <p className="text-xs text-gray-600 mb-2">
+                <p className="text-xs text-gray-600">
                   <strong>{appliedScenarios.length}</strong> {appliedScenarios.length === 1 ? 'scenario' : 'scenarios'} applied
                 </p>
-                <button
-                  onClick={() => setShowScenarioAuditSidebar(false)}
-                  className="w-full px-4 py-2 bg-[#101010] text-white rounded-lg hover:bg-[#2a2a2a] transition-colors font-medium"
-                >
-                  Close
-                </button>
               </div>
             </div>
           </div>

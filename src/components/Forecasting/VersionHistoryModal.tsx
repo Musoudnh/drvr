@@ -220,11 +220,6 @@ export function VersionHistoryModal({
           )}
         </div>
 
-        <div className="border-t border-gray-200 p-6 flex justify-end">
-          <Button onClick={onClose} variant="outline">
-            Close
-          </Button>
-        </div>
       </div>
     </div>
   );
