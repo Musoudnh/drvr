@@ -36,12 +36,22 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
 
   const handleSubmit = async (e: React.FormEvent, parentId?: string) => {
     e.preventDefault();
-    if (!newComment.trim()) return;
+    if (!newComment.trim()) {
+      console.log('Comment is empty, not submitting');
+      return;
+    }
+
+    console.log('Submitting comment:', {
+      cellReference,
+      content: newComment,
+      userId,
+      parentId,
+    });
 
     setLoading(true);
     try {
       const mentions = extractMentions(newComment);
-      await commentService.createComment({
+      const result = await commentService.createComment({
         cell_reference: cellReference,
         content: newComment,
         author_id: userId,
@@ -49,11 +59,13 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
         mentions,
       });
 
+      console.log('Comment created successfully:', result);
       setNewComment('');
       setReplyingTo(null);
       await loadComments();
     } catch (error) {
       console.error('Error creating comment:', error);
+      alert(`Failed to create comment: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

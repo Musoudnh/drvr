@@ -166,10 +166,12 @@ export const useCellComments = (userId: string) => {
   } | null>(null);
 
   const openComments = (cellReference: string) => {
+    console.log('Opening comments for cell:', cellReference);
     setActiveCell(cellReference);
   };
 
   const openChangeRequest = (cellReference: string, currentValue?: number) => {
+    console.log('Opening change request for cell:', cellReference, 'value:', currentValue);
     setCellData({ cellReference, currentValue });
     setShowChangeRequest(true);
   };
@@ -180,28 +182,35 @@ export const useCellComments = (userId: string) => {
     setCellData(null);
   };
 
-  const renderCommentUI = () => (
-    <>
-      {activeCell && (
-        <CommentThread
-          cellReference={activeCell}
-          onClose={() => setActiveCell(null)}
-          userId={userId}
-        />
-      )}
-      {showChangeRequest && cellData && (
-        <ChangeRequestModal
-          cellReference={cellData.cellReference}
-          currentValue={cellData.currentValue}
-          onClose={() => {
-            setShowChangeRequest(false);
-            setCellData(null);
-          }}
-          userId={userId}
-        />
-      )}
-    </>
-  );
+  const renderCommentUI = () => {
+    console.log('renderCommentUI called - activeCell:', activeCell, 'showChangeRequest:', showChangeRequest);
+    return (
+      <>
+        {activeCell && (
+          <CommentThread
+            cellReference={activeCell}
+            onClose={() => {
+              console.log('Closing comment thread');
+              setActiveCell(null);
+            }}
+            userId={userId}
+          />
+        )}
+        {showChangeRequest && cellData && (
+          <ChangeRequestModal
+            cellReference={cellData.cellReference}
+            currentValue={cellData.currentValue}
+            onClose={() => {
+              console.log('Closing change request modal');
+              setShowChangeRequest(false);
+              setCellData(null);
+            }}
+            userId={userId}
+          />
+        )}
+      </>
+    );
+  };
 
   return {
     openComments,
