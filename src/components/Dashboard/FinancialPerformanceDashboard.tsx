@@ -155,7 +155,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Monthly Budget vs. Actual Performance</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Revenue</h3>
             <p className="text-xs text-gray-500 mt-1">Budget, Actual, and Prior Year Comparison</p>
           </div>
           <div className="flex items-center gap-3">
