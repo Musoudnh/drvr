@@ -1851,18 +1851,14 @@ const Forecasting: React.FC = () => {
                 ) : (
                   <Eye className="w-4 h-4 text-gray-600" />
                 )}
-                <span className="text-xs font-medium text-gray-700">
-                  {expandedGLCodes.length === glCodes.length ? "Collapse All" : "Expand All"}
-                </span>
               </button>
             )}
             <button
               onClick={() => setShowViewSettingsPanel(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+              className="p-2 rounded-lg transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
               title="View settings"
             >
               <Settings className="w-4 h-4 text-gray-600" />
-              <span className="text-xs font-medium text-gray-700">View Settings</span>
             </button>
           </div>
         </div>
