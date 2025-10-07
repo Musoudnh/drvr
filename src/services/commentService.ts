@@ -51,6 +51,15 @@ export const commentService = {
     parent_id?: string;
     author_id: string;
   }): Promise<ForecastComment> {
+    console.log('Creating comment with data:', {
+      forecast_id: comment.forecast_id,
+      cell_reference: comment.cell_reference,
+      content: comment.content,
+      mentions: comment.mentions || [],
+      parent_id: comment.parent_id,
+      author_id: comment.author_id,
+    });
+
     const { data, error } = await supabase
       .from('forecast_comments')
       .insert({
@@ -64,7 +73,10 @@ export const commentService = {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error creating comment:', error);
+      throw new Error(`Failed to create comment: ${error.message} (${error.code})`);
+    }
 
     await this.logActivity({
       forecast_id: comment.forecast_id,
