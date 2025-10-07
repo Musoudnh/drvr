@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { TrendingUp, TrendingDown, DollarSign, Calendar, Settings, ChevronDown } from 'lucide-react';
 import { useForecastingData } from '../../context/ForecastingContext';
 import {
   ComposedChart,
@@ -29,6 +29,10 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const [pyLineColor, setPyLineColor] = useState('#3B82F6');
   const [selectedMonth, setSelectedMonth] = useState('Jul');
   const [selectedQuarter, setSelectedQuarter] = useState('Q3');
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [quarterDropdownOpen, setQuarterDropdownOpen] = useState(false);
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
+  const quarterDropdownRef = useRef<HTMLDivElement>(null);
   const { getMonthlyTotals, forecastData } = useForecastingData();
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
 
@@ -129,6 +133,20 @@ const FinancialPerformanceDashboard: React.FC = () => {
   const variancePercent = ((variance / totalBudget) * 100).toFixed(1);
   const yoyGrowth = ((totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)) / monthlyData.reduce((sum, d) => sum + d.PY, 0) * 100).toFixed(1);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
+        setMonthDropdownOpen(false);
+      }
+      if (quarterDropdownRef.current && !quarterDropdownRef.current.contains(event.target as Node)) {
+        setQuarterDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
 
   return (
     <div className="space-y-6">
@@ -205,15 +223,37 @@ const FinancialPerformanceDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-semibold text-gray-900">Month-to-Date (MTD) Performance</h4>
-              <select
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                {months.map(month => (
-                  <option key={month} value={month}>{month}</option>
-                ))}
-              </select>
+              <div className="relative" ref={monthDropdownRef}>
+                <button
+                  onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <span>{selectedMonth}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {monthDropdownOpen && (
+                  <div className="absolute top-full mt-2 right-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[100px]">
+                    <div className="flex flex-col gap-1">
+                      {months.map((month) => (
+                        <button
+                          key={month}
+                          onClick={() => {
+                            setSelectedMonth(month);
+                            setMonthDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            selectedMonth === month
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {month}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -251,15 +291,37 @@ const FinancialPerformanceDashboard: React.FC = () => {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-semibold text-gray-900">Quarterly Performance</h4>
-              <select
-                value={selectedQuarter}
-                onChange={(e) => setSelectedQuarter(e.target.value)}
-                className="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                {quarters.map(quarter => (
-                  <option key={quarter} value={quarter}>{quarter}</option>
-                ))}
-              </select>
+              <div className="relative" ref={quarterDropdownRef}>
+                <button
+                  onClick={() => setQuarterDropdownOpen(!quarterDropdownOpen)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+                >
+                  <span>{selectedQuarter}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {quarterDropdownOpen && (
+                  <div className="absolute top-full mt-2 right-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[100px]">
+                    <div className="flex flex-col gap-1">
+                      {quarters.map((quarter) => (
+                        <button
+                          key={quarter}
+                          onClick={() => {
+                            setSelectedQuarter(quarter);
+                            setQuarterDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            selectedQuarter === quarter
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {quarter}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-3">
