@@ -151,6 +151,93 @@ const FinancialPerformanceDashboard: React.FC = () => {
           </div>
         </div>
 
+        <div className="grid grid-cols-3 gap-6 mb-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h4 className="text-sm font-semibold text-gray-900 mb-4">Month-to-Date (MTD) Performance</h4>
+
+            <div className="space-y-3">
+              <div>
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(525000)}</div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className="text-lg font-semibold text-green-600">{formatCurrency(15000)}</div>
+                  <div className="text-sm font-medium text-green-600">+2.9%</div>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Prior Year</div>
+                <div className="flex items-baseline gap-2">
+                  <div className="text-lg font-semibold text-green-600">{formatCurrency(35000)}</div>
+                  <div className="text-sm font-medium text-green-600">+7.1%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h4 className="text-sm font-semibold text-gray-900 mb-4">Quarterly Performance</h4>
+
+            <div className="space-y-3">
+              <div>
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(1545000)}</div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className="text-lg font-semibold text-green-600">{formatCurrency(45000)}</div>
+                  <div className="text-sm font-medium text-green-600">+3.0%</div>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Prior Year</div>
+                <div className="flex items-baseline gap-2">
+                  <div className="text-lg font-semibold text-green-600">{formatCurrency(95000)}</div>
+                  <div className="text-sm font-medium text-green-600">+6.5%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h4 className="text-sm font-semibold text-gray-900 mb-4">Fiscal Year (FY) Performance</h4>
+
+            <div className="space-y-3">
+              <div>
+                <div className="text-xs text-gray-600 mb-1">Actual</div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(totalActual)}</div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Budget</div>
+                <div className="flex items-baseline gap-2">
+                  <div className={`text-lg font-semibold ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {variance >= 0 ? '+' : ''}{formatCurrency(variance)}
+                  </div>
+                  <div className={`text-sm font-medium ${variance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {variance >= 0 ? '+' : ''}{variancePercent}%
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600 mb-1">vs Prior Year</div>
+                <div className="flex items-baseline gap-2">
+                  <div className="text-lg font-semibold text-green-600">{formatCurrency(Math.abs(totalActual - monthlyData.reduce((sum, d) => sum + d.PY, 0)))}</div>
+                  <div className="text-sm font-medium text-green-600">+{yoyGrowth}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center gap-2 text-gray-600 text-xs mb-1">
