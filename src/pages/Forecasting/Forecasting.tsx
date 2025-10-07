@@ -127,6 +127,8 @@ const Forecasting: React.FC = () => {
   const [driverDropdownOpen, setDriverDropdownOpen] = useState<string | null>(null);
   const [driverDropdownPosition, setDriverDropdownPosition] = useState<{top: number, left: number} | null>(null);
   const driverDropdownRef = useRef<HTMLDivElement>(null);
+  const [showNotesPanel, setShowNotesPanel] = useState(false);
+  const [notesData, setNotesData] = useState<{glCode: GLCode, month: string, note: string} | null>(null);
 
   // Debug: Log component version
   React.useEffect(() => {
@@ -175,8 +177,24 @@ const Forecasting: React.FC = () => {
   };
 
   const handleAddNote = (rowData: any) => {
-    console.log('Add note:', rowData);
+    setNotesData({
+      glCode: rowData,
+      month: '',
+      note: ''
+    });
+    setShowNotesPanel(true);
     setContextMenu(null);
+  };
+
+  const handleSaveNote = () => {
+    console.log('Saving note:', notesData);
+    setShowNotesPanel(false);
+    setNotesData(null);
+  };
+
+  const handleCloseNotesPanel = () => {
+    setShowNotesPanel(false);
+    setNotesData(null);
   };
 
   const handleViewDetails = (rowData: any) => {
@@ -3804,6 +3822,128 @@ const Forecasting: React.FC = () => {
             Delete
           </button>
         </div>
+      )}
+
+      {/* Notes Panel */}
+      {showNotesPanel && notesData && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={handleCloseNotesPanel}
+          />
+          <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Add Notes</h3>
+              <button
+                onClick={handleCloseNotesPanel}
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Account</label>
+                <div className="text-sm text-gray-900 font-semibold">
+                  {showAccountCodes && <span className="font-mono text-xs text-gray-500 mr-2">{notesData.glCode.code}</span>}
+                  {notesData.glCode.name}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
+                <select
+                  value={notesData.month}
+                  onChange={(e) => setNotesData({...notesData, month: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                >
+                  <option value="">Select month...</option>
+                  {months.map(month => (
+                    <option key={month} value={`${month} ${selectedYear}`}>
+                      {month} {selectedYear}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {notesData.month && (() => {
+                const monthData = forecastData.find(
+                  item => item.glCode === notesData.glCode.code && item.month === notesData.month
+                );
+                const forecastAmount = monthData?.forecastedAmount || 0;
+                const actualAmount = monthData?.actualAmount;
+                const variance = actualAmount !== undefined ? actualAmount - forecastAmount : 0;
+                const variancePercent = forecastAmount !== 0 ? (variance / forecastAmount) * 100 : 0;
+
+                return (
+                  <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-medium text-gray-600">Budget</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        ${formatNumber(forecastAmount)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-medium text-gray-600">Actuals</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {actualAmount !== undefined ? `$${formatNumber(actualAmount)}` : '-'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-medium text-gray-600">Prior Year</span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {monthData?.changeVsPrior !== undefined ? `$${formatNumber(monthData.changeVsPrior)}` : '-'}
+                      </span>
+                    </div>
+                    <div className="border-t border-gray-200 pt-2 flex justify-between items-center">
+                      <span className="text-xs font-medium text-gray-600">Variance</span>
+                      <div className="text-right">
+                        <div className={`text-sm font-semibold ${
+                          variance >= 0 ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {variance >= 0 ? '+' : ''}${formatNumber(Math.abs(variance))}
+                        </div>
+                        <div className={`text-xs ${
+                          variancePercent >= 0 ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {variancePercent >= 0 ? '+' : ''}{variancePercent.toFixed(1)}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                <textarea
+                  value={notesData.note}
+                  onChange={(e) => setNotesData({...notesData, note: e.target.value})}
+                  placeholder="Add your comments here..."
+                  rows={8}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-gray-200 flex gap-3">
+              <button
+                onClick={handleCloseNotesPanel}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveNote}
+                disabled={!notesData.month || !notesData.note.trim()}
+                className="flex-1 px-4 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6A5ADB] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Save Note
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
     </div>
