@@ -1616,6 +1616,14 @@ const Forecasting: React.FC = () => {
           >
             Cash Flow
           </button>
+          <div className="h-6 w-px bg-gray-300 mx-1" />
+          <button
+            onClick={() => setShowScenarioAuditSidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <History className="w-4 h-4 mr-2" />
+            Applied Drivers
+          </button>
         </div>
 
         {/* Right Action Buttons */}
@@ -1633,13 +1641,6 @@ const Forecasting: React.FC = () => {
           >
             <MessageSquare className="w-4 h-4 mr-2" />
             Comments
-          </button>
-          <button
-            onClick={() => setShowScenarioAuditSidebar(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-          >
-            <History className="w-4 h-4 mr-2" />
-            Applied Drivers
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
