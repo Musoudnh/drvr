@@ -85,6 +85,18 @@ const TasksProjects: React.FC = () => {
   const [editStatusDropdownOpen, setEditStatusDropdownOpen] = useState(false);
   const [dueDateDropdownOpen, setDueDateDropdownOpen] = useState(false);
   const [editDueDateDropdownOpen, setEditDueDateDropdownOpen] = useState(false);
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const [dayDropdownOpen, setDayDropdownOpen] = useState(false);
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [editMonthDropdownOpen, setEditMonthDropdownOpen] = useState(false);
+  const [editDayDropdownOpen, setEditDayDropdownOpen] = useState(false);
+  const [editYearDropdownOpen, setEditYearDropdownOpen] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate());
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [editSelectedMonth, setEditSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [editSelectedDay, setEditSelectedDay] = useState<number>(new Date().getDate());
+  const [editSelectedYear, setEditSelectedYear] = useState<number>(new Date().getFullYear());
   const assigneeDropdownRef = useRef<HTMLDivElement>(null);
   const priorityModalDropdownRef = useRef<HTMLDivElement>(null);
   const statusDropdownRef = useRef<HTMLDivElement>(null);
@@ -93,6 +105,12 @@ const TasksProjects: React.FC = () => {
   const editStatusDropdownRef = useRef<HTMLDivElement>(null);
   const dueDateDropdownRef = useRef<HTMLDivElement>(null);
   const editDueDateDropdownRef = useRef<HTMLDivElement>(null);
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
+  const dayDropdownRef = useRef<HTMLDivElement>(null);
+  const yearDropdownRef = useRef<HTMLDivElement>(null);
+  const editMonthDropdownRef = useRef<HTMLDivElement>(null);
+  const editDayDropdownRef = useRef<HTMLDivElement>(null);
+  const editYearDropdownRef = useRef<HTMLDivElement>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -372,6 +390,24 @@ const TasksProjects: React.FC = () => {
       }
       if (editDueDateDropdownRef.current && !editDueDateDropdownRef.current.contains(e.target as Node)) {
         setEditDueDateDropdownOpen(false);
+      }
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(e.target as Node)) {
+        setMonthDropdownOpen(false);
+      }
+      if (dayDropdownRef.current && !dayDropdownRef.current.contains(e.target as Node)) {
+        setDayDropdownOpen(false);
+      }
+      if (yearDropdownRef.current && !yearDropdownRef.current.contains(e.target as Node)) {
+        setYearDropdownOpen(false);
+      }
+      if (editMonthDropdownRef.current && !editMonthDropdownRef.current.contains(e.target as Node)) {
+        setEditMonthDropdownOpen(false);
+      }
+      if (editDayDropdownRef.current && !editDayDropdownRef.current.contains(e.target as Node)) {
+        setEditDayDropdownOpen(false);
+      }
+      if (editYearDropdownRef.current && !editYearDropdownRef.current.contains(e.target as Node)) {
+        setEditYearDropdownOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -943,18 +979,102 @@ const TasksProjects: React.FC = () => {
                     <ChevronDown className="w-4 h-4 ml-1" />
                   </button>
                   {dueDateDropdownOpen && (
-                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
-                      <input
-                        type="date"
-                        value={newTask.dueDate}
-                        onChange={(e) => {
-                          setNewTask({...newTask, dueDate: e.target.value});
-                        }}
-                        onBlur={() => setDueDateDropdownOpen(false)}
-                        className="w-full px-3 py-1.5 rounded text-xs font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        min={new Date().toISOString().split('T')[0]}
-                        autoFocus
-                      />
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
+                      <div className="flex gap-2">
+                        <div className="flex-1 relative" ref={monthDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
+                            className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][selectedMonth - 1]}</span>
+                            <ChevronDown className="w-3 h-3 ml-1" />
+                          </button>
+                          {monthDropdownOpen && (
+                            <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, idx) => (
+                                <button
+                                  key={month}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedMonth(idx + 1);
+                                    setMonthDropdownOpen(false);
+                                    const dateStr = `${selectedYear}-${String(idx + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
+                                    setNewTask({...newTask, dueDate: dateStr});
+                                  }}
+                                  className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                    selectedMonth === idx + 1 ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {month}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 relative" ref={dayDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setDayDropdownOpen(!dayDropdownOpen)}
+                            className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{selectedDay}</span>
+                            <ChevronDown className="w-3 h-3 ml-1" />
+                          </button>
+                          {dayDropdownOpen && (
+                            <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                              {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                                <button
+                                  key={day}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedDay(day);
+                                    setDayDropdownOpen(false);
+                                    const dateStr = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                                    setNewTask({...newTask, dueDate: dateStr});
+                                  }}
+                                  className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                    selectedDay === day ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {day}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 relative" ref={yearDropdownRef}>
+                          <button
+                            type="button"
+                            onClick={() => setYearDropdownOpen(!yearDropdownOpen)}
+                            className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                          >
+                            <span>{selectedYear}</span>
+                            <ChevronDown className="w-3 h-3 ml-1" />
+                          </button>
+                          {yearDropdownOpen && (
+                            <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                                <button
+                                  key={year}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedYear(year);
+                                    setYearDropdownOpen(false);
+                                    const dateStr = `${year}-${String(selectedMonth).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`;
+                                    setNewTask({...newTask, dueDate: dateStr});
+                                  }}
+                                  className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                    selectedYear === year ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {year}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1088,17 +1208,102 @@ const TasksProjects: React.FC = () => {
                         <ChevronDown className="w-4 h-4 ml-1" />
                       </button>
                       {editDueDateDropdownOpen && (
-                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
-                          <input
-                            type="date"
-                            value={editTaskForm.dueDate.toISOString().split('T')[0]}
-                            onChange={(e) => {
-                              setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)});
-                            }}
-                            onBlur={() => setEditDueDateDropdownOpen(false)}
-                            className="w-full px-3 py-1.5 rounded text-xs font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                            autoFocus
-                          />
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
+                          <div className="flex gap-2">
+                            <div className="flex-1 relative" ref={editMonthDropdownRef}>
+                              <button
+                                type="button"
+                                onClick={() => setEditMonthDropdownOpen(!editMonthDropdownOpen)}
+                                className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                              >
+                                <span>{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][editSelectedMonth - 1]}</span>
+                                <ChevronDown className="w-3 h-3 ml-1" />
+                              </button>
+                              {editMonthDropdownOpen && (
+                                <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, idx) => (
+                                    <button
+                                      key={month}
+                                      type="button"
+                                      onClick={() => {
+                                        setEditSelectedMonth(idx + 1);
+                                        setEditMonthDropdownOpen(false);
+                                        const newDate = new Date(editSelectedYear, idx, editSelectedDay);
+                                        setEditTaskForm({...editTaskForm, dueDate: newDate});
+                                      }}
+                                      className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                        editSelectedMonth === idx + 1 ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
+                                    >
+                                      {month}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 relative" ref={editDayDropdownRef}>
+                              <button
+                                type="button"
+                                onClick={() => setEditDayDropdownOpen(!editDayDropdownOpen)}
+                                className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                              >
+                                <span>{editSelectedDay}</span>
+                                <ChevronDown className="w-3 h-3 ml-1" />
+                              </button>
+                              {editDayDropdownOpen && (
+                                <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                                  {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                                    <button
+                                      key={day}
+                                      type="button"
+                                      onClick={() => {
+                                        setEditSelectedDay(day);
+                                        setEditDayDropdownOpen(false);
+                                        const newDate = new Date(editSelectedYear, editSelectedMonth - 1, day);
+                                        setEditTaskForm({...editTaskForm, dueDate: newDate});
+                                      }}
+                                      className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                        editSelectedDay === day ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
+                                    >
+                                      {day}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 relative" ref={editYearDropdownRef}>
+                              <button
+                                type="button"
+                                onClick={() => setEditYearDropdownOpen(!editYearDropdownOpen)}
+                                className="w-full px-2 py-1.5 bg-white text-gray-700 border border-gray-300 rounded text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                              >
+                                <span>{editSelectedYear}</span>
+                                <ChevronDown className="w-3 h-3 ml-1" />
+                              </button>
+                              {editYearDropdownOpen && (
+                                <div className="absolute top-full mt-1 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                                  {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
+                                    <button
+                                      key={year}
+                                      type="button"
+                                      onClick={() => {
+                                        setEditSelectedYear(year);
+                                        setEditYearDropdownOpen(false);
+                                        const newDate = new Date(year, editSelectedMonth - 1, editSelectedDay);
+                                        setEditTaskForm({...editTaskForm, dueDate: newDate});
+                                      }}
+                                      className={`w-full px-2 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                        editSelectedYear === year ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-100'
+                                      }`}
+                                    >
+                                      {year}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
