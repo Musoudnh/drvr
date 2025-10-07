@@ -388,9 +388,13 @@ const FinancialPerformanceDashboard: React.FC = () => {
               />
 
               <defs>
-                <linearGradient id="confidenceBand" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.2} />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.1} />
+                <linearGradient id="upperBand" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#10B981" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#10B981" stopOpacity={0.15} />
+                </linearGradient>
+                <linearGradient id="lowerBand" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#F97316" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#F97316" stopOpacity={0.15} />
                 </linearGradient>
               </defs>
 
@@ -398,7 +402,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 type="monotone"
                 dataKey="upper"
                 stroke="none"
-                fill="url(#confidenceBand)"
+                fill="url(#upperBand)"
                 fillOpacity={1}
                 isAnimationActive={true}
               />
@@ -408,6 +412,15 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 dataKey="lower"
                 stroke="none"
                 fill="#ffffff"
+                fillOpacity={1}
+                isAnimationActive={true}
+              />
+
+              <Area
+                type="monotone"
+                dataKey="prediction"
+                stroke="none"
+                fill="url(#lowerBand)"
                 fillOpacity={1}
                 isAnimationActive={true}
               />
@@ -430,9 +443,7 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 name="High Confidence"
                 stroke="#10B981"
                 strokeWidth={2}
-                strokeDasharray="5 5"
-                dot={{ r: 4, fill: '#10B981', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 6 }}
+                dot={false}
                 isAnimationActive={true}
               />
 
@@ -441,10 +452,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 dataKey="prediction"
                 name="Base Prediction"
                 stroke="#8B5CF6"
-                strokeWidth={3}
-                strokeDasharray="5 5"
-                dot={{ r: 5, fill: '#8B5CF6', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 7 }}
+                strokeWidth={4}
+                dot={false}
                 isAnimationActive={true}
               />
 
@@ -452,11 +461,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 type="monotone"
                 dataKey="lower"
                 name="Low Confidence"
-                stroke="#F59E0B"
+                stroke="#F97316"
                 strokeWidth={2}
-                strokeDasharray="5 5"
-                dot={{ r: 4, fill: '#F59E0B', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 6 }}
+                dot={false}
                 isAnimationActive={true}
               />
             </ComposedChart>
@@ -491,9 +498,9 @@ const FinancialPerformanceDashboard: React.FC = () => {
             <div className="text-xs text-gray-600 mt-1">Expected by Dec</div>
           </div>
 
-          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+          <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
               <span className="text-xs text-gray-700 font-medium">Low Confidence</span>
             </div>
             <div className="text-2xl font-bold text-gray-900">{formatCurrency(548000)}</div>
