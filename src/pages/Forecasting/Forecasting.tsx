@@ -18,6 +18,7 @@ import PayrollCalculator from '../../components/Payroll/PayrollCalculator';
 import type { PayrollResult } from '../../services/payrollService';
 import type { SalesScenario } from '../../types/salesDriver';
 import { getViewSettings, updateViewSetting } from '../../utils/viewSettings';
+import { supabase } from '../../lib/supabase';
 
 interface GLCode {
   code: string;
@@ -66,7 +67,7 @@ interface AppliedScenario {
 const Forecasting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = '00000000-0000-0000-0000-000000000001';
+  const [userId, setUserId] = useState<string>('');
   const [userRole, setUserRole] = useState<UserRole>('viewer');
   const { openComments, openChangeRequest, renderCommentUI } = useCellComments(userId);
   const [selectedYear, setSelectedYear] = useState(2025);
@@ -136,6 +137,21 @@ const Forecasting: React.FC = () => {
   const driverDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const getAuthUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        console.log('Authenticated user ID:', user.id);
+        setUserId(user.id);
+      } else {
+        console.error('No authenticated user found');
+      }
+    };
+    getAuthUser();
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
     const loadUserRole = async () => {
       try {
         const role = await commentService.getUserRole(userId);
