@@ -77,6 +77,18 @@ const TasksProjects: React.FC = () => {
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [activityLogFilter, setActivityLogFilter] = useState<string>('all');
   const [newComment, setNewComment] = useState('');
+  const [assigneeDropdownOpen, setAssigneeDropdownOpen] = useState(false);
+  const [priorityModalDropdownOpen, setPriorityModalDropdownOpen] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [editAssigneeDropdownOpen, setEditAssigneeDropdownOpen] = useState(false);
+  const [editPriorityDropdownOpen, setEditPriorityDropdownOpen] = useState(false);
+  const [editStatusDropdownOpen, setEditStatusDropdownOpen] = useState(false);
+  const assigneeDropdownRef = useRef<HTMLDivElement>(null);
+  const priorityModalDropdownRef = useRef<HTMLDivElement>(null);
+  const statusDropdownRef = useRef<HTMLDivElement>(null);
+  const editAssigneeDropdownRef = useRef<HTMLDivElement>(null);
+  const editPriorityDropdownRef = useRef<HTMLDivElement>(null);
+  const editStatusDropdownRef = useRef<HTMLDivElement>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -332,6 +344,24 @@ const TasksProjects: React.FC = () => {
     const handleClickOutside = (e: MouseEvent) => {
       if (taskMenuOpen) {
         setTaskMenuOpen(null);
+      }
+      if (assigneeDropdownRef.current && !assigneeDropdownRef.current.contains(e.target as Node)) {
+        setAssigneeDropdownOpen(false);
+      }
+      if (priorityModalDropdownRef.current && !priorityModalDropdownRef.current.contains(e.target as Node)) {
+        setPriorityModalDropdownOpen(false);
+      }
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(e.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+      if (editAssigneeDropdownRef.current && !editAssigneeDropdownRef.current.contains(e.target as Node)) {
+        setEditAssigneeDropdownOpen(false);
+      }
+      if (editPriorityDropdownRef.current && !editPriorityDropdownRef.current.contains(e.target as Node)) {
+        setEditPriorityDropdownOpen(false);
+      }
+      if (editStatusDropdownRef.current && !editStatusDropdownRef.current.contains(e.target as Node)) {
+        setEditStatusDropdownOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -818,29 +848,76 @@ const TasksProjects: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-2">Assignee *</label>
-                  <select
-                    value={newTask.assignee}
-                    onChange={(e) => setNewTask({...newTask, assignee: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    <option value="">Select assignee</option>
-                    {teamMembers.map(member => (
-                      <option key={member} value={member}>{member}</option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={assigneeDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setAssigneeDropdownOpen(!assigneeDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{newTask.assignee || 'Select assignee'}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {assigneeDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                        <div className="flex flex-col gap-1">
+                          {teamMembers.map((member) => (
+                            <button
+                              key={member}
+                              type="button"
+                              onClick={() => {
+                                setNewTask({...newTask, assignee: member});
+                                setAssigneeDropdownOpen(false);
+                              }}
+                              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                newTask.assignee === member
+                                  ? 'bg-[#3AB7BF] text-white'
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                            >
+                              {member}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-2">Priority</label>
-                  <select
-                    value={newTask.priority}
-                    onChange={(e) => setNewTask({...newTask, priority: e.target.value as any})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
+                  <div className="relative" ref={priorityModalDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setPriorityModalDropdownOpen(!priorityModalDropdownOpen)}
+                      className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between capitalize"
+                    >
+                      <span>{newTask.priority}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {priorityModalDropdownOpen && (
+                      <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                        <div className="flex flex-col gap-1">
+                          {(['low', 'medium', 'high'] as const).map((priority) => (
+                            <button
+                              key={priority}
+                              type="button"
+                              onClick={() => {
+                                setNewTask({...newTask, priority});
+                                setPriorityModalDropdownOpen(false);
+                              }}
+                              className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left capitalize ${
+                                newTask.priority === priority
+                                  ? 'bg-[#3AB7BF] text-white'
+                                  : 'text-gray-600 hover:bg-gray-100'
+                              }`}
+                            >
+                              {priority}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               
@@ -936,12 +1013,39 @@ const TasksProjects: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-2">Assignee</label>
-                    <input
-                      type="text"
-                      value={editTaskForm.assignee}
-                      onChange={(e) => setEditTaskForm({...editTaskForm, assignee: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    />
+                    <div className="relative" ref={editAssigneeDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setEditAssigneeDropdownOpen(!editAssigneeDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      >
+                        <span>{editTaskForm.assignee}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {editAssigneeDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-48 overflow-y-auto">
+                          <div className="flex flex-col gap-1">
+                            {teamMembers.map((member) => (
+                              <button
+                                key={member}
+                                type="button"
+                                onClick={() => {
+                                  setEditTaskForm({...editTaskForm, assignee: member});
+                                  setEditAssigneeDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                  editTaskForm.assignee === member
+                                    ? 'bg-[#3AB7BF] text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {member}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div>
@@ -950,7 +1054,7 @@ const TasksProjects: React.FC = () => {
                       type="date"
                       value={editTaskForm.dueDate.toISOString().split('T')[0]}
                       onChange={(e) => setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
                     />
                   </div>
                 </div>
@@ -958,29 +1062,76 @@ const TasksProjects: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-2">Priority</label>
-                    <select
-                      value={editTaskForm.priority}
-                      onChange={(e) => setEditTaskForm({...editTaskForm, priority: e.target.value as 'low' | 'medium' | 'high'})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    >
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
+                    <div className="relative" ref={editPriorityDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setEditPriorityDropdownOpen(!editPriorityDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between capitalize"
+                      >
+                        <span>{editTaskForm.priority}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {editPriorityDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                          <div className="flex flex-col gap-1">
+                            {(['low', 'medium', 'high'] as const).map((priority) => (
+                              <button
+                                key={priority}
+                                type="button"
+                                onClick={() => {
+                                  setEditTaskForm({...editTaskForm, priority});
+                                  setEditPriorityDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left capitalize ${
+                                  editTaskForm.priority === priority
+                                    ? 'bg-[#3AB7BF] text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {priority}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-2">Status</label>
-                    <select
-                      value={editTaskForm.status}
-                      onChange={(e) => setEditTaskForm({...editTaskForm, status: e.target.value as Task['status']})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                    >
-                      <option value="todo">To Do</option>
-                      <option value="in_progress">In Progress</option>
-                      <option value="review">Review</option>
-                      <option value="done">Done</option>
-                    </select>
+                    <div className="relative" ref={editStatusDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setEditStatusDropdownOpen(!editStatusDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      >
+                        <span>{editTaskForm.status === 'todo' ? 'To Do' : editTaskForm.status === 'in_progress' ? 'In Progress' : editTaskForm.status === 'done' ? 'Done' : 'Review'}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {editStatusDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                          <div className="flex flex-col gap-1">
+                            {[{value: 'todo', label: 'To Do'}, {value: 'in_progress', label: 'In Progress'}, {value: 'done', label: 'Done'}].map((status) => (
+                              <button
+                                key={status.value}
+                                type="button"
+                                onClick={() => {
+                                  setEditTaskForm({...editTaskForm, status: status.value as Task['status']});
+                                  setEditStatusDropdownOpen(false);
+                                }}
+                                className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                                  editTaskForm.status === status.value
+                                    ? 'bg-[#3AB7BF] text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                              >
+                                {status.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
