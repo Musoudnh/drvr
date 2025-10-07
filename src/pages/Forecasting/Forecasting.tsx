@@ -1706,11 +1706,25 @@ const Forecasting: React.FC = () => {
                       const labelData = getDateLabel(period, index);
                       const isOuterYear = dateViewMode !== 'months' && labelData.year !== selectedYear;
 
+                      const isSelectedYearQuarter = dateViewMode === 'quarters' &&
+                                                    period.year === selectedYear;
+
+                      const isFirstSelectedQuarter = isSelectedYearQuarter && period.period === 'Q1';
+                      const isLastSelectedQuarter = isSelectedYearQuarter && period.period === 'Q4';
+
                       return (
                         <th
                           key={index}
                           className={`py-3 font-bold ${
-                            isOuterYear ? 'text-gray-500 bg-gray-50' : 'text-gray-800'
+                            isSelectedYearQuarter
+                              ? 'bg-purple-100 text-purple-900'
+                              : isOuterYear
+                                ? 'text-gray-500'
+                                : 'text-gray-800'
+                          } ${
+                            isFirstSelectedQuarter ? 'rounded-tl-lg' : ''
+                          } ${
+                            isLastSelectedQuarter ? 'rounded-tr-lg' : ''
                           } ${
                             dateViewMode === 'months'
                               ? 'text-center px-2 min-w-[120px]'
@@ -1736,10 +1750,10 @@ const Forecasting: React.FC = () => {
                             </div>
                           ) : dateViewMode === 'quarters' ? (
                             <div className="flex flex-col">
-                              <span className={`text-sm ${
-                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
+                              <span className={`text-sm font-normal ${
+                                isSelectedYearQuarter ? 'text-purple-900' : isOuterYear ? 'text-gray-500' : 'text-gray-800'
                               }`}>{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">{getQuarterLabel(period.period)}</span>
+                              <span className={`text-sm font-normal ${isSelectedYearQuarter ? 'text-purple-700' : 'text-gray-500'}`}>{getQuarterLabel(period.period)}</span>
                             </div>
                           ) : (
                             period
