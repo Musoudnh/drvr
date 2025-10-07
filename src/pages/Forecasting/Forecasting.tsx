@@ -132,6 +132,16 @@ const Forecasting: React.FC = () => {
   const [showMonthDropdown, setShowMonthDropdown] = useState(false);
   const monthDropdownRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [showCommentsSidebar, setShowCommentsSidebar] = useState(false);
+  const [commentFilterUser, setCommentFilterUser] = useState<string>('all');
+  const [commentFilterDept, setCommentFilterDept] = useState<string>('all');
+  const [commentFilterMonth, setCommentFilterMonth] = useState<string>('all');
+  const [showCommentUserDropdown, setShowCommentUserDropdown] = useState(false);
+  const [showCommentDeptDropdown, setShowCommentDeptDropdown] = useState(false);
+  const [showCommentMonthDropdown, setShowCommentMonthDropdown] = useState(false);
+  const commentUserDropdownRef = useRef<HTMLDivElement>(null);
+  const commentDeptDropdownRef = useRef<HTMLDivElement>(null);
+  const commentMonthDropdownRef = useRef<HTMLDivElement>(null);
 
   // Debug: Log component version
   React.useEffect(() => {
@@ -150,15 +160,27 @@ const Forecasting: React.FC = () => {
       if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
         setShowMonthDropdown(false);
       }
+      if (commentUserDropdownRef.current && !commentUserDropdownRef.current.contains(event.target as Node)) {
+        setShowCommentUserDropdown(false);
+      }
+      if (commentDeptDropdownRef.current && !commentDeptDropdownRef.current.contains(event.target as Node)) {
+        setShowCommentDeptDropdown(false);
+      }
+      if (commentMonthDropdownRef.current && !commentMonthDropdownRef.current.contains(event.target as Node)) {
+        setShowCommentMonthDropdown(false);
+      }
     };
 
     const handleScroll = () => {
       setContextMenu(null);
       setDriverDropdownOpen(null);
       setShowMonthDropdown(false);
+      setShowCommentUserDropdown(false);
+      setShowCommentDeptDropdown(false);
+      setShowCommentMonthDropdown(false);
     };
 
-    if (contextMenu || driverDropdownOpen || showMonthDropdown) {
+    if (contextMenu || driverDropdownOpen || showMonthDropdown || showCommentUserDropdown || showCommentDeptDropdown || showCommentMonthDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('scroll', handleScroll, true);
     }
@@ -167,7 +189,7 @@ const Forecasting: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('scroll', handleScroll, true);
     };
-  }, [contextMenu, driverDropdownOpen, showMonthDropdown]);
+  }, [contextMenu, driverDropdownOpen, showMonthDropdown, showCommentUserDropdown, showCommentDeptDropdown, showCommentMonthDropdown]);
 
   const handleContextMenu = (event: React.MouseEvent, rowData: any) => {
     event.preventDefault();
@@ -274,6 +296,78 @@ const Forecasting: React.FC = () => {
     console.log('Duplicate row:', rowData);
     setContextMenu(null);
   };
+
+  // Mock comments data
+  const mockComments = [
+    {
+      id: '1',
+      user: 'Sarah Johnson',
+      userInitials: 'SJ',
+      department: 'Sales',
+      glCode: '4000',
+      glName: 'Product Revenue',
+      month: 'Jan 2025',
+      comment: 'Q1 projections look strong. **Key driver**: New enterprise deals expected to close.\n• Deal A: $50K MRR\n• Deal B: $75K MRR\n\n@mike Please validate pipeline.',
+      timestamp: new Date('2025-01-15T10:30:00'),
+    },
+    {
+      id: '2',
+      user: 'Mike Chen',
+      userInitials: 'MC',
+      department: 'Finance',
+      glCode: '5100',
+      glName: 'Salaries & Wages',
+      month: 'Feb 2025',
+      comment: 'Updated headcount plan includes 3 new hires:\n• Senior Engineer - Feb 15\n• Product Manager - Feb 20\n• Sales Rep - Mar 1\n\nBudget impact: _$45K/month additional_',
+      timestamp: new Date('2025-02-01T14:20:00'),
+    },
+    {
+      id: '3',
+      user: 'Emily Davis',
+      userInitials: 'ED',
+      department: 'Marketing',
+      glCode: '6200',
+      glName: 'Marketing & Advertising',
+      month: 'Mar 2025',
+      comment: '**Campaign Launch Alert**\n\nPlanning major campaign for product launch:\n• Digital ads: $25K\n• Content creation: $15K\n• Events: $10K\n\nExpected ROI: 3.5x based on historical data',
+      timestamp: new Date('2025-03-05T09:15:00'),
+    },
+    {
+      id: '4',
+      user: 'Alex Turner',
+      userInitials: 'AT',
+      department: 'Operations',
+      glCode: '7100',
+      glName: 'Rent & Utilities',
+      month: 'Jan 2025',
+      comment: 'Lease renewal completed. New rate: _$12K/month_ (up from $10K).\n\nIncludes:\n• Base rent\n• Utilities\n• Parking spaces',
+      timestamp: new Date('2025-01-20T16:45:00'),
+    },
+    {
+      id: '5',
+      user: 'Sarah Johnson',
+      userInitials: 'SJ',
+      department: 'Sales',
+      glCode: '4100',
+      glName: 'Service Revenue',
+      month: 'Apr 2025',
+      comment: 'Professional services backlog is healthy. Expecting **$150K in consulting revenue** this quarter.\n\n@emily Let\'s coordinate on the case study.',
+      timestamp: new Date('2025-04-02T11:00:00'),
+    },
+  ];
+
+  // Filter comments based on selected filters
+  const filteredComments = mockComments.filter(comment => {
+    if (commentFilterUser !== 'all' && comment.user !== commentFilterUser) return false;
+    if (commentFilterDept !== 'all' && comment.department !== commentFilterDept) return false;
+    if (commentFilterMonth !== 'all' && comment.month !== commentFilterMonth) return false;
+    return true;
+  });
+
+  // Get unique values for filters
+  const uniqueUsers = Array.from(new Set(mockComments.map(c => c.user)));
+  const uniqueDepts = Array.from(new Set(mockComments.map(c => c.department)));
+  const uniqueMonths = Array.from(new Set(mockComments.map(c => c.month)));
 
   const handleDeleteRow = (rowData: any) => {
     console.log('Delete row:', rowData);
@@ -1527,6 +1621,13 @@ const Forecasting: React.FC = () => {
           >
             <Save className="w-4 h-4 mr-2" />
             Save Forecast
+          </button>
+          <button
+            onClick={() => setShowCommentsSidebar(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+          >
+            <MessageSquare className="w-4 h-4 mr-2" />
+            Comments
           </button>
           <button
             onClick={() => setShowScenarioAuditSidebar(true)}
@@ -3881,6 +3982,219 @@ const Forecasting: React.FC = () => {
             Delete
           </button>
         </div>
+      )}
+
+      {/* Comments Sidebar */}
+      {showCommentsSidebar && (
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowCommentsSidebar(false)}
+          />
+          <div className="fixed right-0 top-0 h-full w-[500px] bg-white shadow-2xl z-50 flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#7B68EE] to-[#9D8FEC] text-white">
+              <div>
+                <h3 className="text-lg font-semibold">Comments</h3>
+                <p className="text-sm text-white/80">{filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''}</p>
+              </div>
+              <button
+                onClick={() => setShowCommentsSidebar(false)}
+                className="p-1 hover:bg-white/20 rounded transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Filters */}
+            <div className="p-4 border-b border-gray-200 bg-gray-50">
+              <div className="grid grid-cols-3 gap-3">
+                {/* User Filter */}
+                <div className="relative" ref={commentUserDropdownRef}>
+                  <button
+                    onClick={() => setShowCommentUserDropdown(!showCommentUserDropdown)}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="truncate">{commentFilterUser === 'all' ? 'All Users' : commentFilterUser}</span>
+                    <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentUserDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showCommentUserDropdown && (
+                    <div className="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-64 overflow-y-auto">
+                      <button
+                        onClick={() => {
+                          setCommentFilterUser('all');
+                          setShowCommentUserDropdown(false);
+                        }}
+                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          commentFilterUser === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                        }`}
+                      >
+                        All Users
+                      </button>
+                      {uniqueUsers.map(user => (
+                        <button
+                          key={user}
+                          onClick={() => {
+                            setCommentFilterUser(user);
+                            setShowCommentUserDropdown(false);
+                          }}
+                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                            commentFilterUser === user ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                          }`}
+                        >
+                          {user}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Department Filter */}
+                <div className="relative" ref={commentDeptDropdownRef}>
+                  <button
+                    onClick={() => setShowCommentDeptDropdown(!showCommentDeptDropdown)}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="truncate">{commentFilterDept === 'all' ? 'All Depts' : commentFilterDept}</span>
+                    <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentDeptDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showCommentDeptDropdown && (
+                    <div className="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-64 overflow-y-auto">
+                      <button
+                        onClick={() => {
+                          setCommentFilterDept('all');
+                          setShowCommentDeptDropdown(false);
+                        }}
+                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          commentFilterDept === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                        }`}
+                      >
+                        All Departments
+                      </button>
+                      {uniqueDepts.map(dept => (
+                        <button
+                          key={dept}
+                          onClick={() => {
+                            setCommentFilterDept(dept);
+                            setShowCommentDeptDropdown(false);
+                          }}
+                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                            commentFilterDept === dept ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                          }`}
+                        >
+                          {dept}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Month Filter */}
+                <div className="relative" ref={commentMonthDropdownRef}>
+                  <button
+                    onClick={() => setShowCommentMonthDropdown(!showCommentMonthDropdown)}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="truncate">{commentFilterMonth === 'all' ? 'All Months' : commentFilterMonth}</span>
+                    <ChevronDown className={`w-4 h-4 text-gray-500 flex-shrink-0 ml-2 transition-transform ${showCommentMonthDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showCommentMonthDropdown && (
+                    <div className="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-64 overflow-y-auto">
+                      <button
+                        onClick={() => {
+                          setCommentFilterMonth('all');
+                          setShowCommentMonthDropdown(false);
+                        }}
+                        className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                          commentFilterMonth === 'all' ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                        }`}
+                      >
+                        All Months
+                      </button>
+                      {uniqueMonths.map(month => (
+                        <button
+                          key={month}
+                          onClick={() => {
+                            setCommentFilterMonth(month);
+                            setShowCommentMonthDropdown(false);
+                          }}
+                          className={`w-full px-3 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${
+                            commentFilterMonth === month ? 'bg-[#7B68EE] text-white hover:bg-[#6A5ADB]' : 'text-gray-700'
+                          }`}
+                        >
+                          {month}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Comments List */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {filteredComments.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                  <MessageSquare className="w-12 h-12 mb-2" />
+                  <p className="text-sm">No comments found</p>
+                </div>
+              ) : (
+                filteredComments.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7B68EE] to-[#9D8FEC] flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+                        {comment.userInitials}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold text-gray-900 text-sm">{comment.user}</span>
+                          <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                            {comment.department}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <span className="font-mono">{comment.glCode}</span>
+                          <span>•</span>
+                          <span>{comment.glName}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-3 px-1">
+                      <div className="text-sm text-gray-700 whitespace-pre-wrap break-words font-mono leading-relaxed">
+                        {comment.comment.split('\n').map((line, i) => (
+                          <div key={i} className="mb-1">
+                            {line.split(/(\*\*.*?\*\*|_.*?_|@\w+)/).map((part, j) => {
+                              if (part.startsWith('**') && part.endsWith('**')) {
+                                return <strong key={j} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
+                              } else if (part.startsWith('_') && part.endsWith('_')) {
+                                return <em key={j} className="italic">{part.slice(1, -1)}</em>;
+                              } else if (part.startsWith('@')) {
+                                return <span key={j} className="text-[#7B68EE] font-medium">{part}</span>;
+                              }
+                              return <span key={j}>{part}</span>;
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <Calendar className="w-3 h-3" />
+                        <span>{comment.month}</span>
+                        <span>•</span>
+                        <span>{comment.timestamp.toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Notes Panel */}
