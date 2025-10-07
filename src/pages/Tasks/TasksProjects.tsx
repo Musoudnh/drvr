@@ -83,12 +83,16 @@ const TasksProjects: React.FC = () => {
   const [editAssigneeDropdownOpen, setEditAssigneeDropdownOpen] = useState(false);
   const [editPriorityDropdownOpen, setEditPriorityDropdownOpen] = useState(false);
   const [editStatusDropdownOpen, setEditStatusDropdownOpen] = useState(false);
+  const [dueDateDropdownOpen, setDueDateDropdownOpen] = useState(false);
+  const [editDueDateDropdownOpen, setEditDueDateDropdownOpen] = useState(false);
   const assigneeDropdownRef = useRef<HTMLDivElement>(null);
   const priorityModalDropdownRef = useRef<HTMLDivElement>(null);
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const editAssigneeDropdownRef = useRef<HTMLDivElement>(null);
   const editPriorityDropdownRef = useRef<HTMLDivElement>(null);
   const editStatusDropdownRef = useRef<HTMLDivElement>(null);
+  const dueDateDropdownRef = useRef<HTMLDivElement>(null);
+  const editDueDateDropdownRef = useRef<HTMLDivElement>(null);
 
   const [tabs, setTabs] = useState<Array<{
     id: string;
@@ -362,6 +366,12 @@ const TasksProjects: React.FC = () => {
       }
       if (editStatusDropdownRef.current && !editStatusDropdownRef.current.contains(e.target as Node)) {
         setEditStatusDropdownOpen(false);
+      }
+      if (dueDateDropdownRef.current && !dueDateDropdownRef.current.contains(e.target as Node)) {
+        setDueDateDropdownOpen(false);
+      }
+      if (editDueDateDropdownRef.current && !editDueDateDropdownRef.current.contains(e.target as Node)) {
+        setEditDueDateDropdownOpen(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -923,13 +933,30 @@ const TasksProjects: React.FC = () => {
               
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Due Date *</label>
-                <input
-                  type="date"
-                  value={newTask.dueDate}
-                  onChange={(e) => setNewTask({...newTask, dueDate: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
-                  min={new Date().toISOString().split('T')[0]}
-                />
+                <div className="relative" ref={dueDateDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setDueDateDropdownOpen(!dueDateDropdownOpen)}
+                    className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  >
+                    <span>{newTask.dueDate || 'Select due date'}</span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {dueDateDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
+                      <input
+                        type="date"
+                        value={newTask.dueDate}
+                        onChange={(e) => {
+                          setNewTask({...newTask, dueDate: e.target.value});
+                          setDueDateDropdownOpen(false);
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
+                        min={new Date().toISOString().split('T')[0]}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
@@ -1050,12 +1077,29 @@ const TasksProjects: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-2">Due Date</label>
-                    <input
-                      type="date"
-                      value={editTaskForm.dueDate.toISOString().split('T')[0]}
-                      onChange={(e) => setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
-                    />
+                    <div className="relative" ref={editDueDateDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setEditDueDateDropdownOpen(!editDueDateDropdownOpen)}
+                        className="w-full px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-xs font-medium transition-colors hover:bg-gray-50 flex items-center justify-between"
+                      >
+                        <span>{editTaskForm.dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        <ChevronDown className="w-4 h-4 ml-1" />
+                      </button>
+                      {editDueDateDropdownOpen && (
+                        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-3 w-full">
+                          <input
+                            type="date"
+                            value={editTaskForm.dueDate.toISOString().split('T')[0]}
+                            onChange={(e) => {
+                              setEditTaskForm({...editTaskForm, dueDate: new Date(e.target.value)});
+                              setEditDueDateDropdownOpen(false);
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-xs"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
