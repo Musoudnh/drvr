@@ -120,6 +120,7 @@ const Forecasting: React.FC = () => {
   const [showAccountCodes, setShowAccountCodes] = useState(() => getViewSettings().showAccountCodes);
   const [showActualsAsAmount, setShowActualsAsAmount] = useState(() => getViewSettings().showActualsAsAmount);
   const [numberFormat, setNumberFormat] = useState<'actual' | 'thousands' | 'millions'>(() => getViewSettings().numberFormat);
+  const [fontSize, setFontSize] = useState<12 | 13 | 14>(() => getViewSettings().fontSize);
   const [showFormatDropdown, setShowFormatDropdown] = useState(false);
   const [showViewSettingsPanel, setShowViewSettingsPanel] = useState(false);
   const [contextMenu, setContextMenu] = useState<{x: number, y: number, rowData: any} | null>(null);
@@ -1878,7 +1879,7 @@ const Forecasting: React.FC = () => {
               : `Yearly Forecast (All Years)`
           }>
             <div className="overflow-x-auto">
-              <table className="w-full text-xs">
+              <table className="w-full" style={{ fontSize: `${fontSize}px` }}>
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="border-b-2 border-gray-300">
                     <th className="text-left py-3 px-4 font-bold text-gray-800 w-64 sticky left-0 bg-white">Account</th>
@@ -3197,6 +3198,11 @@ const Forecasting: React.FC = () => {
         onNumberFormatChange={(value) => {
           setNumberFormat(value);
           updateViewSetting('numberFormat', value);
+        }}
+        fontSize={fontSize}
+        onFontSizeChange={(value) => {
+          setFontSize(value);
+          updateViewSetting('fontSize', value);
         }}
         onSave={() => {}}
       />
