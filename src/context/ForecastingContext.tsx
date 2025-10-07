@@ -11,6 +11,14 @@ interface MonthlyForecast {
   isEditable: boolean;
 }
 
+interface ExpenseAccountDetail {
+  glCode: string;
+  budget: number;
+  actual: number;
+  variance: number;
+  variancePercent: number;
+}
+
 interface ForecastingContextType {
   forecastData: MonthlyForecast[];
   setForecastData: (data: MonthlyForecast[]) => void;
@@ -26,6 +34,7 @@ interface ForecastingContextType {
     py: number;
     hasActual: boolean;
   };
+  getExpenseAccountDetails: (month: string) => ExpenseAccountDetail[];
 }
 
 const ForecastingContext = createContext<ForecastingContextType | undefined>(undefined);
@@ -141,8 +150,38 @@ export const ForecastingProvider: React.FC<ForecastingProviderProps> = ({ childr
     };
   };
 
+  const getExpenseAccountDetails = (month: string): ExpenseAccountDetail[] => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const [monthName, yearStr] = month.split(' ');
+    const year = parseInt(yearStr);
+    const monthIndex = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(monthName);
+
+    const isHistorical = year < currentYear || (year === currentYear && monthIndex <= currentMonth);
+
+    const monthData = forecastData.filter(item =>
+      item.month === month &&
+      (item.glCode.startsWith('5') || item.glCode.startsWith('6') || item.glCode.startsWith('7'))
+    );
+
+    return monthData.map(item => {
+      const budget = item.forecastedAmount;
+      const actual = isHistorical ? (item.actualAmount || item.forecastedAmount) : item.forecastedAmount;
+      const variance = actual - budget;
+      const variancePercent = budget > 0 ? (variance / budget) * 100 : 0;
+
+      return {
+        glCode: item.glCode,
+        budget,
+        actual,
+        variance,
+        variancePercent
+      };
+    }).filter(item => item.budget !== 0 || item.actual !== 0);
+  };
+
   return (
-    <ForecastingContext.Provider value={{ forecastData, setForecastData, getMonthlyTotals, getMonthlyExpenseTotals }}>
+    <ForecastingContext.Provider value={{ forecastData, setForecastData, getMonthlyTotals, getMonthlyExpenseTotals, getExpenseAccountDetails }}>
       {children}
     </ForecastingContext.Provider>
   );
