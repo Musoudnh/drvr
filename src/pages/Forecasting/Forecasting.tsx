@@ -447,10 +447,12 @@ const Forecasting: React.FC = () => {
   const [sidePanelStartMonthDropdownOpen, setSidePanelStartMonthDropdownOpen] = useState(false);
   const [sidePanelEndMonthDropdownOpen, setSidePanelEndMonthDropdownOpen] = useState(false);
   const [sidePanelAdjustmentTypeDropdownOpen, setSidePanelAdjustmentTypeDropdownOpen] = useState(false);
+  const [bulkAdjustmentTypeDropdownOpen, setBulkAdjustmentTypeDropdownOpen] = useState(false);
   const startMonthDropdownRef = useRef<HTMLDivElement>(null);
   const startYearDropdownRef = useRef<HTMLDivElement>(null);
   const endMonthDropdownRef = useRef<HTMLDivElement>(null);
   const endYearDropdownRef = useRef<HTMLDivElement>(null);
+  const bulkAdjustmentTypeDropdownRef = useRef<HTMLDivElement>(null);
   const adjustmentTypeDropdownRef = useRef<HTMLDivElement>(null);
   const sidePanelStartMonthDropdownRef = useRef<HTMLDivElement>(null);
   const sidePanelEndMonthDropdownRef = useRef<HTMLDivElement>(null);
@@ -897,6 +899,9 @@ const Forecasting: React.FC = () => {
       }
       if (sidePanelAdjustmentTypeDropdownRef.current && !sidePanelAdjustmentTypeDropdownRef.current.contains(event.target as Node)) {
         setSidePanelAdjustmentTypeDropdownOpen(false);
+      }
+      if (bulkAdjustmentTypeDropdownRef.current && !bulkAdjustmentTypeDropdownRef.current.contains(event.target as Node)) {
+        setBulkAdjustmentTypeDropdownOpen(false);
       }
       const formatDropdown = document.querySelector('.format-dropdown-container');
       if (formatDropdown && !formatDropdown.contains(event.target as Node)) {
@@ -3215,15 +3220,68 @@ const Forecasting: React.FC = () => {
                 <label className="block text-xs font-medium text-gray-700 mb-2">
                   Adjustment Type
                 </label>
-                <select
-                  value={bulkAdjustment.type}
-                  onChange={(e) => setBulkAdjustment({ ...bulkAdjustment, type: e.target.value as 'percentage' | 'fixed' | 'set' })}
-                  className="w-full px-3 py-2 bg-white border border-gray-300 rounded text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="percentage">Percentage Change</option>
-                  <option value="fixed">Fixed Amount Change</option>
-                  <option value="set">Set to Specific Value</option>
-                </select>
+                <div className="relative" ref={bulkAdjustmentTypeDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setBulkAdjustmentTypeDropdownOpen(!bulkAdjustmentTypeDropdownOpen)}
+                    className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                  >
+                    <span>
+                      {bulkAdjustment.type === 'percentage' && 'Percentage Change'}
+                      {bulkAdjustment.type === 'fixed' && 'Fixed Amount Change'}
+                      {bulkAdjustment.type === 'set' && 'Set to Specific Value'}
+                    </span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {bulkAdjustmentTypeDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[200px]">
+                      <div className="flex flex-col gap-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBulkAdjustment({ ...bulkAdjustment, type: 'percentage' });
+                            setBulkAdjustmentTypeDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            bulkAdjustment.type === 'percentage'
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          Percentage Change
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBulkAdjustment({ ...bulkAdjustment, type: 'fixed' });
+                            setBulkAdjustmentTypeDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            bulkAdjustment.type === 'fixed'
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          Fixed Amount Change
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBulkAdjustment({ ...bulkAdjustment, type: 'set' });
+                            setBulkAdjustmentTypeDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            bulkAdjustment.type === 'set'
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          Set to Specific Value
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div>
