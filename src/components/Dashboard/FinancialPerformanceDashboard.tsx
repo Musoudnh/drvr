@@ -139,8 +139,8 @@ const FinancialPerformanceDashboard: React.FC = () => {
               <span className="text-xs text-gray-600">Budget (Line)</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-1 rounded" style={{ backgroundColor: pyLineColor }}></div>
-              <span className="text-xs text-gray-600">Prior Year (Line)</span>
+              <div className="w-4 h-4 rounded" style={{ backgroundColor: pyLineColor }}></div>
+              <span className="text-xs text-gray-600">Prior Year (Bar)</span>
             </div>
             <div className="relative ml-2">
               <button
@@ -256,11 +256,20 @@ const FinancialPerformanceDashboard: React.FC = () => {
               />
 
               <Bar
+                dataKey="PY"
+                name="Prior Year"
+                fill={pyLineColor}
+                radius={[6, 6, 0, 0]}
+                barSize={35}
+                isAnimationActive={true}
+              />
+
+              <Bar
                 dataKey="Actual"
                 name="Actual"
                 fill={barColor}
                 radius={[6, 6, 0, 0]}
-                barSize={80}
+                barSize={35}
                 isAnimationActive={true}
                 shape={(props: any) => {
                   const { x, y, width, height, payload } = props;
@@ -290,16 +299,6 @@ const FinancialPerformanceDashboard: React.FC = () => {
                 isAnimationActive={true}
               />
 
-              <Line
-                type="monotone"
-                dataKey="PY"
-                name="Prior Year"
-                stroke={pyLineColor}
-                strokeWidth={3}
-                dot={{ r: 5, fill: pyLineColor, strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 7 }}
-                isAnimationActive={true}
-              />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
