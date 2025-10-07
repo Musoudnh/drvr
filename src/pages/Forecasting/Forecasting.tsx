@@ -1708,6 +1708,8 @@ const Forecasting: React.FC = () => {
 
                       const isSelectedYearQuarter = dateViewMode === 'quarters' &&
                                                     period.year === selectedYear;
+                      const isSelectedYear = dateViewMode === 'years' &&
+                                            parseInt(labelData.label) === selectedYear;
 
                       const isFirstSelectedQuarter = isSelectedYearQuarter && period.period === 'Q1';
                       const isLastSelectedQuarter = isSelectedYearQuarter && period.period === 'Q4';
@@ -1716,15 +1718,15 @@ const Forecasting: React.FC = () => {
                         <th
                           key={index}
                           className={`py-3 font-bold ${
-                            isSelectedYearQuarter
+                            isSelectedYearQuarter || isSelectedYear
                               ? 'bg-[#7B68EE] text-white'
                               : isOuterYear
                                 ? 'text-gray-500'
                                 : 'text-gray-800'
                           } ${
-                            isFirstSelectedQuarter ? 'rounded-tl-lg border-l-2 border-l-gray-300' : ''
+                            (isFirstSelectedQuarter || isSelectedYear) ? 'rounded-tl-lg border-l-2 border-l-gray-300' : ''
                           } ${
-                            isLastSelectedQuarter ? 'rounded-tr-lg border-r-2 border-r-gray-300' : ''
+                            (isLastSelectedQuarter || isSelectedYear) ? 'rounded-tr-lg border-r-2 border-r-gray-300' : ''
                           } ${
                             dateViewMode === 'months'
                               ? 'text-center px-2 min-w-[120px]'
@@ -1736,9 +1738,11 @@ const Forecasting: React.FC = () => {
                           {dateViewMode === 'years' ? (
                             <div className="flex flex-col">
                               <span className={`text-sm ${
-                                isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
+                                isSelectedYear ? 'text-white font-bold' : isOuterYear ? 'text-gray-500 font-normal' : 'font-bold'
                               }`}>FY{labelData.label}</span>
-                              <span className="text-xs font-normal text-gray-400">
+                              <span className={`text-xs font-normal ${
+                                isSelectedYear ? 'text-white' : 'text-gray-400'
+                              }`}>
                                 {(() => {
                                   const year = parseInt(labelData.label);
                                   const currentYear = new Date().getFullYear();
@@ -1932,6 +1936,7 @@ const Forecasting: React.FC = () => {
                                 const isEditing = dateViewMode === 'months' && editingCell?.glCode === glCode.code && editingCell?.month === periodKey;
                                 const isSelected = dateViewMode === 'months' && isCellSelected(glCode.code, periodKey);
                                 const isSelectedYearQuarter = dateViewMode === 'quarters' && period.year === selectedYear;
+                                const isSelectedYearInYearsView = dateViewMode === 'years' && labelData && labelData.year === selectedYear;
                                 const isFirstSelectedQuarter = isSelectedYearQuarter && period.period === 'Q1';
                                 const isLastSelectedQuarter = isSelectedYearQuarter && period.period === 'Q4';
 
@@ -1939,11 +1944,11 @@ const Forecasting: React.FC = () => {
                                   <td
                                     key={periodIndex}
                                     className={`py-3 ${
-                                      isSelectedYearQuarter ? 'bg-[#7B68EE]' : isOuterYear ? 'bg-gray-50/50' : ''
+                                      isSelectedYearQuarter || isSelectedYearInYearsView ? 'bg-[#7B68EE]' : isOuterYear ? 'bg-gray-50/50' : ''
                                     } ${
-                                      isFirstSelectedQuarter ? 'border-l-2 border-l-gray-300' : ''
+                                      (isFirstSelectedQuarter || isSelectedYearInYearsView) ? 'border-l-2 border-l-gray-300' : ''
                                     } ${
-                                      isLastSelectedQuarter ? 'border-r-2 border-r-gray-300' : ''
+                                      (isLastSelectedQuarter || isSelectedYearInYearsView) ? 'border-r-2 border-r-gray-300' : ''
                                     } ${
                                       dateViewMode === 'months'
                                         ? 'text-center px-2'
@@ -1975,7 +1980,7 @@ const Forecasting: React.FC = () => {
                                         <div className={`${dateViewMode === 'months' && expandedGLCodes.includes(glCode.code) ? 'mt-1 space-y-1' : dateViewMode !== 'months' ? '' : 'hidden'}`}>
                                           {dateViewMode !== 'months' ? (
                                             <div className={`text-sm font-medium ${
-                                              isSelectedYearQuarter ? 'text-white' : 'text-[#212b36]'
+                                              isSelectedYearQuarter || isSelectedYearInYearsView ? 'text-white' : 'text-[#212b36]'
                                             }`}>
                                               ${formatNumber(aggregatedAmount)}
                                             </div>
