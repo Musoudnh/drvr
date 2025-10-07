@@ -1621,7 +1621,6 @@ const Forecasting: React.FC = () => {
             onClick={() => setShowScenarioAuditSidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
-            <History className="w-4 h-4 mr-2" />
             Applied Drivers
           </button>
         </div>
@@ -1631,30 +1630,30 @@ const Forecasting: React.FC = () => {
           <button
             onClick={() => setShowSaveForecastModal(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="Save Forecast"
           >
-            <Save className="w-4 h-4 mr-2" />
-            Save Forecast
+            <Save className="w-4 h-4" />
           </button>
           <button
             onClick={() => setShowCommentsSidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="Comments"
           >
-            <MessageSquare className="w-4 h-4 mr-2" />
-            Comments
+            <MessageSquare className="w-4 h-4" />
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="Version History"
           >
-            <History className="w-4 h-4 mr-2" />
-            Version History
+            <History className="w-4 h-4" />
           </button>
           <button
             onClick={() => setShowAlertsSidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="Alerts"
           >
-            <Bell className="w-4 h-4 mr-2" />
-            Alerts
+            <Bell className="w-4 h-4" />
           </button>
           <button
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
