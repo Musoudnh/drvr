@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles, Calculator, MessageSquare, Copy, Trash2 } from 'lucide-react';
+import { Target, Calendar, Filter, Download, Settings, BarChart3, TrendingUp, TrendingDown, Plus, Search, Eye, CreditCard as Edit3, Save, X, ChevronDown, ChevronRight, History, MoreVertical, CreditCard as Edit2, EyeOff, Hash, Bell, AlertTriangle, CheckCircle, Info, DollarSign, PieChart, Sparkles, Calculator, MessageSquare, Copy, Trash2, Bold, Italic, List, AtSign, Link, FileText } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
@@ -129,6 +129,9 @@ const Forecasting: React.FC = () => {
   const driverDropdownRef = useRef<HTMLDivElement>(null);
   const [showNotesPanel, setShowNotesPanel] = useState(false);
   const [notesData, setNotesData] = useState<{glCode: GLCode, month: string, note: string} | null>(null);
+  const [showMonthDropdown, setShowMonthDropdown] = useState(false);
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Debug: Log component version
   React.useEffect(() => {
@@ -144,14 +147,18 @@ const Forecasting: React.FC = () => {
       if (driverDropdownRef.current && !driverDropdownRef.current.contains(event.target as Node)) {
         setDriverDropdownOpen(null);
       }
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
+        setShowMonthDropdown(false);
+      }
     };
 
     const handleScroll = () => {
       setContextMenu(null);
       setDriverDropdownOpen(null);
+      setShowMonthDropdown(false);
     };
 
-    if (contextMenu || driverDropdownOpen) {
+    if (contextMenu || driverDropdownOpen || showMonthDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('scroll', handleScroll, true);
     }
@@ -160,7 +167,7 @@ const Forecasting: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('scroll', handleScroll, true);
     };
-  }, [contextMenu, driverDropdownOpen]);
+  }, [contextMenu, driverDropdownOpen, showMonthDropdown]);
 
   const handleContextMenu = (event: React.MouseEvent, rowData: any) => {
     event.preventDefault();
@@ -190,11 +197,63 @@ const Forecasting: React.FC = () => {
     console.log('Saving note:', notesData);
     setShowNotesPanel(false);
     setNotesData(null);
+    setShowMonthDropdown(false);
   };
 
   const handleCloseNotesPanel = () => {
     setShowNotesPanel(false);
     setNotesData(null);
+    setShowMonthDropdown(false);
+  };
+
+  const insertTextFormat = (format: 'bold' | 'italic' | 'bullet' | 'mention' | 'link') => {
+    if (!textareaRef.current || !notesData) return;
+
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = notesData.note.substring(start, end);
+    const beforeText = notesData.note.substring(0, start);
+    const afterText = notesData.note.substring(end);
+
+    let newText = '';
+    let cursorOffset = 0;
+
+    switch(format) {
+      case 'bold':
+        newText = `${beforeText}**${selectedText || 'bold text'}**${afterText}`;
+        cursorOffset = selectedText ? 2 : 2;
+        break;
+      case 'italic':
+        newText = `${beforeText}_${selectedText || 'italic text'}_${afterText}`;
+        cursorOffset = selectedText ? 1 : 1;
+        break;
+      case 'bullet':
+        const lines = notesData.note.split('\n');
+        const currentLineIndex = notesData.note.substring(0, start).split('\n').length - 1;
+        lines[currentLineIndex] = '• ' + (lines[currentLineIndex] || '');
+        newText = lines.join('\n');
+        cursorOffset = 2;
+        break;
+      case 'mention':
+        newText = `${beforeText}@${selectedText || 'username'}${afterText}`;
+        cursorOffset = selectedText ? 1 : 1;
+        break;
+      case 'link':
+        newText = `${beforeText}[${selectedText || 'link text'}](url)${afterText}`;
+        cursorOffset = selectedText ? selectedText.length + 3 : 10;
+        break;
+    }
+
+    setNotesData({...notesData, note: newText});
+
+    setTimeout(() => {
+      if (textarea) {
+        const newPosition = format === 'bullet' ? start + cursorOffset : start + cursorOffset + (selectedText ? selectedText.length : 0);
+        textarea.focus();
+        textarea.setSelectionRange(newPosition, newPosition);
+      }
+    }, 0);
   };
 
   const handleViewDetails = (rowData: any) => {
@@ -3853,18 +3912,44 @@ const Forecasting: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                <select
-                  value={notesData.month}
-                  onChange={(e) => setNotesData({...notesData, month: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="">Select month...</option>
-                  {months.map(month => (
-                    <option key={month} value={`${month} ${selectedYear}`}>
-                      {month} {selectedYear}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative" ref={monthDropdownRef}>
+                  <button
+                    onClick={() => setShowMonthDropdown(!showMonthDropdown)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent bg-white text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  >
+                    <span className={notesData.month ? 'text-gray-900' : 'text-gray-400'}>
+                      {notesData.month || 'Select month...'}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showMonthDropdown ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {showMonthDropdown && (
+                    <div className="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-xl border border-gray-200 max-h-64 overflow-y-auto">
+                      <div className="p-2 grid grid-cols-3 gap-1">
+                        {months.map(month => {
+                          const monthValue = `${month} ${selectedYear}`;
+                          const isSelected = notesData.month === monthValue;
+                          return (
+                            <button
+                              key={month}
+                              onClick={() => {
+                                setNotesData({...notesData, month: monthValue});
+                                setShowMonthDropdown(false);
+                              }}
+                              className={`px-3 py-2 text-sm rounded-lg transition-colors ${
+                                isSelected
+                                  ? 'bg-[#7B68EE] text-white font-medium'
+                                  : 'text-gray-700 hover:bg-gray-100'
+                              }`}
+                            >
+                              {month}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {notesData.month && (() => {
@@ -3917,13 +4002,73 @@ const Forecasting: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+
+                {/* Formatting Toolbar */}
+                <div className="flex items-center gap-1 p-2 bg-gray-50 border border-gray-300 rounded-t-lg border-b-0">
+                  <button
+                    type="button"
+                    onClick={() => insertTextFormat('bold')}
+                    className="p-1.5 hover:bg-white rounded transition-colors group"
+                    title="Bold (Ctrl+B)"
+                  >
+                    <Bold className="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertTextFormat('italic')}
+                    className="p-1.5 hover:bg-white rounded transition-colors group"
+                    title="Italic (Ctrl+I)"
+                  >
+                    <Italic className="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                  </button>
+                  <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                  <button
+                    type="button"
+                    onClick={() => insertTextFormat('bullet')}
+                    className="p-1.5 hover:bg-white rounded transition-colors group"
+                    title="Bullet Point"
+                  >
+                    <List className="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                  </button>
+                  <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                  <button
+                    type="button"
+                    onClick={() => insertTextFormat('mention')}
+                    className="p-1.5 hover:bg-white rounded transition-colors group"
+                    title="Mention User (@)"
+                  >
+                    <AtSign className="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertTextFormat('link')}
+                    className="p-1.5 hover:bg-white rounded transition-colors group"
+                    title="Add Link"
+                  >
+                    <Link className="w-4 h-4 text-gray-600 group-hover:text-gray-900" />
+                  </button>
+                  <div className="flex-1"></div>
+                  <div className="text-xs text-gray-500">
+                    Markdown supported
+                  </div>
+                </div>
+
                 <textarea
+                  ref={textareaRef}
                   value={notesData.note}
                   onChange={(e) => setNotesData({...notesData, note: e.target.value})}
-                  placeholder="Add your comments here..."
+                  placeholder="Add your comments here... Use @ to mention users, ** for bold, _ for italic"
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-b-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent resize-none font-mono text-sm"
                 />
+
+                {/* Preview hint */}
+                {notesData.note && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    <FileText className="w-3 h-3 inline mr-1" />
+                    Preview: Markdown formatting will be applied when saved
+                  </div>
+                )}
               </div>
             </div>
 
