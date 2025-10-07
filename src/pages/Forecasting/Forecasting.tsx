@@ -1628,18 +1628,18 @@ const Forecasting: React.FC = () => {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowSaveForecastModal(true)}
-            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
-            title="Save Forecast"
-          >
-            <Save className="w-4 h-4" />
-          </button>
-          <button
             onClick={() => setShowCommentsSidebar(true)}
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             title="Comments"
           >
             <MessageSquare className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => setShowSaveForecastModal(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="Save Forecast"
+          >
+            <Save className="w-4 h-4" />
           </button>
           <button
             onClick={() => setShowVersionHistorySidebar(true)}
