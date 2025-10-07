@@ -94,15 +94,6 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title }) => {
         </div>
         
         <div className="flex items-center space-x-3">
-          <div className="relative">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="pl-7 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent text-sm"
-            />
-          </div>
-
           {/* Notifications */}
           <div className="relative" ref={notificationRef}>
             <button
