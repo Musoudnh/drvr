@@ -32,6 +32,36 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
   const [taxBreakdown, setTaxBreakdown] = useState<any>(null);
   const [stateDropdownOpen, setStateDropdownOpen] = useState(false);
 
+  const [startMonth, setStartMonth] = useState('');
+  const [startDay, setStartDay] = useState('');
+  const [startYear, setStartYear] = useState('');
+  const [endMonth, setEndMonth] = useState('');
+  const [endDay, setEndDay] = useState('');
+  const [endYear, setEndYear] = useState('');
+
+  const months = [
+    { value: '01', label: 'January' },
+    { value: '02', label: 'February' },
+    { value: '03', label: 'March' },
+    { value: '04', label: 'April' },
+    { value: '05', label: 'May' },
+    { value: '06', label: 'June' },
+    { value: '07', label: 'July' },
+    { value: '08', label: 'August' },
+    { value: '09', label: 'September' },
+    { value: '10', label: 'October' },
+    { value: '11', label: 'November' },
+    { value: '12', label: 'December' }
+  ];
+
+  const getDaysInMonth = (month: string, year: string) => {
+    if (!month || !year) return 31;
+    return new Date(parseInt(year), parseInt(month), 0).getDate();
+  };
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+
   useEffect(() => {
     if (isOpen) {
       loadStates();
@@ -128,6 +158,12 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
     setNoEndDate(true);
     setTaxBreakdown(null);
     setStateDropdownOpen(false);
+    setStartMonth('');
+    setStartDay('');
+    setStartYear('');
+    setEndMonth('');
+    setEndDay('');
+    setEndYear('');
     onClose();
   };
 
@@ -251,14 +287,53 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
               <label className="block text-xs font-medium text-[#101010] mb-2">
                 Start Date *
               </label>
-              <input
-                type="text"
-                required
-                value={formData.start_date}
-                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
-                placeholder="YYYY-MM-DD"
-              />
+              <div className="grid grid-cols-3 gap-2">
+                <select
+                  required
+                  value={startMonth}
+                  onChange={(e) => {
+                    setStartMonth(e.target.value);
+                    const date = `${startYear || currentYear}-${e.target.value}-${startDay || '01'}`;
+                    setFormData({ ...formData, start_date: date });
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                >
+                  <option value="">Month</option>
+                  {months.map(m => (
+                    <option key={m.value} value={m.value}>{m.label}</option>
+                  ))}
+                </select>
+                <select
+                  required
+                  value={startDay}
+                  onChange={(e) => {
+                    setStartDay(e.target.value);
+                    const date = `${startYear || currentYear}-${startMonth || '01'}-${e.target.value}`;
+                    setFormData({ ...formData, start_date: date });
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                >
+                  <option value="">Day</option>
+                  {Array.from({ length: getDaysInMonth(startMonth, startYear) }, (_, i) => i + 1).map(d => (
+                    <option key={d} value={d.toString().padStart(2, '0')}>{d}</option>
+                  ))}
+                </select>
+                <select
+                  required
+                  value={startYear}
+                  onChange={(e) => {
+                    setStartYear(e.target.value);
+                    const date = `${e.target.value}-${startMonth || '01'}-${startDay || '01'}`;
+                    setFormData({ ...formData, start_date: date });
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                >
+                  <option value="">Year</option>
+                  {years.map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
@@ -274,7 +349,12 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
                   checked={noEndDate}
                   onChange={(e) => {
                     setNoEndDate(e.target.checked);
-                    if (e.target.checked) setEndDate('');
+                    if (e.target.checked) {
+                      setEndDate('');
+                      setEndMonth('');
+                      setEndDay('');
+                      setEndYear('');
+                    }
                   }}
                   className="w-4 h-4 text-[#101010] border-gray-300 rounded focus:ring-[#101010]"
                 />
@@ -283,13 +363,50 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
                 </label>
               </div>
               {!noEndDate && (
-                <input
-                  type="text"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
-                  placeholder="YYYY-MM-DD"
-                />
+                <div className="grid grid-cols-3 gap-2">
+                  <select
+                    value={endMonth}
+                    onChange={(e) => {
+                      setEndMonth(e.target.value);
+                      const date = `${endYear || currentYear}-${e.target.value}-${endDay || '01'}`;
+                      setEndDate(date);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                  >
+                    <option value="">Month</option>
+                    {months.map(m => (
+                      <option key={m.value} value={m.value}>{m.label}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={endDay}
+                    onChange={(e) => {
+                      setEndDay(e.target.value);
+                      const date = `${endYear || currentYear}-${endMonth || '01'}-${e.target.value}`;
+                      setEndDate(date);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                  >
+                    <option value="">Day</option>
+                    {Array.from({ length: getDaysInMonth(endMonth, endYear) }, (_, i) => i + 1).map(d => (
+                      <option key={d} value={d.toString().padStart(2, '0')}>{d}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={endYear}
+                    onChange={(e) => {
+                      setEndYear(e.target.value);
+                      const date = `${e.target.value}-${endMonth || '01'}-${endDay || '01'}`;
+                      setEndDate(date);
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
+                  >
+                    <option value="">Year</option>
+                    {years.map(y => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </div>
               )}
             </div>
           </div>
@@ -482,28 +599,35 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
 
           {editRole && (
             <div className="pt-4 border-t border-gray-200">
-              <Button
+              <button
                 type="button"
-                variant="outline"
                 onClick={() => {
                   if (window.confirm('Are you sure you want to remove this employee?')) {
                     handleClose();
                   }
                 }}
-                className="w-full text-red-600 hover:bg-red-50 border-red-300"
+                className="w-full px-6 py-2.5 text-red-600 hover:bg-red-50 border border-red-300 rounded-lg transition-colors font-medium"
               >
                 Remove Employee
-              </Button>
+              </button>
             </div>
           )}
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-            <Button type="button" variant="outline" onClick={handleClose}>
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 bg-gray-50 -mx-6 -mb-6 px-6 pb-6 mt-6">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="px-6 py-2.5 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors font-medium"
+            >
               Cancel
-            </Button>
-            <Button type="submit" disabled={loading}>
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            >
               {loading ? (editRole ? 'Updating...' : 'Adding Employee...') : (editRole ? 'Update Employee' : 'Add Employee')}
-            </Button>
+            </button>
           </div>
         </form>
         </div>
