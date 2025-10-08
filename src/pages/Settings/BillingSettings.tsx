@@ -30,7 +30,6 @@ const BillingSettings: React.FC = () => {
     { id: '1', type: 'card', last4: '4532', expiryMonth: 12, expiryYear: 2027, isDefault: true, isValid: true },
     { id: '2', type: 'bank', last4: '7890', isDefault: false, isValid: true }
   ]);
-  const [autoPayEnabled, setAutoPayEnabled] = useState(true);
 
   const handleMarkAlertRead = (alertId: string) => {
     // Alert handling logic can be added here if needed
@@ -59,9 +58,6 @@ const BillingSettings: React.FC = () => {
           {/* Plan Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-12 h-8 bg-[#101010] rounded flex items-center justify-center mr-4">
-                <span className="text-white font-medium text-xs">P</span>
-              </div>
               <div>
                 <h3 className="font-medium text-[#101010]">Professional Plan</h3>
                 <div className="flex items-center gap-2">
@@ -140,22 +136,6 @@ const BillingSettings: React.FC = () => {
               </div>
             </div>
           ))}
-          
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium text-[#101010]">Automatic Payments</p>
-              <p className="text-xs text-gray-600">Automatically charge your default payment method</p>
-            </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
-                checked={autoPayEnabled}
-                onChange={() => setAutoPayEnabled(!autoPayEnabled)}
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#3AB7BF]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3AB7BF]"></div>
-            </label>
-          </div>
         </div>
       </Card>
 
