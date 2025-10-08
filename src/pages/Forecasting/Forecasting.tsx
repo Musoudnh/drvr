@@ -1836,31 +1836,27 @@ const Forecasting: React.FC<ForecastingProps> = ({
             </div>
           </div>
 
-          {(dateViewMode === 'quarters' || dateViewMode === 'years') && (
-            <div className="h-8 w-px bg-gray-400"></div>
-          )}
+          <div className="h-8 w-px bg-gray-400"></div>
 
           <div className="ml-auto flex items-center gap-2">
-            {dateViewMode === 'months' && (
-              <button
-                onClick={() => {
-                  const allGLCodes = glCodes.map(gl => gl.code);
-                  if (expandedGLCodes.length === allGLCodes.length) {
-                    setExpandedGLCodes([]);
-                  } else {
-                    setExpandedGLCodes(allGLCodes);
-                  }
-                }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-                title={expandedGLCodes.length === glCodes.length ? "Collapse all" : "Expand all"}
-              >
-                {expandedGLCodes.length === glCodes.length ? (
-                  <EyeOff className="w-4 h-4 text-gray-600" />
-                ) : (
-                  <Eye className="w-4 h-4 text-gray-600" />
-                )}
-              </button>
-            )}
+            <button
+              onClick={() => {
+                const allGLCodes = glCodes.map(gl => gl.code);
+                if (expandedGLCodes.length === allGLCodes.length) {
+                  setExpandedGLCodes([]);
+                } else {
+                  setExpandedGLCodes(allGLCodes);
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+              title={expandedGLCodes.length === glCodes.length ? "Collapse all" : "Expand all"}
+            >
+              {expandedGLCodes.length === glCodes.length ? (
+                <EyeOff className="w-4 h-4 text-gray-600" />
+              ) : (
+                <Eye className="w-4 h-4 text-gray-600" />
+              )}
+            </button>
           </div>
         </div>
       </Card>
