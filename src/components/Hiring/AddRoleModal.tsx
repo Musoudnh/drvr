@@ -31,6 +31,12 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
   const [noEndDate, setNoEndDate] = useState(true);
   const [taxBreakdown, setTaxBreakdown] = useState<any>(null);
   const [stateDropdownOpen, setStateDropdownOpen] = useState(false);
+  const [startMonthOpen, setStartMonthOpen] = useState(false);
+  const [startDayOpen, setStartDayOpen] = useState(false);
+  const [startYearOpen, setStartYearOpen] = useState(false);
+  const [endMonthOpen, setEndMonthOpen] = useState(false);
+  const [endDayOpen, setEndDayOpen] = useState(false);
+  const [endYearOpen, setEndYearOpen] = useState(false);
 
   const [startMonth, setStartMonth] = useState('');
   const [startDay, setStartDay] = useState('');
@@ -158,6 +164,12 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
     setNoEndDate(true);
     setTaxBreakdown(null);
     setStateDropdownOpen(false);
+    setStartMonthOpen(false);
+    setStartDayOpen(false);
+    setStartYearOpen(false);
+    setEndMonthOpen(false);
+    setEndDayOpen(false);
+    setEndYearOpen(false);
     setStartMonth('');
     setStartDay('');
     setStartYear('');
@@ -288,51 +300,107 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
                 Start Date *
               </label>
               <div className="grid grid-cols-3 gap-2">
-                <select
-                  required
-                  value={startMonth}
-                  onChange={(e) => {
-                    setStartMonth(e.target.value);
-                    const date = `${startYear || currentYear}-${e.target.value}-${startDay || '01'}`;
-                    setFormData({ ...formData, start_date: date });
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                >
-                  <option value="">Month</option>
-                  {months.map(m => (
-                    <option key={m.value} value={m.value}>{m.label}</option>
-                  ))}
-                </select>
-                <select
-                  required
-                  value={startDay}
-                  onChange={(e) => {
-                    setStartDay(e.target.value);
-                    const date = `${startYear || currentYear}-${startMonth || '01'}-${e.target.value}`;
-                    setFormData({ ...formData, start_date: date });
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                >
-                  <option value="">Day</option>
-                  {Array.from({ length: getDaysInMonth(startMonth, startYear) }, (_, i) => i + 1).map(d => (
-                    <option key={d} value={d.toString().padStart(2, '0')}>{d}</option>
-                  ))}
-                </select>
-                <select
-                  required
-                  value={startYear}
-                  onChange={(e) => {
-                    setStartYear(e.target.value);
-                    const date = `${e.target.value}-${startMonth || '01'}-${startDay || '01'}`;
-                    setFormData({ ...formData, start_date: date });
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                >
-                  <option value="">Year</option>
-                  {years.map(y => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
+                {/* Month Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setStartMonthOpen(!startMonthOpen)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-sm text-gray-900">
+                      {startMonth ? months.find(m => m.value === startMonth)?.label : 'Month'}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </button>
+                  {startMonthOpen && (
+                    <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {months.map((m) => (
+                        <button
+                          key={m.value}
+                          type="button"
+                          onClick={() => {
+                            setStartMonth(m.value);
+                            const date = `${startYear || currentYear}-${m.value}-${startDay || '01'}`;
+                            setFormData({ ...formData, start_date: date });
+                            setStartMonthOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                        >
+                          {m.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Day Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setStartDayOpen(!startDayOpen)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-sm text-gray-900">
+                      {startDay || 'Day'}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </button>
+                  {startDayOpen && (
+                    <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {Array.from({ length: getDaysInMonth(startMonth, startYear) }, (_, i) => i + 1).map(d => {
+                        const dayStr = d.toString().padStart(2, '0');
+                        return (
+                          <button
+                            key={d}
+                            type="button"
+                            onClick={() => {
+                              setStartDay(dayStr);
+                              const date = `${startYear || currentYear}-${startMonth || '01'}-${dayStr}`;
+                              setFormData({ ...formData, start_date: date });
+                              setStartDayOpen(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                          >
+                            {d}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Year Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setStartYearOpen(!startYearOpen)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="text-sm text-gray-900">
+                      {startYear || 'Year'}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-gray-500" />
+                  </button>
+                  {startYearOpen && (
+                    <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {years.map(y => (
+                        <button
+                          key={y}
+                          type="button"
+                          onClick={() => {
+                            setStartYear(y.toString());
+                            const date = `${y}-${startMonth || '01'}-${startDay || '01'}`;
+                            setFormData({ ...formData, start_date: date });
+                            setStartYearOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                        >
+                          {y}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -364,48 +432,107 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
               </div>
               {!noEndDate && (
                 <div className="grid grid-cols-3 gap-2">
-                  <select
-                    value={endMonth}
-                    onChange={(e) => {
-                      setEndMonth(e.target.value);
-                      const date = `${endYear || currentYear}-${e.target.value}-${endDay || '01'}`;
-                      setEndDate(date);
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                  >
-                    <option value="">Month</option>
-                    {months.map(m => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
-                    ))}
-                  </select>
-                  <select
-                    value={endDay}
-                    onChange={(e) => {
-                      setEndDay(e.target.value);
-                      const date = `${endYear || currentYear}-${endMonth || '01'}-${e.target.value}`;
-                      setEndDate(date);
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                  >
-                    <option value="">Day</option>
-                    {Array.from({ length: getDaysInMonth(endMonth, endYear) }, (_, i) => i + 1).map(d => (
-                      <option key={d} value={d.toString().padStart(2, '0')}>{d}</option>
-                    ))}
-                  </select>
-                  <select
-                    value={endYear}
-                    onChange={(e) => {
-                      setEndYear(e.target.value);
-                      const date = `${e.target.value}-${endMonth || '01'}-${endDay || '01'}`;
-                      setEndDate(date);
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-sm"
-                  >
-                    <option value="">Year</option>
-                    {years.map(y => (
-                      <option key={y} value={y}>{y}</option>
-                    ))}
-                  </select>
+                  {/* End Month Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setEndMonthOpen(!endMonthOpen)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="text-sm text-gray-900">
+                        {endMonth ? months.find(m => m.value === endMonth)?.label : 'Month'}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                    </button>
+                    {endMonthOpen && (
+                      <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {months.map((m) => (
+                          <button
+                            key={m.value}
+                            type="button"
+                            onClick={() => {
+                              setEndMonth(m.value);
+                              const date = `${endYear || currentYear}-${m.value}-${endDay || '01'}`;
+                              setEndDate(date);
+                              setEndMonthOpen(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                          >
+                            {m.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* End Day Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setEndDayOpen(!endDayOpen)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="text-sm text-gray-900">
+                        {endDay || 'Day'}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                    </button>
+                    {endDayOpen && (
+                      <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {Array.from({ length: getDaysInMonth(endMonth, endYear) }, (_, i) => i + 1).map(d => {
+                          const dayStr = d.toString().padStart(2, '0');
+                          return (
+                            <button
+                              key={d}
+                              type="button"
+                              onClick={() => {
+                                setEndDay(dayStr);
+                                const date = `${endYear || currentYear}-${endMonth || '01'}-${dayStr}`;
+                                setEndDate(date);
+                                setEndDayOpen(false);
+                              }}
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                            >
+                              {d}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* End Year Dropdown */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setEndYearOpen(!endYearOpen)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                    >
+                      <span className="text-sm text-gray-900">
+                        {endYear || 'Year'}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                    </button>
+                    {endYearOpen && (
+                      <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {years.map(y => (
+                          <button
+                            key={y}
+                            type="button"
+                            onClick={() => {
+                              setEndYear(y.toString());
+                              const date = `${y}-${endMonth || '01'}-${endDay || '01'}`;
+                              setEndDate(date);
+                              setEndYearOpen(false);
+                            }}
+                            className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                          >
+                            {y}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
