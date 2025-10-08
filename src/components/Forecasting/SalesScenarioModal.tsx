@@ -95,6 +95,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const startYearDropdownRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isOpen && !initialScenario && forecastData && forecastData.length > 0) {
+      const revenueRow = forecastData.find(row => row.category === 'Revenue' && row.glCode === glCode);
+      if (revenueRow) {
+        const monthlyRevenue = [
+          revenueRow.jan, revenueRow.feb, revenueRow.mar, revenueRow.apr,
+          revenueRow.may, revenueRow.jun, revenueRow.jul, revenueRow.aug,
+          revenueRow.sep, revenueRow.oct, revenueRow.nov, revenueRow.dec
+        ].filter(val => typeof val === 'number' && val > 0);
+
+        if (monthlyRevenue.length > 0) {
+          const avgMonthlyRevenue = monthlyRevenue.reduce((sum, val) => sum + val, 0) / monthlyRevenue.length;
+          setBaseRevenue(Math.round(avgMonthlyRevenue));
+        }
+      }
+    }
+  }, [isOpen, initialScenario, forecastData, glCode]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (startMonthDropdownRef.current && !startMonthDropdownRef.current.contains(event.target as Node)) {
         setStartMonthDropdownOpen(false);
