@@ -778,31 +778,6 @@ const Benchmarks: React.FC = () => {
         </div>
       </Card>
 
-      {/* Action-Oriented Features */}
-      <Card title="Take Action">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <Download className="w-5 h-5 mb-2 text-gray-700" />
-            <span className="text-xs font-medium text-gray-700">Export Report</span>
-          </button>
-
-          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <Target className="w-5 h-5 mb-2 text-gray-700" />
-            <span className="text-xs font-medium text-gray-700">Set Targets</span>
-          </button>
-
-          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <LineChart className="w-5 h-5 mb-2 text-gray-700" />
-            <span className="text-xs font-medium text-gray-700">Forecast Impact</span>
-          </button>
-
-          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <Bell className="w-5 h-5 mb-2 text-gray-700" />
-            <span className="text-xs font-medium text-gray-700">Setup Alerts</span>
-          </button>
-        </div>
-      </Card>
-
       {/* Export Modal */}
       {showExportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
