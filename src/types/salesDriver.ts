@@ -195,7 +195,7 @@ export interface SalesScenario {
   name: string;
   description?: string;
   scenarioType: 'revenue' | 'sales' | 'custom';
-  baseRevenue: number;
+  baseRevenue?: number;
   startMonth: string;
   endMonth: string;
   startYear: number;

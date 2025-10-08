@@ -72,7 +72,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 }) => {
   const [scenarioName, setScenarioName] = useState(initialScenario?.name || '');
   const [scenarioDescription, setScenarioDescription] = useState(initialScenario?.description || '');
-  const [baseRevenue, setBaseRevenue] = useState(initialScenario?.baseRevenue || 100000);
   const [startMonth, setStartMonth] = useState(initialScenario?.startMonth || 'Jan');
   const [endMonth, setEndMonth] = useState(initialScenario?.endMonth || 'Dec');
   const [startYear, setStartYear] = useState(initialScenario?.startYear || 2025);
@@ -93,24 +92,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const startMonthDropdownRef = React.useRef<HTMLDivElement>(null);
   const endMonthDropdownRef = React.useRef<HTMLDivElement>(null);
   const startYearDropdownRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isOpen && !initialScenario && forecastData && forecastData.length > 0) {
-      const revenueRow = forecastData.find(row => row.category === 'Revenue' && row.glCode === glCode);
-      if (revenueRow) {
-        const monthlyRevenue = [
-          revenueRow.jan, revenueRow.feb, revenueRow.mar, revenueRow.apr,
-          revenueRow.may, revenueRow.jun, revenueRow.jul, revenueRow.aug,
-          revenueRow.sep, revenueRow.oct, revenueRow.nov, revenueRow.dec
-        ].filter(val => typeof val === 'number' && val > 0);
-
-        if (monthlyRevenue.length > 0) {
-          const avgMonthlyRevenue = monthlyRevenue.reduce((sum, val) => sum + val, 0) / monthlyRevenue.length;
-          setBaseRevenue(Math.round(avgMonthlyRevenue));
-        }
-      }
-    }
-  }, [isOpen, initialScenario, forecastData, glCode]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -259,7 +240,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
       name: scenarioName,
       description: scenarioDescription,
       scenarioType: 'revenue',
-      baseRevenue,
       startMonth,
       endMonth,
       startYear,
@@ -1513,15 +1493,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     placeholder="e.g., Aggressive Q2 Growth"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Base Revenue (Monthly)</label>
-                  <input
-                    type="number"
-                    value={baseRevenue}
-                    onChange={(e) => setBaseRevenue(parseFloat(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                  />
-                </div>
               </div>
 
               <div>
@@ -1996,20 +1967,10 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
           {activeTab === 'preview' && (
             <div className="space-y-6">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-900">Base Revenue</span>
-                  </div>
-                  <p className="text-sm font-bold text-gray-900">
-                    ${(baseRevenue * 12).toLocaleString()}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">Annual baseline</p>
-                </div>
-
-                <div className="bg-white rounded-lg p-4 border border-gray-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-900">Total Impact</span>
+                    <span className="text-xs font-medium text-gray-900">Total Annual Impact</span>
                   </div>
                   <p className="text-sm font-bold text-gray-900">
                     ${totalImpact.toLocaleString()}
@@ -2019,14 +1980,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
                 <div className="bg-white rounded-lg p-4 border border-gray-200">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-900">Final Revenue</span>
+                    <span className="text-xs font-medium text-gray-900">Average Monthly Impact</span>
                   </div>
                   <p className="text-sm font-bold text-gray-900">
-                    ${finalRevenue.toLocaleString()}
+                    ${(totalImpact / 12).toLocaleString()}
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    +{((finalRevenue / (baseRevenue * 12) - 1) * 100).toFixed(1)}% growth
-                  </p>
+                  <p className="text-xs text-gray-600 mt-1">Per month average</p>
                 </div>
               </div>
 
@@ -2040,27 +1999,19 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     <thead className="bg-gray-50 border-b border-gray-200">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-700">Month</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Base</th>
                         <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Impact</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Final</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-700">Growth</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700">Active Drivers</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                       {previewData.map(month => (
                         <tr key={month.month} className="hover:bg-gray-50">
                           <td className="px-4 py-3 text-xs font-medium text-gray-900">{month.month}</td>
-                          <td className="px-4 py-3 text-xs text-right text-gray-600">
-                            ${month.baseRevenue.toLocaleString()}
-                          </td>
                           <td className="px-4 py-3 text-xs text-right font-medium text-green-600">
                             +${month.totalImpact.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-xs text-right font-bold text-gray-900">
-                            ${month.finalRevenue.toLocaleString()}
-                          </td>
-                          <td className="px-4 py-3 text-xs text-right font-medium text-[#7B68EE]">
-                            +{((month.finalRevenue / month.baseRevenue - 1) * 100).toFixed(1)}%
+                          <td className="px-4 py-3 text-xs text-gray-600">
+                            {month.driverBreakdown?.length || 0} driver{month.driverBreakdown?.length !== 1 ? 's' : ''}
                           </td>
                         </tr>
                       ))}

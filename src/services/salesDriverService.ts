@@ -287,6 +287,7 @@ export class SalesDriverService {
   static calculateScenarioImpacts(scenario: SalesScenario): CalculatedScenarioImpact[] {
     const results: CalculatedScenarioImpact[] = [];
     const drivers = scenario.drivers || [];
+    const baseRevenue = scenario.baseRevenue || 0;
 
     MONTHS.forEach((month, monthIndex) => {
       const year = scenario.startYear;
@@ -296,7 +297,7 @@ export class SalesDriverService {
       drivers.forEach(driver => {
         const impact = this.calculateDriverImpact(
           driver,
-          scenario.baseRevenue,
+          baseRevenue,
           month,
           year,
           monthIndex
@@ -317,10 +318,10 @@ export class SalesDriverService {
       results.push({
         month,
         year,
-        baseRevenue: scenario.baseRevenue,
+        baseRevenue: 0,
         totalImpact,
         driverBreakdown,
-        finalRevenue: scenario.baseRevenue + totalImpact
+        finalRevenue: totalImpact
       });
     });
 
