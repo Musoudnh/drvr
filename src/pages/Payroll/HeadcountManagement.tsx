@@ -18,6 +18,8 @@ import {
   FileText,
   ChevronDown,
   GripVertical,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
@@ -64,6 +66,8 @@ const HeadcountManagement: React.FC = () => {
     status: true,
   });
   const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const deptDropdownRef = useRef<HTMLDivElement>(null);
   const locationDropdownRef = useRef<HTMLDivElement>(null);
@@ -76,7 +80,7 @@ const HeadcountManagement: React.FC = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [employees, searchTerm, filters]);
+  }, [employees, searchTerm, filters, sortColumn, sortDirection]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -144,7 +148,91 @@ const HeadcountManagement: React.FC = () => {
       filtered = filtered.filter((emp) => emp.employment_type === filters.employmentType);
     }
 
+    // Apply sorting
+    if (sortColumn) {
+      filtered = sortEmployees(filtered, sortColumn, sortDirection);
+    }
+
     setFilteredEmployees(filtered);
+  };
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      // Toggle direction if clicking the same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // New column - start with ascending
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortEmployees = (employeesToSort: Employee[], column: string, direction: 'asc' | 'desc') => {
+    const sorted = [...employeesToSort].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (column) {
+        case 'name':
+          aValue = `${a.first_name} ${a.last_name}`.toLowerCase();
+          bValue = `${b.first_name} ${b.last_name}`.toLowerCase();
+          break;
+        case 'email':
+          aValue = (a.email || '').toLowerCase();
+          bValue = (b.email || '').toLowerCase();
+          break;
+        case 'jobTitle':
+          aValue = (a.job_title || '').toLowerCase();
+          bValue = (b.job_title || '').toLowerCase();
+          break;
+        case 'department':
+          aValue = (a.department_name || '').toLowerCase();
+          bValue = (b.department_name || '').toLowerCase();
+          break;
+        case 'location':
+          aValue = (a.location || '').toLowerCase();
+          bValue = (b.location || '').toLowerCase();
+          break;
+        case 'type':
+          aValue = (a.employment_type || '').toLowerCase();
+          bValue = (b.employment_type || '').toLowerCase();
+          break;
+        case 'compensation':
+          aValue = a.employee_type === 'salary' ? (a.annual_salary || 0) : ((a.hourly_rate || 0) * 2080);
+          bValue = b.employee_type === 'salary' ? (b.annual_salary || 0) : ((b.hourly_rate || 0) * 2080);
+          break;
+        case 'tax':
+          aValue = calculateEmployerTaxes(a).totalEmployerTax;
+          bValue = calculateEmployerTaxes(b).totalEmployerTax;
+          break;
+        case 'allIn':
+          aValue = calculateEmployerTaxes(a).allIn;
+          bValue = calculateEmployerTaxes(b).allIn;
+          break;
+        case 'status':
+          aValue = (a.status || 'Active').toLowerCase();
+          bValue = (b.status || 'Active').toLowerCase();
+          break;
+        case 'hireDate':
+          aValue = a.hire_date ? new Date(a.hire_date).getTime() : 0;
+          bValue = b.hire_date ? new Date(b.hire_date).getTime() : 0;
+          break;
+        default:
+          return 0;
+      }
+
+      // Handle numeric comparisons
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return direction === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      // Handle string comparisons
+      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return sorted;
   };
 
   const handleExport = async () => {
@@ -221,6 +309,33 @@ const HeadcountManagement: React.FC = () => {
     };
     return { key, label: labels[key] };
   });
+
+  const SortableHeader: React.FC<{ column: string; label: string }> = ({ column, label }) => {
+    const isActive = sortColumn === column;
+    return (
+      <th
+        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors select-none"
+        onClick={() => handleSort(column)}
+      >
+        <div className="flex items-center gap-2">
+          <span>{label}</span>
+          <div className="flex flex-col">
+            {isActive ? (
+              sortDirection === 'asc' ? (
+                <ArrowUp className="w-4 h-4 text-blue-600" />
+              ) : (
+                <ArrowDown className="w-4 h-4 text-blue-600" />
+              )
+            ) : (
+              <div className="w-4 h-4 text-gray-300">
+                <ArrowUp className="w-3 h-3" />
+              </div>
+            )}
+          </div>
+        </div>
+      </th>
+    );
+  };
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -471,13 +586,13 @@ const HeadcountManagement: React.FC = () => {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee
-                </th>
+                <SortableHeader column="name" label="Employee" />
                 {columnOrder.map(key => visibleColumns[key as keyof typeof visibleColumns] && (
-                  <th key={key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {columnConfigs.find(c => c.key === key)?.label}
-                  </th>
+                  <SortableHeader
+                    key={key}
+                    column={key}
+                    label={columnConfigs.find(c => c.key === key)?.label || key}
+                  />
                 ))}
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
