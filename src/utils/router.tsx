@@ -43,6 +43,7 @@ import AuditTrail from '../pages/Compliance/AuditTrail';
 import TasksProjects from '../pages/Tasks/TasksProjects';
 import RoadMap from '../pages/RoadMap/RoadMap';
 import Approvals from '../pages/RoadMap/Approvals';
+import CashFlowManager from '../pages/CashFlow/CashFlowManager';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
@@ -295,6 +296,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Benchmarks">
         <Benchmarks />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/cashflow",
+    element: (
+      <ProtectedRoute title="Cash Flow Manager">
+        <CashFlowManager />
       </ProtectedRoute>
     )
   },
