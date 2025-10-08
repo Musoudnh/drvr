@@ -1464,8 +1464,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('overview')}
             className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'overview'
-                ? 'border-purple-600 text-purple-600'
-                : 'border-transparent text-gray-600 hover:text-purple-600'
+                ? 'border-[#7B68EE] text-[#7B68EE]'
+                : 'border-transparent text-gray-600 hover:text-[#7B68EE]'
             }`}
           >
             Overview
@@ -1474,8 +1474,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('drivers')}
             className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'drivers'
-                ? 'border-purple-600 text-purple-600'
-                : 'border-transparent text-gray-600 hover:text-purple-600'
+                ? 'border-[#7B68EE] text-[#7B68EE]'
+                : 'border-transparent text-gray-600 hover:text-[#7B68EE]'
             }`}
           >
             Drivers ({activeDrivers.length})
@@ -1484,8 +1484,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('ai')}
             className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'ai'
-                ? 'border-purple-600 text-purple-600'
-                : 'border-transparent text-gray-600 hover:text-purple-600'
+                ? 'border-[#7B68EE] text-[#7B68EE]'
+                : 'border-transparent text-gray-600 hover:text-[#7B68EE]'
             }`}
           >
             AI Driver
@@ -1494,8 +1494,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             onClick={() => setActiveTab('preview')}
             className={`px-4 py-3 font-medium text-xs border-b-2 transition-colors ${
               activeTab === 'preview'
-                ? 'border-purple-600 text-purple-600'
-                : 'border-transparent text-gray-600 hover:text-purple-600'
+                ? 'border-[#7B68EE] text-[#7B68EE]'
+                : 'border-transparent text-gray-600 hover:text-[#7B68EE]'
             }`}
           >
             Preview
@@ -1832,10 +1832,10 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
           {activeTab === 'ai' && (
             <div className="flex flex-col h-[500px]">
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+              <div className="flex-1 overflow-y-auto space-y-4">
                 {aiMessages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
-                    <Bot className="w-16 h-16 text-purple-400 mb-4" />
+                    <Bot className="w-16 h-16 text-[#7B68EE] mb-4" />
                     <h3 className="text-sm font-semibold text-gray-900 mb-2">AI Driver Assistant</h3>
                     <p className="text-gray-600 max-w-md">
                       Discuss your assumptions with AI to help build your customer drivers.
@@ -1856,12 +1856,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       <div
                         className={`max-w-[70%] rounded-lg px-4 py-3 ${
                           msg.role === 'user'
-                            ? 'bg-purple-600 text-white'
+                            ? 'bg-[#7B68EE] text-white'
                             : 'bg-gray-100 text-gray-900'
                         }`}
                       >
                         {msg.file && (
-                          <div className="flex items-center gap-2 mb-2 pb-2 border-b border-purple-500/30">
+                          <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/30">
                             <Paperclip className="w-4 h-4" />
                             <div className="text-xs">
                               <div className="font-medium">{msg.file.name}</div>
@@ -1875,22 +1875,22 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   ))
                 )}
               </div>
-              <div className="border-t border-gray-200 pt-4">
+              <div className="border-t border-gray-200 pt-4 mt-4">
                 {uploadedFiles.length > 0 && (
                   <div className="mb-3 flex flex-wrap gap-2">
                     {uploadedFiles.map((file, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg text-xs"
+                        className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-[#7B68EE]/30 rounded-lg text-xs"
                       >
-                        <Paperclip className="w-4 h-4 text-purple-600" />
-                        <span className="text-purple-900 font-medium">{file.name}</span>
-                        <span className="text-purple-600">({(file.size / 1024).toFixed(1)} KB)</span>
+                        <Paperclip className="w-4 h-4 text-[#7B68EE]" />
+                        <span className="text-gray-900 font-medium">{file.name}</span>
+                        <span className="text-[#7B68EE]">({(file.size / 1024).toFixed(1)} KB)</span>
                         <button
                           onClick={() => {
                             setUploadedFiles(uploadedFiles.filter((_, i) => i !== idx));
                           }}
-                          className="ml-2 text-purple-600 hover:text-purple-800"
+                          className="ml-2 text-[#7B68EE] hover:text-[#6B58DE]"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -1911,13 +1911,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     accept=".csv,.xlsx,.xls,.pdf,.txt,.json"
                     multiple
                   />
-                  <button
-                    onClick={() => document.getElementById('ai-file-upload')?.click()}
-                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                    title="Upload files"
-                  >
-                    <Upload className="w-5 h-5" />
-                  </button>
                   <input
                     type="text"
                     value={aiInput}
@@ -1949,8 +1942,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       }
                     }}
                     placeholder="Discuss your assumptions with AI..."
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   />
+                  <button
+                    onClick={() => document.getElementById('ai-file-upload')?.click()}
+                    className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    title="Upload files"
+                  >
+                    <Upload className="w-5 h-5" />
+                  </button>
                   <button
                     onClick={() => {
                       if (aiInput.trim() || uploadedFiles.length > 0) {
@@ -1978,7 +1978,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                         }, 1000);
                       }
                     }}
-                    className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                    className="px-6 py-3 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6B58DE] transition-colors"
                   >
                     <Send className="w-5 h-5" />
                   </button>
