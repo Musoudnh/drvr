@@ -55,6 +55,11 @@ const Benchmarks: React.FC = () => {
     region: '',
     businessStage: ''
   });
+  const [industryDropdownOpen, setIndustryDropdownOpen] = useState(false);
+  const [businessModelDropdownOpen, setBusinessModelDropdownOpen] = useState(false);
+  const [revenueRangeDropdownOpen, setRevenueRangeDropdownOpen] = useState(false);
+  const [regionDropdownOpen, setRegionDropdownOpen] = useState(false);
+  const [businessStageDropdownOpen, setBusinessStageDropdownOpen] = useState(false);
 
   // Define initial company profile data as a constant
   const initialCompanyProfile: CompanyProfile = {
@@ -381,51 +386,72 @@ const Benchmarks: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Industry</label>
-                <select
-                  value={setupData.industry}
-                  onChange={(e) => setSetupData({...setupData, industry: e.target.value})}
-                  className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="">Select Industry</option>
-                  <option value="Software as a Service (SaaS)">Software as a Service (SaaS)</option>
-                  <option value="Technology">Technology</option>
-                  <option value="Healthcare">Healthcare</option>
-                  <option value="Financial Services">Financial Services</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Retail">Retail</option>
-                  <option value="Professional Services">Professional Services</option>
-                  <option value="Real Estate">Real Estate</option>
-                  <option value="Education">Education</option>
-                  <option value="Media & Entertainment">Media & Entertainment</option>
-                  <option value="Transportation">Transportation</option>
-                  <option value="Energy">Energy</option>
-                  <option value="Agriculture">Agriculture</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Other">Other</option>
-                </select>
+                <div className="relative">
+                  <button
+                    onClick={() => setIndustryDropdownOpen(!industryDropdownOpen)}
+                    className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 flex items-center justify-between"
+                  >
+                    <span>{setupData.industry || 'Select Industry'}</span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {industryDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-[300px] overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {['Software as a Service (SaaS)', 'Technology', 'Healthcare', 'Financial Services', 'Manufacturing', 'Retail', 'Professional Services', 'Real Estate', 'Education', 'Media & Entertainment', 'Transportation', 'Energy', 'Agriculture', 'Construction', 'Other'].map((industry) => (
+                          <button
+                            key={industry}
+                            onClick={() => {
+                              setSetupData({...setupData, industry});
+                              setIndustryDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                              setupData.industry === industry
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {industry}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
               
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Business Model</label>
-                <select
-                  value={setupData.businessModel}
-                  onChange={(e) => setSetupData({...setupData, businessModel: e.target.value})}
-                  className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="">Select Business Model</option>
-                  <option value="SaaS">Software as a Service (SaaS)</option>
-                  <option value="eCommerce">eCommerce</option>
-                  <option value="Retail">Retail</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Professional Services">Professional Services</option>
-                  <option value="Consulting">Consulting</option>
-                  <option value="Marketplace">Marketplace</option>
-                  <option value="Subscription">Subscription</option>
-                  <option value="Freemium">Freemium</option>
-                  <option value="B2B">B2B</option>
-                  <option value="B2C">B2C</option>
-                  <option value="B2B2C">B2B2C</option>
-                </select>
+                <div className="relative">
+                  <button
+                    onClick={() => setBusinessModelDropdownOpen(!businessModelDropdownOpen)}
+                    className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 flex items-center justify-between"
+                  >
+                    <span>{setupData.businessModel || 'Select Business Model'}</span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {businessModelDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-[300px] overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {['SaaS', 'eCommerce', 'Retail', 'Manufacturing', 'Professional Services', 'Consulting', 'Marketplace', 'Subscription', 'Freemium', 'B2B', 'B2C', 'B2B2C'].map((model) => (
+                          <button
+                            key={model}
+                            onClick={() => {
+                              setSetupData({...setupData, businessModel: model});
+                              setBusinessModelDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                              setupData.businessModel === model
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {model}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
@@ -443,18 +469,37 @@ const Benchmarks: React.FC = () => {
               
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Revenue Range</label>
-                <select
-                  value={setupData.revenueRange}
-                  onChange={(e) => setSetupData({...setupData, revenueRange: e.target.value})}
-                  className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="">Select Revenue Range</option>
-                  <option value="Under $1M">Under $1M</option>
-                  <option value="$1M - $5M">$1M - $5M</option>
-                  <option value="$5M - $20M">$5M - $20M</option>
-                  <option value="$20M - $100M">$20M - $100M</option>
-                  <option value="Over $100M">Over $100M</option>
-                </select>
+                <div className="relative">
+                  <button
+                    onClick={() => setRevenueRangeDropdownOpen(!revenueRangeDropdownOpen)}
+                    className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 flex items-center justify-between"
+                  >
+                    <span>{setupData.revenueRange || 'Select Revenue Range'}</span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {revenueRangeDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-[300px] overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {['Under $1M', '$1M - $5M', '$5M - $20M', '$20M - $100M', 'Over $100M'].map((range) => (
+                          <button
+                            key={range}
+                            onClick={() => {
+                              setSetupData({...setupData, revenueRange: range});
+                              setRevenueRangeDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                              setupData.revenueRange === range
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {range}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
@@ -472,36 +517,76 @@ const Benchmarks: React.FC = () => {
               
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Region</label>
-                <select
-                  value={setupData.region}
-                  onChange={(e) => setSetupData({...setupData, region: e.target.value})}
-                  className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                >
-                  <option value="">Select Region</option>
-                  <option value="North America">North America</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Asia Pacific">Asia Pacific</option>
-                  <option value="Latin America">Latin America</option>
-                  <option value="Middle East & Africa">Middle East & Africa</option>
-                  <option value="Global">Global</option>
-                </select>
+                <div className="relative">
+                  <button
+                    onClick={() => setRegionDropdownOpen(!regionDropdownOpen)}
+                    className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 flex items-center justify-between"
+                  >
+                    <span>{setupData.region || 'Select Region'}</span>
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </button>
+                  {regionDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-[300px] overflow-y-auto">
+                      <div className="flex flex-col gap-1">
+                        {['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa', 'Global'].map((region) => (
+                          <button
+                            key={region}
+                            onClick={() => {
+                              setSetupData({...setupData, region});
+                              setRegionDropdownOpen(false);
+                            }}
+                            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                              setupData.region === region
+                                ? 'bg-[#7B68EE] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {region}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Stage of Business</label>
-              <select
-                value={setupData.businessStage}
-                onChange={(e) => setSetupData({...setupData, businessStage: e.target.value})}
-                className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-              >
-                <option value="">Select Business Stage</option>
-                <option value="Startup">Startup (0-2 years)</option>
-                <option value="Growth">Growth (3-7 years)</option>
-                <option value="Mature">Mature (8+ years)</option>
-                <option value="Pre-IPO">Pre-IPO</option>
-                <option value="Public">Public Company</option>
-              </select>
+              <div className="relative">
+                <button
+                  onClick={() => setBusinessStageDropdownOpen(!businessStageDropdownOpen)}
+                  className="w-full px-4 py-2 bg-white text-[#7B68EE] rounded-lg text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 flex items-center justify-between"
+                >
+                  <span>{setupData.businessStage || 'Select Business Stage'}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {businessStageDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-[300px] overflow-y-auto">
+                    <div className="flex flex-col gap-1">
+                      {['Startup', 'Growth', 'Mature', 'Pre-IPO', 'Public'].map((stage) => (
+                        <button
+                          key={stage}
+                          onClick={() => {
+                            setSetupData({...setupData, businessStage: stage});
+                            setBusinessStageDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            setupData.businessStage === stage
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {stage === 'Startup' ? 'Startup (0-2 years)' :
+                           stage === 'Growth' ? 'Growth (3-7 years)' :
+                           stage === 'Mature' ? 'Mature (8+ years)' :
+                           stage === 'Pre-IPO' ? 'Pre-IPO' : 'Public Company'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
