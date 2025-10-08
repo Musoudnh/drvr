@@ -10,7 +10,6 @@ const AdminLayout: React.FC = () => {
     { path: '/admin/team', label: 'Team Management', icon: Users },
     { path: '/admin/billing', label: 'Billing', icon: CreditCard },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap },
-    { path: '/admin/security', label: 'Security', icon: Shield },
     { path: '/admin/audit', label: 'Audit Log', icon: FileText }
   ];
 

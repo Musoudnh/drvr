@@ -16,7 +16,6 @@ import AccountProfile from '../pages/Settings/AccountProfile';
 import TeamManagement from '../pages/Team/TeamManagement';
 import BillingSettings from '../pages/Settings/BillingSettings';
 import Integrations from '../pages/Integrations/Integrations';
-import Security from '../pages/Admin/Security';
 import AuditLog from '../pages/Admin/AuditLog';
 import AdminSettings from '../pages/Admin/AdminSettings';
 import ForecastingPage from '../pages/Forecasting/Forecasting';
@@ -151,11 +150,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/admin/security" replace />
-      },
-      {
-        path: "security",
-        element: <Security />
+        element: <Navigate to="/admin/audit" replace />
       },
       {
         path: "audit",

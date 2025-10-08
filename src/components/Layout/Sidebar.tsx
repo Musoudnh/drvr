@@ -112,7 +112,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { path: '/admin/team', label: 'Team Management', icon: Users, category: 'Admin', alwaysVisible: false },
     { path: '/admin/billing', label: 'Subscription', icon: CreditCard, category: 'Admin', alwaysVisible: false },
     { path: '/admin/integrations', label: 'Integrations', icon: Zap, category: 'Admin', alwaysVisible: false },
-    { path: '/admin/security', label: 'Security & SOX', icon: Shield, category: 'Admin', alwaysVisible: false },
     { path: '/alerts', label: 'Alerts', icon: AlertCircle, category: 'Admin', alwaysVisible: false },
     { path: '/admin/audit', label: 'Audit Log', icon: FileText, category: 'Admin', alwaysVisible: false }
   ];
