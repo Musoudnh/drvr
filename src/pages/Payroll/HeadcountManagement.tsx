@@ -225,10 +225,7 @@ const HeadcountManagement: React.FC = () => {
   return (
     <div className="space-y-6 h-full flex flex-col">
       {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Headcount Management</h1>
-        </div>
+      <div className="flex justify-end items-start">
         <div className="flex gap-2">
           <button
             onClick={() => setShowImportModal(true)}
