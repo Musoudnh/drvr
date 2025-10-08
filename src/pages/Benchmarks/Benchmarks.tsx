@@ -384,7 +384,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.industry}
                   onChange={(e) => setSetupData({...setupData, industry: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
+                  className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="">Select Industry</option>
                   <option value="Software as a Service (SaaS)">Software as a Service (SaaS)</option>
@@ -410,7 +410,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.businessModel}
                   onChange={(e) => setSetupData({...setupData, businessModel: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
+                  className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="">Select Business Model</option>
                   <option value="SaaS">Software as a Service (SaaS)</option>
@@ -446,7 +446,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.revenueRange}
                   onChange={(e) => setSetupData({...setupData, revenueRange: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
+                  className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="">Select Revenue Range</option>
                   <option value="Under $1M">Under $1M</option>
@@ -475,7 +475,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.region}
                   onChange={(e) => setSetupData({...setupData, region: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
+                  className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                 >
                   <option value="">Select Region</option>
                   <option value="North America">North America</option>
@@ -493,7 +493,7 @@ const Benchmarks: React.FC = () => {
               <select
                 value={setupData.businessStage}
                 onChange={(e) => setSetupData({...setupData, businessStage: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
+                className="w-full px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
               >
                 <option value="">Select Business Stage</option>
                 <option value="Startup">Startup (0-2 years)</option>
