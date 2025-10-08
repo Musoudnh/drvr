@@ -245,7 +245,7 @@ export const router = createBrowserRouter([
   {
     path: "/runway",
     element: (
-      <ProtectedRoute title="Scenario Planner">
+      <ProtectedRoute title="Headcount">
         <RunwayPlanning />
       </ProtectedRoute>
     )

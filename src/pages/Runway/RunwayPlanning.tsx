@@ -570,14 +570,13 @@ const RunwayPlanning: React.FC = () => {
             <Card title="Current Staff">
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm text-gray-600">Manage your current team members</p>
-                <Button
-                  variant="outline"
-                  size="sm"
+                <button
                   onClick={() => setShowAddRoleModal(true)}
+                  className="flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
                 >
                   <UserPlus className="w-4 h-4 mr-2" />
                   Add Employee
-                </Button>
+                </button>
               </div>
 
               {/* Staff Table */}
