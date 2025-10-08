@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Users,
   UserPlus,
@@ -16,9 +16,12 @@ import {
   TrendingUp,
   BarChart3,
   FileText,
+  ChevronDown,
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
+import AddEmployeeModal from '../../components/Payroll/AddEmployeeModal';
+import ImportEmployeesModal from '../../components/Payroll/ImportEmployeesModal';
 import { enterprisePayrollService } from '../../services/enterprisePayrollService';
 import type { Employee, EmployeeFilter, PayrollSummary } from '../../types/payroll';
 
@@ -33,6 +36,14 @@ const HeadcountManagement: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
+  const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
+  const [empTypeDropdownOpen, setEmpTypeDropdownOpen] = useState(false);
+  const statusDropdownRef = useRef<HTMLDivElement>(null);
+  const deptDropdownRef = useRef<HTMLDivElement>(null);
+  const locationDropdownRef = useRef<HTMLDivElement>(null);
+  const empTypeDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadData();
@@ -41,6 +52,26 @@ const HeadcountManagement: React.FC = () => {
   useEffect(() => {
     applyFilters();
   }, [employees, searchTerm, filters]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+      if (deptDropdownRef.current && !deptDropdownRef.current.contains(event.target as Node)) {
+        setDeptDropdownOpen(false);
+      }
+      if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
+        setLocationDropdownOpen(false);
+      }
+      if (empTypeDropdownRef.current && !empTypeDropdownRef.current.contains(event.target as Node)) {
+        setEmpTypeDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const loadData = async () => {
     try {
@@ -232,63 +263,150 @@ const HeadcountManagement: React.FC = () => {
           <div className="mt-4 pt-4 border-t grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-              <select
-                value={filters.status || ''}
-                onChange={(e) => setFilters({ ...filters, status: e.target.value || undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All</option>
-                <option value="Active">Active</option>
-                <option value="On Leave">On Leave</option>
-                <option value="Terminated">Terminated</option>
-              </select>
+              <div className="relative" ref={statusDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg text-sm font-medium shadow-sm border border-gray-300 transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{filters.status || 'All'}</span>
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </button>
+                {statusDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                    <div className="flex flex-col gap-1">
+                      {['All', 'Active', 'On Leave', 'Terminated'].map((status) => (
+                        <button
+                          key={status}
+                          type="button"
+                          onClick={() => {
+                            setFilters({ ...filters, status: status === 'All' ? undefined : status });
+                            setStatusDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            (status === 'All' && !filters.status) || filters.status === status
+                              ? 'bg-blue-50 text-blue-700'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {status}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-              <select
-                value={filters.department || ''}
-                onChange={(e) => setFilters({ ...filters, department: e.target.value || undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All</option>
-                {uniqueDepartments.map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
+              <div className="relative" ref={deptDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setDeptDropdownOpen(!deptDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg text-sm font-medium shadow-sm border border-gray-300 transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{filters.department || 'All'}</span>
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </button>
+                {deptDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-60 overflow-y-auto">
+                    <div className="flex flex-col gap-1">
+                      {['All', ...uniqueDepartments].map((dept) => (
+                        <button
+                          key={dept}
+                          type="button"
+                          onClick={() => {
+                            setFilters({ ...filters, department: dept === 'All' ? undefined : dept });
+                            setDeptDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            (dept === 'All' && !filters.department) || filters.department === dept
+                              ? 'bg-blue-50 text-blue-700'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {dept}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-              <select
-                value={filters.location || ''}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value || undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All</option>
-                {uniqueLocations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
+              <div className="relative" ref={locationDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setLocationDropdownOpen(!locationDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg text-sm font-medium shadow-sm border border-gray-300 transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{filters.location || 'All'}</span>
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </button>
+                {locationDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full max-h-60 overflow-y-auto">
+                    <div className="flex flex-col gap-1">
+                      {['All', ...uniqueLocations].map((loc) => (
+                        <button
+                          key={loc}
+                          type="button"
+                          onClick={() => {
+                            setFilters({ ...filters, location: loc === 'All' ? undefined : loc });
+                            setLocationDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            (loc === 'All' && !filters.location) || filters.location === loc
+                              ? 'bg-blue-50 text-blue-700'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {loc}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
-              <select
-                value={filters.employmentType || ''}
-                onChange={(e) => setFilters({ ...filters, employmentType: e.target.value || undefined })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Intern">Intern</option>
-              </select>
+              <div className="relative" ref={empTypeDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setEmpTypeDropdownOpen(!empTypeDropdownOpen)}
+                  className="w-full px-3 py-2 bg-white text-gray-900 rounded-lg text-sm font-medium shadow-sm border border-gray-300 transition-colors hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span>{filters.employmentType || 'All'}</span>
+                  <ChevronDown className="w-4 h-4 ml-2" />
+                </button>
+                {empTypeDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 w-full">
+                    <div className="flex flex-col gap-1">
+                      {['All', 'Full-time', 'Part-time', 'Contract', 'Intern'].map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => {
+                            setFilters({ ...filters, employmentType: type === 'All' ? undefined : type });
+                            setEmpTypeDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors text-left ${
+                            (type === 'All' && !filters.employmentType) || filters.employmentType === type
+                              ? 'bg-blue-50 text-blue-700'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {Object.keys(filters).length > 0 && (
@@ -408,7 +526,10 @@ const HeadcountManagement: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => setSelectedEmployee(employee)}
+                          onClick={() => {
+                            setSelectedEmployee(employee);
+                            setShowAddModal(true);
+                          }}
                           className="text-blue-600 hover:text-blue-900"
                         >
                           <Edit className="w-4 h-4" />
@@ -438,6 +559,22 @@ const HeadcountManagement: React.FC = () => {
           </div>
         )}
       </Card>
+
+      <AddEmployeeModal
+        isOpen={showAddModal}
+        onClose={() => {
+          setShowAddModal(false);
+          setSelectedEmployee(null);
+        }}
+        onSuccess={loadData}
+        employee={selectedEmployee}
+      />
+
+      <ImportEmployeesModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onSuccess={loadData}
+      />
     </div>
   );
 };
