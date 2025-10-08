@@ -238,6 +238,23 @@ const HeadcountManagement: React.FC = () => {
             <Upload className="w-4 h-4" />
             Import
           </button>
+          <div className="relative" ref={columnMenuRef}>
+            <button
+              onClick={() => setShowColumnMenu(!showColumnMenu)}
+              className="px-3 py-1.5 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
+            >
+              <MoreVertical className="w-4 h-4" />
+              Customize View
+            </button>
+            {showColumnMenu && (
+              <ColumnManager
+                columns={columnConfigs}
+                visibleColumns={visibleColumns}
+                onToggleColumn={(key, visible) => setVisibleColumns({ ...visibleColumns, [key]: visible })}
+                onReorderColumns={(newOrder) => setColumnOrder(newOrder)}
+              />
+            )}
+          </div>
           <button
             onClick={handleExport}
             className="px-3 py-1.5 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
@@ -467,25 +484,7 @@ const HeadcountManagement: React.FC = () => {
                   </th>
                 ))}
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <div className="flex items-center justify-end gap-2">
-                    <span>Actions</span>
-                    <div className="relative" ref={columnMenuRef}>
-                      <button
-                        onClick={() => setShowColumnMenu(!showColumnMenu)}
-                        className="p-1 hover:bg-gray-200 rounded transition-colors"
-                      >
-                        <MoreVertical className="w-4 h-4" />
-                      </button>
-                      {showColumnMenu && (
-                        <ColumnManager
-                          columns={columnConfigs}
-                          visibleColumns={visibleColumns}
-                          onToggleColumn={(key, visible) => setVisibleColumns({ ...visibleColumns, [key]: visible })}
-                          onReorderColumns={(newOrder) => setColumnOrder(newOrder)}
-                        />
-                      )}
-                    </div>
-                  </div>
+                  Actions
                 </th>
               </tr>
             </thead>

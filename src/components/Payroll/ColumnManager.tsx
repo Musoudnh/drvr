@@ -42,11 +42,11 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
   };
 
   return (
-    <div className="fixed right-4 top-32 w-72 bg-white rounded-lg shadow-2xl border border-gray-200 p-3 z-[9999]">
+    <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 p-4 z-[9999]">
       <div className="text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         Column Visibility & Order
       </div>
-      <div className="space-y-1">
+      <div className="space-y-2">
         {columns.map((column, index) => (
           <div
             key={column.key}
@@ -54,26 +54,34 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
             onDragStart={() => handleDragStart(index)}
             onDragOver={(e) => handleDragOver(e, index)}
             onDragEnd={handleDragEnd}
-            className={`flex items-center gap-2 cursor-move hover:bg-gray-50 p-2 rounded transition-colors ${
+            className={`flex items-center justify-between gap-3 cursor-move hover:bg-gray-50 p-2 rounded transition-colors ${
               draggedIndex === index ? 'opacity-50' : ''
             }`}
           >
-            <GripVertical className="w-4 h-4 text-gray-400 flex-shrink-0" />
-            <label className="flex items-center gap-2 cursor-pointer flex-1">
-              <input
-                type="checkbox"
-                checked={visibleColumns[column.key]}
-                onChange={(e) => onToggleColumn(column.key, e.target.checked)}
-                className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                onClick={(e) => e.stopPropagation()}
-              />
+            <div className="flex items-center gap-2 flex-1">
+              <GripVertical className="w-4 h-4 text-gray-400 flex-shrink-0" />
               <span className="text-sm text-gray-700">{column.label}</span>
-            </label>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleColumn(column.key, !visibleColumns[column.key]);
+              }}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                visibleColumns[column.key] ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  visibleColumns[column.key] ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
           </div>
         ))}
       </div>
       <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500">
-        Drag columns to reorder, uncheck to hide
+        Drag to reorder • Toggle to show/hide
       </div>
     </div>
   );
