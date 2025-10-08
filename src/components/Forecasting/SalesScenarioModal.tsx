@@ -154,6 +154,9 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
     setActiveDrivers(activeDrivers.map(d =>
       d.id === driverId ? { ...d, ...updates } : d
     ));
+    if (editingDriver && editingDriver.id === driverId) {
+      setEditingDriver({ ...editingDriver, ...updates });
+    }
   };
 
   const calculateMonthlyImpact = (driver: SalesDriver, monthIndex: number): number => {
@@ -294,7 +297,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...vpParams, volumeGrowthPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -305,7 +308,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...vpParams, priceGrowthPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -316,7 +319,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...vpParams, baseUnits: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -327,7 +330,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...vpParams, basePrice: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -345,7 +348,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...cacParams, marketingSpendMonthly: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -356,7 +359,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...cacParams, customersAcquired: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -367,7 +370,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...cacParams, averageRevenuePerCustomer: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -378,7 +381,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...cacParams, cacPaybackMonths: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -396,7 +399,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...retParams, currentChurnRatePercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -407,7 +410,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...retParams, targetChurnRatePercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -418,7 +421,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...retParams, currentMRR: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -429,7 +432,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...retParams, averageCustomerCount: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -448,7 +451,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   onChange={(e) => updateDriver(driver.id, {
                     parameters: { ...funnelParams, leadsPerMonth: parseFloat(e.target.value) }
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                 />
               </div>
               <div>
@@ -459,7 +462,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   onChange={(e) => updateDriver(driver.id, {
                     parameters: { ...funnelParams, averageDealSize: parseFloat(e.target.value) }
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                 />
               </div>
             </div>
@@ -475,7 +478,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       newStages[idx].name = e.target.value;
                       updateDriver(driver.id, { parameters: { ...funnelParams, stages: newStages } });
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                     placeholder="Stage name"
                   />
                   <input
@@ -486,7 +489,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       newStages[idx].conversionRate = parseFloat(e.target.value);
                       updateDriver(driver.id, { parameters: { ...funnelParams, stages: newStages } });
                     }}
-                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                     placeholder="%"
                   />
                 </div>
@@ -507,7 +510,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...seasonParams, baselineRevenue: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -524,7 +527,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                         const newMultipliers = { ...seasonParams.monthlyMultipliers, [month]: parseFloat(e.target.value) };
                         updateDriver(driver.id, { parameters: { ...seasonParams, monthlyMultipliers: newMultipliers } });
                       }}
-                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[#7B68EE]"
                     />
                   </div>
                 ))}
@@ -545,7 +548,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...contractParams, averageContractLengthMonths: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -556,7 +559,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...contractParams, renewalRatePercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -567,7 +570,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...contractParams, expansionRevenuePercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -578,7 +581,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...contractParams, newARR: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -596,7 +599,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...repParams, numberOfReps: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -607,7 +610,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...repParams, quotaPerRepMonthly: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -618,7 +621,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...repParams, attainmentPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -629,7 +632,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...repParams, newHires: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -647,7 +650,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...discountParams, discountPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -658,7 +661,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...discountParams, volumeLiftPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -669,7 +672,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...discountParams, affectedRevenuePercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -680,7 +683,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...discountParams, marginImpactPercent: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -698,7 +701,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollHCParams, departmentName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -709,7 +712,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollHCParams, currentHeadcount: parseInt(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -725,7 +728,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       newHires[idx].month = e.target.value;
                       updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                     placeholder="2025-11"
                   />
                   <input
@@ -736,7 +739,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       newHires[idx].count = parseInt(e.target.value);
                       updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
                     }}
-                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                     placeholder="Count"
                   />
                   <button
@@ -755,7 +758,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   const newHires = [...payrollHCParams.plannedHires, { month: '', count: 1 }];
                   updateDriver(driver.id, { parameters: { ...payrollHCParams, plannedHires: newHires } });
                 }}
-                className="text-xs text-blue-600 hover:text-blue-700 flex items-center"
+                className="text-xs text-[#7B68EE] hover:text-[#7B68EE] flex items-center"
               >
                 <Plus className="w-4 h-4 mr-1" /> Add Hire Plan
               </button>
@@ -775,7 +778,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, departmentName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -786,7 +789,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, avgSalary: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -797,7 +800,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, benefitsPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -808,7 +811,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, taxesPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -819,7 +822,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, bonusPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -830,7 +833,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollSalParams, commissionPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -848,7 +851,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollMeritParams, departmentName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -859,7 +862,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollMeritParams, annualIncreasePct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -869,7 +872,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollMeritParams, effectiveMonth: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               >
                 {MONTHS.map(month => (
                   <option key={month} value={month}>{month}</option>
@@ -891,7 +894,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, channelName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -902,7 +905,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, monthlyBudget: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -913,7 +916,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, costPerLead: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -924,7 +927,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, leadToCustomerRate: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -935,7 +938,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, avgARRPerCustomer: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -946,7 +949,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktChannelParams, grossMarginPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -964,7 +967,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktCACParams, totalSpend: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -975,7 +978,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktCACParams, leadsGenerated: parseInt(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -986,7 +989,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktCACParams, customersAcquired: parseInt(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -997,7 +1000,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktCACParams, conversionRate: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -1015,7 +1018,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktROIParams, campaignSpend: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1026,7 +1029,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktROIParams, attributedRevenue: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1037,7 +1040,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...mktROIParams, grossMarginPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -1055,7 +1058,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, assetName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1066,7 +1069,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, purchaseCost: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1076,7 +1079,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, purchaseMonth: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               >
                 {MONTHS.map(month => (
                   <option key={month} value={month}>{month}</option>
@@ -1091,7 +1094,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, usefulLifeYears: parseInt(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1102,7 +1105,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, salvageValue: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1112,7 +1115,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, depreciationMethod: e.target.value as 'straight-line' | 'accelerated' }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               >
                 <option value="straight-line">Straight-Line</option>
                 <option value="accelerated">Accelerated</option>
@@ -1133,7 +1136,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqFinanceParams, assetName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1144,7 +1147,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqFinanceParams, purchaseCost: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1155,7 +1158,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqFinanceParams, paymentTermMonths: parseInt(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1166,7 +1169,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqFinanceParams, interestRatePct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1177,7 +1180,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqFinanceParams, downPaymentPct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -1195,7 +1198,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqMaintParams, assetName: e.target.value }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1206,7 +1209,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqMaintParams, purchaseCost: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
             <div>
@@ -1217,7 +1220,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqMaintParams, maintenancePct: parseFloat(e.target.value) }
                 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
           </div>
@@ -1241,7 +1244,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Customer Scenario Builder</h2>
+            <h2 className="text-sm font-bold text-gray-900">Customer Scenario Builder</h2>
             <p className="text-xs text-gray-600 mt-1">Build advanced revenue scenarios with multiple drivers</p>
           </div>
           <button
@@ -1307,7 +1310,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     type="text"
                     value={scenarioName}
                     onChange={(e) => setScenarioName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                     placeholder="e.g., Aggressive Q2 Growth"
                   />
                 </div>
@@ -1317,7 +1320,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                     type="number"
                     value={baseRevenue}
                     onChange={(e) => setBaseRevenue(parseFloat(e.target.value))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -1328,7 +1331,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   value={scenarioDescription}
                   onChange={(e) => setScenarioDescription(e.target.value)}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
                   placeholder="Describe your scenario assumptions..."
                 />
               </div>
@@ -1469,7 +1472,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           {activeTab === 'drivers' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-900">Active Drivers</h3>
+                <h3 className="text-sm font-bold text-gray-900">Active Drivers</h3>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setShowDriverLibrary(!showDriverLibrary)}
@@ -1587,13 +1590,13 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                   type="checkbox"
                                   checked={driver.isActive}
                                   onChange={(e) => updateDriver(driver.id, { isActive: e.target.checked })}
-                                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                  className="w-4 h-4 text-[#7B68EE] border-gray-300 rounded focus:ring-[#7B68EE]"
                                 />
                                 <span className="ml-2 text-xs text-gray-700">Active</span>
                               </label>
                               <button
                                 onClick={() => setEditingDriver(driver)}
-                                className="px-3 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition-colors"
+                                className="px-3 py-1 text-xs bg-[#7B68EE]/10 text-[#7B68EE] rounded hover:bg-[#7B68EE]/20 transition-colors"
                               >
                                 Edit
                               </button>
@@ -1607,10 +1610,10 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           </div>
 
                           {driver.isActive && (
-                            <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                            <div className="mt-3 p-3 bg-[#7B68EE]/10 rounded-lg border border-[#7B68EE]/20">
                               <div className="flex items-center justify-between">
                                 <span className="text-xs text-gray-600">Total Impact</span>
-                                <span className="text-sm font-bold text-blue-600">
+                                <span className="text-sm font-bold text-[#7B68EE]">
                                   {(() => {
                                     const totalImpact = MONTHS.reduce((sum, month, idx) => {
                                       const startIdx = MONTHS.indexOf(driver.startMonth);
@@ -1641,7 +1644,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 {aiMessages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <Bot className="w-16 h-16 text-purple-400 mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Driver Assistant</h3>
+                    <h3 className="text-sm font-semibold text-gray-900 mb-2">AI Driver Assistant</h3>
                     <p className="text-gray-600 max-w-md">
                       Discuss your assumptions with AI to help build your customer drivers.
                       The AI can suggest parameters and help you think through your scenarios.
@@ -1799,7 +1802,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-medium text-gray-900">Base Revenue</span>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-bold text-gray-900">
                     ${(baseRevenue * 12).toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-600 mt-1">Annual baseline</p>
@@ -1809,7 +1812,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-medium text-gray-900">Total Impact</span>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-bold text-gray-900">
                     ${totalImpact.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-600 mt-1">From all drivers</p>
@@ -1819,7 +1822,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-medium text-gray-900">Final Revenue</span>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-bold text-gray-900">
                     ${finalRevenue.toLocaleString()}
                   </p>
                   <p className="text-xs text-gray-600 mt-1">
@@ -1828,9 +1831,6 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 </div>
               </div>
 
-              {previewData.length > 0 && (
-                <DriverImpactWaterfall impacts={previewData} selectedMonth={startMonth} />
-              )}
 
               <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <div className="p-4 bg-gray-50 border-b border-gray-200">
@@ -1860,7 +1860,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                           <td className="px-4 py-3 text-xs text-right font-bold text-gray-900">
                             ${month.finalRevenue.toLocaleString()}
                           </td>
-                          <td className="px-4 py-3 text-xs text-right font-medium text-blue-600">
+                          <td className="px-4 py-3 text-xs text-right font-medium text-[#7B68EE]">
                             +{((month.finalRevenue / month.baseRevenue - 1) * 100).toFixed(1)}%
                           </td>
                         </tr>
@@ -1901,7 +1901,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           <div className="fixed right-0 top-0 bottom-0 z-[70] w-[600px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Edit Driver</h3>
+                <h3 className="text-base font-bold text-gray-900">Edit Driver</h3>
                 <p className="text-xs text-gray-600 mt-1">{editingDriver.driverName}</p>
               </div>
               <button
@@ -1924,7 +1924,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       updateDriver(editingDriver.id, { startMonth: e.target.value });
                       setEditingDriver({ ...editingDriver, startMonth: e.target.value });
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                   >
                     {MONTHS.map(m => (
                       <option key={m} value={m}>{m}</option>
@@ -1939,7 +1939,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                       updateDriver(editingDriver.id, { endMonth: e.target.value });
                       setEditingDriver({ ...editingDriver, endMonth: e.target.value });
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
                   >
                     {MONTHS.map(m => (
                       <option key={m} value={m}>{m}</option>
@@ -1952,7 +1952,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
               <button
                 onClick={() => setEditingDriver(null)}
-                className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="px-6 py-2.5 bg-[#7B68EE] text-white rounded-lg hover:bg-[#8B7BEE] transition-colors font-medium"
               >
                 Done
               </button>
