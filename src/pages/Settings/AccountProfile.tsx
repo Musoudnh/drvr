@@ -39,14 +39,14 @@ const AccountProfile: React.FC = () => {
         {/* Profile Photo */}
         <Card title="Profile Photo">
           <div className="text-center">
-            <div className="w-32 h-32 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="w-16 h-16 text-white" />
+            <div className="w-20 h-20 bg-[#3AB7BF] rounded-full flex items-center justify-center mx-auto mb-3">
+              <User className="w-10 h-10 text-white" />
             </div>
             <Button variant="outline" size="sm">
-              <Camera className="w-4 h-4 mr-2" />
-              Change Photo
+              <Camera className="w-3 h-3 mr-1" />
+              Change
             </Button>
-            <p className="text-xs text-gray-500 mt-2">JPG, PNG or GIF. Max size 2MB.</p>
+            <p className="text-xs text-gray-500 mt-1">Max 2MB</p>
           </div>
         </Card>
 
