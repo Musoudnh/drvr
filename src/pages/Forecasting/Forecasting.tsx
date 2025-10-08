@@ -2360,31 +2360,27 @@ const Forecasting: React.FC<ForecastingProps> = ({
                                               </button>
                                             </div>
 
-                                            {/* Activity Cards for this scenario */}
-                                            <div className="mt-1">
-                                              <table className="w-full">
-                                                <tbody>
-                                                  <tr>
-                                                    <td className="py-1 px-4 text-xs sticky left-0 bg-white w-64"></td>
-                                                    {months.map((month, index) => {
-                                                      const startIndex = getMonthIndex(scenario.startMonth);
-                                                      const endIndex = getMonthIndex(scenario.endMonth);
-                                                      const isActive = index >= startIndex && index <= endIndex && scenario.isActive;
-                                                      const impact = getScenarioMonthImpact(scenario, month, glCode.code);
-                                                      const hasActivity = isActive && impact !== 0;
-
-                                                      return (
-                                                        <td key={index} className="py-1 text-center px-2 min-w-[120px]">
-                                                          <div className={`text-xs font-semibold rounded px-2 py-1 ${hasActivity ? 'bg-[#4ADE80] text-white' : 'bg-gray-100 text-gray-400'}`}>
-                                                            {hasActivity ? `${impact >= 0 ? '+' : ''}$${formatNumber(Math.abs(impact))}` : '-'}
-                                                          </div>
-                                                        </td>
-                                                      );
-                                                    })}
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </div>
+                                            {/* Summary Card */}
+                                            {scenario.isActive && (
+                                              <div className="mt-2 p-3 bg-[#7B68EE]/10 rounded-lg border border-[#7B68EE]/20">
+                                                <div className="flex items-center justify-between">
+                                                  <span className="text-xs text-gray-600">Total Impact</span>
+                                                  <span className="text-sm font-bold text-[#7B68EE]">
+                                                    {(() => {
+                                                      const totalImpact = months.reduce((sum, month, index) => {
+                                                        const startIndex = getMonthIndex(scenario.startMonth);
+                                                        const endIndex = getMonthIndex(scenario.endMonth);
+                                                        if (index >= startIndex && index <= endIndex) {
+                                                          return sum + getScenarioMonthImpact(scenario, month, glCode.code);
+                                                        }
+                                                        return sum;
+                                                      }, 0);
+                                                      return `${totalImpact >= 0 ? '+' : ''}$${formatNumber(Math.abs(totalImpact))}`;
+                                                    })()}
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            )}
 
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">

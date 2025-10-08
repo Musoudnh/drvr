@@ -1617,7 +1617,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                                 return (
                                   <div
                                     key={month}
-                                    className={`px-2 text-center min-w-[120px] transition-colors ${
+                                    className={`flex-1 text-center transition-colors ${
                                       isActive
                                         ? 'bg-blue-500'
                                         : 'bg-gray-200'
