@@ -2533,7 +2533,7 @@ const Forecasting: React.FC<ForecastingProps> = ({
              
              {renderGLSpecificInputs()}
              
-             <div className="p-3 bg-purple-100 rounded-lg">
+             <div className="p-3 bg-[#7B68EE]/10 rounded-lg">
                <p className="text-xs text-gray-700">{getImpactPreview()}</p>
              </div>
            </div>
@@ -2690,7 +2690,7 @@ const Forecasting: React.FC<ForecastingProps> = ({
 
              {renderGLSpecificInputs()}
 
-             <div className="p-3 bg-purple-100 rounded-lg">
+             <div className="p-3 bg-[#7B68EE]/10 rounded-lg">
                <p className="text-xs text-gray-700">{getImpactPreview()}</p>
              </div>
            </div>
@@ -3114,7 +3114,7 @@ const Forecasting: React.FC<ForecastingProps> = ({
 
               {/* Impact Preview */}
               {sidePanelForm.selectedGLCode && sidePanelForm.adjustmentValue !== 0 && (
-                <div className="p-4 bg-purple-100 rounded-lg border border-purple-200">
+                <div className="p-4 bg-[#7B68EE]/10 rounded-lg border border-[#7B68EE]/20">
                   <h4 className="font-medium text-[#101010] mb-2 flex items-center">
                     <Eye className="w-4 h-4 mr-2" />
                     Impact Preview
