@@ -1503,7 +1503,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className={`flex-1 ${activeTab === 'ai' ? 'overflow-hidden' : 'overflow-y-auto p-6'}`}>
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <div>
@@ -1831,8 +1831,8 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
           )}
 
           {activeTab === 'ai' && (
-            <div className="flex flex-col h-[500px]">
-              <div className="flex-1 overflow-y-auto space-y-4 p-4">
+            <div className="flex flex-col h-full">
+              <div className="flex-1 overflow-y-auto space-y-4 p-6">
                 {aiMessages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <Bot className="w-16 h-16 text-[#7B68EE] mb-4" />
