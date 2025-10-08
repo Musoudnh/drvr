@@ -96,13 +96,15 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
         
         <div className="flex items-center space-x-3">
           {/* View Settings Filter */}
-          <button
-            onClick={onOpenViewSettings}
-            className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
-            title="View Settings"
-          >
-            <Filter className="w-4 h-4" />
-          </button>
+          {onOpenViewSettings && (
+            <button
+              onClick={onOpenViewSettings}
+              className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+              title="View Settings"
+            >
+              <Filter className="w-4 h-4" />
+            </button>
+          )}
 
           {/* Notifications */}
           <div className="relative" ref={notificationRef}>
