@@ -17,11 +17,13 @@ import {
   BarChart3,
   FileText,
   ChevronDown,
+  GripVertical,
 } from 'lucide-react';
 import Card from '../../components/UI/Card';
 import Button from '../../components/UI/Button';
 import AddEmployeeModal from '../../components/Payroll/AddEmployeeModal';
 import ImportEmployeesModal from '../../components/Payroll/ImportEmployeesModal';
+import ColumnManager from '../../components/Payroll/ColumnManager';
 import { enterprisePayrollService } from '../../services/enterprisePayrollService';
 import type { Employee, EmployeeFilter, PayrollSummary } from '../../types/payroll';
 
@@ -41,6 +43,16 @@ const HeadcountManagement: React.FC = () => {
   const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [empTypeDropdownOpen, setEmpTypeDropdownOpen] = useState(false);
   const [showColumnMenu, setShowColumnMenu] = useState(false);
+  const [columnOrder, setColumnOrder] = useState<string[]>([
+    'jobTitle',
+    'department',
+    'location',
+    'type',
+    'compensation',
+    'tax',
+    'allIn',
+    'status',
+  ]);
   const [visibleColumns, setVisibleColumns] = useState({
     jobTitle: true,
     department: true,
@@ -51,6 +63,7 @@ const HeadcountManagement: React.FC = () => {
     allIn: true,
     status: true,
   });
+  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const deptDropdownRef = useRef<HTMLDivElement>(null);
   const locationDropdownRef = useRef<HTMLDivElement>(null);
@@ -195,8 +208,22 @@ const HeadcountManagement: React.FC = () => {
     };
   };
 
+  const columnConfigs = columnOrder.map(key => {
+    const labels: Record<string, string> = {
+      jobTitle: 'Job Title',
+      department: 'Department',
+      location: 'Location',
+      type: 'Type',
+      compensation: 'Compensation',
+      tax: 'Tax',
+      allIn: 'All In',
+      status: 'Status',
+    };
+    return { key, label: labels[key] };
+  });
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 h-full flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
@@ -426,54 +453,19 @@ const HeadcountManagement: React.FC = () => {
       </Card>
 
       {/* Employee Table */}
-      <Card>
-        <div className="overflow-x-auto">
+      <Card className="flex-1 flex flex-col min-h-0">
+        <div className="overflow-x-auto flex-1">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Employee
                 </th>
-                {visibleColumns.jobTitle && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Job Title
+                {columnOrder.map(key => visibleColumns[key as keyof typeof visibleColumns] && (
+                  <th key={key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {columnConfigs.find(c => c.key === key)?.label}
                   </th>
-                )}
-                {visibleColumns.department && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Department
-                  </th>
-                )}
-                {visibleColumns.location && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Location
-                  </th>
-                )}
-                {visibleColumns.type && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Type
-                  </th>
-                )}
-                {visibleColumns.compensation && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Compensation
-                  </th>
-                )}
-                {visibleColumns.tax && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Tax
-                  </th>
-                )}
-                {visibleColumns.allIn && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    All In
-                  </th>
-                )}
-                {visibleColumns.status && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                )}
+                ))}
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   <div className="flex items-center justify-end gap-2">
                     <span>Actions</span>
@@ -485,31 +477,12 @@ const HeadcountManagement: React.FC = () => {
                         <MoreVertical className="w-4 h-4" />
                       </button>
                       {showColumnMenu && (
-                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50">
-                          <div className="text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">Column Visibility</div>
-                          <div className="space-y-2">
-                            {[
-                              { key: 'jobTitle', label: 'Job Title' },
-                              { key: 'department', label: 'Department' },
-                              { key: 'location', label: 'Location' },
-                              { key: 'type', label: 'Type' },
-                              { key: 'compensation', label: 'Compensation' },
-                              { key: 'tax', label: 'Tax' },
-                              { key: 'allIn', label: 'All In' },
-                              { key: 'status', label: 'Status' },
-                            ].map((column) => (
-                              <label key={column.key} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
-                                <input
-                                  type="checkbox"
-                                  checked={visibleColumns[column.key as keyof typeof visibleColumns]}
-                                  onChange={(e) => setVisibleColumns({ ...visibleColumns, [column.key]: e.target.checked })}
-                                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                                />
-                                <span className="text-sm text-gray-700">{column.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
+                        <ColumnManager
+                          columns={columnConfigs}
+                          visibleColumns={visibleColumns}
+                          onToggleColumn={(key, visible) => setVisibleColumns({ ...visibleColumns, [key]: visible })}
+                          onReorderColumns={(newOrder) => setColumnOrder(newOrder)}
+                        />
                       )}
                     </div>
                   </div>
@@ -546,60 +519,76 @@ const HeadcountManagement: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    {visibleColumns.jobTitle && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{employee.job_title || 'Not set'}</div>
-                        <div className="text-sm text-gray-500">{employee.employee_number || 'No ID'}</div>
-                      </td>
-                    )}
-                    {visibleColumns.department && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{employee.department_name || 'Unassigned'}</div>
-                      </td>
-                    )}
-                    {visibleColumns.location && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{employee.location || 'Remote'}</div>
-                        <div className="text-sm text-gray-500">{employee.state}</div>
-                      </td>
-                    )}
-                    {visibleColumns.type && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
-                          {employee.employment_type || 'Full-time'}
-                        </span>
-                      </td>
-                    )}
-                    {visibleColumns.compensation && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {employee.employee_type === 'salary'
-                            ? `$${(employee.annual_salary || 0).toLocaleString()}/yr`
-                            : `$${employee.hourly_rate}/hr`}
-                        </div>
-                      </td>
-                    )}
-                    {visibleColumns.tax && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                        </div>
-                      </td>
-                    )}
-                    {visibleColumns.allIn && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
-                        </div>
-                      </td>
-                    )}
-                    {visibleColumns.status && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
-                          {employee.status || 'Active'}
-                        </span>
-                      </td>
-                    )}
+                    {columnOrder.map(key => {
+                      if (!visibleColumns[key as keyof typeof visibleColumns]) return null;
+
+                      switch(key) {
+                        case 'jobTitle':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{employee.job_title || 'Not set'}</div>
+                              <div className="text-sm text-gray-500">{employee.employee_number || 'No ID'}</div>
+                            </td>
+                          );
+                        case 'department':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{employee.department_name || 'Unassigned'}</div>
+                            </td>
+                          );
+                        case 'location':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{employee.location || 'Remote'}</div>
+                              <div className="text-sm text-gray-500">{employee.state}</div>
+                            </td>
+                          );
+                        case 'type':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
+                                {employee.employment_type || 'Full-time'}
+                              </span>
+                            </td>
+                          );
+                        case 'compensation':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">
+                                {employee.employee_type === 'salary'
+                                  ? `$${(employee.annual_salary || 0).toLocaleString()}/yr`
+                                  : `$${employee.hourly_rate}/hr`}
+                              </div>
+                            </td>
+                          );
+                        case 'tax':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">
+                                ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                              </div>
+                            </td>
+                          );
+                        case 'allIn':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">
+                                ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
+                              </div>
+                            </td>
+                          );
+                        case 'status':
+                          return (
+                            <td key={key} className="px-6 py-4 whitespace-nowrap">
+                              <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
+                                {employee.status || 'Active'}
+                              </span>
+                            </td>
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
                         <button
