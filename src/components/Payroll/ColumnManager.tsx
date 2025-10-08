@@ -42,7 +42,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
   };
 
   return (
-    <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50">
+    <div className="fixed right-4 top-32 w-72 bg-white rounded-lg shadow-2xl border border-gray-200 p-3 z-[9999]">
       <div className="text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         Column Visibility & Order
       </div>
