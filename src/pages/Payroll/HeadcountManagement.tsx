@@ -238,6 +238,13 @@ const HeadcountManagement: React.FC = () => {
             <Upload className="w-4 h-4" />
             Import
           </button>
+          <button
+            onClick={handleExport}
+            className="px-3 py-1.5 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            Export
+          </button>
           <div className="relative" ref={columnMenuRef}>
             <button
               onClick={() => setShowColumnMenu(!showColumnMenu)}
@@ -255,13 +262,6 @@ const HeadcountManagement: React.FC = () => {
               />
             )}
           </div>
-          <button
-            onClick={handleExport}
-            className="px-3 py-1.5 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Export
-          </button>
           <button
             onClick={() => setShowAddModal(true)}
             className="px-3 py-1.5 bg-[#7B68EE] text-white rounded text-sm font-medium shadow-sm transition-colors hover:bg-[#6952d9] flex items-center gap-2"
