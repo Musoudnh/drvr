@@ -197,19 +197,18 @@ const HeadcountManagement: React.FC = () => {
             </div>
           </div>
 
-          <Button
+          <button
             onClick={() => setShowFilters(!showFilters)}
-            variant="outline"
-            className="flex items-center gap-2"
+            className="px-3 py-1.5 bg-white text-[#7B68EE] rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
           >
             <Filter className="w-4 h-4" />
             Filters
             {Object.keys(filters).length > 0 && (
-              <span className="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
+              <span className="bg-[#7B68EE] text-white text-xs px-2 py-0.5 rounded-full">
                 {Object.keys(filters).length}
               </span>
             )}
-          </Button>
+          </button>
         </div>
 
         {showFilters && (
