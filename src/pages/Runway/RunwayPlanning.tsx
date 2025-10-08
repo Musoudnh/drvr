@@ -656,752 +656,106 @@ const RunwayPlanning: React.FC = () => {
       <div className="flex-1 flex overflow-hidden">
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Driver Cards Rail */}
-          <div className="bg-white border-b border-gray-200 p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Active Drivers</h2>
-              <div className="flex items-center space-x-3">
-                <Button variant="outline" size="sm" onClick={() => setShowScenarioModal(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  New Scenario
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Driver
-                </Button>
-              </div>
-            </div>
-            
-            <div className="flex space-x-4 overflow-x-auto pb-2">
-              {drivers
-                .filter(driver => driver.scope === 'global' || driver.scenarioId === selectedScenario)
-                .sort((a, b) => a.priority - b.priority)
-                .map(driver => (
-                <div
-                  key={driver.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, driver.id)}
-                  onDragOver={handleDragOver}
-                  onDrop={(e) => handleDrop(e, driver.id)}
-                  className={`flex-shrink-0 w-72 p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-lg ${
-                    driver.enabled 
-                      ? 'border-[#4F46E5] bg-[#4F46E5]/5 shadow-md' 
-                      : 'border-gray-200 bg-gray-50'
-                  }`}
-                  onClick={() => {
-                    setSelectedDriver(driver);
-                    setSelectedEntity({ type: 'driver', id: driver.id });
-                    setShowDriverDrawer(true);
-                  }}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center space-x-2">
-                      <GripVertical className="w-4 h-4 text-gray-400" />
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        driver.scope === 'global' ? 'bg-[#EDE9FE] text-[#5B21B6]' : 'bg-[#E0E7FF] text-[#3730A3]'
-                      }`}>
-                        {getDriverTypeLabel(driver.type)}
-                      </span>
-                      {driver.scope === 'global' && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                          Global
-                        </span>
-                      )}
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleDriver(driver.id);
-                      }}
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                        driver.enabled 
-                          ? 'border-[#4F46E5] bg-[#4F46E5]' 
-                          : 'border-gray-300 bg-white hover:border-gray-400'
-                      }`}
-                    >
-                      {driver.enabled && <CheckCircle className="w-3 h-3 text-white" />}
-                    </button>
-                  </div>
-                  
-                  <h3 className="font-semibold text-gray-900 mb-2 text-xs">{driver.name}</h3>
-                  
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs text-gray-600">
-                      {driver.startMonth} → {driver.endMonth}
-                    </span>
-                    <span className={`text-xs font-medium ${
-                      driver.impact >= 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {driver.impact >= 0 ? '+' : ''}{driver.impact.toFixed(1)}% runway
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-gray-900">
-                      {driver.type.includes('PERCENT') || driver.type.includes('CHANGE') 
-                        ? `${(driver.magnitude * 100).toFixed(1)}%`
-                        : driver.type === 'HEADCOUNT_ADD' || driver.type === 'HEADCOUNT_CUT'
-                        ? `${driver.magnitude} ${driver.magnitude === 1 ? 'person' : 'people'}`
-                        : formatCurrency(driver.magnitude)
-                      }
-                    </span>
-                    <div 
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: driver.color }}
-                    />
-                  </div>
-                  
-                  {driver.department && (
-                    <div className="mt-2">
-                      <span className="text-xs text-gray-500">{driver.department}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Forecast Charts */}
+          {/* Current Staff Management */}
           <div className="flex-1 p-6 overflow-y-auto">
-            {/* Hiring Plan with Gantt */}
-            <Card title="Hiring Plan">
+            <Card title="Current Staff">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <h3 className="font-semibold text-gray-900">Team Expansion Timeline</h3>
-                  <button
-                    onClick={() => setShowHiringGantt(!showHiringGantt)}
-                    className="text-xs text-[#4F46E5] hover:underline"
-                  >
-                    {showHiringGantt ? 'Hide' : 'Show'} Gantt View
-                  </button>
-                </div>
+                <p className="text-sm text-gray-600">Manage your current team members</p>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowAddRoleModal(true)}
                 >
                   <UserPlus className="w-4 h-4 mr-2" />
-                  Add Role
+                  Add Employee
                 </Button>
               </div>
 
-              {/* Hiring Table */}
-              <div className="overflow-x-auto mb-6">
-                <table className="w-full text-xs">
+              {/* Staff Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      <th className="text-left py-2 px-3 font-medium text-gray-700">Role</th>
-                      <th className="text-left py-2 px-3 font-medium text-gray-700">Department</th>
-                      <th className="text-left py-2 px-3 font-medium text-gray-700">Level</th>
-                      <th className="text-center py-2 px-3 font-medium text-gray-700">Start</th>
-                      <th className="text-center py-2 px-3 font-medium text-gray-700">FTE</th>
-                      <th className="text-right py-2 px-3 font-medium text-gray-700">Base Salary</th>
-                      <th className="text-right py-2 px-3 font-medium text-gray-700">Fully Loaded</th>
-                      <th className="text-left py-2 px-3 font-medium text-gray-700">Location</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Role</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Department</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Level</th>
+                      <th className="text-right py-3 px-4 font-medium text-gray-700">Salary</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Start Date</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Location</th>
+                      <th className="text-right py-3 px-4 font-medium text-gray-700">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {hiringPlan.map(hire => {
-                      const fullyLoaded = hire.baseSalary * hire.fte * (1 + hire.bonusPercent + hire.benefitsPercent);
-                      return (
-                        <tr 
-                          key={hire.id} 
-                          className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
-                          onClick={() => {
-                            setSelectedEntity({ type: 'hire', id: hire.id });
-                            setShowDriverDrawer(true);
-                          }}
-                        >
-                          <td className="py-3 px-3 font-medium text-gray-900">{hire.role}</td>
-                          <td className="py-3 px-3">
-                            <div className="flex items-center">
-                              <div 
-                                className="w-3 h-3 rounded-full mr-2"
-                                style={{ backgroundColor: getDepartmentColor(hire.department) }}
-                              />
-                              {hire.department}
+                    {hiringPlan.map(employee => (
+                      <tr key={employee.id} className="border-b border-gray-100 hover:bg-gray-50">
+                        <td className="py-3 px-4">
+                          <div className="flex items-center">
+                            <div
+                              className="w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                              style={{ backgroundColor: getDepartmentColor(employee.department) + '20' }}
+                            >
+                              <span className="text-xs font-medium" style={{ color: getDepartmentColor(employee.department) }}>
+                                {employee.role.split(' ').map(w => w[0]).join('').slice(0, 2)}
+                              </span>
                             </div>
-                          </td>
-                          <td className="py-3 px-3 text-gray-700">{hire.level}</td>
-                          <td className="py-3 px-3 text-center text-gray-700">{hire.startMonth}</td>
-                          <td className="py-3 px-3 text-center text-gray-700">{hire.fte}</td>
-                          <td className="py-3 px-3 text-right font-medium text-gray-900">{formatCurrency(hire.baseSalary)}</td>
-                          <td className="py-3 px-3 text-right font-medium text-gray-900">{formatCurrency(fullyLoaded)}</td>
-                          <td className="py-3 px-3 text-gray-700">{hire.location}</td>
-                        </tr>
-                      );
-                    })}
+                            <span className="font-medium text-gray-900">{employee.role}</span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">{employee.role}</td>
+                        <td className="py-3 px-4">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium" style={{
+                            backgroundColor: getDepartmentColor(employee.department) + '20',
+                            color: getDepartmentColor(employee.department)
+                          }}>
+                            {employee.department}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">{employee.level}</td>
+                        <td className="py-3 px-4 text-right font-medium text-gray-900">
+                          {formatCurrency(employee.baseSalary)}
+                        </td>
+                        <td className="py-3 px-4 text-gray-700">{employee.startMonth}</td>
+                        <td className="py-3 px-4 text-gray-700">{employee.location}</td>
+                        <td className="py-3 px-4 text-right">
+                          <button
+                            onClick={() => {
+                              if (window.confirm('Are you sure you want to remove this employee?')) {
+                                setHiringPlan(prev => prev.filter(e => e.id !== employee.id));
+                              }
+                            }}
+                            className="text-red-600 hover:text-red-800 text-xs"
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
-              </div>
 
-              {/* Gantt Chart */}
-              {showHiringGantt && (
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-4">Hiring Timeline</h4>
-                  <div className="space-y-3">
-                    {/* Month headers */}
-                    <div className="flex items-center">
-                      <div className="w-48 text-xs font-medium text-gray-700">Role</div>
-                      <div className="flex-1 grid grid-cols-12 gap-1">
-                        {forecastData.months.map(month => (
-                          <div key={month} className="text-xs text-gray-500 text-center">
-                            {month.split('-')[1]}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Hiring rows */}
-                    {hiringPlan.map(hire => {
-                      const startIndex = forecastData.months.indexOf(hire.startMonth);
-                      const endIndex = forecastData.months.indexOf(hire.endMonth);
-                      
-                      return (
-                        <div key={hire.id} className="flex items-center group">
-                          <div className="w-48 text-xs text-gray-900 pr-4">
-                            <div className="flex items-center">
-                              <div 
-                                className="w-3 h-3 rounded-full mr-2"
-                                style={{ backgroundColor: getDepartmentColor(hire.department) }}
-                              />
-                              {hire.role}
-                            </div>
-                            <div className="text-xs text-gray-500">{hire.fte} FTE</div>
-                          </div>
-                          <div className="flex-1 grid grid-cols-12 gap-1 relative">
-                            {forecastData.months.map((month, index) => {
-                              const isActive = index >= startIndex && index <= endIndex;
-                              const isStart = index === startIndex;
-                              const isEnd = index === endIndex;
-                              
-                              return (
-                                <div
-                                  key={month}
-                                  className={`h-6 rounded-sm transition-all ${
-                                    isActive 
-                                      ? 'opacity-100' 
-                                      : 'bg-gray-200 opacity-30'
-                                  }`}
-                                  style={{
-                                    backgroundColor: isActive ? getDepartmentColor(hire.department) : undefined
-                                  }}
-                                  title={isActive ? `${hire.role} - ${formatCurrency(hire.baseSalary * hire.fte * (1 + hire.bonusPercent + hire.benefitsPercent) / 12)}/month` : ''}
-                                >
-                                  {isStart && (
-                                    <div className="absolute -top-6 left-0 text-xs text-gray-600 whitespace-nowrap">
-                                      Start: {hire.startMonth}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
+                {hiringPlan.length === 0 && (
+                  <div className="text-center py-12">
+                    <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500 mb-2">No employees added yet</p>
+                    <p className="text-sm text-gray-400 mb-4">Add your current team members to get started</p>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => setShowAddRoleModal(true)}
+                    >
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Add First Employee
+                    </Button>
                   </div>
-                  
-                  {/* Department Legend */}
-                  <div className="flex items-center justify-center space-x-6 mt-4 pt-4 border-t border-gray-200">
-                    {Array.from(new Set(hiringPlan.map(h => h.department))).map(dept => (
-                      <div key={dept} className="flex items-center">
-                        <div 
-                          className="w-3 h-3 rounded-full mr-2"
-                          style={{ backgroundColor: getDepartmentColor(dept) }}
-                        />
-                        <span className="text-xs text-gray-600">{dept}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </Card>
           </div>
         </div>
-
-        {/* Right Drawer */}
-        {showDriverDrawer && selectedEntity && (
-          <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
-            <div className="p-4 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {selectedEntity.type === 'driver' ? 'Driver Properties' : 
-                   selectedEntity.type === 'scenario' ? 'Scenario Properties' : 'Hire Properties'}
-                </h3>
-                <button
-                  onClick={() => setShowDriverDrawer(false)}
-                  className="p-1 hover:bg-gray-100 rounded"
-                >
-                  <X className="w-4 h-4 text-gray-400" />
-                </button>
-              </div>
-              
-              <div className="flex space-x-1 mt-4">
-                {(['properties', 'comments', 'audit'] as const).map(tab => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-3 py-1 text-xs font-medium rounded ${
-                      activeTab === tab
-                        ? 'bg-[#4F46E5] text-white'
-                        : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4">
-              {activeTab === 'properties' && selectedDriver && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Driver Name</label>
-                    <input
-                      type="text"
-                      value={selectedDriver.name}
-                      onChange={(e) => setSelectedDriver({...selectedDriver, name: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Type</label>
-                    <select
-                      value={selectedDriver.type}
-                      onChange={(e) => setSelectedDriver({...selectedDriver, type: e.target.value as any})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                    >
-                      <option value="REVENUE_GROWTH">Revenue Growth</option>
-                      <option value="PRICE_CHANGE">Price Change</option>
-                      <option value="HEADCOUNT_ADD">Headcount Add</option>
-                      <option value="HEADCOUNT_CUT">Headcount Cut</option>
-                      <option value="OPEX_CHANGE">OpEx Change</option>
-                      <option value="CAC_CHANGE">CAC Change</option>
-                      <option value="CHURN_DELTA">Churn Delta</option>
-                      <option value="ONE_TIME_COST">One-time Cost</option>
-                      <option value="CAPEX">CapEx</option>
-                    </select>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">Start Month</label>
-                      <select
-                        value={selectedDriver.startMonth}
-                        onChange={(e) => setSelectedDriver({...selectedDriver, startMonth: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                      >
-                        {forecastData.months.map(month => (
-                          <option key={month} value={month}>{month}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">End Month</label>
-                      <select
-                        value={selectedDriver.endMonth}
-                        onChange={(e) => setSelectedDriver({...selectedDriver, endMonth: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                      >
-                        {forecastData.months.map(month => (
-                          <option key={month} value={month}>{month}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Magnitude</label>
-                    <input
-                      type="number"
-                      value={selectedDriver.magnitude}
-                      onChange={(e) => setSelectedDriver({...selectedDriver, magnitude: Number(e.target.value)})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                      step="0.01"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Shape</label>
-                    <select
-                      value={selectedDriver.shape}
-                      onChange={(e) => setSelectedDriver({...selectedDriver, shape: e.target.value as any})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                    >
-                      <option value="step">Step Function</option>
-                      <option value="linear">Linear Ramp</option>
-                      <option value="curve">S-Curve</option>
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Scope</label>
-                    <div className="flex items-center space-x-4">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          checked={selectedDriver.scope === 'global'}
-                          onChange={() => setSelectedDriver({...selectedDriver, scope: 'global'})}
-                          className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
-                        />
-                        <span className="text-xs text-gray-700">Global</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          checked={selectedDriver.scope === 'scenario'}
-                          onChange={() => setSelectedDriver({...selectedDriver, scope: 'scenario'})}
-                          className="w-4 h-4 text-[#4F46E5] border-gray-300 focus:ring-[#4F46E5] mr-2"
-                        />
-                        <span className="text-xs text-gray-700">Scenario-specific</span>
-                      </label>
-                    </div>
-                  </div>
-                  
-                  {selectedDriver.department && (
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">Department</label>
-                      <input
-                        type="text"
-                        value={selectedDriver.department}
-                        onChange={(e) => setSelectedDriver({...selectedDriver, department: e.target.value})}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                      />
-                    </div>
-                  )}
-                  
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-2">Notes</label>
-                    <textarea
-                      value={selectedDriver.notes}
-                      onChange={(e) => setSelectedDriver({...selectedDriver, notes: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                      rows={3}
-                      placeholder="Add notes about this driver..."
-                    />
-                  </div>
-                  
-                  <div className="pt-4 border-t border-gray-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-gray-700">Runway Impact</span>
-                      <span className={`text-xs font-bold ${
-                        selectedDriver.impact >= 0 ? 'text-green-600' : 'text-red-600'
-                      }`}>
-                        {selectedDriver.impact >= 0 ? '+' : ''}{selectedDriver.impact.toFixed(1)}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {activeTab === 'comments' && (
-                <div className="space-y-4">
-                  {/* Comments List */}
-                  <div className="space-y-3">
-                    {getEntityComments().map(comment => (
-                      <div key={comment.id} className="p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center">
-                            <div className="w-6 h-6 bg-[#4F46E5] rounded-full flex items-center justify-center mr-2">
-                              <span className="text-xs text-white font-medium">
-                                {comment.author.split(' ').map(n => n[0]).join('')}
-                              </span>
-                            </div>
-                            <span className="text-xs font-medium text-gray-900">{comment.author}</span>
-                          </div>
-                          <span className="text-xs text-gray-500">
-                            {comment.timestamp.toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-700">{comment.content}</p>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Add Comment */}
-                  <div className="border-t border-gray-200 pt-4">
-                    <textarea
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      placeholder="Add a comment... Use @ to mention someone"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent resize-none"
-                      rows={3}
-                    />
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center space-x-2">
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                          <Paperclip className="w-4 h-4 text-gray-400" />
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded">
-                          <AtSign className="w-4 h-4 text-gray-400" />
-                        </button>
-                      </div>
-                      <Button 
-                        variant="primary" 
-                        size="sm" 
-                        onClick={addComment}
-                        disabled={!newComment.trim()}
-                      >
-                        <Send className="w-3 h-3 mr-1" />
-                        Comment
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {activeTab === 'audit' && (
-                <div className="space-y-3">
-                  {getEntityAuditLog().map(entry => (
-                    <div key={entry.id} className="p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center">
-                          <div className="w-6 h-6 bg-[#4F46E5] rounded-full flex items-center justify-center mr-2">
-                            <span className="text-xs text-white font-medium">
-                              {entry.user.split(' ').map(n => n[0]).join('')}
-                            </span>
-                          </div>
-                          <span className="text-xs font-medium text-gray-900">{entry.user}</span>
-                        </div>
-                        <span className="text-xs text-gray-500">
-                          {entry.timestamp.toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-700 mb-1">{entry.action}</p>
-                      <div className="text-xs text-gray-600">
-                        <span className="font-medium">{entry.field}:</span>
-                        {entry.beforeValue && (
-                          <span className="text-red-600 line-through ml-1">{entry.beforeValue}</span>
-                        )}
-                        <span className="text-green-600 ml-1">{entry.afterValue}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Quick Actions Footer */}
-      <div className="bg-white border-t border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" onClick={() => setShowHiringGantt(!showHiringGantt)}>
-              <Users className="w-4 h-4 mr-2" />
-              {showHiringGantt ? 'Hide' : 'Show'} Hiring Gantt
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => setShowExportModal(true)}>
-              <Download className="w-4 h-4 mr-2" />
-              Export Board Pack
-            </Button>
-            <Button variant="outline" size="sm">
-              <FileText className="w-4 h-4 mr-2" />
-              Import Actuals
-            </Button>
-          </div>
-          
-          <div className="flex items-center space-x-2 text-xs text-gray-600">
-            <Clock className="w-4 h-4" />
-            <span>Last saved: 2 minutes ago</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Chart Edit Confirmation Modal */}
-      {editingPoint && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[400px] max-w-[90vw]">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Confirm Chart Edit</h3>
-            <p className="text-xs text-gray-600 mb-4">
-              You're about to adjust {editingPoint.metric} for {forecastData.months[editingPoint.month]} 
-              to {formatCurrency(editingPoint.value)}. This will create a one-time adjustment driver.
-            </p>
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={() => setEditingPoint(null)}>
-                Cancel
-              </Button>
-              <Button variant="primary" onClick={confirmChartEdit}>
-                Create Driver
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Export Modal */}
-      {showExportModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Export Board Pack</h3>
-              <button
-                onClick={() => setShowExportModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Export Format</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
-                  <option value="pdf">PDF Report</option>
-                  <option value="excel">Excel Workbook</option>
-                  <option value="powerpoint">PowerPoint Slides</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Include Scenarios</label>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                    <span className="text-xs text-gray-700">{currentScenario?.name} (Primary)</span>
-                  </label>
-                  {compareScenarios.map(scenarioId => {
-                    const scenario = scenarios.find(s => s.id === scenarioId);
-                    return (
-                      <label key={scenarioId} className="flex items-center">
-                        <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                        <span className="text-xs text-gray-700">{scenario?.name}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Report Sections</label>
-                <div className="space-y-2">
-                  {[
-                    'Executive Summary',
-                    'Key Metrics Dashboard',
-                    'Cash Runway Analysis',
-                    'Revenue Forecast',
-                    'Scenario Comparison',
-                    'Driver Impact Analysis',
-                    'Hiring Plan Timeline',
-                    'Risk Assessment'
-                  ].map(section => (
-                    <label key={section} className="flex items-center">
-                      <input type="checkbox" defaultChecked className="w-4 h-4 text-[#4F46E5] border-gray-300 rounded focus:ring-[#4F46E5] mr-2" />
-                      <span className="text-xs text-gray-700">{section}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowExportModal(false)}>
-                Cancel
-              </Button>
-              <Button variant="primary" onClick={exportBoardPack}>
-                <Download className="w-4 h-4 mr-2" />
-                Generate Board Pack
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* New Scenario Modal */}
-      {showScenarioModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw]">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Create New Scenario</h3>
-              <button
-                onClick={() => setShowScenarioModal(false)}
-                className="p-1 hover:bg-gray-100 rounded"
-              >
-                <X className="w-4 h-4 text-gray-400" />
-              </button>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
-                <input
-                  type="text"
-                  value={newScenarioName}
-                  onChange={(e) => setNewScenarioName(e.target.value)}
-                  placeholder="e.g., Aggressive Growth, Market Downturn"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                  autoFocus
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Copy From</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
-                  <option value="">Start from scratch</option>
-                  {scenarios.map(scenario => (
-                    <option key={scenario.id} value={scenario.id}>{scenario.name}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Description</label>
-                <textarea
-                  placeholder="Brief description of this scenario's assumptions"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
-                  rows={3}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2">Horizon</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent">
-                  <option value="12">12 months</option>
-                  <option value="24">24 months</option>
-                  <option value="36">36 months</option>
-                  <option value="60">60 months</option>
-                </select>
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 mt-6">
-              <Button variant="outline" onClick={() => setShowScenarioModal(false)}>
-                Cancel
-              </Button>
-              <Button 
-                variant="primary" 
-                disabled={!newScenarioName.trim()}
-                onClick={() => {
-                  // Handle scenario creation
-                  const newScenario: Scenario = {
-                    id: `scenario_${Date.now()}`,
-                    name: newScenarioName,
-                    description: 'New scenario',
-                    startMonth: '2025-01',
-                    horizonMonths: 36,
-                    locked: false,
-                    status: 'draft',
-                    createdBy: 'Current User',
-                    createdAt: new Date(),
-                    lastModified: new Date(),
-                    color: '#8B5CF6'
-                  };
-                  setScenarios(prev => [...prev, newScenario]);
-                  setShowScenarioModal(false);
-                  setNewScenarioName('');
-                }}
-              >
-                Create Scenario
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
+      {/* Add Employee Modal */}
       {/* Comprehensive Add Role Modal */}
       <AddRoleModal
         isOpen={showAddRoleModal}
