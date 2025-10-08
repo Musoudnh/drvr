@@ -414,45 +414,45 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
             </div>
           )}
 
-          {formData.worker_classification === 'w2' && taxBreakdown && (
+          {formData.worker_classification === 'w2' && taxBreakdown && taxBreakdown.baseCompensation && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-[#101010] mb-3">Tax Calculation (Employer Costs)</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
                   <span className="text-gray-700">Base Compensation:</span>
-                  <span className="font-medium text-gray-900">${taxBreakdown.baseCompensation.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <span className="font-medium text-gray-900">${(taxBreakdown.baseCompensation || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
 
                 {taxBreakdown.taxes && (
                   <>
                     <div className="pt-2 border-t border-blue-200">
                       <div className="font-medium text-gray-900 mb-2">Federal Taxes:</div>
-                      {taxBreakdown.taxes.socialSecurity > 0 && (
+                      {(taxBreakdown.taxes.socialSecurity || 0) > 0 && (
                         <div className="flex justify-between pl-3">
                           <span className="text-gray-600">Social Security (6.2%):</span>
-                          <span className="text-gray-900">${taxBreakdown.taxes.socialSecurity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                          <span className="text-gray-900">${(taxBreakdown.taxes.socialSecurity || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       )}
-                      {taxBreakdown.taxes.medicare > 0 && (
+                      {(taxBreakdown.taxes.medicare || 0) > 0 && (
                         <div className="flex justify-between pl-3">
                           <span className="text-gray-600">Medicare (1.45%):</span>
-                          <span className="text-gray-900">${taxBreakdown.taxes.medicare.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                          <span className="text-gray-900">${(taxBreakdown.taxes.medicare || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       )}
-                      {taxBreakdown.taxes.futa > 0 && (
+                      {(taxBreakdown.taxes.futa || 0) > 0 && (
                         <div className="flex justify-between pl-3">
                           <span className="text-gray-600">FUTA (0.6%):</span>
-                          <span className="text-gray-900">${taxBreakdown.taxes.futa.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                          <span className="text-gray-900">${(taxBreakdown.taxes.futa || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       )}
                     </div>
 
-                    {taxBreakdown.taxes.sui > 0 && (
+                    {(taxBreakdown.taxes.sui || 0) > 0 && (
                       <div className="pt-2 border-t border-blue-200">
                         <div className="font-medium text-gray-900 mb-2">State Taxes:</div>
                         <div className="flex justify-between pl-3">
                           <span className="text-gray-600">State Unemployment Insurance:</span>
-                          <span className="text-gray-900">${taxBreakdown.taxes.sui.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                          <span className="text-gray-900">${(taxBreakdown.taxes.sui || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       </div>
                     )}
@@ -460,7 +460,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                     <div className="pt-2 border-t border-blue-300">
                       <div className="flex justify-between font-semibold">
                         <span className="text-gray-900">Total Employer Taxes:</span>
-                        <span className="text-blue-700">${taxBreakdown.taxes.totalTaxes.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="text-blue-700">${(taxBreakdown.taxes.totalTaxes || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                     </div>
                   </>
@@ -469,7 +469,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                 <div className="pt-3 border-t-2 border-blue-400">
                   <div className="flex justify-between font-bold">
                     <span className="text-[#101010]">Total Impact (Fully Loaded):</span>
-                    <span className="text-[#101010] text-base">${taxBreakdown.totalLoadedCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="text-[#101010] text-base">${(taxBreakdown.totalLoadedCost || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                   <p className="text-xs text-gray-600 mt-1">Includes base compensation + employer taxes</p>
                 </div>
