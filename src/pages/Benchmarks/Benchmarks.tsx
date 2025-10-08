@@ -691,7 +691,7 @@ const Benchmarks: React.FC = () => {
               <div key={metric.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-xs font-semibold text-[#101010] mb-1">{metric.name}</h3>
+                    <div className="text-xs font-semibold text-[#101010] mb-1">{metric.name}</div>
                     <p className="text-xs text-gray-500">{metric.description}</p>
                   </div>
                   <div className="flex items-center">
