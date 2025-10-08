@@ -1832,7 +1832,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
 
           {activeTab === 'ai' && (
             <div className="flex flex-col h-[500px]">
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4 pb-4">
+              <div className="flex-1 overflow-y-auto space-y-4 p-4">
                 {aiMessages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center">
                     <Bot className="w-16 h-16 text-[#7B68EE] mb-4" />
@@ -1875,7 +1875,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                   ))
                 )}
               </div>
-              <div className="border-t border-gray-200 pt-4 mt-auto">
+              <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
                 {uploadedFiles.length > 0 && (
                   <div className="mb-3 flex flex-wrap gap-2">
                     {uploadedFiles.map((file, idx) => (
