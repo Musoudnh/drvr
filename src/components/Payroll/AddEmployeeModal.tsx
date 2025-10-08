@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, ChevronDown } from 'lucide-react';
-import Button from '../UI/Button';
 import { enterprisePayrollService } from '../../services/enterprisePayrollService';
 import type { Employee } from '../../types/payroll';
 
@@ -448,12 +447,37 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={onClose} disabled={saving}>
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={saving}
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
+            >
               Cancel
-            </Button>
-            <Button type="submit" disabled={saving}>
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+              style={{
+                backgroundColor: '#212B36',
+                borderRadius: '12px',
+                fontSize: '14px',
+                fontWeight: '500'
+              }}
+              onMouseEnter={(e) => {
+                if (!e.currentTarget.disabled) {
+                  e.currentTarget.style.backgroundColor = '#1a2028';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!e.currentTarget.disabled) {
+                  e.currentTarget.style.backgroundColor = '#212B36';
+                }
+              }}
+            >
               {saving ? 'Saving...' : employee ? 'Update Employee' : 'Add Employee'}
-            </Button>
+            </button>
           </div>
         </form>
       </div>

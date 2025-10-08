@@ -155,19 +155,28 @@ const HeadcountManagement: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Headcount Management</h1>
           <p className="text-gray-600 mt-1">Enterprise-grade employee and payroll management</p>
         </div>
-        <div className="flex gap-3">
-          <Button onClick={() => setShowImportModal(true)} variant="outline" className="flex items-center gap-2">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="px-3 py-1.5 bg-white text-blue-600 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
+          >
             <Upload className="w-4 h-4" />
             Import
-          </Button>
-          <Button onClick={handleExport} variant="outline" className="flex items-center gap-2">
+          </button>
+          <button
+            onClick={handleExport}
+            className="px-3 py-1.5 bg-white text-blue-600 rounded text-sm font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center gap-2"
+          >
             <Download className="w-4 h-4" />
             Export
-          </Button>
-          <Button onClick={() => setShowAddModal(true)} className="flex items-center gap-2">
+          </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm font-medium shadow-sm transition-colors hover:bg-blue-700 flex items-center gap-2"
+          >
             <UserPlus className="w-4 h-4" />
             Add Employee
-          </Button>
+          </button>
         </div>
       </div>
 

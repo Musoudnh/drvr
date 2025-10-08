@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { X, Upload, Download, AlertCircle, CheckCircle } from 'lucide-react';
-import Button from '../UI/Button';
 import { enterprisePayrollService } from '../../services/enterprisePayrollService';
 
 interface ImportEmployeesModalProps {
@@ -169,14 +168,13 @@ const ImportEmployeesModal: React.FC<ImportEmployeesModalProps> = ({ isOpen, onC
           </div>
 
           <div>
-            <Button
+            <button
               onClick={downloadTemplate}
-              variant="outline"
-              className="w-full flex items-center justify-center gap-2"
+              className="w-full px-3 py-2 bg-white text-blue-600 rounded text-sm font-medium shadow-sm border border-gray-300 transition-colors hover:bg-gray-50 flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
               Download CSV Template
-            </Button>
+            </button>
           </div>
 
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
@@ -220,12 +218,36 @@ const ImportEmployeesModal: React.FC<ImportEmployeesModalProps> = ({ isOpen, onC
         </div>
 
         <div className="border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
-          <Button variant="outline" onClick={onClose} disabled={importing}>
+          <button
+            onClick={onClose}
+            disabled={importing}
+            className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
+          >
             Cancel
-          </Button>
-          <Button onClick={handleImport} disabled={!file || importing}>
+          </button>
+          <button
+            onClick={handleImport}
+            disabled={!file || importing}
+            className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            style={{
+              backgroundColor: '#212B36',
+              borderRadius: '12px',
+              fontSize: '14px',
+              fontWeight: '500'
+            }}
+            onMouseEnter={(e) => {
+              if (!e.currentTarget.disabled) {
+                e.currentTarget.style.backgroundColor = '#1a2028';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!e.currentTarget.disabled) {
+                e.currentTarget.style.backgroundColor = '#212B36';
+              }
+            }}
+          >
             {importing ? 'Importing...' : 'Import Employees'}
-          </Button>
+          </button>
         </div>
       </div>
     </div>
