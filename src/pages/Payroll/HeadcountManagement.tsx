@@ -502,12 +502,12 @@ const HeadcountManagement: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-orange-600">
+                      <div className="text-sm font-medium text-gray-900">
                         ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-semibold text-[#7B68EE]">
+                      <div className="text-sm font-medium text-gray-900">
                         ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
                       </div>
                     </td>
