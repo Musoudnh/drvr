@@ -107,6 +107,44 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Calculate employer taxes
+  const calculateEmployerTaxes = () => {
+    let annualComp = 0;
+    if (formData.employee_type === 'salary') {
+      annualComp = parseFloat(formData.annual_salary) || 0;
+    } else {
+      const hourlyRate = parseFloat(formData.hourly_rate) || 0;
+      const weeklyHours = parseFloat(formData.weekly_hours) || 40;
+      annualComp = hourlyRate * weeklyHours * 52;
+    }
+
+    // Social Security (6.2% up to wage base)
+    const socialSecurityWageBase = 168600; // 2024 limit
+    const socialSecurity = Math.min(annualComp, socialSecurityWageBase) * 0.062;
+
+    // Medicare (1.45% - no wage base limit)
+    const medicare = annualComp * 0.0145;
+
+    // FUTA (0.6% on first $7,000)
+    const futa = Math.min(annualComp, 7000) * 0.006;
+
+    // SUTA (example rate 3.4% on first $7,000 - varies by state)
+    const suta = Math.min(annualComp, 7000) * 0.034;
+
+    const totalEmployerTax = socialSecurity + medicare + futa + suta;
+
+    return {
+      annualComp,
+      socialSecurity,
+      medicare,
+      futa,
+      suta,
+      totalEmployerTax,
+    };
+  };
+
+  const taxes = calculateEmployerTaxes();
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -445,6 +483,65 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ isOpen, onClose, on
               />
             </div>
           </div>
+
+          {/* Employer Tax Calculation Section */}
+          {(formData.annual_salary || formData.hourly_rate) && (
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Employer Tax Burden</h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                  <p className="text-sm text-gray-600 mb-1">Annual Compensation</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    ${taxes.annualComp.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-gray-200">
+                  <p className="text-sm text-gray-600 mb-1">Total Employer Taxes (Annual)</p>
+                  <p className="text-2xl font-bold text-[#7B68EE]">
+                    ${taxes.totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">Social Security (6.2%)</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    ${taxes.socialSecurity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">Medicare (1.45%)</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    ${taxes.medicare.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">FUTA (0.6%)</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    ${taxes.futa.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-xs text-gray-500 mb-1">SUTA (3.4%)</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    ${taxes.suta.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-3 text-xs text-gray-500">
+                <p>* Social Security limited to wage base of $168,600 (2024)</p>
+                <p>* FUTA and SUTA calculated on first $7,000 of wages</p>
+                <p>* SUTA rate varies by state; 3.4% used as example</p>
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-end gap-3 pt-4 border-t">
             <button
