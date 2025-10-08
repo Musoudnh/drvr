@@ -384,7 +384,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.industry}
                   onChange={(e) => setSetupData({...setupData, industry: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 >
                   <option value="">Select Industry</option>
                   <option value="Software as a Service (SaaS)">Software as a Service (SaaS)</option>
@@ -410,7 +410,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.businessModel}
                   onChange={(e) => setSetupData({...setupData, businessModel: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 >
                   <option value="">Select Business Model</option>
                   <option value="SaaS">Software as a Service (SaaS)</option>
@@ -436,7 +436,7 @@ const Benchmarks: React.FC = () => {
                   type="number"
                   value={setupData.annualRevenue}
                   onChange={(e) => setSetupData({...setupData, annualRevenue: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                   placeholder="e.g., 5000000"
                 />
               </div>
@@ -446,7 +446,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.revenueRange}
                   onChange={(e) => setSetupData({...setupData, revenueRange: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 >
                   <option value="">Select Revenue Range</option>
                   <option value="Under $1M">Under $1M</option>
@@ -465,7 +465,7 @@ const Benchmarks: React.FC = () => {
                   type="number"
                   value={setupData.employeeCount}
                   onChange={(e) => setSetupData({...setupData, employeeCount: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                   placeholder="e.g., 45"
                 />
               </div>
@@ -475,7 +475,7 @@ const Benchmarks: React.FC = () => {
                 <select
                   value={setupData.region}
                   onChange={(e) => setSetupData({...setupData, region: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                 >
                   <option value="">Select Region</option>
                   <option value="North America">North America</option>
@@ -493,7 +493,7 @@ const Benchmarks: React.FC = () => {
               <select
                 value={setupData.businessStage}
                 onChange={(e) => setSetupData({...setupData, businessStage: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
               >
                 <option value="">Select Business Stage</option>
                 <option value="Startup">Startup (0-2 years)</option>
@@ -520,27 +520,26 @@ const Benchmarks: React.FC = () => {
             <h2 className="text-3xl font-bold text-[#101010]">Industry Benchmarks</h2>
             <p className="text-gray-600 mt-2 text-lg">Compare your performance against industry peers and identify growth opportunities</p>
           </div>
-          <div className="flex gap-3">
-            <Button 
-              variant="outline" 
+          <div className="flex gap-2">
+            <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center"
+              className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-xs font-medium text-gray-700"
             >
               <Filter className="w-4 h-4 mr-2" />
               Filters
               {showFilters ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
-            </Button>
-            <Button variant="outline">
+            </button>
+            <button className="flex items-center px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-xs font-medium text-gray-700">
               <RefreshCw className="w-4 h-4 mr-2" />
               Refresh Data
-            </Button>
-            <Button 
-              variant="primary"
+            </button>
+            <button
               onClick={() => setShowExportModal(true)}
+              className="flex items-center px-3 py-2 bg-[#7B68EE] text-white rounded-lg hover:bg-[#6B58DE] transition-colors text-xs font-medium"
             >
               <Download className="w-4 h-4 mr-2" />
               Export Report
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -550,7 +549,7 @@ const Benchmarks: React.FC = () => {
             {/* Company Profile Snapshot */}
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#101010] mb-3">Your Company Profile</h3>
+                <h3 className="text-sm font-semibold text-[#101010] mb-3">Your Company Profile</h3>
                 <div className="flex items-center gap-6 text-xs">
                   <div className="flex items-center">
                     <Building2 className="w-4 h-4 text-gray-400 mr-2" />
@@ -574,16 +573,13 @@ const Benchmarks: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" size="sm">
+              <button
+                onClick={() => setShowProfileModal(true)}
+                className="flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 border border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
                 <Settings className="w-4 h-4 mr-2" />
-                <button
-                  onClick={() => setShowProfileModal(true)}
-                  className="font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 border-2 border-[#3AB7BF] text-[#3AB7BF] hover:bg-[#3AB7BF] hover:text-white focus:ring-[#3AB7BF] px-3 py-1.5 text-xs"
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Update Profile
-                </button>
-              </Button>
+                Update Profile
+              </button>
             </div>
 
             {/* Dynamic Filters */}
@@ -595,7 +591,7 @@ const Benchmarks: React.FC = () => {
                     <select
                       value={selectedIndustry}
                       onChange={(e) => setSelectedIndustry(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                     >
                       {industries.map(industry => (
                         <option key={industry.value} value={industry.value}>{industry.label}</option>
@@ -608,7 +604,7 @@ const Benchmarks: React.FC = () => {
                     <select
                       value={selectedRevenueRange}
                       onChange={(e) => setSelectedRevenueRange(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                     >
                       {revenueRanges.map(range => (
                         <option key={range.value} value={range.value}>{range.label}</option>
@@ -621,7 +617,7 @@ const Benchmarks: React.FC = () => {
                     <select
                       value={selectedRegion}
                       onChange={(e) => setSelectedRegion(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                     >
                       {regions.map(region => (
                         <option key={region.value} value={region.value}>{region.label}</option>
@@ -634,7 +630,7 @@ const Benchmarks: React.FC = () => {
                     <select
                       value={selectedTimePeriod}
                       onChange={(e) => setSelectedTimePeriod(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3AB7BF] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent text-xs"
                     >
                       {timePeriods.map(period => (
                         <option key={period.value} value={period.value}>{period.label}</option>
@@ -670,15 +666,15 @@ const Benchmarks: React.FC = () => {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#101010] mb-2">Key Performance Insight</h3>
-                  <p className="text-lg text-gray-700">{headlineInsight.text}</p>
+                  <h3 className="text-sm font-bold text-[#101010] mb-2">Key Performance Insight</h3>
+                  <p className="text-sm text-gray-700">{headlineInsight.text}</p>
                   <p className="text-xs text-gray-500 mt-2">Based on {selectedIndustry.toUpperCase()} industry data for {selectedRevenueRange} companies</p>
                 </div>
               </div>
-              <Button variant="outline" size="sm">
+              <button className="flex items-center px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
                 <Eye className="w-4 h-4 mr-2" />
                 View Details
-              </Button>
+              </button>
             </div>
           </div>
         </Card>
@@ -692,10 +688,10 @@ const Benchmarks: React.FC = () => {
             const performanceColor = getPerformanceColor(metric.performance);
             
             return (
-              <div key={metric.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-200">
-                <div className="flex items-start justify-between mb-4">
+              <div key={metric.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-[#101010] mb-1">{metric.name}</h3>
+                    <h3 className="text-xs font-semibold text-[#101010] mb-1">{metric.name}</h3>
                     <p className="text-xs text-gray-500">{metric.description}</p>
                   </div>
                   <div className="flex items-center">
@@ -717,9 +713,9 @@ const Benchmarks: React.FC = () => {
                 </div>
 
                 {/* Company Value */}
-                <div className="mb-4">
+                <div className="mb-3">
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-bold text-[#101010]">
+                    <span className="text-lg font-bold text-[#101010]">
                       {formatValue(metric.companyValue, metric.unit)}
                     </span>
                     <span className="text-xs text-gray-500 ml-2">Your Company</span>
@@ -792,16 +788,15 @@ const Benchmarks: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <Brain className="w-5 h-5 text-[#8B5CF6] mr-2" />
-                <span className="font-medium text-[#101010]">Intelligent Analysis</span>
+                <Brain className="w-5 h-5 text-[#7B68EE] mr-2" />
+                <span className="text-xs font-medium text-[#101010]">Intelligent Analysis</span>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm"
+              <button
                 onClick={() => setShowAIInsights(false)}
+                className="flex items-center px-2 py-1 text-xs rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <X className="w-4 h-4" />
-              </Button>
+              </button>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -823,8 +818,8 @@ const Benchmarks: React.FC = () => {
                           <InsightIcon className="w-4 h-4" style={{ color: insightColor }} />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-[#101010]">{insight.title}</h4>
-                          <span 
+                          <h4 className="text-xs font-semibold text-[#101010]">{insight.title}</h4>
+                          <span
                             className="text-xs font-medium px-2 py-1 rounded-full"
                             style={{ 
                               backgroundColor: `${insightColor}20`,
@@ -838,12 +833,12 @@ const Benchmarks: React.FC = () => {
                     </div>
                     
                     <p className="text-xs text-gray-700 mb-3">{insight.description}</p>
-                    
+
                     {insight.actionable && (
-                      <Button variant="outline" size="sm" className="w-full">
+                      <button className="flex items-center justify-center w-full px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
                         <Zap className="w-4 h-4 mr-2" />
                         Take Action
-                      </Button>
+                      </button>
                     )}
                   </div>
                 );
@@ -863,7 +858,7 @@ const Benchmarks: React.FC = () => {
           >
             <div className="flex items-center">
               <TrendingUp className="w-5 h-5 text-[#4ADE80] mr-3" />
-              <h3 className="text-lg font-semibold text-[#101010]">Revenue Drivers Analysis</h3>
+              <h3 className="text-sm font-semibold text-[#101010]">Revenue Drivers Analysis</h3>
             </div>
             {expandedSections.includes('revenue-drivers') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -964,7 +959,7 @@ const Benchmarks: React.FC = () => {
           >
             <div className="flex items-center">
               <PieChart className="w-5 h-5 text-[#F87171] mr-3" />
-              <h3 className="text-lg font-semibold text-[#101010]">Expense Breakdown Analysis</h3>
+              <h3 className="text-sm font-semibold text-[#101010]">Expense Breakdown Analysis</h3>
             </div>
             {expandedSections.includes('expense-breakdown') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -1047,8 +1042,8 @@ const Benchmarks: React.FC = () => {
             className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
           >
             <div className="flex items-center">
-              <Users className="w-5 h-5 text-[#8B5CF6] mr-3" />
-              <h3 className="text-lg font-semibold text-[#101010]">Productivity & Efficiency Metrics</h3>
+              <Users className="w-5 h-5 text-[#7B68EE] mr-3" />
+              <h3 className="text-sm font-semibold text-[#101010]">Productivity & Efficiency Metrics</h3>
             </div>
             {expandedSections.includes('productivity-metrics') ? (
               <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -1113,25 +1108,25 @@ const Benchmarks: React.FC = () => {
       {/* Action-Oriented Features */}
       <Card title="Take Action">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <Download className="w-6 h-6 mb-2" />
-            <span className="text-xs">Export Report</span>
-          </Button>
-          
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <Target className="w-6 h-6 mb-2" />
-            <span className="text-xs">Set Targets</span>
-          </Button>
-          
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <LineChart className="w-6 h-6 mb-2" />
-            <span className="text-xs">Forecast Impact</span>
-          </Button>
-          
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
-            <Bell className="w-6 h-6 mb-2" />
-            <span className="text-xs">Setup Alerts</span>
-          </Button>
+          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Download className="w-5 h-5 mb-2 text-gray-700" />
+            <span className="text-xs font-medium text-gray-700">Export Report</span>
+          </button>
+
+          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Target className="w-5 h-5 mb-2 text-gray-700" />
+            <span className="text-xs font-medium text-gray-700">Set Targets</span>
+          </button>
+
+          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <LineChart className="w-5 h-5 mb-2 text-gray-700" />
+            <span className="text-xs font-medium text-gray-700">Forecast Impact</span>
+          </button>
+
+          <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Bell className="w-5 h-5 mb-2 text-gray-700" />
+            <span className="text-xs font-medium text-gray-700">Setup Alerts</span>
+          </button>
         </div>
       </Card>
 
@@ -1173,8 +1168,8 @@ const Benchmarks: React.FC = () => {
             {/* Progress Bar */}
             <div className="px-6 mb-6">
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-[#3AB7BF] h-2 rounded-full transition-all duration-300"
+                <div
+                  className="bg-[#7B68EE] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(setupStep / 1) * 100}%` }}
                 />
               </div>
@@ -1189,14 +1184,13 @@ const Benchmarks: React.FC = () => {
             <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-between">
               <div>
                 {setupStep > 1 && (
-                  <Button 
-                    variant="outline" 
+                  <button
                     onClick={handleSetupPrevious}
-                    className="flex items-center"
+                    className="flex items-center px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
                     Previous
-                  </Button>
+                  </button>
                 )}
               </div>
               
@@ -1210,23 +1204,7 @@ const Benchmarks: React.FC = () => {
                 <button
                   onClick={handleSetupComplete}
                   disabled={!setupData.industry || !setupData.businessModel || !setupData.revenueRange || !setupData.region}
-                  className="px-6 py-2 rounded-lg font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{
-                    backgroundColor: '#212B36',
-                    borderRadius: '12px',
-                    fontSize: '14px',
-                    fontWeight: '500'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!e.currentTarget.disabled) {
-                      e.currentTarget.style.backgroundColor = '#1a2028';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!e.currentTarget.disabled) {
-                      e.currentTarget.style.backgroundColor = '#212B36';
-                    }
-                  }}
+                  className="px-4 py-2 rounded-lg text-xs font-medium text-white bg-[#7B68EE] hover:bg-[#6B58DE] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Complete Setup
                 </button>
