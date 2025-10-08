@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Download, RefreshCw, BarChart3, Table as TableIcon, TrendingUp, TrendingDown, DollarSign, AlertCircle, ChevronDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -36,6 +36,8 @@ const CashFlowManager: React.FC = () => {
   const [payables, setPayables] = useState<AccountsPayable[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false);
+  const monthDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadData();
@@ -47,6 +49,17 @@ const CashFlowManager: React.FC = () => {
       setSelectedMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
     }
   }, [selectedMonth]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (monthDropdownRef.current && !monthDropdownRef.current.contains(event.target as Node)) {
+        setMonthDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const loadData = async () => {
     setLoading(true);
@@ -259,7 +272,7 @@ const CashFlowManager: React.FC = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-white">
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -458,19 +471,36 @@ const CashFlowManager: React.FC = () => {
                 <h2 className="text-lg font-semibold text-gray-900">Cash Flow Timeline</h2>
                 <p className="text-sm text-gray-600 mt-1">Expected inflows (green) and outflows (red) by week</p>
               </div>
-              <div className="relative">
-                <select
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(e.target.value)}
-                  className="appearance-none px-4 py-2 pr-10 bg-gray-50 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <div className="relative" ref={monthDropdownRef}>
+                <button
+                  onClick={() => setMonthDropdownOpen(!monthDropdownOpen)}
+                  className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
                 >
-                  {getAvailableMonths().map(month => (
-                    <option key={month} value={month}>
-                      {formatMonthLabel(month)}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                  <span>{formatMonthLabel(selectedMonth)}</span>
+                  <ChevronDown className="w-4 h-4 ml-1" />
+                </button>
+                {monthDropdownOpen && (
+                  <div className="absolute top-full mt-2 right-0 z-50 bg-white rounded-lg shadow-lg border border-gray-200 p-1 min-w-[180px]">
+                    <div className="flex flex-col gap-1 max-h-[300px] overflow-y-auto">
+                      {getAvailableMonths().map((month) => (
+                        <button
+                          key={month}
+                          onClick={() => {
+                            setSelectedMonth(month);
+                            setMonthDropdownOpen(false);
+                          }}
+                          className={`px-3 py-1.5 rounded text-xs font-medium transition-colors text-left ${
+                            selectedMonth === month
+                              ? 'bg-[#7B68EE] text-white'
+                              : 'text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          {formatMonthLabel(month)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <ResponsiveContainer width="100%" height={400}>
