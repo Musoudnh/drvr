@@ -89,9 +89,13 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
   const [startMonthDropdownOpen, setStartMonthDropdownOpen] = useState(false);
   const [endMonthDropdownOpen, setEndMonthDropdownOpen] = useState(false);
   const [startYearDropdownOpen, setStartYearDropdownOpen] = useState(false);
+  const [editDriverStartMonthOpen, setEditDriverStartMonthOpen] = useState(false);
+  const [editDriverEndMonthOpen, setEditDriverEndMonthOpen] = useState(false);
   const startMonthDropdownRef = React.useRef<HTMLDivElement>(null);
   const endMonthDropdownRef = React.useRef<HTMLDivElement>(null);
   const startYearDropdownRef = React.useRef<HTMLDivElement>(null);
+  const editDriverStartMonthRef = React.useRef<HTMLDivElement>(null);
+  const editDriverEndMonthRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -103,6 +107,12 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
       }
       if (startYearDropdownRef.current && !startYearDropdownRef.current.contains(event.target as Node)) {
         setStartYearDropdownOpen(false);
+      }
+      if (editDriverStartMonthRef.current && !editDriverStartMonthRef.current.contains(event.target as Node)) {
+        setEditDriverStartMonthOpen(false);
+      }
+      if (editDriverEndMonthRef.current && !editDriverEndMonthRef.current.contains(event.target as Node)) {
+        setEditDriverEndMonthOpen(false);
       }
     };
 
@@ -977,17 +987,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Effective Month</label>
-              <select
+              <input
+                type="text"
                 value={payrollMeritParams.effectiveMonth}
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...payrollMeritParams, effectiveMonth: e.target.value }
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
-              >
-                {MONTHS.map(month => (
-                  <option key={month} value={month}>{month}</option>
-                ))}
-              </select>
+                placeholder="e.g., Jan, Q1 2025"
+              />
             </div>
             </div>
           </div>
@@ -1229,17 +1237,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Purchase Month</label>
-              <select
+              <input
+                type="text"
                 value={eqPurchaseParams.purchaseMonth}
                 onChange={(e) => updateDriver(driver.id, {
                   parameters: { ...eqPurchaseParams, purchaseMonth: e.target.value }
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
-              >
-                {MONTHS.map(month => (
-                  <option key={month} value={month}>{month}</option>
-                ))}
-              </select>
+                placeholder="e.g., Jan, Feb, Mar"
+              />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Useful Life (Years)</label>
@@ -1265,16 +1271,34 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Depreciation Method</label>
-              <select
-                value={eqPurchaseParams.depreciationMethod}
-                onChange={(e) => updateDriver(driver.id, {
-                  parameters: { ...eqPurchaseParams, depreciationMethod: e.target.value as 'straight-line' | 'accelerated' }
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
-              >
-                <option value="straight-line">Straight-Line</option>
-                <option value="accelerated">Accelerated</option>
-              </select>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => updateDriver(driver.id, {
+                    parameters: { ...eqPurchaseParams, depreciationMethod: 'straight-line' }
+                  })}
+                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    eqPurchaseParams.depreciationMethod === 'straight-line'
+                      ? 'bg-[#7B68EE] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Straight-Line
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateDriver(driver.id, {
+                    parameters: { ...eqPurchaseParams, depreciationMethod: 'accelerated' }
+                  })}
+                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    eqPurchaseParams.depreciationMethod === 'accelerated'
+                      ? 'bg-[#7B68EE] text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Accelerated
+                </button>
+              </div>
             </div>
             </div>
           </div>
@@ -1482,17 +1506,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         <div className="flex-1 overflow-y-auto p-6">
           {activeTab === 'overview' && (
             <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
-                  <input
-                    type="text"
-                    value={scenarioName}
-                    onChange={(e) => setScenarioName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
-                    placeholder="e.g., Aggressive Q2 Growth"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-2">Scenario Name</label>
+                <input
+                  type="text"
+                  value={scenarioName}
+                  onChange={(e) => setScenarioName(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE] focus:border-transparent"
+                  placeholder="e.g., Aggressive Q2 Growth"
+                />
               </div>
 
               <div>
@@ -2068,33 +2090,69 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
               <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-gray-200">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-2">Apply From</label>
-                  <select
-                    value={editingDriver.startMonth}
-                    onChange={(e) => {
-                      updateDriver(editingDriver.id, { startMonth: e.target.value });
-                      setEditingDriver({ ...editingDriver, startMonth: e.target.value });
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
-                  >
-                    {MONTHS.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={editDriverStartMonthRef}>
+                    <button
+                      type="button"
+                      onClick={() => setEditDriverStartMonthOpen(!editDriverStartMonthOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{editingDriver.startMonth}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {editDriverStartMonthOpen && (
+                      <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {MONTHS.map(m => (
+                          <button
+                            key={m}
+                            type="button"
+                            onClick={() => {
+                              updateDriver(editingDriver.id, { startMonth: m });
+                              setEditingDriver({ ...editingDriver, startMonth: m });
+                              setEditDriverStartMonthOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-xs hover:bg-gray-50 ${
+                              editingDriver.startMonth === m ? 'bg-purple-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                            }`}
+                          >
+                            {m}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-2">Apply Until</label>
-                  <select
-                    value={editingDriver.endMonth}
-                    onChange={(e) => {
-                      updateDriver(editingDriver.id, { endMonth: e.target.value });
-                      setEditingDriver({ ...editingDriver, endMonth: e.target.value });
-                    }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
-                  >
-                    {MONTHS.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
-                  </select>
+                  <div className="relative" ref={editDriverEndMonthRef}>
+                    <button
+                      type="button"
+                      onClick={() => setEditDriverEndMonthOpen(!editDriverEndMonthOpen)}
+                      className="w-full px-3 py-2 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center justify-between"
+                    >
+                      <span>{editingDriver.endMonth}</span>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </button>
+                    {editDriverEndMonthOpen && (
+                      <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {MONTHS.map(m => (
+                          <button
+                            key={m}
+                            type="button"
+                            onClick={() => {
+                              updateDriver(editingDriver.id, { endMonth: m });
+                              setEditingDriver({ ...editingDriver, endMonth: m });
+                              setEditDriverEndMonthOpen(false);
+                            }}
+                            className={`w-full px-3 py-2 text-left text-xs hover:bg-gray-50 ${
+                              editingDriver.endMonth === m ? 'bg-purple-50 text-[#7B68EE] font-medium' : 'text-gray-700'
+                            }`}
+                          >
+                            {m}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
