@@ -9,9 +9,10 @@ interface AddRoleModalProps {
   isOpen: boolean;
   onClose: () => void;
   onRoleAdded: () => void;
+  editRole?: any;
 }
 
-export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps) {
+export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRoleModalProps) {
   const [states, setStates] = useState<StateTaxRate[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingStates, setLoadingStates] = useState(false);
@@ -161,10 +162,11 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-[#101010]">Add New Role</h2>
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-30 z-40" onClick={handleClose} />
+      <div className="fixed right-0 top-0 h-full w-[600px] bg-white shadow-2xl z-50 flex flex-col">
+        <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-[#101010]">{editRole ? 'Edit Employee' : 'Add New Employee'}</h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -173,7 +175,8 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
             <label className="block text-xs font-medium text-[#101010] mb-2">
               Role Name *
@@ -415,7 +418,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
           )}
 
           {formData.worker_classification === 'w2' && taxBreakdown && taxBreakdown.baseCompensation && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="rounded-lg p-4" style={{ backgroundColor: '#7B68EE15', border: '1px solid #7B68EE40' }}>
               <h3 className="text-sm font-semibold text-[#101010] mb-3">Tax Calculation (Employer Costs)</h3>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
@@ -425,7 +428,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
 
                 {taxBreakdown.taxes && (
                   <>
-                    <div className="pt-2 border-t border-blue-200">
+                    <div className="pt-2 border-t" style={{ borderColor: '#7B68EE40' }}>
                       <div className="font-medium text-gray-900 mb-2">Federal Taxes:</div>
                       {(taxBreakdown.taxes.socialSecurity || 0) > 0 && (
                         <div className="flex justify-between pl-3">
@@ -448,7 +451,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                     </div>
 
                     {(taxBreakdown.taxes.sui || 0) > 0 && (
-                      <div className="pt-2 border-t border-blue-200">
+                      <div className="pt-2 border-t" style={{ borderColor: '#7B68EE40' }}>
                         <div className="font-medium text-gray-900 mb-2">State Taxes:</div>
                         <div className="flex justify-between pl-3">
                           <span className="text-gray-600">State Unemployment Insurance:</span>
@@ -457,16 +460,16 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                       </div>
                     )}
 
-                    <div className="pt-2 border-t border-blue-300">
+                    <div className="pt-2 border-t" style={{ borderColor: '#7B68EE60' }}>
                       <div className="flex justify-between font-semibold">
                         <span className="text-gray-900">Total Employer Taxes:</span>
-                        <span className="text-blue-700">${(taxBreakdown.taxes.totalTaxes || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span style={{ color: '#7B68EE' }}>${(taxBreakdown.taxes.totalTaxes || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                     </div>
                   </>
                 )}
 
-                <div className="pt-3 border-t-2 border-blue-400">
+                <div className="pt-3 border-t-2" style={{ borderColor: '#7B68EE80' }}>
                   <div className="flex justify-between font-bold">
                     <span className="text-[#101010]">Total Impact (Fully Loaded):</span>
                     <span className="text-[#101010] text-base">${(taxBreakdown.totalLoadedCost || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -477,16 +480,34 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
             </div>
           )}
 
+          {editRole && (
+            <div className="pt-4 border-t border-gray-200">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to remove this employee?')) {
+                    handleClose();
+                  }
+                }}
+                className="w-full text-red-600 hover:bg-red-50 border-red-300"
+              >
+                Remove Employee
+              </Button>
+            </div>
+          )}
+
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
             <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Adding Role...' : 'Add Role'}
+              {loading ? (editRole ? 'Updating...' : 'Adding Employee...') : (editRole ? 'Update Employee' : 'Add Employee')}
             </Button>
           </div>
         </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

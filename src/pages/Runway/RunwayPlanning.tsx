@@ -269,6 +269,7 @@ const RunwayPlanning: React.FC = () => {
   ]);
 
   const [showAddRoleModal, setShowAddRoleModal] = useState(false);
+  const [editingRole, setEditingRole] = useState<HiringRole | null>(null);
   const [comprehensiveRoles, setComprehensiveRoles] = useState<HiringRole[]>([]);
 
   useEffect(() => {
@@ -628,13 +629,12 @@ const RunwayPlanning: React.FC = () => {
                         <td className="py-3 px-4 text-right">
                           <button
                             onClick={() => {
-                              if (window.confirm('Are you sure you want to remove this employee?')) {
-                                setHiringPlan(prev => prev.filter(e => e.id !== employee.id));
-                              }
+                              setEditingRole(employee as any);
+                              setShowAddRoleModal(true);
                             }}
-                            className="text-red-600 hover:text-red-800 text-xs"
+                            className="text-[#101010] hover:text-gray-600 text-xs font-medium"
                           >
-                            Remove
+                            Edit
                           </button>
                         </td>
                       </tr>
@@ -667,8 +667,12 @@ const RunwayPlanning: React.FC = () => {
       {/* Comprehensive Add Role Modal */}
       <AddRoleModal
         isOpen={showAddRoleModal}
-        onClose={() => setShowAddRoleModal(false)}
+        onClose={() => {
+          setShowAddRoleModal(false);
+          setEditingRole(null);
+        }}
         onRoleAdded={loadComprehensiveRoles}
+        editRole={editingRole}
       />
     </div>
   );
