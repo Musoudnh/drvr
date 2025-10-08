@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, ChevronDown } from 'lucide-react';
 import Button from '../UI/Button';
 import { supabase } from '../../lib/supabase';
 import { taxCalculationService } from '../../services/taxCalculationService';
@@ -26,6 +26,10 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
     hours_per_week: 40,
     annual_salary: 0,
   });
+  const [endDate, setEndDate] = useState('');
+  const [noEndDate, setNoEndDate] = useState(true);
+  const [taxBreakdown, setTaxBreakdown] = useState<any>(null);
+  const [stateDropdownOpen, setStateDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -119,7 +123,39 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
       hours_per_week: 40,
       annual_salary: 0,
     });
+    setEndDate('');
+    setNoEndDate(true);
+    setTaxBreakdown(null);
+    setStateDropdownOpen(false);
     onClose();
+  };
+
+  useEffect(() => {
+    if (formData.worker_classification === 'w2' &&
+        formData.location_state &&
+        (formData.annual_salary > 0 || formData.hourly_rate > 0)) {
+      calculateTaxes();
+    } else {
+      setTaxBreakdown(null);
+    }
+  }, [formData.worker_classification, formData.location_state, formData.annual_salary,
+      formData.hourly_rate, formData.hours_per_week, formData.employment_type]);
+
+  const calculateTaxes = async () => {
+    try {
+      const taxCalc = await taxCalculationService.calculateFullyLoadedCost(
+        formData.employment_type,
+        formData.worker_classification,
+        formData.hourly_rate,
+        formData.hours_per_week,
+        formData.annual_salary,
+        formData.location_state
+      );
+      setTaxBreakdown(taxCalc);
+    } catch (error) {
+      console.error('Error calculating taxes:', error);
+      setTaxBreakdown(null);
+    }
   };
 
   if (!isOpen) return null;
@@ -170,30 +206,41 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
               <label className="block text-xs font-medium text-[#101010] mb-2">
                 Location (State) *
               </label>
-              <select
-                required
-                value={formData.location_state}
-                onChange={(e) => setFormData({ ...formData, location_state: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
-                disabled={loadingStates}
-              >
-                <option value="">
-                  {loadingStates ? 'Loading states...' : 'Select state'}
-                </option>
-                {states.map((state) => (
-                  <option key={state.state_code} value={state.state_code}>
-                    {state.state_name}
-                  </option>
-                ))}
-              </select>
-              {loadingStates && (
-                <p className="text-xs text-gray-500 mt-1">Loading state data...</p>
-              )}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setStateDropdownOpen(!stateDropdownOpen)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors"
+                  disabled={loadingStates}
+                >
+                  <span className="text-sm text-gray-900">
+                    {formData.location_state
+                      ? states.find(s => s.state_code === formData.location_state)?.state_name || 'Select state'
+                      : loadingStates ? 'Loading states...' : 'Select state'
+                    }
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                </button>
+                {stateDropdownOpen && !loadingStates && states.length > 0 && (
+                  <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    {states.map((state) => (
+                      <button
+                        key={state.state_code}
+                        type="button"
+                        onClick={() => {
+                          setFormData({ ...formData, location_state: state.state_code });
+                          setStateDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors"
+                      >
+                        {state.state_name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               {!loadingStates && states.length === 0 && (
                 <p className="text-xs text-red-600 mt-1">No states available. Check console for errors.</p>
-              )}
-              {!loadingStates && states.length > 0 && (
-                <p className="text-xs text-gray-500 mt-1">{states.length} states loaded</p>
               )}
             </div>
 
@@ -202,12 +249,45 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                 Start Date *
               </label>
               <input
-                type="date"
+                type="text"
                 required
                 value={formData.start_date}
                 onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
+                placeholder="YYYY-MM-DD"
               />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-[#101010] mb-2">
+              End Date
+            </label>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="noEndDate"
+                  checked={noEndDate}
+                  onChange={(e) => {
+                    setNoEndDate(e.target.checked);
+                    if (e.target.checked) setEndDate('');
+                  }}
+                  className="w-4 h-4 text-[#101010] border-gray-300 rounded focus:ring-[#101010]"
+                />
+                <label htmlFor="noEndDate" className="ml-2 text-sm text-gray-700">
+                  No end date
+                </label>
+              </div>
+              {!noEndDate && (
+                <input
+                  type="text"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
+                  placeholder="YYYY-MM-DD"
+                />
+              )}
             </div>
           </div>
 
@@ -330,6 +410,69 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded }: AddRoleModalProps
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#101010] focus:border-transparent"
                   placeholder="40"
                 />
+              </div>
+            </div>
+          )}
+
+          {formData.worker_classification === 'w2' && taxBreakdown && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-[#101010] mb-3">Tax Calculation (Employer Costs)</h3>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Base Compensation:</span>
+                  <span className="font-medium text-gray-900">${taxBreakdown.baseCompensation.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                {taxBreakdown.taxes && (
+                  <>
+                    <div className="pt-2 border-t border-blue-200">
+                      <div className="font-medium text-gray-900 mb-2">Federal Taxes:</div>
+                      {taxBreakdown.taxes.socialSecurity > 0 && (
+                        <div className="flex justify-between pl-3">
+                          <span className="text-gray-600">Social Security (6.2%):</span>
+                          <span className="text-gray-900">${taxBreakdown.taxes.socialSecurity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      )}
+                      {taxBreakdown.taxes.medicare > 0 && (
+                        <div className="flex justify-between pl-3">
+                          <span className="text-gray-600">Medicare (1.45%):</span>
+                          <span className="text-gray-900">${taxBreakdown.taxes.medicare.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      )}
+                      {taxBreakdown.taxes.futa > 0 && (
+                        <div className="flex justify-between pl-3">
+                          <span className="text-gray-600">FUTA (0.6%):</span>
+                          <span className="text-gray-900">${taxBreakdown.taxes.futa.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {taxBreakdown.taxes.sui > 0 && (
+                      <div className="pt-2 border-t border-blue-200">
+                        <div className="font-medium text-gray-900 mb-2">State Taxes:</div>
+                        <div className="flex justify-between pl-3">
+                          <span className="text-gray-600">State Unemployment Insurance:</span>
+                          <span className="text-gray-900">${taxBreakdown.taxes.sui.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="pt-2 border-t border-blue-300">
+                      <div className="flex justify-between font-semibold">
+                        <span className="text-gray-900">Total Employer Taxes:</span>
+                        <span className="text-blue-700">${taxBreakdown.taxes.totalTaxes.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <div className="pt-3 border-t-2 border-blue-400">
+                  <div className="flex justify-between font-bold">
+                    <span className="text-[#101010]">Total Impact (Fully Loaded):</span>
+                    <span className="text-[#101010] text-base">${taxBreakdown.totalLoadedCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-1">Includes base compensation + employer taxes</p>
+                </div>
               </div>
             </div>
           )}
