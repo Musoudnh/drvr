@@ -641,18 +641,10 @@ const Benchmarks: React.FC = () => {
 
         {/* Headline Insight */}
         <Card>
-          <div className={`p-6 rounded-lg border-l-4 ${
-            headlineInsight.type === 'success' ? 'bg-[#4ADE80]/10 border-[#4ADE80]' :
-            headlineInsight.type === 'warning' ? 'bg-[#F59E0B]/10 border-[#F59E0B]' :
-            'bg-[#3AB7BF]/10 border-[#3AB7BF]'
-          }`}>
+          <div className="p-6 rounded-lg border-l-4 bg-[#7B68EE]/10 border-[#7B68EE]">
             <div className="flex items-start justify-between">
               <div className="flex items-start">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
-                  headlineInsight.type === 'success' ? 'bg-[#4ADE80]' :
-                  headlineInsight.type === 'warning' ? 'bg-[#F59E0B]' :
-                  'bg-[#3AB7BF]'
-                }`}>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mr-4 bg-[#7B68EE]">
                   {headlineInsight.type === 'success' ? (
                     <TrendingUp className="w-6 h-6 text-white" />
                   ) : headlineInsight.type === 'warning' ? (
