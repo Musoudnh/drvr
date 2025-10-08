@@ -103,9 +103,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const isAdminPage = location.pathname.startsWith('/admin');
   
   // Check if we're on a financial/forecasting page
-  const isFinancialPage = location.pathname.startsWith('/forecasting') || 
-                         location.pathname.startsWith('/scenario-planning') || 
-                         location.pathname.startsWith('/runway');
+  const isFinancialPage = location.pathname.startsWith('/forecasting') ||
+                         location.pathname.startsWith('/scenario-planning') ||
+                         location.pathname.startsWith('/runway') ||
+                         location.pathname.startsWith('/payroll');
   
   const adminNavItems: NavItem[] = [
     { path: '/admin/profile', label: 'Account Profile', icon: User, category: 'Admin', alwaysVisible: false },
@@ -119,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
     { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
-    { path: '/runway', label: 'Headcount', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/payroll/headcount', label: 'Headcount', icon: Users, category: 'Financial Tools', alwaysVisible: false },
     { path: '/cashflow', label: 'Cash Flow Manager', icon: Wallet, category: 'Financial Tools', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
@@ -131,7 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
     { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
-    { path: '/runway', label: 'Headcount', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/payroll/headcount', label: 'Headcount', icon: Users, category: 'Financial Tools', alwaysVisible: false },
     { path: '/cashflow', label: 'Cash Flow Manager', icon: Wallet, category: 'Financial Tools', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
