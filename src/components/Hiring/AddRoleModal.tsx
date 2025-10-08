@@ -212,7 +212,7 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form id="employee-form" onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
             <label className="block text-xs font-medium text-[#101010] mb-2">
               Role Name *
@@ -596,24 +596,12 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
               </div>
             </div>
           )}
+        </form>
+        </div>
 
-          {editRole && (
-            <div className="pt-4 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={() => {
-                  if (window.confirm('Are you sure you want to remove this employee?')) {
-                    handleClose();
-                  }
-                }}
-                className="w-full px-6 py-2.5 text-red-600 hover:bg-red-50 border border-red-300 rounded-lg transition-colors font-medium"
-              >
-                Remove Employee
-              </button>
-            </div>
-          )}
-
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 bg-gray-50 -mx-6 -mb-6 px-6 pb-6 mt-6">
+        {/* Fixed Footer at Bottom */}
+        <div className="border-t border-gray-200 bg-gray-50 px-6 py-4">
+          <div className="flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={handleClose}
@@ -621,15 +609,30 @@ export function AddRoleModal({ isOpen, onClose, onRoleAdded, editRole }: AddRole
             >
               Cancel
             </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-            >
-              {loading ? (editRole ? 'Updating...' : 'Adding Employee...') : (editRole ? 'Update Employee' : 'Add Employee')}
-            </button>
+            <div className="flex items-center gap-3">
+              {editRole && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to remove this employee?')) {
+                      handleClose();
+                    }
+                  }}
+                  className="px-6 py-2.5 text-red-600 hover:bg-red-50 border border-red-300 rounded-lg transition-colors font-medium"
+                >
+                  Remove Employee
+                </button>
+              )}
+              <button
+                type="submit"
+                form="employee-form"
+                disabled={loading}
+                className="px-6 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              >
+                {loading ? (editRole ? 'Updating...' : 'Adding Employee...') : (editRole ? 'Update Employee' : 'Add Employee')}
+              </button>
+            </div>
           </div>
-        </form>
         </div>
       </div>
     </>
