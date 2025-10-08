@@ -1678,6 +1678,13 @@ const Forecasting: React.FC<ForecastingProps> = ({
             <Bell className="w-4 h-4" />
           </button>
           <button
+            onClick={() => setShowViewSettingsPanel(true)}
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
+            title="View Settings"
+          >
+            <Filter className="w-4 h-4" />
+          </button>
+          <button
             className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
           >
             <Download className="w-4 h-4 mr-2" />
@@ -1839,13 +1846,6 @@ const Forecasting: React.FC<ForecastingProps> = ({
           <div className="h-8 w-px bg-gray-400"></div>
 
           <div className="ml-auto flex items-center gap-2">
-            <button
-              onClick={() => setShowViewSettingsPanel(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-              title="View Settings"
-            >
-              <Settings className="w-4 h-4 text-gray-600" />
-            </button>
             <button
               onClick={() => {
                 const allGLCodes = glCodes.map(gl => gl.code);
