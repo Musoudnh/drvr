@@ -40,10 +40,22 @@ const HeadcountManagement: React.FC = () => {
   const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
   const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [empTypeDropdownOpen, setEmpTypeDropdownOpen] = useState(false);
+  const [showColumnMenu, setShowColumnMenu] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState({
+    jobTitle: true,
+    department: true,
+    location: true,
+    type: true,
+    compensation: true,
+    tax: true,
+    allIn: true,
+    status: true,
+  });
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const deptDropdownRef = useRef<HTMLDivElement>(null);
   const locationDropdownRef = useRef<HTMLDivElement>(null);
   const empTypeDropdownRef = useRef<HTMLDivElement>(null);
+  const columnMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadData();
@@ -66,6 +78,9 @@ const HeadcountManagement: React.FC = () => {
       }
       if (empTypeDropdownRef.current && !empTypeDropdownRef.current.contains(event.target as Node)) {
         setEmpTypeDropdownOpen(false);
+      }
+      if (columnMenuRef.current && !columnMenuRef.current.contains(event.target as Node)) {
+        setShowColumnMenu(false);
       }
     };
 
@@ -419,45 +434,98 @@ const HeadcountManagement: React.FC = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Employee
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Job Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Department
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Location
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Compensation
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tax
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  All In
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
+                {visibleColumns.jobTitle && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Job Title
+                  </th>
+                )}
+                {visibleColumns.department && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Department
+                  </th>
+                )}
+                {visibleColumns.location && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                )}
+                {visibleColumns.type && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
+                  </th>
+                )}
+                {visibleColumns.compensation && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Compensation
+                  </th>
+                )}
+                {visibleColumns.tax && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tax
+                  </th>
+                )}
+                {visibleColumns.allIn && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    All In
+                  </th>
+                )}
+                {visibleColumns.status && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                )}
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  <div className="flex items-center justify-end gap-2">
+                    <span>Actions</span>
+                    <div className="relative" ref={columnMenuRef}>
+                      <button
+                        onClick={() => setShowColumnMenu(!showColumnMenu)}
+                        className="p-1 hover:bg-gray-200 rounded transition-colors"
+                      >
+                        <MoreVertical className="w-4 h-4" />
+                      </button>
+                      {showColumnMenu && (
+                        <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 p-3 z-50">
+                          <div className="text-xs font-semibold text-gray-700 mb-3 uppercase tracking-wider">Column Visibility</div>
+                          <div className="space-y-2">
+                            {[
+                              { key: 'jobTitle', label: 'Job Title' },
+                              { key: 'department', label: 'Department' },
+                              { key: 'location', label: 'Location' },
+                              { key: 'type', label: 'Type' },
+                              { key: 'compensation', label: 'Compensation' },
+                              { key: 'tax', label: 'Tax' },
+                              { key: 'allIn', label: 'All In' },
+                              { key: 'status', label: 'Status' },
+                            ].map((column) => (
+                              <label key={column.key} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                                <input
+                                  type="checkbox"
+                                  checked={visibleColumns[column.key as keyof typeof visibleColumns]}
+                                  onChange={(e) => setVisibleColumns({ ...visibleColumns, [column.key]: e.target.checked })}
+                                  className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                                />
+                                <span className="text-sm text-gray-700">{column.label}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={Object.values(visibleColumns).filter(Boolean).length + 2} className="px-6 py-12 text-center text-gray-500">
                     Loading employees...
                   </td>
                 </tr>
               ) : filteredEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={Object.values(visibleColumns).filter(Boolean).length + 2} className="px-6 py-12 text-center text-gray-500">
                     No employees found. Add your first employee to get started.
                   </td>
                 </tr>
@@ -478,44 +546,60 @@ const HeadcountManagement: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{employee.job_title || 'Not set'}</div>
-                      <div className="text-sm text-gray-500">{employee.employee_number || 'No ID'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{employee.department_name || 'Unassigned'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{employee.location || 'Remote'}</div>
-                      <div className="text-sm text-gray-500">{employee.state}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
-                        {employee.employment_type || 'Full-time'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {employee.employee_type === 'salary'
-                          ? `$${(employee.annual_salary || 0).toLocaleString()}/yr`
-                          : `$${employee.hourly_rate}/hr`}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
-                        {employee.status || 'Active'}
-                      </span>
-                    </td>
+                    {visibleColumns.jobTitle && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{employee.job_title || 'Not set'}</div>
+                        <div className="text-sm text-gray-500">{employee.employee_number || 'No ID'}</div>
+                      </td>
+                    )}
+                    {visibleColumns.department && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{employee.department_name || 'Unassigned'}</div>
+                      </td>
+                    )}
+                    {visibleColumns.location && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{employee.location || 'Remote'}</div>
+                        <div className="text-sm text-gray-500">{employee.state}</div>
+                      </td>
+                    )}
+                    {visibleColumns.type && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
+                          {employee.employment_type || 'Full-time'}
+                        </span>
+                      </td>
+                    )}
+                    {visibleColumns.compensation && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {employee.employee_type === 'salary'
+                            ? `$${(employee.annual_salary || 0).toLocaleString()}/yr`
+                            : `$${employee.hourly_rate}/hr`}
+                        </div>
+                      </td>
+                    )}
+                    {visibleColumns.tax && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                        </div>
+                      </td>
+                    )}
+                    {visibleColumns.allIn && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
+                        </div>
+                      </td>
+                    )}
+                    {visibleColumns.status && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 py-1 inline-flex text-xs font-medium rounded bg-gray-100 text-gray-700">
+                          {employee.status || 'Active'}
+                        </span>
+                      </td>
+                    )}
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-2">
                         <button
