@@ -560,7 +560,7 @@ const RunwayPlanning: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="h-full flex flex-col bg-white">
 
       <div className="flex-1 flex overflow-hidden">
         {/* Main Content */}

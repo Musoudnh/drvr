@@ -754,7 +754,7 @@ const Benchmarks: React.FC = () => {
       </div>
 
       {/* Interactive Benchmark Dashboard */}
-      <Card>
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {benchmarkMetrics.map(metric => {
             const PerformanceIcon = getPerformanceIcon(metric.performance);
@@ -853,7 +853,7 @@ const Benchmarks: React.FC = () => {
             );
           })}
         </div>
-      </Card>
+      </div>
 
       {/* Export Modal */}
       {showExportModal && (

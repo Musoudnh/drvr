@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, RefreshCw, BarChart3, Table as TableIcon, Plus, TrendingUp, TrendingDown, DollarSign, AlertCircle } from 'lucide-react';
+import { Download, RefreshCw, BarChart3, Table as TableIcon, TrendingUp, TrendingDown, DollarSign, AlertCircle, ChevronDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -35,12 +35,18 @@ const CashFlowManager: React.FC = () => {
   const [receivables, setReceivables] = useState<AccountsReceivable[]>([]);
   const [payables, setPayables] = useState<AccountsPayable[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showAddReceivableModal, setShowAddReceivableModal] = useState(false);
-  const [showAddPayableModal, setShowAddPayableModal] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
 
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (!selectedMonth) {
+      const today = new Date();
+      setSelectedMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
+    }
+  }, [selectedMonth]);
 
   const loadData = async () => {
     setLoading(true);
@@ -160,14 +166,21 @@ const CashFlowManager: React.FC = () => {
   };
 
   const prepareChartData = () => {
+    if (!selectedMonth) return [];
+
+    const [year, month] = selectedMonth.split('-').map(Number);
     const weeklyData: { [key: string]: { week: string; inflows: number; outflows: number } } = {};
 
-    const today = new Date();
-    for (let i = 0; i < 12; i++) {
-      const weekStart = new Date(today);
-      weekStart.setDate(today.getDate() + (i * 7));
+    const monthStart = new Date(year, month - 1, 1);
+    const monthEnd = new Date(year, month, 0);
+
+    const weeksInMonth = Math.ceil((monthEnd.getDate() - monthStart.getDate() + 1) / 7);
+
+    for (let i = 0; i < weeksInMonth; i++) {
+      const weekStart = new Date(year, month - 1, 1 + (i * 7));
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekStart.getDate() + 6);
+      if (weekEnd > monthEnd) weekEnd.setTime(monthEnd.getTime());
 
       const weekKey = `Week ${i + 1}`;
       weeklyData[weekKey] = { week: weekKey, inflows: 0, outflows: 0 };
@@ -188,6 +201,41 @@ const CashFlowManager: React.FC = () => {
     }
 
     return Object.values(weeklyData);
+  };
+
+  const getAvailableMonths = () => {
+    const months: string[] = [];
+    const allDates = [
+      ...receivables.map(r => r.due_date),
+      ...payables.map(p => p.due_date)
+    ];
+
+    const uniqueMonths = new Set<string>();
+    allDates.forEach(dateStr => {
+      const date = new Date(dateStr);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      uniqueMonths.add(monthKey);
+    });
+
+    const sortedMonths = Array.from(uniqueMonths).sort();
+
+    if (sortedMonths.length === 0) {
+      const today = new Date();
+      for (let i = -2; i <= 3; i++) {
+        const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
+        months.push(`${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, '0')}`);
+      }
+    } else {
+      return sortedMonths;
+    }
+
+    return months;
+  };
+
+  const formatMonthLabel = (monthStr: string) => {
+    const [year, month] = monthStr.split('-');
+    const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
   };
 
   const formatCurrency = (amount: number) => {
@@ -251,21 +299,12 @@ const CashFlowManager: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col">
               <div className="border-b border-gray-200 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                      <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
-                      Accounts Receivable
-                    </h2>
-                    <p className="text-xs text-gray-600 mt-1">Money owed to you by customers</p>
-                  </div>
-                  <button
-                    onClick={() => setShowAddReceivableModal(true)}
-                    className="flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-200 shadow-sm"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add
-                  </button>
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                    Accounts Receivable
+                  </h2>
+                  <p className="text-xs text-gray-600 mt-1">Money owed to you by customers</p>
                 </div>
 
                 <div className="grid grid-cols-4 gap-2">
@@ -304,7 +343,7 @@ const CashFlowManager: React.FC = () => {
                     {receivables.length === 0 ? (
                       <tr>
                         <td colSpan={6} className="py-8 text-center text-gray-500">
-                          No receivables found. Click "Add" to create one.
+                          No receivables found.
                         </td>
                       </tr>
                     ) : (
@@ -337,21 +376,12 @@ const CashFlowManager: React.FC = () => {
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col">
               <div className="border-b border-gray-200 p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                      <TrendingDown className="w-5 h-5 mr-2 text-red-600" />
-                      Accounts Payable
-                    </h2>
-                    <p className="text-xs text-gray-600 mt-1">Money you owe to vendors</p>
-                  </div>
-                  <button
-                    onClick={() => setShowAddPayableModal(true)}
-                    className="flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-200 shadow-sm"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add
-                  </button>
+                <div className="mb-4">
+                  <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <TrendingDown className="w-5 h-5 mr-2 text-red-600" />
+                    Accounts Payable
+                  </h2>
+                  <p className="text-xs text-gray-600 mt-1">Money you owe to vendors</p>
                 </div>
 
                 <div className="grid grid-cols-4 gap-2">
@@ -390,7 +420,7 @@ const CashFlowManager: React.FC = () => {
                     {payables.length === 0 ? (
                       <tr>
                         <td colSpan={6} className="py-8 text-center text-gray-500">
-                          No payables found. Click "Add" to create one.
+                          No payables found.
                         </td>
                       </tr>
                     ) : (
@@ -423,8 +453,26 @@ const CashFlowManager: React.FC = () => {
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Cash Flow Timeline</h2>
-            <p className="text-sm text-gray-600 mb-6">Expected inflows (green) and outflows (red) by week</p>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Cash Flow Timeline</h2>
+                <p className="text-sm text-gray-600 mt-1">Expected inflows (green) and outflows (red) by week</p>
+              </div>
+              <div className="relative">
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="appearance-none px-4 py-2 pr-10 bg-gray-50 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {getAvailableMonths().map(month => (
+                    <option key={month} value={month}>
+                      {formatMonthLabel(month)}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+              </div>
+            </div>
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -451,274 +499,12 @@ const CashFlowManager: React.FC = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Payment Recommendation</h3>
               <p className="text-sm text-gray-700 leading-relaxed">
                 {receivables.length === 0 && payables.length === 0
-                  ? 'Add receivables and payables to get intelligent payment recommendations based on your cash flow position.'
+                  ? 'No receivables or payables found. Import data to get intelligent payment recommendations based on your cash flow position.'
                   : generateAIRecommendation()}
               </p>
             </div>
           </div>
         </div>
-      </div>
-
-      {showAddReceivableModal && (
-        <AddReceivableModal
-          onClose={() => setShowAddReceivableModal(false)}
-          onSave={loadData}
-        />
-      )}
-
-      {showAddPayableModal && (
-        <AddPayableModal
-          onClose={() => setShowAddPayableModal(false)}
-          onSave={loadData}
-        />
-      )}
-    </div>
-  );
-};
-
-interface AddReceivableModalProps {
-  onClose: () => void;
-  onSave: () => void;
-}
-
-const AddReceivableModal: React.FC<AddReceivableModalProps> = ({ onClose, onSave }) => {
-  const [formData, setFormData] = useState({
-    customer_name: '',
-    invoice_number: '',
-    invoice_date: '',
-    due_date: '',
-    amount_due: ''
-  });
-  const [saving, setSaving] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      await supabase.from('accounts_receivable').insert({
-        user_id: user.id,
-        customer_name: formData.customer_name,
-        invoice_number: formData.invoice_number,
-        invoice_date: formData.invoice_date,
-        due_date: formData.due_date,
-        amount_due: parseFloat(formData.amount_due),
-        status: 'pending'
-      });
-
-      onSave();
-      onClose();
-    } catch (error) {
-      console.error('Error saving receivable:', error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw] shadow-xl">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Accounts Receivable</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
-              <input
-                type="text"
-                required
-                value={formData.customer_name}
-                onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Invoice Number</label>
-              <input
-                type="text"
-                required
-                value={formData.invoice_number}
-                onChange={(e) => setFormData({ ...formData, invoice_number: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Invoice Date</label>
-                <input
-                  type="date"
-                  required
-                  value={formData.invoice_date}
-                  onChange={(e) => setFormData({ ...formData, invoice_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                <input
-                  type="date"
-                  required
-                  value={formData.due_date}
-                  onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Amount Due</label>
-              <input
-                type="number"
-                step="0.01"
-                required
-                value={formData.amount_due}
-                onChange={(e) => setFormData({ ...formData, amount_due: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 mt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50"
-            >
-              {saving ? 'Saving...' : 'Save'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-interface AddPayableModalProps {
-  onClose: () => void;
-  onSave: () => void;
-}
-
-const AddPayableModal: React.FC<AddPayableModalProps> = ({ onClose, onSave }) => {
-  const [formData, setFormData] = useState({
-    vendor_name: '',
-    bill_number: '',
-    bill_date: '',
-    due_date: '',
-    amount_due: ''
-  });
-  const [saving, setSaving] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      await supabase.from('accounts_payable').insert({
-        user_id: user.id,
-        vendor_name: formData.vendor_name,
-        bill_number: formData.bill_number,
-        bill_date: formData.bill_date,
-        due_date: formData.due_date,
-        amount_due: parseFloat(formData.amount_due),
-        status: 'pending'
-      });
-
-      onSave();
-      onClose();
-    } catch (error) {
-      console.error('Error saving payable:', error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-[500px] max-w-[90vw] shadow-xl">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Add Accounts Payable</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Name</label>
-              <input
-                type="text"
-                required
-                value={formData.vendor_name}
-                onChange={(e) => setFormData({ ...formData, vendor_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Bill Number</label>
-              <input
-                type="text"
-                required
-                value={formData.bill_number}
-                onChange={(e) => setFormData({ ...formData, bill_number: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Bill Date</label>
-                <input
-                  type="date"
-                  required
-                  value={formData.bill_date}
-                  onChange={(e) => setFormData({ ...formData, bill_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                <input
-                  type="date"
-                  required
-                  value={formData.due_date}
-                  onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Amount Due</label>
-              <input
-                type="number"
-                step="0.01"
-                required
-                value={formData.amount_due}
-                onChange={(e) => setFormData({ ...formData, amount_due: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 mt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50"
-            >
-              {saving ? 'Saving...' : 'Save'}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
