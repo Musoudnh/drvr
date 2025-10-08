@@ -12,20 +12,10 @@ import type {
 } from '../types/payroll';
 
 class EnterprisePayrollService {
-  private async getCurrentUserId(): Promise<string> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) return user.id;
-
-    return '00000000-0000-0000-0000-000000000001';
-  }
-
   async getEmployees(filters?: EmployeeFilter): Promise<Employee[]> {
-    const userId = await this.getCurrentUserId();
-
     let query = supabase
       .from('employees')
       .select('*')
-      .eq('user_id', userId)
       .order('last_name', { ascending: true });
 
     if (filters?.status) {
@@ -50,13 +40,10 @@ class EnterprisePayrollService {
   }
 
   async getEmployee(id: string): Promise<Employee | null> {
-    const userId = await this.getCurrentUserId();
-
     const { data, error } = await supabase
       .from('employees')
       .select('*')
       .eq('id', id)
-      .eq('user_id', userId)
       .maybeSingle();
 
     if (error) throw error;
@@ -64,11 +51,9 @@ class EnterprisePayrollService {
   }
 
   async createEmployee(employee: Partial<Employee>): Promise<Employee> {
-    const userId = await this.getCurrentUserId();
-
     const { data, error } = await supabase
       .from('employees')
-      .insert([{ ...employee, user_id: userId }])
+      .insert([employee])
       .select()
       .single();
 
@@ -77,13 +62,10 @@ class EnterprisePayrollService {
   }
 
   async updateEmployee(id: string, updates: Partial<Employee>): Promise<Employee> {
-    const userId = await this.getCurrentUserId();
-
     const { data, error } = await supabase
       .from('employees')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', id)
-      .eq('user_id', userId)
       .select()
       .single();
 
@@ -92,24 +74,16 @@ class EnterprisePayrollService {
   }
 
   async deleteEmployee(id: string): Promise<void> {
-    const userId = await this.getCurrentUserId();
-
     const { error } = await supabase
       .from('employees')
       .delete()
-      .eq('id', id)
-      .eq('user_id', userId);
+      .eq('id', id);
 
     if (error) throw error;
   }
 
   async bulkImportEmployees(employees: Partial<Employee>[]): Promise<{ success: number; errors: number }> {
-    const userId = await this.getCurrentUserId();
-
-    const employeesWithUser = employees.map(emp => ({
-      ...emp,
-      user_id: userId,
-    }));
+    const employeesWithUser = employees;
 
     const { data, error } = await supabase
       .from('employees')
@@ -124,12 +98,11 @@ class EnterprisePayrollService {
   }
 
   async getDepartments(): Promise<Department[]> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('departments')
       .select('*')
-      .eq('user_id', userId)
+      
       .eq('is_active', true)
       .order('name');
 
@@ -138,11 +111,10 @@ class EnterprisePayrollService {
   }
 
   async createDepartment(department: Partial<Department>): Promise<Department> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('departments')
-      .insert([{ ...department, user_id: userId }])
+      .insert([{ ...department }])
       .select()
       .single();
 
@@ -151,13 +123,12 @@ class EnterprisePayrollService {
   }
 
   async getCompensationHistory(employeeId: string): Promise<CompensationHistory[]> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('compensation_history')
       .select('*')
       .eq('employee_id', employeeId)
-      .eq('user_id', userId)
+      
       .order('effective_date', { ascending: false });
 
     if (error) throw error;
@@ -165,11 +136,10 @@ class EnterprisePayrollService {
   }
 
   async addCompensationRecord(record: Partial<CompensationHistory>): Promise<CompensationHistory> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('compensation_history')
-      .insert([{ ...record, user_id: userId }])
+      .insert([{ ...record }])
       .select()
       .single();
 
@@ -178,12 +148,11 @@ class EnterprisePayrollService {
   }
 
   async getPayrollRuns(status?: string): Promise<PayrollRun[]> {
-    const userId = await this.getCurrentUserId();
 
     let query = supabase
       .from('payroll_runs')
       .select('*')
-      .eq('user_id', userId)
+      
       .order('pay_period_start', { ascending: false });
 
     if (status) {
@@ -196,11 +165,10 @@ class EnterprisePayrollService {
   }
 
   async createPayrollRun(run: Partial<PayrollRun>): Promise<PayrollRun> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('payroll_runs')
-      .insert([{ ...run, user_id: userId }])
+      .insert([{ ...run }])
       .select()
       .single();
 
@@ -209,13 +177,12 @@ class EnterprisePayrollService {
   }
 
   async updatePayrollRun(id: string, updates: Partial<PayrollRun>): Promise<PayrollRun> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('payroll_runs')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', id)
-      .eq('user_id', userId)
+      
       .select()
       .single();
 
@@ -224,13 +191,12 @@ class EnterprisePayrollService {
   }
 
   async getPayrollLineItems(runId: string): Promise<PayrollLineItem[]> {
-    const userId = await this.getCurrentUserId();
 
     const { data, error } = await supabase
       .from('payroll_line_items')
       .select('*, employees(*)')
       .eq('payroll_run_id', runId)
-      .eq('user_id', userId);
+      ;
 
     if (error) throw error;
     return data || [];
@@ -242,14 +208,13 @@ class EnterprisePayrollService {
     overtimeHours: number = 0,
     bonus: number = 0
   ): Promise<PayrollCalculation> {
-    const userId = await this.getCurrentUserId();
 
     const { data: taxRates } = await supabase
       .from('tax_rates_by_state')
       .select('*')
       .eq('state', employee.state)
       .eq('year', new Date().getFullYear())
-      .eq('user_id', userId)
+      
       .maybeSingle();
 
     const rates = taxRates || {
@@ -293,7 +258,6 @@ class EnterprisePayrollService {
   }
 
   async processPayrollRun(runId: string, employees: Employee[]): Promise<void> {
-    const userId = await this.getCurrentUserId();
 
     const lineItems: Partial<PayrollLineItem>[] = [];
     let totalGross = 0;
@@ -325,7 +289,6 @@ class EnterprisePayrollService {
         total_taxes: calculation.totalTaxes,
         total_deductions: calculation.totalDeductions,
         net_pay: calculation.netPay,
-        user_id: userId,
       };
 
       lineItems.push(lineItem);
@@ -352,9 +315,6 @@ class EnterprisePayrollService {
   }
 
   async getPayrollSummary(): Promise<PayrollSummary> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('Not authenticated');
-
     const employees = await this.getEmployees({ status: 'Active' });
 
     const totalEmployees = employees.length;
