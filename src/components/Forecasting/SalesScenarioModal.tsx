@@ -1606,34 +1606,26 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                             </div>
                           </div>
 
-                          <div className="mt-3 pt-3 border-t border-gray-200">
-                            <div className="flex overflow-x-auto">
-                              {MONTHS.map((month, idx) => {
-                                const startIdx = MONTHS.indexOf(driver.startMonth);
-                                const endIdx = MONTHS.indexOf(driver.endMonth);
-                                const isActive = idx >= startIdx && idx <= endIdx && driver.isActive;
-                                const monthlyImpact = calculateMonthlyImpact(driver, idx);
-
-                                return (
-                                  <div
-                                    key={month}
-                                    className={`flex-1 text-center transition-colors ${
-                                      isActive
-                                        ? 'bg-blue-500'
-                                        : 'bg-gray-200'
-                                    }`}
-                                    title={`${month}: ${isActive ? `$${Math.round(monthlyImpact).toLocaleString()}` : 'Not applied'}`}
-                                  >
-                                    <div className="py-1 h-12 flex items-center justify-center">
-                                      <div className="text-xs font-bold text-white">
-                                        {isActive ? `$${(monthlyImpact / 1000).toFixed(0)}k` : ''}
-                                      </div>
-                                    </div>
-                                  </div>
-                                );
-                              })}
+                          {driver.isActive && (
+                            <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs text-gray-600">Total Impact</span>
+                                <span className="text-sm font-bold text-blue-600">
+                                  {(() => {
+                                    const totalImpact = MONTHS.reduce((sum, month, idx) => {
+                                      const startIdx = MONTHS.indexOf(driver.startMonth);
+                                      const endIdx = MONTHS.indexOf(driver.endMonth);
+                                      if (idx >= startIdx && idx <= endIdx) {
+                                        return sum + calculateMonthlyImpact(driver, idx);
+                                      }
+                                      return sum;
+                                    }, 0);
+                                    return `$${(totalImpact / 1000).toFixed(1)}k`;
+                                  })()}
+                                </span>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       </div>
                     );
@@ -1906,7 +1898,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
             className="fixed inset-0 bg-black bg-opacity-30 z-[60]"
             onClick={() => setEditingDriver(null)}
           />
-          <div className="fixed right-0 top-0 bottom-0 z-[70] w-[500px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
+          <div className="fixed right-0 top-0 bottom-0 z-[70] w-[600px] max-w-[90vw] bg-white shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Edit Driver</h3>
