@@ -43,6 +43,7 @@ import TasksProjects from '../pages/Tasks/TasksProjects';
 import RoadMap from '../pages/RoadMap/RoadMap';
 import Approvals from '../pages/RoadMap/Approvals';
 import CashFlowManager from '../pages/CashFlow/CashFlowManager';
+import HeadcountManagement from '../pages/Payroll/HeadcountManagement';
 import { Database, GitBranch, Brain } from 'lucide-react';
 import SignIn from '../pages/Auth/SignIn';
 
@@ -267,6 +268,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute title="Hiring Scenarios">
         <HiringRunway />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/payroll/headcount",
+    element: (
+      <ProtectedRoute title="Headcount Management">
+        <HeadcountManagement />
       </ProtectedRoute>
     )
   },
