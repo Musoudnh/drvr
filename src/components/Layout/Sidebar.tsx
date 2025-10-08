@@ -120,7 +120,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const companyNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
     { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
-    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/runway', label: 'Headcount Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
     { path: '/roadmap/approvals', label: 'Approvals', icon: CheckCircle, category: 'Management', alwaysVisible: false },
@@ -131,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const financialNavItems: NavItem[] = [
     { path: '/dashboard', label: 'Overview', icon: Home, category: 'Main', alwaysVisible: true },
     { path: '/forecasting', label: 'Forecasting', icon: Target, category: 'Financial Tools', alwaysVisible: false },
-    { path: '/runway', label: 'Scenario Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
+    { path: '/runway', label: 'Headcount Planner', icon: TrendingUp, category: 'Financial Tools', alwaysVisible: false },
     { path: '/benchmarks', label: 'Benchmarks', icon: LineChart, category: 'Analysis', alwaysVisible: false },
     { path: '/roadmap', label: 'Road Map', icon: MapPin, category: 'Management', alwaysVisible: false },
     { path: '/roadmap/approvals', label: 'Approvals', icon: CheckCircle, category: 'Management', alwaysVisible: false },
