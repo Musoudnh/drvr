@@ -516,10 +516,6 @@ const Benchmarks: React.FC = () => {
       <div className="space-y-6">
         {/* Page Title */}
         <div className="flex justify-between items-start">
-          <div>
-            <h2 className="text-3xl font-bold text-[#101010]">Industry Benchmarks</h2>
-            <p className="text-gray-600 mt-2 text-lg">Compare your performance against industry peers and identify growth opportunities</p>
-          </div>
           <div className="flex gap-2">
             <button
               onClick={() => setShowFilters(!showFilters)}
