@@ -288,7 +288,17 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
       case 'volume_price':
         const vpParams = params as VolumePriceParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Volume Growth %:</strong> The percentage increase in units sold over time</p>
+                <p><strong>Price Growth %:</strong> The percentage increase in price per unit over time</p>
+                <p><strong>Base Units:</strong> The starting number of units sold per month</p>
+                <p><strong>Base Price:</strong> The starting price per unit before growth is applied</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Volume Growth %</label>
               <input
@@ -333,13 +343,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'cac':
         const cacParams = params as CACParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Marketing Spend:</strong> Total monthly budget allocated to customer acquisition</p>
+                <p><strong>Customers Acquired:</strong> Number of new customers gained per month</p>
+                <p><strong>Average Customer LTV:</strong> Lifetime Value - total revenue expected from a customer</p>
+                <p><strong>CAC Payback Months:</strong> Time it takes to recover customer acquisition costs</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Marketing Spend (Monthly)</label>
               <input
@@ -384,13 +405,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'retention':
         const retParams = params as RetentionParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Churn Rate:</strong> Percentage of customers who cancel their subscription per month</p>
+                <p><strong>MRR (Monthly Recurring Revenue):</strong> Predictable revenue generated each month</p>
+                <p><strong>Average Customer Count:</strong> Total number of active paying customers</p>
+                <p><strong>Retention:</strong> The inverse of churn - percentage of customers who stay</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Current Churn Rate %</label>
               <input
@@ -435,6 +467,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
@@ -442,6 +475,16 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         const funnelParams = params as FunnelParameters;
         return (
           <div className="space-y-4">
+            <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Lead:</strong> A potential customer who has shown interest in your product/service</p>
+                <p><strong>MQL (Marketing Qualified Lead):</strong> A lead that marketing has qualified as ready for sales engagement</p>
+                <p><strong>SQL (Sales Qualified Lead):</strong> A lead that sales has qualified as having buying intent</p>
+                <p><strong>Opportunity:</strong> A qualified prospect with a defined need and timeline</p>
+                <p><strong>Closed-Won:</strong> A successfully completed sale</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2">Leads Per Month</label>
@@ -502,6 +545,14 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         const seasonParams = params as SeasonalityParameters;
         return (
           <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Baseline Revenue:</strong> The standard monthly revenue without seasonal adjustments</p>
+                <p><strong>Monthly Multipliers:</strong> Factors that adjust baseline revenue for each month (e.g., 1.2 = 20% increase, 0.8 = 20% decrease)</p>
+                <p><strong>Seasonality:</strong> Predictable revenue fluctuations based on time of year</p>
+              </div>
+            </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Baseline Revenue</label>
               <input
@@ -539,7 +590,17 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
       case 'contract_terms':
         const contractParams = params as ContractTermsParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Contract Length:</strong> Average duration of customer commitments in months</p>
+                <p><strong>Annual Contract Value (ACV):</strong> Total value of a contract divided by years</p>
+                <p><strong>Upfront %:</strong> Percentage of total contract value paid at signing</p>
+                <p><strong>New Contracts/Month:</strong> Number of new agreements signed per month</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Avg Contract Length (Months)</label>
               <input
@@ -584,13 +645,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'rep_productivity':
         const repParams = params as RepProductivityParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Number of Reps:</strong> Total count of sales representatives on the team</p>
+                <p><strong>Deals Per Rep Per Month:</strong> Average number of sales each rep closes monthly</p>
+                <p><strong>Average Deal Value:</strong> Mean revenue generated per closed deal</p>
+                <p><strong>Productivity Improvement %:</strong> Expected increase in rep efficiency over time</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Number of Reps</label>
               <input
@@ -635,13 +707,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'discounting':
         const discountParams = params as DiscountingParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Standard List Price:</strong> The full, non-discounted price of your product/service</p>
+                <p><strong>Average Discount %:</strong> Typical percentage reduction offered to customers</p>
+                <p><strong>Units Sold:</strong> Number of products/services sold per month</p>
+                <p><strong>Discount Reduction Target:</strong> Goal for decreasing average discount percentage</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Discount %</label>
               <input
@@ -686,6 +769,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
@@ -693,6 +777,15 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
         const payrollHCParams = params as PayrollHeadcountParameters;
         return (
           <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Headcount:</strong> Total number of employees in a department</p>
+                <p><strong>Planned Hires:</strong> Scheduled new employee additions by month</p>
+                <p><strong>Average Salary:</strong> Mean annual compensation per employee</p>
+                <p><strong>Benefits Burden %:</strong> Additional cost of benefits as percentage of salary (typically 20-30%)</p>
+              </div>
+            </div>
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
@@ -769,7 +862,16 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
       case 'payroll_salary':
         const payrollSalParams = params as PayrollSalaryParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Current Average Salary:</strong> Mean annual compensation across the department</p>
+                <p><strong>Salary Adjustment %:</strong> Planned percentage increase or decrease in compensation</p>
+                <p><strong>Effective Date:</strong> Month when the salary change takes effect</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
@@ -836,13 +938,23 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'payroll_merit':
         const payrollMeritParams = params as PayrollMeritParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Merit Increase:</strong> Performance-based salary raise given to employees</p>
+                <p><strong>Annual Merit %:</strong> Average percentage increase for the year</p>
+                <p><strong>Review Cycle:</strong> Frequency of performance reviews (annual, semi-annual, etc.)</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Department Name</label>
               <input
@@ -879,13 +991,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 ))}
               </select>
             </div>
+            </div>
           </div>
         );
 
       case 'marketing_channels':
         const mktChannelParams = params as MarketingChannelsParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Marketing Channel:</strong> A specific method or platform for reaching customers (e.g., Google Ads, LinkedIn, Content)</p>
+                <p><strong>CPL (Cost Per Lead):</strong> Average cost to acquire one lead through this channel</p>
+                <p><strong>ARR (Annual Recurring Revenue):</strong> Yearly value of recurring customer subscriptions</p>
+                <p><strong>Gross Margin:</strong> Revenue minus direct costs, expressed as a percentage</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Channel Name</label>
               <input
@@ -952,13 +1075,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'marketing_cac':
         const mktCACParams = params as MarketingCACParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>CAC (Customer Acquisition Cost):</strong> Total marketing spend divided by customers acquired</p>
+                <p><strong>Leads Generated:</strong> Total number of potential customers who express interest</p>
+                <p><strong>Lead-to-Customer Rate:</strong> Percentage of leads that convert to paying customers</p>
+                <p><strong>Blended CAC:</strong> Overall CAC across all marketing channels</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Total Spend</label>
               <input
@@ -1003,13 +1137,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'marketing_roi':
         const mktROIParams = params as MarketingROIParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>ROI (Return on Investment):</strong> Revenue generated per dollar spent on marketing</p>
+                <p><strong>Campaign Spend:</strong> Total budget allocated to a specific marketing initiative</p>
+                <p><strong>Revenue Attribution:</strong> Revenue directly tied to marketing efforts</p>
+                <p><strong>Payback Period:</strong> Time required to recover marketing investment</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-2">Campaign Spend</label>
               <input
@@ -1043,13 +1188,25 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'equipment_purchase':
         const eqPurchaseParams = params as EquipmentPurchaseParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Asset:</strong> Physical equipment or property purchased by the business</p>
+                <p><strong>Useful Life:</strong> Expected number of years the asset will be productive</p>
+                <p><strong>Salvage Value:</strong> Expected resale value at the end of useful life</p>
+                <p><strong>Depreciation:</strong> Gradual reduction in asset value over time for accounting purposes</p>
+                <p><strong>Straight-Line:</strong> Equal depreciation each year; Accelerated: More depreciation in early years</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
@@ -1121,13 +1278,25 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 <option value="accelerated">Accelerated</option>
               </select>
             </div>
+            </div>
           </div>
         );
 
       case 'equipment_financing':
         const eqFinanceParams = params as EquipmentFinancingParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Equipment Financing:</strong> Borrowing money to purchase business equipment</p>
+                <p><strong>Down Payment:</strong> Upfront cash payment (percentage of total cost)</p>
+                <p><strong>Interest Rate:</strong> Annual cost of borrowing, expressed as a percentage</p>
+                <p><strong>Loan Term:</strong> Length of time to repay the loan in months</p>
+                <p><strong>Monthly Payment:</strong> Regular installment amount including principal and interest</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
@@ -1183,13 +1352,24 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
             </div>
+            </div>
           </div>
         );
 
       case 'equipment_maintenance':
         const eqMaintParams = params as EquipmentMaintenanceParameters;
         return (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="text-xs font-semibold text-gray-900 mb-2">Glossary</h4>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p><strong>Maintenance:</strong> Regular upkeep and repairs to keep equipment operational</p>
+                <p><strong>Annual Cost:</strong> Total yearly expense for maintenance and repairs</p>
+                <p><strong>Preventive Maintenance:</strong> Scheduled routine service to prevent breakdowns</p>
+                <p><strong>Reactive Maintenance:</strong> Repairs made after equipment fails</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-gray-700 mb-2">Asset Name</label>
               <input
@@ -1222,6 +1402,7 @@ const SalesScenarioModal: React.FC<SalesScenarioModalProps> = ({
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7B68EE]"
               />
+            </div>
             </div>
           </div>
         );
