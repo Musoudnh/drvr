@@ -147,6 +147,39 @@ const HeadcountManagement: React.FC = () => {
   const uniqueDepartments = Array.from(new Set(employees.map((e) => e.department_name).filter(Boolean)));
   const uniqueLocations = Array.from(new Set(employees.map((e) => e.location).filter(Boolean)));
 
+  // Calculate employer taxes for an employee
+  const calculateEmployerTaxes = (employee: Employee) => {
+    let annualComp = 0;
+    if (employee.employee_type === 'salary') {
+      annualComp = employee.annual_salary || 0;
+    } else {
+      const hourlyRate = employee.hourly_rate || 0;
+      const weeklyHours = employee.weekly_hours || 40;
+      annualComp = hourlyRate * weeklyHours * 52;
+    }
+
+    // Social Security (6.2% up to wage base)
+    const socialSecurityWageBase = 168600;
+    const socialSecurity = Math.min(annualComp, socialSecurityWageBase) * 0.062;
+
+    // Medicare (1.45%)
+    const medicare = annualComp * 0.0145;
+
+    // FUTA (0.6% on first $7,000)
+    const futa = Math.min(annualComp, 7000) * 0.006;
+
+    // SUTA (3.4% on first $7,000)
+    const suta = Math.min(annualComp, 7000) * 0.034;
+
+    const totalEmployerTax = socialSecurity + medicare + futa + suta;
+
+    return {
+      annualComp,
+      totalEmployerTax,
+      allIn: annualComp + totalEmployerTax,
+    };
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -402,6 +435,12 @@ const HeadcountManagement: React.FC = () => {
                   Compensation
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tax
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  All In
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -412,13 +451,13 @@ const HeadcountManagement: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
                     Loading employees...
                   </td>
                 </tr>
               ) : filteredEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={10} className="px-6 py-12 text-center text-gray-500">
                     No employees found. Add your first employee to get started.
                   </td>
                 </tr>
@@ -460,6 +499,16 @@ const HeadcountManagement: React.FC = () => {
                         {employee.employee_type === 'salary'
                           ? `$${(employee.annual_salary || 0).toLocaleString()}/yr`
                           : `$${employee.hourly_rate}/hr`}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-orange-600">
+                        ${calculateEmployerTaxes(employee).totalEmployerTax.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-semibold text-[#7B68EE]">
+                        ${calculateEmployerTaxes(employee).allIn.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/yr
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
