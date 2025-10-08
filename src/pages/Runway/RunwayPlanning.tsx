@@ -613,10 +613,7 @@ const RunwayPlanning: React.FC = () => {
                         </td>
                         <td className="py-3 px-4 text-gray-700">{employee.role}</td>
                         <td className="py-3 px-4">
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium" style={{
-                            backgroundColor: getDepartmentColor(employee.department) + '20',
-                            color: getDepartmentColor(employee.department)
-                          }}>
+                          <span className="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-xs font-medium">
                             {employee.department}
                           </span>
                         </td>
