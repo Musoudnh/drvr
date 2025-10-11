@@ -132,16 +132,46 @@ const DriverResultsPanel: React.FC<DriverResultsPanelProps> = ({
                 </select>
 
                 {selectedInstance && (
-                  <div className="mt-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                    <p className="text-xs text-gray-600">
-                      <span className="font-medium">Type:</span> {selectedInstance.template?.name}
-                    </p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      <span className="font-medium">Period:</span>{' '}
-                      {selectedInstance.configuration.period_start} to{' '}
-                      {selectedInstance.configuration.period_end}
-                    </p>
-                  </div>
+                  <>
+                    <div className="mt-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                      <p className="text-xs text-gray-600">
+                        <span className="font-medium">Type:</span> {selectedInstance.template?.name}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        <span className="font-medium">Period:</span>{' '}
+                        {selectedInstance.configuration.period_start} to{' '}
+                        {selectedInstance.configuration.period_end}
+                      </p>
+                    </div>
+
+                    <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <p className="text-xs font-medium text-gray-700 mb-2">Active Period</p>
+                      <div className="grid grid-cols-12 gap-1">
+                        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, idx) => {
+                          const startDate = parseISO(selectedInstance.configuration.period_start);
+                          const endDate = parseISO(selectedInstance.configuration.period_end);
+                          const monthDate = new Date(startDate.getFullYear(), idx, 1);
+                          const isActive = monthDate >= new Date(startDate.getFullYear(), startDate.getMonth(), 1) &&
+                                          monthDate <= new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+
+                          return (
+                            <div key={month} className="flex flex-col items-center">
+                              <div
+                                className={`w-full h-8 rounded flex items-center justify-center text-[10px] font-medium transition-all ${
+                                  isActive
+                                    ? 'bg-green-500 text-white shadow-sm'
+                                    : 'bg-gray-200 text-gray-500'
+                                }`}
+                                title={`${month} - ${isActive ? 'Active' : 'Inactive'}`}
+                              >
+                                {month.substring(0, 1)}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
 
