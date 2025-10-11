@@ -2376,28 +2376,6 @@ const Forecasting: React.FC<ForecastingProps> = ({
                                               </button>
                                             </div>
 
-                                            {/* Summary Card */}
-                                            {scenario.isActive && (
-                                              <div className="mt-2 p-3 bg-[#7B68EE]/10 rounded-lg border border-[#7B68EE]/20">
-                                                <div className="flex items-center justify-between">
-                                                  <span className="text-xs text-gray-600">Total Impact</span>
-                                                  <span className="text-sm font-bold text-[#7B68EE]">
-                                                    {(() => {
-                                                      const totalImpact = months.reduce((sum, month, index) => {
-                                                        const startIndex = getMonthIndex(scenario.startMonth);
-                                                        const endIndex = getMonthIndex(scenario.endMonth);
-                                                        if (index >= startIndex && index <= endIndex) {
-                                                          return sum + getScenarioMonthImpact(scenario, month, glCode.code);
-                                                        }
-                                                        return sum;
-                                                      }, 0);
-                                                      return `${totalImpact >= 0 ? '+' : ''}$${formatNumber(Math.abs(totalImpact))}`;
-                                                    })()}
-                                                  </span>
-                                                </div>
-                                              </div>
-                                            )}
-
                                             {scenarioMenuOpen === scenario.id && (
                                               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
                                                 <div className="flex gap-2">
