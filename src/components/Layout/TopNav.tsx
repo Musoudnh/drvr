@@ -99,7 +99,7 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
           {onOpenViewSettings && (
             <button
               onClick={onOpenViewSettings}
-              className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
               title="View Settings"
             >
               <Filter className="w-4 h-4" />
@@ -110,7 +110,7 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
           <div className="relative" ref={notificationRef}>
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+              className="relative px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
               <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
@@ -177,7 +177,7 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
           {/* Settings Button */}
           <Link
             to="/admin/profile"
-            className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+            className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             title="Settings"
           >
             <Settings className="w-4 h-4" />
@@ -187,11 +187,9 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
           <div className="relative">
             <Link
               to="/admin"
-              className="p-1.5 text-gray-600 hover:text-[#101010] transition-colors rounded-lg hover:bg-gray-100"
+              className="px-2 py-1 bg-white text-[#7B68EE] rounded text-xs font-medium shadow-sm transition-colors hover:bg-gray-50 flex items-center"
             >
-              <div className="w-6 h-6 bg-[#3AB7BF] rounded-full flex items-center justify-center">
-                <User className="w-3 h-3 text-white" />
-              </div>
+              <User className="w-4 h-4" />
             </Link>
           </div>
           
