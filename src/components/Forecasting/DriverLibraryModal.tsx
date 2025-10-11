@@ -149,7 +149,6 @@ const DriverLibraryModal: React.FC<DriverLibraryModalProps> = ({
       await loadData();
       setShowCreateForm(false);
       setSelectedTemplate(null);
-      setActiveTab('instances');
     } catch (error) {
       console.error('Failed to create driver instance:', error);
       alert('Failed to create driver instance');
