@@ -2346,6 +2346,26 @@ const Forecasting: React.FC<ForecastingProps> = ({
                                                     ` $${scenario.adjustmentValue.toLocaleString()} adjustment`
                                                   }
                                                 </p>
+                                                <div className="mt-2 flex gap-1">
+                                                  {months.map((month, idx) => {
+                                                    const startIdx = getMonthIndex(scenario.startMonth);
+                                                    const endIdx = getMonthIndex(scenario.endMonth);
+                                                    const isActive = idx >= startIdx && idx <= endIdx && scenario.isActive;
+                                                    return (
+                                                      <div
+                                                        key={month}
+                                                        className={`flex-1 h-6 rounded flex items-center justify-center text-[9px] font-medium transition-all ${
+                                                          isActive
+                                                            ? 'bg-green-500 text-white shadow-sm'
+                                                            : 'bg-gray-200 text-gray-400'
+                                                        }`}
+                                                        title={`${month} - ${isActive ? 'Active' : 'Inactive'}`}
+                                                      >
+                                                        {month.substring(0, 1)}
+                                                      </div>
+                                                    );
+                                                  })}
+                                                </div>
                                               </div>
                                               <button
                                                 onClick={() => setScenarioMenuOpen(scenarioMenuOpen === scenario.id ? null : scenario.id)}
