@@ -178,7 +178,6 @@ const SignIn: React.FC = () => {
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-r from-[#8B5CF6] to-[#F59E0B] rounded-full opacity-30 animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
     </div>
