@@ -117,7 +117,7 @@ const SignIn: React.FC = () => {
               variant="primary"
               size="lg"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-[#3AB7BF] to-[#4ADE80] hover:from-[#2A9BA3] hover:to-[#3BC66F] border-0 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+              className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] hover:from-[#7C3AED] hover:to-[#9333EA] border-0 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
