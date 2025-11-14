@@ -137,13 +137,12 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
               className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-medium shadow-sm hover:bg-gray-50 transition-colors"
               disabled={loading || companies.length === 0}
             >
-              <Building2 className="w-4 h-4 text-[#7B68EE]" />
               <span>{selectedCompany?.name || 'Select Company'}</span>
-              {companies.length > 1 && <ChevronDown className="w-3 h-3 ml-1" />}
+              <ChevronDown className="w-3 h-3" />
             </button>
 
             {/* Company Dropdown */}
-            {showCompanyDropdown && companies.length > 1 && (
+            {showCompanyDropdown && companies.length > 0 && (
               <div className="absolute left-0 mt-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-2 max-h-64 overflow-y-auto">
                   {companies.map((company) => (
@@ -156,12 +155,9 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidebar, title, onOpenViewSetti
                           : 'text-gray-700 hover:bg-gray-100'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4" />
-                        <div>
-                          <div className="font-medium">{company.name}</div>
-                          <div className="text-xs text-gray-500">{company.code}</div>
-                        </div>
+                      <div>
+                        <div className="font-medium">{company.name}</div>
+                        <div className="text-xs text-gray-500">{company.code}</div>
                       </div>
                     </button>
                   ))}
