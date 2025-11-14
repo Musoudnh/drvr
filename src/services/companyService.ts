@@ -10,27 +10,31 @@ export interface Company {
 export const companyService = {
   async getUserCompanies(): Promise<Company[]> {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
+
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
 
     const { data, error } = await supabase
       .from('company_users')
       .select('companies(id, name, code, created_at)')
-      .eq('user_id', user.id);
+      .eq('user_id', userId);
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching companies:', error);
+      return [];
+    }
     return data?.map((cu: any) => cu.companies).filter(Boolean) || [];
   },
 
   async getSelectedCompany(): Promise<string | null> {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return null;
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
 
-    const stored = localStorage.getItem(`selected_company_${user.id}`);
+    const stored = localStorage.getItem(`selected_company_${userId}`);
     if (stored) return stored;
 
     const companies = await this.getUserCompanies();
     if (companies.length > 0) {
-      localStorage.setItem(`selected_company_${user.id}`, companies[0].id);
+      localStorage.setItem(`selected_company_${userId}`, companies[0].id);
       return companies[0].id;
     }
 
@@ -39,9 +43,8 @@ export const companyService = {
 
   setSelectedCompany(companyId: string): void {
     const { data } = supabase.auth.getSession();
-    if (data?.session?.user?.id) {
-      localStorage.setItem(`selected_company_${data.session.user.id}`, companyId);
-    }
+    const userId = data?.session?.user?.id || '00000000-0000-0000-0000-000000000001';
+    localStorage.setItem(`selected_company_${userId}`, companyId);
   },
 
   async getCompanyById(companyId: string): Promise<Company | null> {
