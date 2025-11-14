@@ -38,13 +38,7 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F5F7FA] via-[#E8F4F8] to-[#D1E7DD] flex items-center justify-center px-4 py-8">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#3AB7BF]/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#4ADE80]/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl"></div>
-      </div>
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-8">
 
       {/* Sign In Card */}
       <div className="relative w-full max-w-md">
@@ -176,9 +170,6 @@ const SignIn: React.FC = () => {
             <span>Secured with 256-bit SSL encryption</span>
           </div>
         </div>
-
-        {/* Floating Elements */}
-        <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-r from-[#8B5CF6] to-[#F59E0B] rounded-full opacity-30 animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
     </div>
   );
