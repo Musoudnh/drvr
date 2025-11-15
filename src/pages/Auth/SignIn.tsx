@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building2, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Building2, Mail, Lock, Eye, EyeOff, AlertCircle, User, Phone } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/UI/Button';
 
 const SignIn: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Signup form fields
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [referralCode, setReferralCode] = useState('');
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -23,6 +33,31 @@ const SignIn: React.FC = () => {
       navigate('/dashboard');
     } catch (error) {
       setError('Invalid email or password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!agreeToTerms) {
+      setError('You must agree to the Terms of Service and Privacy Policy');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // TODO: Implement signup logic with Supabase
+      console.log('Signup data:', { firstName, lastName, email, companyName, phone, referralCode });
+      // For now, just navigate to dashboard
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
+    } catch (error) {
+      setError('An error occurred during signup. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -39,11 +74,18 @@ const SignIn: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 py-8">
-
       {/* Sign In Card */}
       <div className="relative w-full max-w-md">
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-8 transform transition-all duration-300 hover:shadow-3xl">
           {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              {viewMode === 'login' ? 'Welcome Back' : 'Start Your Free Trial'}
+            </h1>
+            {viewMode === 'signup' && (
+              <p className="text-sm text-gray-600">14-day trial. No credit card required</p>
+            )}
+          </div>
 
           {/* Error Message */}
           {error && (
@@ -53,8 +95,9 @@ const SignIn: React.FC = () => {
             </div>
           )}
 
-          {/* Sign In Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Login Form */}
+          {viewMode === 'login' && (
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-3">
                 Email Address
@@ -128,39 +171,206 @@ const SignIn: React.FC = () => {
                 'Sign In'
               )}
             </Button>
-          </form>
+            </form>
+          )}
 
-          {/* Divider */}
-          <div className="my-8 flex items-center">
-            <div className="flex-1 border-t border-gray-200"></div>
-            <span className="px-4 text-xs text-gray-500 bg-white rounded-full">or</span>
-            <div className="flex-1 border-t border-gray-200"></div>
-          </div>
+          {/* Signup Form */}
+          {viewMode === 'signup' && (
+            <form onSubmit={handleSignupSubmit} className="space-y-6">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  First Name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your first name"
+                    required
+                  />
+                </div>
+              </div>
 
-          {/* QuickBooks Login */}
-          <button
-            onClick={handleQuickBooksLogin}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center px-6 py-4 border-2 border-gray-200 rounded-xl text-gray-700 font-medium hover:border-[#0077C5] hover:bg-[#0077C5]/5 transition-all duration-200 group disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <div className="w-6 h-6 mr-3 bg-[#0077C5] rounded flex items-center justify-center">
-              <span className="text-white text-xs font-bold">QB</span>
-            </div>
-            <span className="group-hover:text-[#0077C5] transition-colors">
-              {isLoading ? 'Connecting...' : 'Continue with QuickBooks'}
-            </span>
-          </button>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  Last Name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your last name"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  Work Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your work email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  Company Name
+                </label>
+                <div className="relative">
+                  <Building2 className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your company name"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  Phone
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-3">
+                  Referral Code (Optional)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value)}
+                    className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    placeholder="Enter referral code if you have one"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-start">
+                <input
+                  type="checkbox"
+                  checked={agreeToTerms}
+                  onChange={(e) => setAgreeToTerms(e.target.checked)}
+                  className="w-4 h-4 text-[#8B5CF6] border-gray-300 rounded focus:ring-[#8B5CF6] focus:ring-2 mt-1"
+                  required
+                />
+                <label className="ml-3 text-xs text-gray-600">
+                  I agree to the{' '}
+                  <Link to="/terms" className="text-[#8B5CF6] hover:text-[#7C3AED] font-medium transition-colors">
+                    Terms of Service
+                  </Link>
+                  {' '}and{' '}
+                  <Link to="/privacy" className="text-[#8B5CF6] hover:text-[#7C3AED] font-medium transition-colors">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] hover:from-[#7C3AED] hover:to-[#9333EA] border-0 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 py-4"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Creating account...
+                  </div>
+                ) : (
+                  'Start Free Trial'
+                )}
+              </Button>
+            </form>
+          )}
+
+          {/* Divider - Only show for login */}
+          {viewMode === 'login' && (
+            <>
+              <div className="my-8 flex items-center">
+                <div className="flex-1 border-t border-gray-200"></div>
+                <span className="px-4 text-xs text-gray-500 bg-white rounded-full">or</span>
+                <div className="flex-1 border-t border-gray-200"></div>
+              </div>
+
+              {/* QuickBooks Login */}
+              <button
+                onClick={handleQuickBooksLogin}
+                disabled={isLoading}
+                className="w-full flex items-center justify-center px-6 py-4 border-2 border-gray-200 rounded-xl text-gray-700 font-medium hover:border-[#0077C5] hover:bg-[#0077C5]/5 transition-all duration-200 group disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <div className="w-6 h-6 mr-3 bg-[#0077C5] rounded flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">QB</span>
+                </div>
+                <span className="group-hover:text-[#0077C5] transition-colors">
+                  {isLoading ? 'Connecting...' : 'Continue with QuickBooks'}
+                </span>
+              </button>
+            </>
+          )}
 
           {/* Footer */}
           <div className="mt-8 text-center">
             <p className="text-xs text-gray-600">
-              Don't have an account?{' '}
-              <Link 
-                to="/setup" 
-                className="text-[#3AB7BF] hover:text-[#2A9BA3] font-semibold transition-colors"
-              >
-                Get started for free
-              </Link>
+              {viewMode === 'login' ? (
+                <>
+                  Don't have an account?{' '}
+                  <button
+                    onClick={() => {
+                      setViewMode('signup');
+                      setError('');
+                    }}
+                    className="text-[#8B5CF6] hover:text-[#7C3AED] font-semibold transition-colors"
+                  >
+                    Get started for free
+                  </button>
+                </>
+              ) : (
+                <>
+                  Already have an account?{' '}
+                  <button
+                    onClick={() => {
+                      setViewMode('login');
+                      setError('');
+                    }}
+                    className="text-[#8B5CF6] hover:text-[#7C3AED] font-semibold transition-colors"
+                  >
+                    Sign in
+                  </button>
+                </>
+              )}
             </p>
           </div>
 
