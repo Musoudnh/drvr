@@ -5,8 +5,10 @@ import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/UI/Button';
 
 const SignIn: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'login' | 'businessType' | 'signup'>('login');
+  const [viewMode, setViewMode] = useState<'login' | 'businessType' | 'tierSelection' | 'signup' | 'planSelection'>('login');
   const [businessType, setBusinessType] = useState<'small_business' | 'accounting_firm' | null>(null);
+  const [selectedTier, setSelectedTier] = useState<'starter' | 'professional' | 'advanced' | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<'starter' | 'professional' | 'enterprise' | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -41,6 +43,12 @@ const SignIn: React.FC = () => {
 
   const handleBusinessTypeSelect = (type: 'small_business' | 'accounting_firm') => {
     setBusinessType(type);
+    setViewMode('tierSelection');
+    setError('');
+  };
+
+  const handleTierSelect = (tier: 'starter' | 'professional' | 'advanced') => {
+    setSelectedTier(tier);
     setViewMode('signup');
     setError('');
   };
@@ -58,7 +66,16 @@ const SignIn: React.FC = () => {
 
     try {
       // TODO: Implement signup logic with Supabase
-      console.log('Signup data:', { firstName, lastName, email, companyName, phone, referralCode, businessType });
+      console.log('Signup data:', {
+        firstName,
+        lastName,
+        email,
+        companyName,
+        phone,
+        referralCode,
+        businessType,
+        selectedTier
+      });
       // For now, just navigate to dashboard
       setTimeout(() => {
         navigate('/dashboard');
@@ -89,13 +106,21 @@ const SignIn: React.FC = () => {
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               {viewMode === 'login' && 'Welcome Back'}
               {viewMode === 'businessType' && 'Choose Your Business Type'}
+              {viewMode === 'tierSelection' && 'Select Your Option'}
               {viewMode === 'signup' && 'Start Your Free Trial'}
+              {viewMode === 'planSelection' && 'Choose Your Plan'}
             </h1>
             {viewMode === 'businessType' && (
               <p className="text-sm text-gray-600">Select the option that best describes your business</p>
             )}
+            {viewMode === 'tierSelection' && (
+              <p className="text-sm text-gray-600">Choose the tier that works best for you</p>
+            )}
             {viewMode === 'signup' && (
               <p className="text-sm text-gray-600">14-day trial. No credit card required</p>
+            )}
+            {viewMode === 'planSelection' && (
+              <p className="text-sm text-gray-600">Select the plan that best fits your needs</p>
             )}
           </div>
 
@@ -133,6 +158,50 @@ const SignIn: React.FC = () => {
                 </h3>
                 <p className="text-sm text-gray-600">
                   Designed for accounting professionals managing multiple client accounts
+                </p>
+              </button>
+            </div>
+          )}
+
+          {/* Tier Selection */}
+          {viewMode === 'tierSelection' && (
+            <div className="space-y-4">
+              <button
+                type="button"
+                onClick={() => handleTierSelect('starter')}
+                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                  Starter
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Essential features to get started with financial management
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleTierSelect('professional')}
+                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                  Professional
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Advanced tools and analytics for growing businesses
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleTierSelect('advanced')}
+                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                  Advanced
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Complete solution with custom integrations and dedicated support
                 </p>
               </button>
             </div>
