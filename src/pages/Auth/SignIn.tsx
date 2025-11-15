@@ -5,7 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/UI/Button';
 
 const SignIn: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'login' | 'signup'>('login');
+  const [viewMode, setViewMode] = useState<'login' | 'businessType' | 'signup'>('login');
+  const [businessType, setBusinessType] = useState<'small_business' | 'accounting_firm' | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +39,12 @@ const SignIn: React.FC = () => {
     }
   };
 
+  const handleBusinessTypeSelect = (type: 'small_business' | 'accounting_firm') => {
+    setBusinessType(type);
+    setViewMode('signup');
+    setError('');
+  };
+
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -51,7 +58,7 @@ const SignIn: React.FC = () => {
 
     try {
       // TODO: Implement signup logic with Supabase
-      console.log('Signup data:', { firstName, lastName, email, companyName, phone, referralCode });
+      console.log('Signup data:', { firstName, lastName, email, companyName, phone, referralCode, businessType });
       // For now, just navigate to dashboard
       setTimeout(() => {
         navigate('/dashboard');
@@ -80,8 +87,13 @@ const SignIn: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              {viewMode === 'login' ? 'Welcome Back' : 'Start Your Free Trial'}
+              {viewMode === 'login' && 'Welcome Back'}
+              {viewMode === 'businessType' && 'Choose Your Business Type'}
+              {viewMode === 'signup' && 'Start Your Free Trial'}
             </h1>
+            {viewMode === 'businessType' && (
+              <p className="text-sm text-gray-600">Select the option that best describes your business</p>
+            )}
             {viewMode === 'signup' && (
               <p className="text-sm text-gray-600">14-day trial. No credit card required</p>
             )}
@@ -92,6 +104,51 @@ const SignIn: React.FC = () => {
             <div className="mb-6 p-4 bg-[#F87171]/10 border border-[#F87171]/20 rounded-lg flex items-center">
               <AlertCircle className="w-5 h-5 text-[#F87171] mr-3 flex-shrink-0" />
               <p className="text-xs text-[#F87171]">{error}</p>
+            </div>
+          )}
+
+          {/* Business Type Selection */}
+          {viewMode === 'businessType' && (
+            <div className="space-y-4">
+              <button
+                type="button"
+                onClick={() => handleBusinessTypeSelect('small_business')}
+                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
+              >
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Building2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="ml-4 flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                      Small Business
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Perfect for startups and growing businesses looking to manage their finances efficiently
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleBusinessTypeSelect('accounting_firm')}
+                className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
+              >
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Building2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="ml-4 flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                      Accounting Firm
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Designed for accounting professionals managing multiple client accounts
+                    </p>
+                  </div>
+                </div>
+              </button>
             </div>
           )}
 
@@ -349,7 +406,7 @@ const SignIn: React.FC = () => {
                   Don't have an account?{' '}
                   <button
                     onClick={() => {
-                      setViewMode('signup');
+                      setViewMode('businessType');
                       setError('');
                     }}
                     className="text-[#8B5CF6] hover:text-[#7C3AED] font-semibold transition-colors"
