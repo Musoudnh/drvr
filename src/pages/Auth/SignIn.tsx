@@ -115,19 +115,12 @@ const SignIn: React.FC = () => {
                 onClick={() => handleBusinessTypeSelect('small_business')}
                 className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
               >
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    <Building2 className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="ml-4 flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
-                      Small Business
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Perfect for startups and growing businesses looking to manage their finances efficiently
-                    </p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                  Small Business
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Perfect for startups and growing businesses looking to manage their finances efficiently
+                </p>
               </button>
 
               <button
@@ -135,19 +128,12 @@ const SignIn: React.FC = () => {
                 onClick={() => handleBusinessTypeSelect('accounting_firm')}
                 className="w-full p-6 border-2 border-gray-200 rounded-xl hover:border-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all duration-200 group text-left"
               >
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B5CF6] to-[#A78BFA] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    <Building2 className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="ml-4 flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
-                      Accounting Firm
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Designed for accounting professionals managing multiple client accounts
-                    </p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                  Accounting Firm
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Designed for accounting professionals managing multiple client accounts
+                </p>
               </button>
             </div>
           )}
