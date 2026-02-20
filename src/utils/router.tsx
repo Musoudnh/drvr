@@ -29,7 +29,7 @@ import ChatInterface from '../components/Chat/ChatInterface';
 import ChatSettings from '../pages/Chat/ChatSettings';
 import ExpertSelection from '../pages/Expert/ExpertSelection';
 import ReferralProgram from '../pages/Referrals/ReferralProgram';
-import ScenarioPlanning from '../pages/ScenarioPlanning/ScenarioPlanning';
+import ScenarioPlanning from '../pages/Forecasting/ScenarioPlanning';
 import RunwayPlanning from '../pages/Runway/RunwayPlanning';
 import RevenueRunway from '../pages/Runway/RevenueRunway';
 import OpExRunway from '../pages/Runway/OpExRunway';
